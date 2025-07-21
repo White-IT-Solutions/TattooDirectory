@@ -42,7 +42,28 @@ Comprehensive project documentation is available in the `/docs` folder:
 
 ## 🚀 Getting Started
 
-*Implementation details and setup instructions will be added as development progresses.*
+### Frontend Development
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend is a React + TypeScript application with shadcn/ui components, running on Vite.
+
+### Project Structure
+
+```
+├── docs/                    # Comprehensive project documentation
+├── frontend/                # React/TypeScript web application
+├── backend/                 # AWS Lambda functions and APIs
+├── infrastructure/          # Terraform Infrastructure as Code
+├── scripts/                 # Build and deployment scripts
+└── tests/                   # Integration and E2E tests
+```
+
+*Backend and infrastructure setup instructions will be added as development progresses.*
 
 ## 📊 Success Metrics
 
