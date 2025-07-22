@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Search, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import DarkModeToggle from "./DarkModeToggle";
+import DarkModeToggle from "../DarkModeToggle";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +20,9 @@ const Navigation = () => {
 
   const isActive = (href: string) => {
     if (href === "/search?view=map") {
-      return location.pathname === "/search" && location.search.includes("view=map");
+      return (
+        location.pathname === "/search" && location.search.includes("view=map")
+      );
     }
     return location.pathname === href;
   };
@@ -33,7 +34,9 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="w-8 h-8 bg-gradient-hero rounded-md flex items-center justify-center transform group-hover:scale-110 transition-transform">
-              <span className="text-primary-foreground font-bold text-lg">T</span>
+              <span className="text-primary-foreground font-bold text-lg">
+                T
+              </span>
             </div>
             <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               TattooFinder
@@ -72,7 +75,11 @@ const Navigation = () => {
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </div>
