@@ -22,7 +22,7 @@ To become the most comprehensive and effortless platform for discovering tattoo 
 
 **Showcase Technical Proficiency:** To serve as a comprehensive portfolio project demonstrating advanced skills in modern full-stack development, including frontend, backend, cloud infrastructure (AWS), Infrastructure as Code (IaaC), and data analytics.
 
-* **The Primary goal is** Primarily to design, build, and document an enterprise-grade, scalable, and cost-effective serverless web application on AWS.   
+* **The Primary goal is** Primarily to design, build, and document an enterprise-grade, scalable, and cost-effective serverless web application on AWS.
 * **The secondary goal** is to develop an automated data aggregation engine to populate the application with live data.
 
 **End-to-End System Design:** To build and document a scalable, production-ready application from the ground up.
@@ -181,4 +181,3 @@ It should be noted for MVP status, style inference is based on a best-effort par
 
 * **Assumptions:** We assume the core user problem is significant, the required data is available and parsable, and that artists will view the platform positively.  
 * **Open Questions:** What is the policy for artist de-listing requests? What are the actual infrastructure costs? How accurate is the style-tagging algorithm? What are the long-term, ethical monetization options?
-
