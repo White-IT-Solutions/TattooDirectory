@@ -369,10 +369,7 @@ The following questions were identified during the initial planning phase and re
 
 ### **8.4.1 High-Level Overview**
 
-\---  
-config:  
-  layout: elk  
-\---  
+```mermaid  
 **flowchart** TD  
  **subgraph** User\["User"\]  
         U\["👩‍🎨 Client Browser"\]  
@@ -427,3 +424,4 @@ config:
     StepFunctions **\--** Sends Jobs To **\--\>** SQS  
     SQS \-- "Triggers Auto-scaling" **\--\>** Fargate  
     Fargate **\--** Writes Aggregated Data **\--\>** DynamoDB  
+```
