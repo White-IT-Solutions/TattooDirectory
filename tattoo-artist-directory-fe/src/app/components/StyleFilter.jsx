@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { styleImages } from "../../data/testData/tattooStyles";
+import { styleImages } from "../data/testData/tattooStyles";
 
 const STYLES = [
   "Old School",
