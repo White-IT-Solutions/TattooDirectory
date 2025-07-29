@@ -10,9 +10,9 @@ resource "aws_apigatewayv2_api" "main" {
     allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_origins = var.environment == "prod" ? [
       "https://${aws_cloudfront_distribution.frontend.domain_name}"
-      ] : ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"] # Allow localhost for dev
-    expose_headers    = ["date", "keep-alive"]
-    max_age          = 86400
+    ] : ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"] # Allow localhost for dev
+    expose_headers = ["date", "keep-alive"]
+    max_age        = 86400
   }
 
   tags = {
@@ -25,19 +25,24 @@ resource "aws_apigatewayv2_stage" "main" {
   api_id      = aws_apigatewayv2_api.main.id
   name        = var.environment
   auto_deploy = true
-
+  default_route_settings {
+    throttling_rate_limit         = var.environment == "prod" ? 1000 : 100
+    throttling_burst_limit        = var.environment == "prod" ? 2000 : 200
+    detailed_metrics_enabled      = local.environment_config[var.environment].enable_detailed_monitoring
+    logging_level                 = var.environment == "prod" ? "INFO" : "ERROR"
+  }
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
     format = jsonencode({
-      requestId      = "$context.requestId"
-      ip             = "$context.identity.sourceIp"
-      requestTime    = "$context.requestTime"
-      httpMethod     = "$context.httpMethod"
-      routeKey       = "$context.routeKey"
-      status         = "$context.status"
-      protocol       = "$context.protocol"
-      responseLength = "$context.responseLength"
-      error          = "$context.error.message"
+      requestId        = "$context.requestId"
+      ip               = "$context.identity.sourceIp"
+      requestTime      = "$context.requestTime"
+      httpMethod       = "$context.httpMethod"
+      routeKey         = "$context.routeKey"
+      status           = "$context.status"
+      protocol         = "$context.protocol"
+      responseLength   = "$context.responseLength"
+      error            = "$context.error.message"
       integrationError = "$context.integrationErrorMessage"
     })
   }
@@ -49,13 +54,13 @@ resource "aws_apigatewayv2_stage" "main" {
 
 # Lambda function for API business logic
 resource "aws_lambda_function" "api_handler" {
-  filename         = data.archive_file.api_handler_zip.output_path
-  function_name    = "${var.project_name}-api-handler"
-  role            = aws_iam_role.lambda_api_role.arn
-  handler         = "index.handler"
-  runtime         = "nodejs18.x"
-  timeout         = 30
-  memory_size     = 512
+  filename      = data.archive_file.api_handler_zip.output_path
+  function_name = "${var.project_name}-api-handler"
+  role          = aws_iam_role.lambda_api_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
+  timeout       = 30
+  memory_size   = local.environment_config[var.environment].lambda_memory_size
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -63,17 +68,23 @@ resource "aws_lambda_function" "api_handler" {
   }
   source_code_hash = data.archive_file.api_handler_zip.output_base64sha256
 
+  tracing_config {
+    mode = local.environment_config[var.environment].enable_detailed_monitoring ? "Active" : "PassThrough"
+  }
+
   environment {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.main.name
       OPENSEARCH_ENDPOINT = aws_opensearch_domain.main.endpoint
       ENVIRONMENT         = var.environment
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1" # Best practice for performance
     }
   }
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_api_policy_attachment,
     aws_cloudwatch_log_group.lambda_api,
+    aws_iam_role_policy_attachment.lambda_xray_policy_attachment,
   ]
 
   tags = {
@@ -86,13 +97,24 @@ data "archive_file" "api_handler_zip" {
   type        = "zip"
   output_path = "${path.module}/api_handler.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/api_handler/index.js")
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Event:', JSON.stringify(event, null, 2));
+    
+    return {
+        statusCode: 200,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: 'API Handler placeholder - replace with actual implementation',
+            path: event.rawPath,
+            method: event.requestContext.http.method
+        })
+    };
+};
+EOF
     filename = "index.js"
-  }
-
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
   }
 }
 
@@ -105,10 +127,6 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   description        = "Lambda integration for API"
   integration_method = "POST"
   integration_uri    = aws_lambda_function.api_handler.invoke_arn
-
-  request_parameters = {
-    "overwrite:path" = "$request.path"
-  }
 }
 
 # API Gateway Routes

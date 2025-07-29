@@ -14,6 +14,7 @@ resource "aws_vpc" "main" {
   }
 }
 
+
 locals {
   # Create a map of availability zones to use for looping.
   # This makes it easy to change from 2 AZs to 3 in the future.
@@ -72,7 +73,7 @@ resource "aws_eip" "nat" {
 
 # NAT Gateways
 resource "aws_nat_gateway" "nat" {
-  for_each      = local.availability_zones
+  for_each = var.environment == "prod" ? local.availability_zones : { "a" = local.availability_zones["a"] }
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
 
@@ -100,7 +101,7 @@ resource "aws_route_table" "public" {
 # Private Route Tables
 resource "aws_route_table" "private" {
   for_each = local.availability_zones
-  vpc_id = aws_vpc.main.id
+  vpc_id   = aws_vpc.main.id
 
   route {
     cidr_block     = "0.0.0.0/0"

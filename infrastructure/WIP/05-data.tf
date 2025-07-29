@@ -60,8 +60,14 @@ resource "aws_dynamodb_table" "main" {
     enabled = true
   }
 
+  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+
   tags = {
     Name = "${var.project_name}-main-table"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
@@ -85,8 +91,14 @@ resource "aws_dynamodb_table" "denylist" {
     enabled = true
   }
 
+  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+
   tags = {
     Name = "${var.project_name}-denylist-table"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
@@ -96,10 +108,10 @@ resource "aws_opensearch_domain" "main" {
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
-    instance_type            = "t3.small.search"
-    instance_count           = 2
-    dedicated_master_enabled = false
-    zone_awareness_enabled   = true
+    instance_type            = local.environment_config[var.environment].opensearch_instance_count == 2 ? "t3.small.search" : "t3.micro.search"
+    instance_count           = local.environment_config[var.environment].opensearch_instance_count
+    dedicated_master_enabled = var.environment == "prod" ? false : false
+    zone_awareness_enabled   = var.environment == "prod" ? true : false
 
     zone_awareness_config {
       availability_zone_count = 2
@@ -154,7 +166,10 @@ resource "aws_opensearch_domain" "main" {
             # Add other roles that might need access, e.g., an admin user role
           ]
         }
-        Action = "es:*"
+        Action = [
+        "es:ESHttpGet",
+        "es:ESHttpPost", 
+        "es:ESHttpPut" ]
         Resource = "${aws_opensearch_domain.main.arn}/*"
       }
     ]
@@ -162,6 +177,10 @@ resource "aws_opensearch_domain" "main" {
 
   tags = {
     Name = "${var.project_name}-opensearch"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 
   depends_on = [aws_iam_service_linked_role.opensearch]
@@ -199,7 +218,7 @@ resource "aws_lambda_function" "dynamodb_sync" {
   handler       = "index.handler"
   runtime       = "nodejs18.x"
   timeout       = 300
-  memory_size   = 512
+  memory_size   = local.environment_config[var.environment].lambda_memory_size
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -231,13 +250,60 @@ data "archive_file" "dynamodb_sync_zip" {
   type        = "zip"
   output_path = "${path.module}/dynamodb_sync.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/dynamodb_sync/index.js")
-    filename = "index.js"
-  }
+    content  = <<EOF
+const { Client } = require('@opensearch-project/opensearch');
 
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
+exports.handler = async (event) => {
+    console.log('DynamoDB Stream Event:', JSON.stringify(event, null, 2));
+    
+    const client = new Client({
+        node: 'https://' + process.env.OPENSEARCH_ENDPOINT,
+        auth: {
+            username: 'admin',
+            password: process.env.OPENSEARCH_PASSWORD
+        }
+    });
+    
+    for (const record of event.Records) {
+        try {
+            if (record.eventName === 'INSERT' || record.eventName === 'MODIFY') {
+                const newImage = record.dynamodb.NewImage;
+                if (newImage && newImage.PK && newImage.PK.S.startsWith('ARTIST#')) {
+                    const document = {
+                        id: newImage.PK.S,
+                        name: newImage.name?.S || '',
+                        styles: newImage.styles?.SS || [],
+                        location: newImage.location?.S || '',
+                    };
+                    
+                    await client.index({
+                        index: process.env.OPENSEARCH_INDEX,
+                        id: newImage.PK.S,
+                        body: document
+                    });
+                    
+                    console.log('Indexed document: ' + newImage.PK.S);
+                }
+            } else if (record.eventName === 'REMOVE') {
+                const oldImage = record.dynamodb.OldImage;
+                if (oldImage && oldImage.PK && oldImage.PK.S.startsWith('ARTIST#')) {
+                    await client.delete({
+                        index: process.env.OPENSEARCH_INDEX,
+                        id: oldImage.PK.S
+                    });
+                    
+                    console.log('Deleted document: ' + oldImage.PK.S);
+                }
+            }
+        } catch (error) {
+            console.error('Error processing record:', error);
+        }
+    }
+    
+    return { statusCode: 200, body: 'Success' };
+};
+EOF
+    filename = "index.js"
   }
 }
 

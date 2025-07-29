@@ -305,7 +305,7 @@ resource "aws_sfn_state_machine" "data_aggregation" {
           AttributeNames = ["All"] # Get all attributes for a complete picture
         }
         ResultPath = "$.QueueAttributes" # Store the output in a specific path
-        Next = "IsQueueEmpty"
+        Next       = "IsQueueEmpty"
       }
       IsQueueEmpty = {
         Type = "Choice"
@@ -322,7 +322,7 @@ resource "aws_sfn_state_machine" "data_aggregation" {
                 StringEquals = "0"
               }
             ],
-            Next          = "Success"
+            Next = "Success"
           }
         ]
         Default = "WaitForScraping"
@@ -510,12 +510,12 @@ resource "aws_iam_role_policy_attachment" "lambda_workflow_policy_attachment" {
 
 # Placeholder Lambda functions for the workflow
 resource "aws_lambda_function" "discover_studios" {
-  filename      = data.archive_file.discover_studios_zip.output_path
-  function_name = "${var.project_name}-discover-studios"
-  role          = aws_iam_role.lambda_workflow_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  timeout       = 300
+  filename         = data.archive_file.discover_studios_zip.output_path
+  function_name    = "${var.project_name}-discover-studios"
+  role             = aws_iam_role.lambda_workflow_role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  timeout          = 300
   source_code_hash = data.archive_file.discover_studios_zip.output_base64sha256
 
   environment {
@@ -531,12 +531,12 @@ resource "aws_lambda_function" "discover_studios" {
 }
 
 resource "aws_lambda_function" "queue_scraping" {
-  filename      = data.archive_file.queue_scraping_zip.output_path
-  function_name = "${var.project_name}-queue-scraping"
-  role          = aws_iam_role.lambda_workflow_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  timeout       = 300
+  filename         = data.archive_file.queue_scraping_zip.output_path
+  function_name    = "${var.project_name}-queue-scraping"
+  role             = aws_iam_role.lambda_workflow_role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  timeout          = 300
   source_code_hash = data.archive_file.queue_scraping_zip.output_base64sha256
 
   environment {
@@ -557,12 +557,14 @@ data "archive_file" "discover_studios_zip" {
   type        = "zip"
   output_path = "${path.module}/discover_studios.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/discover_studios/index.js")
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Discover Studios Event:', JSON.stringify(event, null, 2));
+    // Placeholder for studio discovery logic
+    return { statusCode: 200, body: 'Studios discovered' };
+};
+EOF
     filename = "index.js"
-  }
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
   }
 }
 
@@ -570,12 +572,14 @@ data "archive_file" "queue_scraping_zip" {
   type        = "zip"
   output_path = "${path.module}/queue_scraping.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/queue_scraping/index.js")
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Queue Scraping Event:', JSON.stringify(event, null, 2));
+    // Placeholder for queueing scraping jobs
+    return { statusCode: 200, body: 'Scraping jobs queued' };
+};
+EOF
     filename = "index.js"
-  }
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
   }
 }
 

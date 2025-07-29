@@ -345,14 +345,109 @@ resource "aws_security_group" "lambda" {
   name_prefix = "${var.project_name}-lambda-"
   vpc_id      = aws_vpc.main.id
 
+# Allow inbound for internal communication within VPC
+  ingress {
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+    self      = true
+  }
+
+  # Allow HTTPS outbound
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  # Allow HTTP outbound for package downloads
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP outbound for package downloads"
+  }
+  # Allow Lambda-to-Lambda communication
+  ingress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "tcp"
+    self      = true
+    description = "Lambda-to-Lambda communication"
+  }
 
+  # Allow communication with OpenSearch
+  egress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.opensearch.id]
+    description     = "Communication with OpenSearch"
+  }
+
+  # Allow DNS resolution
+  egress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "DNS resolution"
+  }
   tags = {
     Name = "${var.project_name}-lambda-sg"
+  }
+}
+
+# VPC Endpoints to reduce NAT Gateway costs and improve security
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = values(aws_route_table.private)[*].id
+
+  tags = {
+    Name = "${var.project_name}-dynamodb-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = values(aws_route_table.private)[*].id
+
+  tags = {
+    Name = "${var.project_name}-s3-endpoint"
+  }
+}
+
+# Interface endpoints for other services
+resource "aws_vpc_endpoint" "secretsmanager" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.secretsmanager"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-secretsmanager-endpoint"
+  }
+}
+resource "aws_security_group" "vpc_endpoints" {
+  name_prefix = "${var.project_name}-vpc-endpoints-"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lambda.id]
+    description     = "HTTPS from Lambda functions"
+  }
+
+  tags = {
+    Name = "${var.project_name}-vpc-endpoints-sg"
   }
 }
