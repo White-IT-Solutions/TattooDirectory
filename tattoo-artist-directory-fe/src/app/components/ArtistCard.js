@@ -19,10 +19,10 @@ export default function ArtistCard({ artist }) {
 
         {/* Styles */}
         <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {artist.styles.slice(0, 3).map((style) => (
+          {artist.styles.slice(0, 3).map((style, index) => (
             <span
-              key={style}
-              className="bg-gray-200 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-300"
+              key={style + index}
+              className="bg-blue-800 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-300"
             >
               #{style}
             </span>

@@ -17,7 +17,7 @@ export default function ArtistPage({ params }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-80 bg-white p-6 shadow-lg">
         <div className="text-center">

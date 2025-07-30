@@ -1,4 +1,5 @@
 // mockArtistData.js
+
 export const mockArtistData = [
   {
     PK: 3030,
@@ -15,16 +16,22 @@ export const mockArtistData = [
     },
     styles: ["New School", "Old School", "Tribal"],
     portfolio: [
-      "https://loremflickr.com/2490/2135/tattoos?lock=6863202660764144",
-      "https://loremflickr.com/1197/2999/tattoos?lock=5848284581264338",
-      "https://loremflickr.com/250/2299/tattoos?lock=1745227054914639",
-      "https://loremflickr.com/878/855/tattoos?lock=5975405479502802",
-      "https://loremflickr.com/764/1413/tattoos?lock=5632710658807517",
-      "https://loremflickr.com/2778/2202/tattoos?lock=753147525074017",
-      "https://loremflickr.com/867/2324/tattoos?lock=7589000103578727",
-      "https://loremflickr.com/3841/1584/tattoos?lock=2216828065404848",
-      "https://loremflickr.com/60/1868/tattoos?lock=5145368683822961",
-      "https://loremflickr.com/790/1143/tattoos?lock=6698309064776274",
+      "https://i.pinimg.com/736x/99/31/62/993162f914b5b4f81bf1c5585d73c9f4.jpg",
+      "https://i.pinimg.com/736x/89/9d/d6/899dd6115fae3814747f8ba00e817263.jpg",
+      "https://i.pinimg.com/736x/74/71/bf/7471bf33e55f12b7f484320a0a1646c9.jpg",
+      "https://i.pinimg.com/1200x/35/62/24/35622490b7b59dd736387843ecd1fc5c.jpg",
+      "https://i.pinimg.com/736x/99/31/62/993162f914b5b4f81bf1c5585d73c9f4.jpg",
+      "https://i.pinimg.com/736x/89/9d/d6/899dd6115fae3814747f8ba00e817263.jpg",
+      "https://i.pinimg.com/736x/74/71/bf/7471bf33e55f12b7f484320a0a1646c9.jpg",
+      "https://i.pinimg.com/1200x/35/62/24/35622490b7b59dd736387843ecd1fc5c.jpg",
+      "https://i.pinimg.com/736x/99/31/62/993162f914b5b4f81bf1c5585d73c9f4.jpg",
+      "https://i.pinimg.com/736x/89/9d/d6/899dd6115fae3814747f8ba00e817263.jpg",
+      "https://i.pinimg.com/736x/74/71/bf/7471bf33e55f12b7f484320a0a1646c9.jpg",
+      "https://i.pinimg.com/1200x/35/62/24/35622490b7b59dd736387843ecd1fc5c.jpg",
+      "https://i.pinimg.com/736x/99/31/62/993162f914b5b4f81bf1c5585d73c9f4.jpg",
+      "https://i.pinimg.com/736x/89/9d/d6/899dd6115fae3814747f8ba00e817263.jpg",
+      "https://i.pinimg.com/736x/74/71/bf/7471bf33e55f12b7f484320a0a1646c9.jpg",
+      "https://i.pinimg.com/1200x/35/62/24/35622490b7b59dd736387843ecd1fc5c.jpg",
     ],
     opted_out: false,
   },
