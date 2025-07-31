@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import {mockArtistData} from "../../data/mockArtistData";
+import { mockArtistData } from "../../data/mockArtistData";
+import Lightbox from "@/app/components/Lightbox";
 
 export default function ArtistPage({ params }) {
   const artistId = params.id;
@@ -87,23 +88,10 @@ export default function ArtistPage({ params }) {
           </div>
         </div>
       </aside>
-
       {/* Main Section */}
       <main className="flex-1 p-6 overflow-y-auto">
         {artist.portfolio && artist.portfolio.length > 0 ? (
-          <div className="columns-3 gap-1 space-y-1">
-            {artist.portfolio.map((img, i) => (
-              <div key={i} className="relative group cursor-zoom-in">
-                <Image
-                  src={img}
-                  alt={`Tattoo ${i}`}
-                  width={600}
-                  height={600}
-                  className="w-full rounded-md group-hover:scale-105 transition-transform duration-200"
-                />
-              </div>
-            ))}
-          </div>
+          <Lightbox images={artist.portfolio} grid />
         ) : (
           <div className="text-center mt-20">
             <p className="text-lg text-gray-600">
@@ -119,7 +107,7 @@ export default function ArtistPage({ params }) {
             </p>
           </div>
         )}
-      </main>
+      </main>{" "}
     </div>
   );
 }
