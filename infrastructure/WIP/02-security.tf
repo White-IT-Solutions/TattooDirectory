@@ -5,7 +5,8 @@ resource "aws_kms_key" "main" {
   enable_key_rotation     = true
 
   tags = {
-    Name = "${var.project_name}-kms-key"
+    Name               = "${var.project_name}-kms-key"
+    DataClassification = "Confidential"
   }
 }
 
@@ -22,7 +23,8 @@ resource "aws_secretsmanager_secret" "app_secrets" {
   recovery_window_in_days = 7
 
   tags = {
-    Name = "${var.project_name}-secrets"
+    Name               = "${var.project_name}-secrets"
+    DataClassification = "Confidential"
   }
 }
 
@@ -70,17 +72,32 @@ resource "aws_iam_policy" "lambda_api_policy" {
       {
         Effect = "Allow"
         Action = [
-          "dynamodb:GetItem",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem"
+          "dynamodb:GetItem", // For getting a single artist
+          "dynamodb:Query",   // For getting a single artist
+          "dynamodb:Scan"     // For getting all styles (if implemented this way)
         ]
         Resource = [
           aws_dynamodb_table.main.arn,
-          "${aws_dynamodb_table.main.arn}/index/*",
+          "${aws_dynamodb_table.main.arn}/index/*"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:PutItem" // For submitting removal requests to the denylist
+        ],
+        "Resource": [
           aws_dynamodb_table.denylist.arn
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem"
+        ],
+        "Resource": [
+          aws_dynamodb_table.idempotency.arn
         ]
       },
       {
@@ -100,6 +117,15 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = "*"
+        "Condition": {
+          "StringEquals": {
+            "ec2:Vpc": aws_vpc.main.arn
+          },
+          "ForAllValues:StringEquals": {
+            "ec2:Subnet": [ for s in aws_subnet.private : s.arn ],
+            "ec2:SecurityGroup": aws_security_group.lambda.arn
+          }
+        }
       }
     ]
   })
@@ -147,8 +173,8 @@ resource "aws_iam_policy" "fargate_task_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [ # Scope down logging permissions
-          aws_cloudwatch_log_group.lambda_sync.arn,
-          "${aws_cloudwatch_log_group.lambda_sync.arn}:*"
+          aws_cloudwatch_log_group.fargate_scraper.arn,
+          "${aws_cloudwatch_log_group.fargate_scraper.arn}:*"
         ]
       },
       {
@@ -277,6 +303,15 @@ resource "aws_iam_policy" "lambda_sync_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = "*"
+        "Condition": {
+          "StringEquals": {
+            "ec2:Vpc": aws_vpc.main.arn
+          },
+          "ForAllValues:StringEquals": {
+            "ec2:Subnet": [ for s in aws_subnet.private : s.arn ],
+            "ec2:SecurityGroup": aws_security_group.lambda.arn
+          }
+        }
       },
       {
         Effect = "Allow"
@@ -306,13 +341,6 @@ resource "aws_security_group" "opensearch" {
     security_groups = [aws_security_group.lambda.id]
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name = "${var.project_name}-opensearch-sg"
   }
@@ -321,6 +349,14 @@ resource "aws_security_group" "opensearch" {
 resource "aws_security_group" "fargate" {
   name_prefix = "${var.project_name}-fargate-"
   vpc_id      = aws_vpc.main.id
+
+  # Allow outbound to VPC endpoints for SQS, ECR, Logs etc.
+  egress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vpc_endpoints.id]
+  }
 
   egress {
     from_port   = 443
@@ -345,14 +381,144 @@ resource "aws_security_group" "lambda" {
   name_prefix = "${var.project_name}-lambda-"
   vpc_id      = aws_vpc.main.id
 
+  # Egress to OpenSearch
   egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.opensearch.id]
+  }
+
+  # Egress to VPC Endpoints (SecretsManager, SQS, etc.)
+  egress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vpc_endpoints.id]
   }
 
   tags = {
     Name = "${var.project_name}-lambda-sg"
+  }
+}
+
+# VPC Endpoints to reduce NAT Gateway costs and improve security
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = values(aws_route_table.private)[*].id
+
+  tags = {
+    Name = "${var.project_name}-dynamodb-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = values(aws_route_table.private)[*].id
+
+  tags = {
+    Name = "${var.project_name}-s3-endpoint"
+  }
+}
+
+# Interface endpoints for other services
+resource "aws_vpc_endpoint" "secretsmanager" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.secretsmanager"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-secretsmanager-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "sqs" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.sqs"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-sqs-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "states" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.states"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-states-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-ecr-api-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-ecr-dkr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "logs" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.aws_region}.logs"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = values(aws_subnet.private)[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project_name}-logs-endpoint"
+  }
+}
+resource "aws_security_group" "vpc_endpoints" {
+  name_prefix = "${var.project_name}-vpc-endpoints-"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lambda.id, aws_security_group.fargate.id]
+    description     = "HTTPS from Lambda and Fargate"
+  }
+
+  # No egress is needed as the endpoints are targets, not sources.
+  # The stateful nature of security groups allows return traffic.
+
+  tags = {
+    Name = "${var.project_name}-vpc-endpoints-sg"
   }
 }

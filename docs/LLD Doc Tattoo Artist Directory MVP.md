@@ -43,7 +43,7 @@ The architecture employs a **serverless microservices** pattern. The system is d
 | Component | Services | Role & Configuration | Details |
 | :---- | :---- | :---- | :---- |
 | **Frontend** | Amazon S3, CloudFront, WAF | **S3** is configured for static website hosting with versioning enabled. **CloudFront** is the CDN, configured with an Origin Access Identity (OAI) to ensure the S3 bucket is not publicly accessible.  | **WAF** is attached with the `AWSManagedRulesCommonRuleSet` and `KnownBadInputsRuleSet` for robust protection.  |
-| Backend API | API Gateway, AWS Lambda | **API Gateway** is a Regional REST API. It uses IAM authorization for service-to-service calls and is designed for future JWT-based user authentication via Lambda authorizers. **Lambda** functions (Node.js) are provisioned with an architecture-appropriate memory size (e.g., 256MB) and run inside a VPC. Following best practices, database connections are initialized outside the main handler to be reused across invocations. |   |
+| Backend API | API Gateway, AWS Lambda | **API Gateway** is an HTTP API (v2), which provides a lower-cost and lower-latency alternative to REST APIs. It uses IAM authorization for service-to-service calls and is designed for future JWT-based user authentication via Lambda authorizers. **Lambda** functions (Node.js) are provisioned with an architecture-appropriate memory size (e.g., 256MB) and run in a hybrid of internal and external to a VPC, depending on the use case. Following best practices, database connections are initialized outside the main handler to be reused across invocations. |   |
 | Data Aggregation | Step Functions, SQS, Fargate, EventBridge | **Step Functions** defines a Standard Workflow for orchestration. It adds jobs to an **SQS** queue, which decouples the workflow from the scrapers. Fargate tasks pull jobs from the SQS queue, providing a resilient, buffered pattern. **EventBridge** uses a `cron(0 2 * * ? *)` schedule to trigger the workflow daily.  |  |
 | Data & Persistence | DynamoDB, OpenSearch Service | **DynamoDB** is a single table in On-Demand capacity mode. Point-In-Time Recovery (PITR) is enabled. **OpenSearch Service** is a multi-AZ cluster (e.g., `t3.small.search`) within the VPC, accessible only via security groups from API Lambda functions. |  |
 
@@ -135,11 +135,30 @@ The Data Aggregation Engine is responsible for programmatically collecting and p
 
    * ### **Trigger:** Fargate service is configured with auto-scaling based on the SQS queue depth (e.g., scale up if `ApproximateNumberOfMessagesVisible > 100`).
 
-   * ### **Action:** Each Fargate task starts, pulls a message from the SQS queue, scrapes the corresponding portfolio, and deletes the message upon successful completion. It writes the scraped data directly to DynamoDB.
+   * ### **Action:** Each Fargate task starts, pulls a message from the SQS queue, scrapes the corresponding portfolio, and deletes the message upon successful completion. Before writing to DynamoDB, the task is responsible for transforming the raw scraped data into the final item structure. This includes computing the GSI keys (`gsi1pk` and `gsi1sk`) based on the artist's inferred styles and location to enable efficient search queries. It then writes the complete item directly to DynamoDB.
 
 ### This buffered pattern ensures that scraping jobs are not lost if there's a temporary issue with the Fargate service and allows the scraping workload to be processed at a controlled rate.
 
----
+### **3.2.1 Dead Letter Queue:**
+The*A Dead-Letter Queue (DLQ) is a standard and critical feature in message-driven architectures. Its primary purpose is to isolate and store messages that a consumer application fails to process successfully. By setting up a DLQ, you can prevent problematic messages—often called "poison pills"—from being endlessly retried, which could block the processing of other valid messages and waste compute resources.
+
+**How It Is Utilized in This Project**
+In this architecture, the ScrapingQueue holds jobs for the Fargate scraper tasks. A message might fail processing for several reasons, such as a bug in the scraper code, a malformed message payload, or a target website that consistently returns an error. To handle these failures gracefully, a DLQ is implemented as follows:
+
+**Configuration**:
+A dedicated SQS queue, scraping_dlq, is created to serve as the dead-letter queue.
+The main scraping_queue is configured with a redrive_policy. This policy instructs SQS to automatically move a message to the scraping_dlq after it has been received and failed processing a specific number of times.
+
+**Failure Threshold:**
+Based on the configuration in 06-data-aggregation.tf, the maxReceiveCount is set to 3. This means a Fargate task will attempt to process a single message up to three times. If all three attempts fail, SQS will move the message to the scraping_dlq.
+
+**Benefits to the Architecture:**
+Resilience: It prevents a single bad message from halting the entire data aggregation pipeline. The Fargate scrapers can continue processing valid jobs from the main queue without interruption.
+
+Debugging and Analysis: Failed messages are not lost. They are safely stored in the DLQ, where developers can inspect their contents to diagnose the root cause of the failure (e.g., a new website layout that breaks the scraper) without impacting the production workflow.
+
+Proactive Monitoring: The system is configured with a dedicated CloudWatch Alarm (sqs_dlq_messages) that triggers an immediate notification if even a single message appears in the DLQ. This allows the operations team to be alerted to processing failures in real-time.
+
 
 # **4\. Data and Databases**
 
@@ -203,8 +222,8 @@ To mitigate the risk of automated scraping and API abuse, a layered approach to 
 
 ### **5.3.2. API Layer (API Gateway):**
 
-* Per-method throttling will be enabled on the production stage of the API.  
-* **Configuration:** The `GET /v1/artists` endpoint will be configured with a steady-state rate limit of 100 requests per second and a burst capacity of 200 requests.  
+* Stage-level throttling will be enabled on the production stage of the API. As HTTP APIs do not support per-route throttling, the limit is applied to all routes within the stage.
+* **Configuration:** The production stage will be configured with a steady-state rate limit of 100 requests per second and a burst capacity of 200 requests. This aligns with the target for the most critical search endpoint.
 * **Behavior:** Requests exceeding this limit will be rejected with a `429 Too Many Requests` status code.
 
 ---
@@ -241,4 +260,3 @@ To validate that the API can handle the target load of 2,000 MAU with p95 latenc
 ## **7.2 Phase 2 Testing:**
 
 Testing will focus on the data pipeline. This includes integration tests for the Step Functions workflow, validating that jobs are correctly passed to SQS and processed by Fargate, and end-to-end tests confirming that a discovered artist profile is successfully written to DynamoDB and synced to OpenSearch."
-

@@ -124,7 +124,7 @@ resource "aws_ecs_task_definition" "scraper" {
   container_definitions = jsonencode([
     {
       name  = "scraper"
-      image = "${aws_ecr_repository.scraper.repository_url}:latest"
+      image = "${aws_ecr_repository.scraper.repository_url}:${var.scraper_image_tag}"
 
       essential = true
 
@@ -251,87 +251,115 @@ resource "aws_sfn_state_machine" "data_aggregation" {
   role_arn = aws_iam_role.step_functions_role.arn
 
   definition = jsonencode({
-    Comment = "Data aggregation workflow for tattoo artist directory"
-    StartAt = "DiscoverStudios"
-    States = {
-      DiscoverStudios = {
-        Type     = "Task"
-        Resource = "arn:aws:states:::lambda:invoke"
-        Parameters = {
-          FunctionName = "${aws_lambda_function.discover_studios.function_name}"
-          Payload = {
-            "stage" = "discover-studios"
+      Comment = "Data aggregation workflow for tattoo artist directory"
+      StartAt = "DiscoverStudios"
+      States = {
+        DiscoverStudios = {
+          Type     = "Task"
+          Resource = "arn:aws:states:::lambda:invoke"
+          Parameters = {
+            FunctionName = aws_lambda_function.discover_studios.function_name
+            Payload = {
+              "stage" = "discover-studios"
+            }
           }
+          ResultPath = "$.DiscoveredStudios"
+          Next       = "FindArtistsOnSite"
+          Retry = [
+            {
+              ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"]
+              IntervalSeconds = 2
+              MaxAttempts     = 6
+              BackoffRate     = 2
+            }
+          ]
         }
-        Next = "QueueScrapingJobs"
-        Retry = [
-          {
-            ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"]
-            IntervalSeconds = 2
-            MaxAttempts     = 6
-            BackoffRate     = 2
-          }
-        ]
-      }
-      QueueScrapingJobs = {
-        Type     = "Task"
-        Resource = "arn:aws:states:::lambda:invoke"
-        Parameters = {
-          FunctionName = "${aws_lambda_function.queue_scraping.function_name}"
-          Payload = {
-            "stage" = "queue-scraping"
-          }
-        }
-        Next = "WaitForScraping"
-        Retry = [
-          {
-            ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"]
-            IntervalSeconds = 2
-            MaxAttempts     = 6
-            BackoffRate     = 2
-          }
-        ]
-      }
-      WaitForScraping = {
-        Type    = "Wait"
-        Seconds = 300
-        Next    = "CheckQueueEmpty"
-      }
-      CheckQueueEmpty = {
-        Type     = "Task"
-        Resource = "arn:aws:states:::aws-sdk:sqs:getQueueAttributes"
-        Parameters = {
-          QueueUrl       = aws_sqs_queue.scraping_queue.url
-          AttributeNames = ["All"] # Get all attributes for a complete picture
-        }
-        ResultPath = "$.QueueAttributes" # Store the output in a specific path
-        Next = "IsQueueEmpty"
-      }
-      IsQueueEmpty = {
-        Type = "Choice"
-        Choices = [
-          {
-            # The workflow is complete only when there are no messages in flight AND no visible messages.
-            And = [
-              {
-                Variable     = "$.QueueAttributes.Attributes.ApproximateNumberOfMessages",
-                StringEquals = "0"
-              },
-              {
-                Variable     = "$.QueueAttributes.Attributes.ApproximateNumberOfMessagesNotVisible",
-                StringEquals = "0"
+        FindArtistsOnSite = {
+          Type      = "Map"
+          InputPath = "$.DiscoveredStudios.Payload.studios"
+          Iterator = {
+            StartAt = "FindArtistsTask"
+            States = {
+              FindArtistsTask = {
+                Type     = "Task"
+                Resource = "arn:aws:states:::lambda:invoke"
+                Parameters = {
+                  "FunctionName" = aws_lambda_function.find_artists_on_site.function_name
+                  "Payload.$"    = "$"
+                }
+                ResultPath = "$.ArtistSearchResult"
+                End        = true
               }
-            ],
-            Next          = "Success"
+            }
           }
-        ]
-        Default = "WaitForScraping"
+          ResultPath = "$.FoundArtists"
+          Next       = "FlattenResults"
+        }
+        FlattenResults = {
+          Type = "Pass"
+          Parameters = {
+            "artists.$" = "States.ArrayFlatten($.FoundArtists[*].ArtistSearchResult.Payload.artists)"
+          }
+          ResultPath = "$.Flattened"
+          Next       = "QueueScrapingJobs"
+        }
+        QueueScrapingJobs = {
+          Type      = "Task"
+          Resource  = "arn:aws:states:::lambda:invoke"
+          InputPath = "$.Flattened"
+          Parameters = {
+            FunctionName = aws_lambda_function.queue_scraping.function_name
+            "Payload.$"  = "$"
+          }
+          Next = "WaitForScraping"
+          Retry = [
+            {
+              ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"]
+              IntervalSeconds = 2
+              MaxAttempts     = 6
+              BackoffRate     = 2
+            }
+          ]
+        }
+        WaitForScraping = {
+          Type    = "Wait"
+          Seconds = 300
+          Next    = "CheckQueueEmpty"
+        }
+        CheckQueueEmpty = {
+          Type     = "Task"
+          Resource = "arn:aws:states:::aws-sdk:sqs:getQueueAttributes"
+          Parameters = {
+            QueueUrl       = aws_sqs_queue.scraping_queue.url
+            AttributeNames = ["All"]
+          }
+          ResultPath = "$.QueueAttributes"
+          Next       = "IsQueueEmpty"
+        }
+        IsQueueEmpty = {
+          Type = "Choice"
+          Choices = [
+            {
+              And = [
+                {
+                  Variable     = "$.QueueAttributes.Attributes.ApproximateNumberOfMessages"
+                  StringEquals = "0"
+                },
+                {
+                  Variable     = "$.QueueAttributes.Attributes.ApproximateNumberOfMessagesNotVisible"
+                  StringEquals = "0"
+                }
+              ]
+              Next = "Success"
+            }
+          ]
+          Default = "WaitForScraping"
+        }
+        Success = {
+          Type = "Succeed"
+        }
       }
-      Success = {
-        Type = "Succeed"
-      }
-    }
-  })
+    })
 
   tags = {
     Name = "${var.project_name}-data-aggregation-sm"
@@ -374,6 +402,7 @@ resource "aws_iam_policy" "step_functions_policy" {
         ]
         Resource = [
           aws_lambda_function.discover_studios.arn,
+          aws_lambda_function.find_artists_on_site.arn,
           aws_lambda_function.queue_scraping.arn
         ]
       },
@@ -457,65 +486,113 @@ resource "aws_iam_role_policy_attachment" "eventbridge_policy_attachment" {
   policy_arn = aws_iam_policy.eventbridge_policy.arn
 }
 
-# IAM Role for Workflow Lambda Functions (Discover & Queue)
-resource "aws_iam_role" "lambda_workflow_role" {
-  name = "${var.project_name}-lambda-workflow-role"
+# IAM Roles for Workflow Lambda Functions (Least Privilege)
 
+# Role for Discover Studios Lambda
+resource "aws_iam_role" "discover_studios_role" {
+  name = "${var.project_name}-discover-studios-role"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Principal = { Service = "lambda.amazonaws.com" }
-      }
-    ]
+    Version = "2012-10-17",
+    Statement = [{ Action = "sts:AssumeRole", Effect = "Allow", Principal = { Service = "lambda.amazonaws.com" } }]
   })
-
-  tags = {
-    Name = "${var.project_name}-lambda-workflow-role"
-  }
+  tags = { Name = "${var.project_name}-discover-studios-role" }
 }
 
-resource "aws_iam_policy" "lambda_workflow_policy" {
-  name        = "${var.project_name}-lambda-workflow-policy"
-  description = "Policy for Step Functions workflow Lambda functions"
-
+resource "aws_iam_policy" "discover_studios_policy" {
+  name = "${var.project_name}-discover-studios-policy"
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["dynamodb:Query", "dynamodb:Scan"] # For discover_studios
+        Effect   = "Allow",
+        Action   = ["dynamodb:Query", "dynamodb:Scan"],
         Resource = [aws_dynamodb_table.main.arn]
       },
       {
-        Effect   = "Allow"
-        Action   = ["sqs:SendMessage"] # For queue_scraping
-        Resource = [aws_sqs_queue.scraping_queue.arn]
-      },
-      {
-        Effect   = "Allow"
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+        Effect   = "Allow",
+        Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
         Resource = [aws_cloudwatch_log_group.lambda_workflow.arn, "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_workflow_policy_attachment" {
-  role       = aws_iam_role.lambda_workflow_role.name
-  policy_arn = aws_iam_policy.lambda_workflow_policy.arn
+resource "aws_iam_role_policy_attachment" "discover_studios_attachment" {
+  role       = aws_iam_role.discover_studios_role.name
+  policy_arn = aws_iam_policy.discover_studios_policy.arn
+}
+
+# Role for Find Artists on Site Lambda
+resource "aws_iam_role" "find_artists_on_site_role" {
+  name = "${var.project_name}-find-artists-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{ Action = "sts:AssumeRole", Effect = "Allow", Principal = { Service = "lambda.amazonaws.com" } }]
+  })
+  tags = { Name = "${var.project_name}-find-artists-role" }
+}
+
+resource "aws_iam_policy" "find_artists_on_site_policy" {
+  name = "${var.project_name}-find-artists-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
+        Resource = [aws_cloudwatch_log_group.lambda_workflow.arn, "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "find_artists_on_site_attachment" {
+  role       = aws_iam_role.find_artists_on_site_role.name
+  policy_arn = aws_iam_policy.find_artists_on_site_policy.arn
+}
+
+# Role for Queue Scraping Lambda
+resource "aws_iam_role" "queue_scraping_role" {
+  name = "${var.project_name}-queue-scraping-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{ Action = "sts:AssumeRole", Effect = "Allow", Principal = { Service = "lambda.amazonaws.com" } }]
+  })
+  tags = { Name = "${var.project_name}-queue-scraping-role" }
+}
+
+resource "aws_iam_policy" "queue_scraping_policy" {
+  name = "${var.project_name}-queue-scraping-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = ["sqs:SendMessage"],
+        Resource = [aws_sqs_queue.scraping_queue.arn]
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
+        Resource = [aws_cloudwatch_log_group.lambda_workflow.arn, "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "queue_scraping_attachment" {
+  role       = aws_iam_role.queue_scraping_role.name
+  policy_arn = aws_iam_policy.queue_scraping_policy.arn
 }
 
 # Placeholder Lambda functions for the workflow
 resource "aws_lambda_function" "discover_studios" {
-  filename      = data.archive_file.discover_studios_zip.output_path
-  function_name = "${var.project_name}-discover-studios"
-  role          = aws_iam_role.lambda_workflow_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  timeout       = 300
+  filename         = data.archive_file.discover_studios_zip.output_path
+  function_name    = "${var.project_name}-discover-studios"
+  role             = aws_iam_role.discover_studios_role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  timeout          = 300
   source_code_hash = data.archive_file.discover_studios_zip.output_base64sha256
 
   environment {
@@ -530,13 +607,33 @@ resource "aws_lambda_function" "discover_studios" {
   }
 }
 
+resource "aws_lambda_function" "find_artists_on_site" {
+  filename         = data.archive_file.find_artists_on_site_zip.output_path
+  function_name    = "${var.project_name}-find-artists-on-site"
+  role             = aws_iam_role.find_artists_on_site_role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  timeout          = 300
+  source_code_hash = data.archive_file.find_artists_on_site_zip.output_base64sha256
+
+  environment {
+    variables = {
+      ENVIRONMENT = var.environment
+    }
+  }
+
+  tags = {
+    Name = "${var.project_name}-find-artists-on-site"
+  }
+}
+
 resource "aws_lambda_function" "queue_scraping" {
-  filename      = data.archive_file.queue_scraping_zip.output_path
-  function_name = "${var.project_name}-queue-scraping"
-  role          = aws_iam_role.lambda_workflow_role.arn
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  timeout       = 300
+  filename         = data.archive_file.queue_scraping_zip.output_path
+  function_name    = "${var.project_name}-queue-scraping"
+  role             = aws_iam_role.queue_scraping_role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  timeout          = 300
   source_code_hash = data.archive_file.queue_scraping_zip.output_base64sha256
 
   environment {
@@ -557,12 +654,40 @@ data "archive_file" "discover_studios_zip" {
   type        = "zip"
   output_path = "${path.module}/discover_studios.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/discover_studios/index.js")
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Discover Studios Event:', JSON.stringify(event, null, 2));
+    // Placeholder for studio discovery logic.
+    // This should return an array of studio objects to be processed.
+    const studios = [
+        { "studioId": "studio-1", "website": "https://studio1.com" },
+        { "studioId": "studio-2", "website": "https://studio2.com" }
+    ];
+    return { studios: studios };
+};
+EOF
     filename = "index.js"
   }
+}
+
+data "archive_file" "find_artists_on_site_zip" {
+  type        = "zip"
+  output_path = "${path.module}/find_artists_on_site.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Find Artists on Site Event:', JSON.stringify(event, null, 2));
+    // Placeholder for finding artists on a given studio website.
+    // Input: a single studio object.
+    // Output: an array of artist objects found at that studio.
+    const artists = [
+      { "artistId": `${event.studioId}-artist-1`, "portfolioUrl": `https://instagram.com/artist1` },
+      { "artistId": `${event.studioId}-artist-2`, "portfolioUrl": `https://instagram.com/artist2` }
+    ];
+    return { artists: artists };
+};
+EOF
+    filename = "index.js"
   }
 }
 
@@ -570,12 +695,18 @@ data "archive_file" "queue_scraping_zip" {
   type        = "zip"
   output_path = "${path.module}/queue_scraping.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/queue_scraping/index.js")
+    content  = <<EOF
+exports.handler = async (event) => {
+    console.log('Queue Scraping Event:', JSON.stringify(event, null, 2));
+    // Placeholder for queueing scraping jobs.
+    // Input: an object containing an array of artist objects. e.g. { "artists": [...] }
+    const artistCount = event.artists ? event.artists.length : 0;
+    console.log(`Received ${artistCount} artists to queue.`);
+    // Add logic here to send each artist to SQS.
+    return { statusCode: 200, body: `${artistCount} scraping jobs queued` };
+};
+EOF
     filename = "index.js"
-  }
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
   }
 }
 

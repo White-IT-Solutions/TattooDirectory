@@ -216,7 +216,7 @@ The core functionality of the MVP can be summarised as follows:
 
 * **NFR-SCL-01:** The architecture shall be designed to support up to 2,000 Monthly Active Users (MAU) without performance degradation.  
 * **NFR-SCL-02:** The data aggregation engine must be capable of scraping and processing over 1,000 artist profiles per day.  
-* **NFR-SCL-03:** The API compute layer (Lambda) will use provisioned concurrency to handle initial load, with scaling beyond that. The scraper compute layer (Fargate) will auto-scale based on SQS queue depth.
+* **NFR-SCL-03:** The API compute layer (Lambda) will use on demand scaling to handle initial load, with scaling beyond that. The scraper compute layer (Fargate) will auto-scale based on SQS queue depth.
 
 ## **4.6 Maintainability**
 

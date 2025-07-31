@@ -27,30 +27,12 @@ resource "aws_dynamodb_table" "main" {
     type = "S"
   }
 
-  attribute {
-    name = "GSI2PK"
-    type = "S"
-  }
-
-  attribute {
-    name = "GSI2SK"
-    type = "S"
-  }
-
   global_secondary_index {
     name            = "GSI1"
     hash_key        = "GSI1PK"
     range_key       = "GSI1SK"
     projection_type = "ALL"
   }
-
-  global_secondary_index {
-    name            = "GSI2"
-    hash_key        = "GSI2PK"
-    range_key       = "GSI2SK"
-    projection_type = "ALL"
-  }
-
   server_side_encryption {
     enabled     = true
     kms_key_arn = aws_kms_key.main.arn
@@ -60,8 +42,14 @@ resource "aws_dynamodb_table" "main" {
     enabled = true
   }
 
+  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+
   tags = {
     Name = "${var.project_name}-main-table"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
@@ -85,8 +73,14 @@ resource "aws_dynamodb_table" "denylist" {
     enabled = true
   }
 
+  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+
   tags = {
     Name = "${var.project_name}-denylist-table"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
@@ -96,13 +90,16 @@ resource "aws_opensearch_domain" "main" {
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
-    instance_type            = "t3.small.search"
-    instance_count           = 2
-    dedicated_master_enabled = false
-    zone_awareness_enabled   = true
+    instance_type            = local.environment_config[var.environment].opensearch_instance_type
+    instance_count           = local.environment_config[var.environment].opensearch_instance_count
+    dedicated_master_enabled = var.environment == "prod" ? false : false
+    zone_awareness_enabled   = var.environment == "prod" ? true : false
 
-    zone_awareness_config {
-      availability_zone_count = 2
+    dynamic "zone_awareness_config" {
+      for_each = var.environment == "prod" ? [1] : []
+      content {
+        availability_zone_count = 2
+      }
     }
   }
 
@@ -142,6 +139,12 @@ resource "aws_opensearch_domain" "main" {
     }
   }
 
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_audit.arn
+    log_type                 = "AUDIT_LOGS"
+    enabled                  = true
+  }
+
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -154,14 +157,35 @@ resource "aws_opensearch_domain" "main" {
             # Add other roles that might need access, e.g., an admin user role
           ]
         }
-        Action = "es:*"
+        Action = [
+        "es:ESHttpGet",
+        "es:ESHttpPost", 
+        "es:ESHttpPut" ]
         Resource = "${aws_opensearch_domain.main.arn}/*"
+      },
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "es.amazonaws.com"
+        },
+        "Action": [
+          "logs:PutLogEvents",
+          "logs:CreateLogStream"
+        ],
+        "Resource": "${aws_cloudwatch_log_group.opensearch_audit.arn}:*",
+        "Condition": {
+          "ArnLike": { "aws:SourceArn": aws_opensearch_domain.main.arn }
+        }
       }
     ]
   })
 
   tags = {
     Name = "${var.project_name}-opensearch"
+  }
+
+  lifecycle {
+    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 
   depends_on = [aws_iam_service_linked_role.opensearch]
@@ -199,7 +223,7 @@ resource "aws_lambda_function" "dynamodb_sync" {
   handler       = "index.handler"
   runtime       = "nodejs18.x"
   timeout       = 300
-  memory_size   = 512
+  memory_size   = local.environment_config[var.environment].lambda_memory_size
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -231,13 +255,74 @@ data "archive_file" "dynamodb_sync_zip" {
   type        = "zip"
   output_path = "${path.module}/dynamodb_sync.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/dynamodb_sync/index.js")
-    filename = "index.js"
-  }
+    content  = <<EOF
+const { Client } = require('@opensearch-project/opensearch');
+const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
 
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
+const secretsManager = new SecretsManagerClient({});
+let openSearchPassword;
+
+const getSecret = async () => {
+    if (openSearchPassword) return openSearchPassword;
+    const command = new GetSecretValueCommand({ SecretId: process.env.APP_SECRETS_ARN });
+    const response = await secretsManager.send(command);
+    const secret = JSON.parse(response.SecretString);
+    openSearchPassword = secret.opensearch_master_password;
+    return openSearchPassword;
+};
+
+exports.handler = async (event) => {
+    console.log('DynamoDB Stream Event:', JSON.stringify(event, null, 2));
+    
+    const password = await getSecret();
+    const client = new Client({
+        node: 'https://' + process.env.OPENSEARCH_ENDPOINT,
+        auth: {
+            username: 'admin',
+            password: password
+        }
+    });
+    
+    for (const record of event.Records) {
+        try {
+            if (record.eventName === 'INSERT' || record.eventName === 'MODIFY') {
+                const newImage = record.dynamodb.NewImage;
+                if (newImage && newImage.PK && newImage.PK.S.startsWith('ARTIST#')) {
+                    const document = {
+                        id: newImage.PK.S,
+                        name: newImage.name?.S || '',
+                        styles: newImage.styles?.SS || [],
+                        location: newImage.location?.S || '',
+                    };
+                    
+                    await client.index({
+                        index: process.env.OPENSEARCH_INDEX,
+                        id: newImage.PK.S,
+                        body: document
+                    });
+                    
+                    console.log('Indexed document: ' + newImage.PK.S);
+                }
+            } else if (record.eventName === 'REMOVE') {
+                const oldImage = record.dynamodb.OldImage;
+                if (oldImage && oldImage.PK && oldImage.PK.S.startsWith('ARTIST#')) {
+                    await client.delete({
+                        index: process.env.OPENSEARCH_INDEX,
+                        id: oldImage.PK.S
+                    });
+                    
+                    console.log('Deleted document: ' + oldImage.PK.S);
+                }
+            }
+        } catch (error) {
+            console.error('Error processing record:', error);
+        }
+    }
+    
+    return { statusCode: 200, body: 'Success' };
+};
+EOF
+    filename = "index.js"
   }
 }
 

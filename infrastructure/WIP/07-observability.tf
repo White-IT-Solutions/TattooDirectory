@@ -1,24 +1,3 @@
-# CloudWatch Log Groups for centralized logging
-resource "aws_cloudwatch_log_group" "application_logs" {
-  name              = "/aws/${var.project_name}/application"
-  retention_in_days = 30
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = {
-    Name = "${var.project_name}-application-logs"
-  }
-}
-
-resource "aws_cloudwatch_log_group" "error_logs" {
-  name              = "/aws/${var.project_name}/errors"
-  retention_in_days = 90
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = {
-    Name = "${var.project_name}-error-logs"
-  }
-}
-
 # SNS Topic for high-priority alerts
 resource "aws_sns_topic" "alerts" {
   name              = "${var.project_name}-alerts"
@@ -54,6 +33,14 @@ resource "aws_sns_topic_policy" "alerts" {
   })
 }
 
+# SNS Subscription for email notifications
+resource "aws_sns_topic_subscription" "email_alerts" {
+  count     = var.notification_email != "" ? 1 : 0
+  topic_arn = aws_sns_topic.alerts.arn
+  protocol  = "email"
+  endpoint  = var.notification_email
+}
+
 # CloudWatch Metric Alarms
 
 # SQS Queue Depth Alarm
@@ -76,6 +63,30 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
 
   tags = {
     Name = "${var.project_name}-sqs-queue-depth-alarm"
+  }
+}
+
+# SQS Dead-Letter Queue Messages Alarm
+resource "aws_cloudwatch_metric_alarm" "sqs_dlq_messages" {
+  alarm_name          = "${var.project_name}-sqs-dlq-messages-visible"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ApproximateNumberOfMessagesVisible"
+  namespace           = "AWS/SQS"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "0"
+  alarm_description   = "This metric monitors for any messages in the SQS dead-letter queue, indicating processing failures."
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+  ok_actions          = [aws_sns_topic.alerts.arn]
+  treat_missing_data  = "notBreaching" # Don't alarm if there's no data (i.e., queue is empty and metric isn't published)
+
+  dimensions = {
+    QueueName = aws_sqs_queue.scraping_dlq.name
+  }
+
+  tags = {
+    Name = "${var.project_name}-sqs-dlq-messages-alarm"
   }
 }
 
@@ -242,6 +253,63 @@ resource "aws_cloudwatch_metric_alarm" "step_functions_failed" {
   }
 }
 
+# AWS Budget for daily cost monitoring
+resource "aws_budgets_budget" "daily_spend" {
+  name         = "${var.project_name}-daily-spend-alert"
+  budget_type  = "COST"
+  limit_amount = "20" # Based on runbook TAD-MVP-RUN-002
+  limit_unit   = "GBP"
+  time_unit    = "DAILY" 
+  cost_filter {
+    name = "Tag"
+    values    = [var.project_name]
+  }
+
+  notification {
+    comparison_operator       = "GREATER_THAN"
+    threshold                 = 100
+    threshold_type            = "PERCENTAGE"
+    notification_type         = "ACTUAL"
+    subscriber_sns_topic_arns = [aws_sns_topic.alerts.arn]
+  }
+
+  tags = {
+    Name = "${var.project_name}-daily-spend-budget"
+  }
+}
+
+# AWS Cost Anomaly Detection
+resource "aws_cost_anomaly_monitor" "main" {
+  name                  = "${var.project_name}-anomaly-monitor"
+  monitor_type          = "CUSTOM"
+  monitor_specification = jsonencode({
+    "Tags" = {
+      "Key"    = "Project"
+      "Values" = [var.project_name]
+    }
+  })
+
+  tags = {
+    Name = "${var.project_name}-cost-anomaly-monitor"
+  }
+}
+
+resource "aws_cost_anomaly_subscription" "main" {
+  name             = "${var.project_name}-anomaly-subscription"
+  monitor_arn_list = [aws_cost_anomaly_monitor.main.arn]
+  frequency        = "DAILY"
+  threshold        = 10 # Threshold in USD for anomaly notification
+
+  subscriber {
+    type    = "SNS"
+    address = aws_sns_topic.alerts.arn
+  }
+
+  tags = {
+    Name = "${var.project_name}-cost-anomaly-subscription"
+  }
+}
+
 # CloudWatch Dashboard
 resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = "${var.project_name}-dashboard"
@@ -347,7 +415,8 @@ resource "aws_cloudwatch_composite_alarm" "system_health" {
     "ALARM(${aws_cloudwatch_metric_alarm.lambda_errors.alarm_name})",
     "ALARM(${aws_cloudwatch_metric_alarm.dynamodb_throttles.alarm_name})",
     "ALARM(${aws_cloudwatch_metric_alarm.opensearch_cluster_status.alarm_name})",
-    "ALARM(${aws_cloudwatch_metric_alarm.step_functions_failed.alarm_name})"
+    "ALARM(${aws_cloudwatch_metric_alarm.step_functions_failed.alarm_name})",
+    "ALARM(${aws_cloudwatch_metric_alarm.sqs_dlq_messages.alarm_name})"
   ])
 
   alarm_actions = [aws_sns_topic.alerts.arn]

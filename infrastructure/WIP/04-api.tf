@@ -10,9 +10,9 @@ resource "aws_apigatewayv2_api" "main" {
     allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_origins = var.environment == "prod" ? [
       "https://${aws_cloudfront_distribution.frontend.domain_name}"
-      ] : ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"] # Allow localhost for dev
-    expose_headers    = ["date", "keep-alive"]
-    max_age          = 86400
+    ] : ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"] # Allow localhost for dev
+    expose_headers = ["date", "keep-alive"]
+    max_age        = 86400
   }
 
   tags = {
@@ -25,19 +25,26 @@ resource "aws_apigatewayv2_stage" "main" {
   api_id      = aws_apigatewayv2_api.main.id
   name        = var.environment
   auto_deploy = true
-
+  default_route_settings {
+    # LLD 5.3.2 specifies 100 RPS for the search endpoint.
+    # As HTTP APIs only support stage-level throttling, we apply this limit to the whole stage.
+    throttling_rate_limit         = var.environment == "prod" ? 100 : 50
+    throttling_burst_limit        = var.environment == "prod" ? 200 : 100
+    detailed_metrics_enabled      = local.environment_config[var.environment].enable_detailed_monitoring
+    logging_level                 = var.environment == "prod" ? "INFO" : "ERROR"
+  }
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
     format = jsonencode({
-      requestId      = "$context.requestId"
-      ip             = "$context.identity.sourceIp"
-      requestTime    = "$context.requestTime"
-      httpMethod     = "$context.httpMethod"
-      routeKey       = "$context.routeKey"
-      status         = "$context.status"
-      protocol       = "$context.protocol"
-      responseLength = "$context.responseLength"
-      error          = "$context.error.message"
+      requestId        = "$context.requestId"
+      ip               = "$context.identity.sourceIp"
+      requestTime      = "$context.requestTime"
+      httpMethod       = "$context.httpMethod"
+      routeKey         = "$context.routeKey"
+      status           = "$context.status"
+      protocol         = "$context.protocol"
+      responseLength   = "$context.responseLength"
+      error            = "$context.error.message"
       integrationError = "$context.integrationErrorMessage"
     })
   }
@@ -49,13 +56,13 @@ resource "aws_apigatewayv2_stage" "main" {
 
 # Lambda function for API business logic
 resource "aws_lambda_function" "api_handler" {
-  filename         = data.archive_file.api_handler_zip.output_path
-  function_name    = "${var.project_name}-api-handler"
-  role            = aws_iam_role.lambda_api_role.arn
-  handler         = "index.handler"
-  runtime         = "nodejs18.x"
-  timeout         = 30
-  memory_size     = 512
+  filename      = data.archive_file.api_handler_zip.output_path
+  function_name = "${var.project_name}-api-handler"
+  role          = aws_iam_role.lambda_api_role.arn
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
+  timeout       = 30
+  memory_size   = local.environment_config[var.environment].lambda_memory_size
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -63,17 +70,24 @@ resource "aws_lambda_function" "api_handler" {
   }
   source_code_hash = data.archive_file.api_handler_zip.output_base64sha256
 
+  tracing_config {
+    mode = local.environment_config[var.environment].enable_detailed_monitoring ? "Active" : "PassThrough"
+  }
+
   environment {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.main.name
       OPENSEARCH_ENDPOINT = aws_opensearch_domain.main.endpoint
+      IDEMPOTENCY_TABLE   = aws_dynamodb_table.idempotency.name
       ENVIRONMENT         = var.environment
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1" # Best practice for performance
     }
   }
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_api_policy_attachment,
     aws_cloudwatch_log_group.lambda_api,
+    aws_iam_role_policy_attachment.lambda_api_xray_attachment,
   ]
 
   tags = {
@@ -86,13 +100,63 @@ data "archive_file" "api_handler_zip" {
   type        = "zip"
   output_path = "${path.module}/api_handler.zip"
   source {
-    content  = file("${path.module}/../../backend/lambda_code/api_handler/index.js")
-    filename = "index.js"
-  }
+    content  = <<EOF
+exports.handler = async (event) => {
+  console.log('Event:', JSON.stringify(event, null, 2));
 
-  source {
-    content  = file("${path.module}/../../backend/lambda_code/common/logger.js")
-    filename = "logger.js"
+  // --- Idempotency Check for POST requests ---
+  if (event.requestContext.http.method === 'POST') {
+    const idempotencyKey = event.headers['idempotency-key'];
+
+    if (!idempotencyKey) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Idempotency-Key header is required for this operation.' })
+      };
+    }
+
+    const ddb = new (require('aws-sdk/clients/dynamodb'))();
+    const fiveMinutesInSeconds = 300;
+    const expiry = Math.floor(Date.now() / 1000) + fiveMinutesInSeconds;
+
+    const params = {
+      TableName: process.env.IDEMPOTENCY_TABLE,
+      Item: {
+        'id': { S: idempotencyKey },
+        'expiry': { N: expiry.toString() }
+      },
+      ConditionExpression: 'attribute_not_exists(id)'
+    };
+
+    try {
+      await ddb.putItem(params).promise();
+      // If we get here, the key was new. Proceed with the actual logic.
+      console.log(`Idempotency key ${idempotencyKey} successfully recorded.`);
+    } catch (error) {
+      if (error.code === 'ConditionalCheckFailedException') {
+        console.log(`Duplicate request detected with idempotency key: ${idempotencyKey}`);
+        // This is a duplicate request, so we return a success response without re-processing.
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Request already processed.' })
+        };
+      }
+      // Some other DynamoDB error occurred
+      console.error('DynamoDB error during idempotency check:', error);
+      return { statusCode: 500, body: JSON.stringify({ message: 'Internal server error.' }) };
+    }
+  }
+  // --- End of Idempotency Check ---
+
+  // Placeholder for actual business logic
+  return {
+    statusCode: 200,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Request processed successfully.' })
+  };
+};
+EOF
+    filename = "index.js"
   }
 }
 
@@ -105,10 +169,6 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   description        = "Lambda integration for API"
   integration_method = "POST"
   integration_uri    = aws_lambda_function.api_handler.invoke_arn
-
-  request_parameters = {
-    "overwrite:path" = "$request.path"
-  }
 }
 
 # API Gateway Routes
@@ -134,6 +194,12 @@ resource "aws_apigatewayv2_route" "health_check" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /health"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "removal_request" {
+  api_id	= aws_apigatewayv2_api.main.id
+  route_key = "POST /v1/removal-requests"
+  target	= "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
 # Lambda permission for API Gateway
