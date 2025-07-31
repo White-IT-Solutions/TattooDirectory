@@ -33,12 +33,12 @@ export default function Navbar() {
             >
               Artists
             </Link>
-            <Link
+            {/* <Link
               href="/login"
               className="text-base text-gray-200 hover:text-gray-400 transition"
             >
               Log In
-            </Link>
+            </Link> */}
           </div>
           {/* Right side: Search bar */}
           {/* <form onSubmit={handleSearch} className="flex items-center bg-gray-100 rounded-full px-3 py-1 shadow-inner">
