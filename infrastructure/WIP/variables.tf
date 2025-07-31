@@ -15,6 +15,7 @@ locals {
   environment_config = {
     dev = {
       opensearch_instance_count = 1
+      opensearch_instance_type   = "t3.micro.search"
       lambda_memory_size       = 256
       enable_deletion_protection = false
       enable_detailed_monitoring = false
@@ -23,6 +24,7 @@ locals {
     }
     prod = {
       opensearch_instance_count = 2
+      opensearch_instance_type   = "t3.small.search"
       lambda_memory_size       = 512
       enable_deletion_protection = true
       enable_detailed_monitoring = true
@@ -97,4 +99,33 @@ variable "backup_retention_days" {
     condition     = var.backup_retention_days >= 1 && var.backup_retention_days <= 35
     error_message = "Backup retention must be between 1 and 35 days."
   }
+}
+
+variable "scraper_image_tag" {
+  description = "The Docker image tag for the Fargate scraper task."
+  type        = string
+  default     = "latest"
+}
+
+variable "owner_email" {
+  description = "The email of the resource owner for billing and operational contact."
+  type        = string
+  default     = "joseph.white@example.com" # Replace with a real contact
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.owner_email))
+    error_message = "Must be a valid email address."
+  }
+}
+
+variable "app_version" {
+  description = "The application version, e.g., a git commit hash or release tag."
+  type        = string
+  default     = "dev-build"
+}
+
+variable "default_data_classification" {
+  description = "The default data classification for resources."
+  type        = string
+  default     = "Internal"
 }

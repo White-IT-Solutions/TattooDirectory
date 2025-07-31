@@ -379,7 +379,7 @@ This achieves the same serverless outcome as the HLD but abstracts away the manu
 
 #### **2.4.1.3 Drawbacks**
 
-A drawback of this approach *for a portfolio piece* is that this abstraction hides the very skills you want to showcase. An `amplify.yml` file is far less descriptive of your infrastructure knowledge than a comprehensive Terraform project.
+A drawback of this approach *for a portfolio piece* is that this abstractition layer hides the very skills this project is designed to showcase. An `amplify.yml` file is far less descriptive of deep infrastructure knowledge than a comprehensive Terraform project.
 
 #### **2.4.1.4 Conclusion**
 
@@ -464,6 +464,27 @@ For improved resilience, this instance would ideally be managed by an **Auto Sca
 #### For this MVP, the AWS Managed NAT Gateway is the chosen solution due to its superior reliability, high availability, and ease of management, which are paramount for ensuring a robust and stable user-facing application. 
 
 While Fck-NAT offers compelling cost savings, its increased operational overhead and single point of failure are not acceptable trade-offs for the MVP's reliability requirements. However, a Fck-NAT deployment will be prepared as a highly optimised, cost-saving alternative to be evaluated and potentially deployed at a later stage, especially if cost becomes a more significant constraint or if sufficient operational tooling is in place to mitigate its drawbacks.
+
+### **2.4.4 OpenSearch Serverless**
+The choice between a managed cluster and a serverless offering for a service like OpenSearch is a critical architectural decision with significant trade-offs. While OpenSearch Serverless is an excellent, modern option for many use cases, the decision to use OpenSearch Service (Managed Cluster) for this project was a deliberate one, driven by two key factors: the project's primary objective as a portfolio piece and the specific cost-performance profile at the MVP's scale.
+
+#### **2.4.4.1 Primary Reason: Demonstrating Foundational Infrastructure Skills**
+
+The most important driver for this choice is explicitly stated in your design documents (HLD Section 1.8, SRS Section 1.1): the project's primary goal is to serve as a high-quality technical portfolio piece.
+
+**Granular Control and Configuration:** Implementing a managed aws_opensearch_domain requires you to make conscious decisions about instance types, instance counts, storage (EBS), high availability (Zone Awareness), and fine-grained network security (VPC placement, security groups). This demonstrates a deeper, more foundational understanding of how to build, secure, and scale a search cluster.
+
+**Alignment with Other Architectural Choices:** This decision is consistent with other choices made in the architecture, such as using Terraform over a higher-level abstraction like AWS Amplify. The project consistently favors tools and services that showcase a granular command of the underlying infrastructure. Configuring a managed cluster is simply a more comprehensive and impressive demonstration of skill than configuring the more abstracted serverless version.
+
+**Technical & Architectural Reasons**
+
+Beyond the portfolio aspect, there are sound technical reasons why a managed cluster is a better fit for the MVP as defined.
+
+**Cost-Effectiveness at Low, Consistent Load:** OpenSearch Serverless is ideal for intermittent or highly unpredictable workloads, as you only pay for what you use. However, it has a minimum cost floor (typically 4 OpenSearch Compute Units - OCUs, 2 for indexing and 2 for search) even when idle. For the MVP's target of 2,000 MAU, the workload is expected to be low but relatively consistent. In this scenario, a small, fixed-size managed cluster (e.g., two t3.small.search instances) can be more cost-predictable and often cheaper than the serverless equivalent's minimum charge. You are paying for a known, small capacity rather than a pay-per-use model that is optimized for spikiness.
+
+**Direct VPC Integration and Security Model:** By deploying the OpenSearch domain directly within your private subnets, you create a very clear and simple network security boundary. The cluster is a resource inside your VPC, protected by security groups that only allow access from your Lambda functions. This is a classic, easy-to-understand security model. While OpenSearch Serverless is also secure and uses VPC endpoints, the collection itself runs in an AWS-managed VPC, which is a slightly more complex mental model.
+
+In summary, while OpenSearch Serverless represents the cutting edge of operational simplicity, the choice of a Managed Cluster was a strategic one. It better aligns with the project's primary goal of showcasing deep infrastructure expertise and, for the specific low-traffic needs of the MVP, provides a more cost-predictable and architecturally straightforward solution.
 
 ## **2.5 Architectural Component Diagrams**
 
@@ -582,7 +603,6 @@ A user accesses the platform via a client browser. **Amazon CloudFront** serves 
 * **Public Subnets:** These subnets have a direct route to the Internet Gateway. They contain resources that need to be publicly accessible, like NAT Gateways.  
 * **Private Subnets:** These subnets do not have a direct route to the internet. All critical application components—the **API Lambda functions**, the **Fargate scraper tasks**, and the **OpenSearch cluster**—are placed here to protect them from direct public access.  
 * **NAT Gateway:** To allow resources in the private subnets (like a Fargate task needing to scrape a website) to initiate outbound connections to the internet, traffic is routed through a NAT Gateway. This allows outbound access while blocking inbound connections from the internet, maintaining a secure posture.  
-* **Lambda Environment:** The **API Lambda Functions** are in their own "Lambda Service Environment" subgraph, outside the main VPC block, to show they don't run inside your VPC.
 
 ### 
 
@@ -655,6 +675,27 @@ A user accesses the platform via a client browser. **Amazon CloudFront** serves 
 * **Authentication:** On your computer, you run **aws sso login.** Your SSO-configured **AWS Profile** opens a browser, you sign in as your **IAM Identity Center User**, and the **AWS CLI** receives secure, temporary credentials.
 * **Getting Credentials:** When you run **terraform apply**, Terraform uses your authenticated session to request access to the **App-Dev Account**. IAM Identity Center provides it with the temporary credentials associated with the **Permission Set Role** that was provisioned there for your user.
 * **Creation / Management:** Armed with the temporary admin credentials from that role, Terraform has the authority to create, update, and manage all the necessary infrastructure resources inside the secure App-Dev Account.
+
+### **2.5.14 Image Ingestion and Display Diagram**
+
+![This diagram shows the Image ingestion and display pipeline, highlighting the ultilisation of key AWS components to serve images efficiently.](</docs/diagrams/Image Ingestion and Display.png> "Image Ingestion and Display")
+
+**Diagram Explanation**
+
+**Image Ingestion & Scraping**
+* An AWS Fargate Scraper automatically collects images and their associated information from public sources.
+* The actual image files are stored in an Amazon S3 bucket.
+* The metadata for each image (like its name, source URL & description) is stored in an Amazon DynamoDB table.
+
+**Presentation & Serving**
+* The User's Browser first requests data from a Backend API.
+* The API fetches the image's metadata from the DynamoDB table and sends it back to the browser.
+* The browser receives the metadata, which includes the image's location, and then requests the image file itself through Amazon CloudFront.
+* CloudFront checks if it has a copy of the image stored in a nearby cache location. 
+
+Cache Hit: If the image is in the cache, CloudFront delivers it directly to the user for a fast response.
+
+Cache Miss: If the image isn't in the cache, CloudFront retrieves it from the origin S3 bucket, delivers it to the user, and caches it for future requests.
 
 ---
 
@@ -750,15 +791,49 @@ The entire architecture lives within a VPC. The network design, with its use of 
 
 ## **3.19 Amazon SNS (Simple Notification Service)**
 
-The operations plan mentions using SNS to send notifications from CloudWatch Alarms. This is the crucial link that makes monitoring actionable and should be included.
+The operations plan mentions using SNS to send notifications from CloudWatch Alarms.
 
-## **3.20 AWS PrivateLink (Not Implemented in MVP)**
+## **3.20 VPC Endpoints**
+
+To adhere to the principle of least privilege and create a robust defense-in-depth security posture, the architecture makes extensive use of VPC Endpoints. These components provide private, secure connectivity between resources inside the VPC (like Lambda functions and Fargate tasks) and other AWS services, ensuring that traffic does not traverse the public internet. This design enhances security, can improve performance, and reduces data transfer costs associated with NAT Gateways.
+
+### **3.20.1 Gateway Endpoints**
+
+Gateway Endpoints are used for services that are accessed via target entries in a route table. They are a highly available and scalable way to access specific services without needing a public IP address.
+
+In this architecture, Gateway Endpoints are configured for:
+
+**Amazon S3:** Ensures that any interaction with S3 buckets, such as the Fargate task pulling a configuration file or a Lambda function accessing an asset, is routed over the AWS private network.
+
+**Amazon DynamoDB:** All database reads and writes from the API Lambda, sync Lambda, and Fargate scraper tasks are routed through the endpoint, keeping sensitive database traffic completely isolated from the internet.
+
+These endpoints are associated with the private route tables, automatically directing all traffic destined for S3 and DynamoDB from the private subnets through these secure gateways.
+
+### **3.20.2 Interface Endpoints**
+
+Interface Endpoints are Elastic Network Interfaces (ENIs) with private IP addresses that are placed directly inside the private subnets. They provide private access to a wider range of AWS services and are protected by their own security group.
+
+In this architecture, Interface Endpoints are configured for:
+
+**Amazon SQS:** Allows the Step Functions workflow and Fargate tasks to send and receive messages from the scraping queue securely.
+
+**AWS Secrets Manager:** Enables the Lambda functions to retrieve database credentials and API keys without an internet-facing connection.
+
+**Amazon ECR:** Critical for allowing the Fargate service to pull the scraper's container image (ecr.api and ecr.dkr endpoints) privately.
+
+**AWS Step Functions:** Allows for secure communication and orchestration between the various workflow components.
+
+**Amazon CloudWatch Logs:** Enables all VPC-based resources (Lambda, Fargate) to send logs to CloudWatch without needing to route traffic through the NAT Gateway.
+
+A dedicated security group, vpc_endpoints-sg, is attached to these endpoints. It is configured to only allow inbound HTTPS traffic from the lambda-sg and fargate-sg security groups, ensuring that only the application's own compute resources can use them.
+
+## **3.21 AWS PrivateLink (Not Implemented in MVP)**
 
 If implemented, AWS PrivateLink would serve as the secure communication backbone for the Data Aggregation component. Its primary role would be to replace the NAT Gateway for outbound traffic from the Fargate scrapers.
 
 By establishing a VPC Endpoint, Fargate tasks could securely connect to a third-party rotating proxy service via AWS's private network. This would enhance the system's robustness by mitigating the risk of the scraper's IP address being blocklisted by target websites, while also improving the security posture by keeping sensitive scraping traffic off the public internet.
 
-## **3.21 Elasticache for Redis (Not Implemented in MVP)**
+## **3.22 Elasticache for Redis (Not Implemented in MVP)**
 
 Amazon ElastiCache for Redis would be introduced as a high-speed, in-memory caching layer to improve the performance and scalability of the user-facing API.
 
@@ -944,60 +1019,57 @@ Operational support will be managed through modern DevOps practices centered on 
 ### **High Level Overview**
 
 ```mermaid
-    **flowchart** TD  
-    **subgraph** User\["User"\]  
-            U\["👩‍🎨 Client Browser"\]  
-    **end**  
-    **subgraph** Edge\_Services\["Edge\_Services"\]  
-            CF\["Amazon CloudFront"\]  
-            WAF\["AWS WAF"\]  
-            S3\["Amazon S3 Bucket  
-                (Static SPA Hosting)"\]  
-    **end**  
-    **subgraph** API\_Compute\["API\_Compute"\]  
-            APIGW\["Amazon API Gateway"\]  
-            LambdaAPI\["AWS Lambda  
-                (Backend API Logic)"\]  
-    **end**  
-    **subgraph** Data\_Search\_Layer\["Data\_Search\_Layer"\]  
-            DynamoDB\["Amazon DynamoDB  
-                (Primary Data Store)"\]  
-            DDBStream\["DynamoDB Streams"\]  
-            LambdaSync\["AWS Lambda  
-                (Index Sync)"\]  
-            OpenSearch\["Amazon OpenSearch  
-                (Search & Filter)"\]  
-    **end**  
-    **subgraph** Async\_Data\_Aggregation\["Async\_Data\_Aggregation"\]  
-            EventBridge\["Amazon EventBridge  
-                (Scheduler)"\]  
-            StepFunctions\["AWS Step Functions  
-                (Workflow Orchestration)"\]  
-            SQS\["Amazon SQS  
-                (Scraping Queue)"\]  
-            Fargate\["AWS Fargate  
-                (Containerized Scrapers)"\]  
-    **end**  
-    **subgraph** AWS\_Cloud\["AWS\_Cloud"\]  
-            Edge\_Services  
-            API\_Compute  
-            Data\_Search\_Layer  
-            Async\_Data\_Aggregation  
-    **end**  
-        U **\--** HTTPS **\--\>** CF  
-        CF **\--** Serves Static Content **\--\>** S3  
-        CF **\--** Inspects Traffic **\--\>** WAF  
-        U **\--** API Calls **\--\>** APIGW  
-        APIGW **\--** Invokes **\--\>** LambdaAPI  
-        LambdaAPI **\--** Queries **\--\>** OpenSearch  
-        LambdaAPI **\--** Reads/Writes **\--\>** DynamoDB  
-        DynamoDB **\--** Streams Changes **\--\>** DDBStream  
-        DDBStream **\--** Triggers **\--\>** LambdaSync  
-        LambdaSync **\--** Updates **\--\>** OpenSearch  
-        EventBridge **\--** Triggers on Schedule **\--\>** StepFunctions  
-        StepFunctions **\--** Sends Jobs To **\--\>** SQS  
-        SQS \-- "Triggers Auto-scaling" **\--\>** Fargate  
-        Fargate **\--** Writes Aggregated Data **\--\>** DynamoDB
+flowchart TD
+ subgraph User["User"]
+        U["👩‍🎨 Client Browser"]
+  end
+ subgraph Edge_Services["Edge Services"]
+        CF["Amazon CloudFront"]
+        WAF["AWS WAF"]
+        S3["Amazon S3 Bucket<br>(Static SPA Hosting)"]
+        APIGW["Amazon API Gateway"]
+  end
+ subgraph AWS_Managed_Services["AWS Managed Services"]
+        DynamoDB["Amazon DynamoDB<br>(Primary Data Store)"]
+        DDBStream["DynamoDB Streams"]
+        SQS["Amazon SQS<br>(Scraping Queue)"]
+        EventBridge["Amazon EventBridge<br>(Scheduler)"]
+        StepFunctions["AWS Step Functions<br>(Workflow Orchestration)"]
+        ECR["Amazon ECR<br>(Container Registry)"]
+  end
+ subgraph VPC_Compute["VPC Compute Resources"]
+        LambdaAPI["AWS Lambda<br>(Backend API Logic)"]
+        LambdaSync["AWS Lambda<br>(Index Sync)"]
+        Fargate["AWS Fargate<br>(Containerized Scrapers)"]
+        OpenSearch["Amazon OpenSearch<br>(Search &amp; Filter)"]
+  end
+ subgraph VPC["Private VPC"]
+        VPC_Compute
+        VPC_Endpoints["VPC Endpoints"]
+  end
+ subgraph AWS_Cloud["AWS Cloud"]
+        Edge_Services
+        AWS_Managed_Services
+        VPC
+  end
+    U -- HTTPS --> CF
+    CF -- Inspects Traffic --> WAF
+    CF -- Serves Static Content --> S3
+    U -- API Calls --> APIGW
+    APIGW -- Invokes --> LambdaAPI
+    LambdaAPI -- Queries (VPC) --> OpenSearch
+    LambdaAPI -- Reads/Writes --> VPC_Endpoints
+    DynamoDB -- Streams Changes --> DDBStream
+    DDBStream -- Triggers --> LambdaSync
+    LambdaSync -- Updates (VPC) --> OpenSearch
+    EventBridge -- Triggers on Schedule --> StepFunctions
+    StepFunctions -- Invokes Lambdas in VPC, which queue jobs --> SQS
+    Fargate -- Pulls Jobs & Writes Data --> VPC_Endpoints
+    Fargate -- Pulls Image --> VPC_Endpoints
+    VPC_Endpoints -- Securely Accesses --> DynamoDB & SQS & ECR
+    SQS -- "Triggers Auto-scaling" --> Fargate
+    style VPC fill:#f9f,stroke:#333,stroke-width:2px
+    style VPC_Endpoints fill:#e6f3ff,stroke:#0066cc,stroke-width:2px,stroke-dasharray: 5 5
 ```
 
 ### **C4 Model: Level 1 \- System Context**
@@ -1059,39 +1131,34 @@ Operational support will be managed through modern DevOps practices centered on 
 ### **C4 Model: Level 3 \- Components**
 
 ```mermaid
-    **graph** TD  
-        **subgraph** "External"  
-            APIGW\["Amazon API Gateway"\]  
-            EventBridge\["Amazon EventBridge Scheduler"\]  
-        **end**
-
-        **subgraph** "Backend API Container"  
-            SearchArtistsLambda\["\[Component: Lambda\]\<br\>SearchArtists\<br\>\<i\>Handles GET /v1/artists\</i\>"\]  
-            GetArtistLambda\["\[Component: Lambda\]\<br\>GetArtistProfile\<br\>\<i\>Handles GET /v1/artists/{id}\</i\>"\]  
-            GetStylesLambda\["\[Component: Lambda\]\<br\>GetStyles\<br\>\<i\>Handles GET /v1/styles\</i\>"\]  
-        **end**
-
-        **subgraph** "Data Aggregation Container"  
-            StepFunctions\["\[Component: Step Functions\]\<br\>AggregationWorkflow\<br\>\<i\>Orchestrates the entire scraping process\</i\>"\]  
-        **end**  
-        
-        **subgraph** "Data & Search Layer"  
-            OpenSearch\["Amazon OpenSearch"\]  
-            DynamoDB\["Amazon DynamoDB"\]  
-        **end**
-
-        APIGW **\--** "/v1/artists" **\--\>** SearchArtistsLambda  
-        APIGW **\--** "/v1/artists" **\--\>** SearchArtistsLambda  
-        APIGW **\--** "/v1/artists/{id}" **\--\>** GetArtistLambda  
-        APIGW **\--** "/v1/styles" **\--\>** GetStylesLambda
-
-        EventBridge **\--** "Triggers daily" **\--\>** StepFunctions
-
-        SearchArtistsLambda **\--** "Queries" **\--\>** OpenSearch  
-        GetArtistLambda **\--** "Reads from" **\--\>** DynamoDB  
-        GetStylesLambda **\--** "Queries" **\--\>** OpenSearch
-
-        StepFunctions **\--** "Writes to" **\--\>** DynamoDB
+    flowchart TD
+    subgraph External["External"]
+            APIGW["Amazon API Gateway"]
+            EventBridge["Amazon EventBridge Scheduler"]
+    end
+    subgraph subGraph1["Backend API Container"]
+            ApiHandlerLambda["[Component: Lambda]<br>ApiHandler<br><i>Handles all API routes<br>(e.g., /v1/artists, /v1/styles)</i>"]
+    end
+    subgraph subGraph2["Data Aggregation Container"]
+            StepFunctions["[Component: Step Functions]<br>AggregationWorkflow<br><i>Orchestrates the scraping process</i>"]
+            WorkflowLambdas["[Component: Lambda]<br>Discover &amp; Queue Lambdas<br><i>Finds studios and queues jobs</i>"]
+            FargateScraper["[Component: Fargate]<br>Scraper Task<br><i>Scrapes artist data</i>"]
+    end
+    subgraph subGraph3["Data & Search Layer"]
+            OpenSearch["Amazon OpenSearch"]
+            DynamoDB["Amazon DynamoDB"]
+            SQS["Amazon SQS"]
+    end
+        APIGW -- Invokes for all routes --> ApiHandlerLambda
+        EventBridge -- Triggers daily --> StepFunctions
+        ApiHandlerLambda -- Queries --> OpenSearch
+        ApiHandlerLambda -- Reads from --> DynamoDB
+        StepFunctions -- Invokes --> WorkflowLambdas
+        StepFunctions -- Monitors --> SQS
+        StepFunctions -- Controls --> FargateScraper
+        WorkflowLambdas -- Sends messages to --> SQS
+        FargateScraper -- Pulls messages from --> SQS
+        FargateScraper -- Writes data to --> DynamoDB
 ```
 
 ### **User Interaction Sequence Diagram (Search)**
@@ -1207,55 +1274,75 @@ Operational support will be managed through modern DevOps practices centered on 
 ### **Network Architecture Diagram (VPC)**
 
 ```mermaid
-    **flowchart** TD  
-    **subgraph** subGraph0\["Lambda Service Environment"\]  
-            Lambda\["\[Compute\]\<br\>API Lambda Functions"\]  
-    **end**  
-    **subgraph** PublicSubnetA\["Public Subnet A"\]  
-            NAT\_GW\_A\["NAT Gateway"\]  
-    **end**  
-    **subgraph** PrivateSubnetA\["Private Subnet A"\]  
-            Lambda\_ENI\_A\["Lambda ENI"\]  
-            Fargate\_A\["Fargate Task"\]  
-            OpenSearch\_A\["OpenSearch Node"\]  
-    **end**  
-    **subgraph** subGraph3\["Availability Zone A"\]  
-            PublicSubnetA  
-            PrivateSubnetA  
-            IGW("Internet Gateway")  
-    **end**  
-    **subgraph** PublicSubnetB\["Public Subnet B"\]  
-            NAT\_GW\_B\["NAT Gateway"\]  
-    **end**  
-    **subgraph** PrivateSubnetB\["Private Subnet B"\]  
-            Lambda\_ENI\_B\["Lambda ENI"\]  
-            Fargate\_B\["Fargate Task"\]  
-            OpenSearch\_B\["OpenSearch Node"\]  
-    **end**  
-    **subgraph** subGraph6\["Availability Zone B"\]  
-            PublicSubnetB  
-            PrivateSubnetB  
-    **end**  
-    **subgraph** VPC\["VPC"\]  
-            subGraph3  
-            subGraph6  
-    **end**  
-    **subgraph** subGraph8\["AWS Cloud"\]  
-            subGraph0  
-            VPC  
-    **end**  
-        PublicSubnetA **\--** Route Table **\--\>** IGW  
-        PrivateSubnetA **\--** Route Table **\--\>** NAT\_GW\_A  
-        PublicSubnetB **\--** Route Table **\--\>** IGW  
-        PrivateSubnetB **\--** Route Table **\--\>** NAT\_GW\_B  
-        Lambda **\--** Hyperplane ENI **\--\>** Lambda\_ENI\_A **&** Lambda\_ENI\_B  
-        Internet(\["Internet"\]) **\--** User & API Traffic **\--\>** IGW  
-        PublicSubnetA**:::**public  
-        PrivateSubnetA**:::**private  
-        PublicSubnetB**:::**public  
-        PrivateSubnetB**:::**private  
-        classDef private fill:\#f9f,stroke:\#333,stroke\-width:2px  
-        classDef public fill:\#9cf,stroke:\#333,stroke\-width:2px
+flowchart TD
+ subgraph subGraph0["Lambda Service Environment"]
+        Lambda["[Compute]<br>API Lambda Functions"]
+  end
+ subgraph AWS_Services["AWS Services (Regional)"]
+        S3["S3"]
+        DynamoDB["DynamoDB"]
+        OtherServices["SQS, ECR, Logs, etc."]
+  end
+ subgraph PublicSubnetA["Public Subnet A"]
+        NAT_GW_A["NAT Gateway"]
+  end
+ subgraph PrivateSubnetA["Private Subnet A"]
+        Lambda_ENI_A["Lambda ENI"]
+        Fargate_A["Fargate Task"]
+        OpenSearch_A["OpenSearch Node"]
+        VPCE_ENI_A["Interface Endpoint ENI"]
+  end
+ subgraph subGraph3["Availability Zone A"]
+        PublicSubnetA
+        PrivateSubnetA
+        IGW("Internet Gateway")
+  end
+ subgraph PublicSubnetB["Public Subnet B"]
+        NAT_GW_B["NAT Gateway"]
+  end
+ subgraph PrivateSubnetB["Private Subnet B"]
+        Lambda_ENI_B["Lambda ENI"]
+        Fargate_B["Fargate Task"]
+        OpenSearch_B["OpenSearch Node"]
+        VPCE_ENI_B["Interface Endpoint ENI"]
+  end
+ subgraph subGraph6["Availability Zone B"]
+        PublicSubnetB
+        PrivateSubnetB
+  end
+ subgraph VPC["VPC"]
+        subGraph3
+        subGraph6
+        S3_GW["S3 Gateway Endpoint"]
+        DDB_GW["DynamoDB Gateway Endpoint"]
+  end
+ subgraph subGraph8["AWS Cloud"]
+        subGraph0
+        VPC
+        AWS_Services
+  end
+    Internet(["Internet"]) -- User & API Traffic --> IGW
+    PublicSubnetA -- Route via IGW --> Internet
+    PublicSubnetB -- Route via IGW --> Internet
+    PrivateSubnetA -- Route for Public Traffic --> NAT_GW_A
+    PrivateSubnetB -- Route for Public Traffic --> NAT_GW_B
+    PrivateSubnetA -- Route via Gateway Endpoint --> S3_GW & DDB_GW
+    PrivateSubnetB -- Route via Gateway Endpoint --> S3_GW & DDB_GW
+    S3_GW -- PrivateLink --> S3
+    DDB_GW -- PrivateLink --> DynamoDB
+    Lambda -- Hyperplane ENI --> Lambda_ENI_A & Lambda_ENI_B
+    Lambda_ENI_A -- Private Traffic --> VPCE_ENI_A
+    Fargate_A -- Private Traffic --> VPCE_ENI_A
+    Lambda_ENI_B -- Private Traffic --> VPCE_ENI_B
+    Fargate_B -- Private Traffic --> VPCE_ENI_B
+    VPCE_ENI_A -- PrivateLink --> OtherServices
+    VPCE_ENI_B -- PrivateLink --> OtherServices
+     PublicSubnetA:::public
+     PrivateSubnetA:::private
+     PublicSubnetB:::public
+     PrivateSubnetB:::private
+    classDef private fill:#f9f,stroke:#333,stroke-width:2px
+    classDef public fill:#9cf,stroke:#333,stroke-width:2px
 ```
 
 ### **AWS Configured Access**
@@ -1333,25 +1420,25 @@ flowchart TD
 ### **State Machine Diagram (AWS Step Functions)**
 
 ```mermaid
-    stateDiagram-v2
-        [*] --> DiscoverStudios
-        DiscoverStudios --> FindArtistsOnSite: Success
-        DiscoverStudios --> LogFailure: Failure
-
-        state FindArtistsOnSite {
-            direction LR
-            [*] --> ScrapeStudioWebsite
-            ScrapeStudioWebsite --> [*]
-        }
-        FindArtistsOnSite --> QueueScrapingJobs: Success (All sites scraped)
-        FindArtistsOnSite --> LogPartialFailure: Failure (Some sites failed)
-
-        QueueScrapingJobs --> Done: Success
-        QueueScrapingJobs --> LogFailure: Failure
-
-        LogPartialFailure --> Done
-        LogFailure --> Done
-        Done --> [*]
+    stateDiagram
+    direction TB
+    state FindArtistsOnSite {
+        direction LR
+        [*] --> FindArtistsTask:For each studio
+        FindArtistsTask --> [*]
+    [*]    FindArtistsTask
+    [*]  }
+    [*] --> DiscoverStudios
+    DiscoverStudios --> FindArtistsOnSite:Success
+    FindArtistsOnSite --> FlattenResults
+    FlattenResults --> QueueScrapingJobs
+    QueueScrapingJobs --> WaitForScraping:Jobs Queued
+    WaitForScraping --> CheckQueueEmpty:5-minute wait
+    CheckQueueEmpty --> IsQueueEmpty:Get Queue Attributes
+    IsQueueEmpty --> Success:Queue is empty
+    IsQueueEmpty --> WaitForScraping:Queue is not empty
+    Success --> [*]
+    FindArtistsOnSite:FindArtistsOnSite (Map State)
 ```
 
 ### **Data Model Diagram (DynamoDB Single-Table Design)**
@@ -1378,6 +1465,46 @@ flowchart TD
         style B fill:#ccf,stroke:#333
         style C fill:#ccf,stroke:#333
         style D fill:#9cf,stroke:#333
+```
+### **Image Ingestion and Display**
+
+```mermaid
+    flowchart TD
+    subgraph subGraph0["Ingestion & Scraping"]
+            Fargate["AWS Fargate Scraper"]
+            PublicSources["Public Sources"]
+            S3["S3 Bucket"]
+            DynamoDB["DynamoDB Table"]
+    end
+    subgraph subGraph1["Presentation & Serving"]
+            API["Backend API"]
+            UserBrowser@{ label: "User's Browser" }
+            CloudFront["CloudFront"]
+    end
+        PublicSources -- Scrapes images --> Fargate
+        Fargate -- Stores Image --> S3
+        Fargate -- Stores Metadata --> DynamoDB
+        UserBrowser -- "A. Requests data" --> API
+        API -- "B. Fetches metadata" --> DynamoDB
+        DynamoDB -- "C. Returns metadata" --> API
+        API -- "D. Sends metadata" --> UserBrowser
+        UserBrowser -- "E. Requests image" --> CloudFront
+        CloudFront -- "F. Cache Miss" --> S3
+        S3 -- "G. Returns image" --> CloudFront
+        CloudFront -- "H. Cache Hit" --> UserBrowser
+        UserBrowser@{ shape: rect}
+        Fargate:::fargate
+        S3:::s3
+        DynamoDB:::dynamodb
+        UserBrowser:::browser
+        API:::api
+        CloudFront:::cloudfront
+        classDef fargate fill:#F58536,stroke:#333,stroke-width:2px,color:#fff
+        classDef s3 fill:#569A31,stroke:#333,stroke-width:2px,color:#fff
+        classDef dynamodb fill:#4053D6,stroke:#333,stroke-width:2px,color:#fff
+        classDef cloudfront fill:#FF9900,stroke:#333,stroke-width:2px,color:#fff
+        classDef api fill:#232F3E,stroke:#333,stroke-width:2px,color:#fff
+        classDef browser fill:#1E90FF,stroke:#333,stroke-width:2px,color:#fff
 ```
 
 ## **7.4 Cost Reference**

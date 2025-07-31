@@ -21,9 +21,12 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project     = "tattoo-artist-directory"
-      Environment = var.environment
-      ManagedBy   = "terraform"
+      Project             = var.project_name
+      Environment         = var.environment
+      ManagedBy           = "terraform"
+      Owner               = var.owner_email
+      Version             = var.app_version
+      DataClassification  = var.default_data_classification
     }
   }
 }

@@ -20,8 +20,28 @@ resource "aws_iam_policy" "lambda_xray_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_xray_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "lambda_api_xray_attachment" {
   role       = aws_iam_role.lambda_api_role.name
+  policy_arn = aws_iam_policy.lambda_xray_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_sync_xray_attachment" {
+  role       = aws_iam_role.lambda_sync_role.name
+  policy_arn = aws_iam_policy.lambda_xray_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "discover_studios_xray_attachment" {
+  role       = aws_iam_role.discover_studios_role.name
+  policy_arn = aws_iam_policy.lambda_xray_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "find_artists_xray_attachment" {
+  role       = aws_iam_role.find_artists_on_site_role.name
+  policy_arn = aws_iam_policy.lambda_xray_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "queue_scraping_xray_attachment" {
+  role       = aws_iam_role.queue_scraping_role.name
   policy_arn = aws_iam_policy.lambda_xray_policy.arn
 }
 

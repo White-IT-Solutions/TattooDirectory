@@ -62,7 +62,7 @@ resource "aws_internet_gateway" "main" {
 
 # Elastic IPs for NAT Gateways
 resource "aws_eip" "nat" {
-  for_each   = local.availability_zones
+  for_each   = var.environment == "prod" ? local.availability_zones : { "a" = local.availability_zones["a"] }
   domain     = "vpc"
   depends_on = [aws_internet_gateway.main]
 
@@ -100,7 +100,7 @@ resource "aws_route_table" "public" {
 
 # Private Route Tables
 resource "aws_route_table" "private" {
-  for_each = local.availability_zones
+  for_each = var.environment == "prod" ? local.availability_zones : { "a" = local.availability_zones["a"] }
   vpc_id   = aws_vpc.main.id
 
   route {
@@ -121,7 +121,8 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route_table_association" "private" {
-  for_each       = aws_subnet.private
-  subnet_id      = each.value.id
-  route_table_id = aws_route_table.private[each.key].id
+  for_each = aws_route_table.private # Loop over the route tables that were actually created
+
+  subnet_id      = aws_subnet.private[each.key].id # Associate the subnet with the same AZ key ('a', 'b')
+  route_table_id = each.value.id
 }

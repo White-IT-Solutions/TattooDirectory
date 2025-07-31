@@ -104,16 +104,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "frontend" {
 
   rule {
     id     = "transition_to_ia"
-    status = var.environment == "prod" ? "Enabled" : "Disabled"
+    status = "Enabled" # Enable for all environments for simplicity and cost savings
 
     transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = 90
-      storage_class = "GLACIER"
+      days          = 0 # Transition all new objects immediately
+      storage_class = "INTELLIGENT_TIERING"
     }
   }
 }

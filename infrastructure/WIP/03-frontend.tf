@@ -139,11 +139,26 @@ resource "aws_wafv2_web_acl" "frontend" {
     }
 
     statement {
-      rate_based_statement {
-        limit              = 2000
+      rate_based_statement { # As per LLD 5.3.1
+        limit              = 500 # 500 requests
         aggregate_key_type = "IP"
+        evaluation_window_sec = 300 # per 5 minutes
+        scope_down_statement {
+          byte_match_statement {
+            search_string = "/v1/artists"
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              type = "NONE"
+              priority = 0
+            }
+            positional_constraint = "STARTS_WITH"
+          }
+        }
       }
     }
+
 
     visibility_config {
       cloudwatch_metrics_enabled = true
@@ -163,12 +178,47 @@ resource "aws_wafv2_web_acl" "frontend" {
   }
 }
 
+# CloudFront Response Headers Policy for Security
+resource "aws_cloudfront_response_headers_policy" "security_headers" {
+  name    = "${var.project_name}-security-headers"
+  comment = "Adds security headers like HSTS, CSP, and X-Frame-Options"
+
+  security_headers_config {
+    strict_transport_security {
+      access_control_max_age_sec = 31536000 # 1 year
+      include_subdomains         = true
+      override                   = true
+    }
+
+    content_type_options {
+      override = true
+    }
+
+    frame_options {
+      frame_option = "DENY"
+      override     = true
+    }
+
+    xss_protection {
+      protection = true
+      mode_block = true
+      override   = true
+    }
+  }
+}
+
 # CloudFront Distribution
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
     domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
     origin_id                = "S3-${aws_s3_bucket.frontend.bucket}"
+  }
+  origin {
+    domain_name = replace(aws_apigatewayv2_stage.main.invoke_url, "https://", "")
+    origin_id   = "APIGW-${aws_apigatewayv2_api.main.id}"
+    # The path part of the invoke_url must be specified here
+    origin_path = "/${aws_apigatewayv2_stage.main.name}"
   }
 
   enabled             = true
@@ -182,6 +232,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id       = "S3-${aws_s3_bucket.frontend.bucket}"
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
 
     forwarded_values {
       query_string = false
@@ -193,6 +244,29 @@ resource "aws_cloudfront_distribution" "frontend" {
     min_ttl     = 0
     default_ttl = 3600
     max_ttl     = 86400
+  }
+
+  ordered_cache_behavior {
+    path_pattern           = "/v1/*"
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "APIGW-${aws_apigatewayv2_api.main.id}"
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+
+    # Forward all headers, cookies, and query strings to the API
+    forwarded_values {
+      query_string = true
+      headers      = ["*"]
+      cookies {
+        forward = "all"
+      }
+    }
+
+    # Do not cache API responses at the edge
+    min_ttl     = 0
+    default_ttl = 0
+    max_ttl     = 0
   }
 
   price_class = "PriceClass_100"

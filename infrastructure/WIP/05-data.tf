@@ -27,30 +27,12 @@ resource "aws_dynamodb_table" "main" {
     type = "S"
   }
 
-  attribute {
-    name = "GSI2PK"
-    type = "S"
-  }
-
-  attribute {
-    name = "GSI2SK"
-    type = "S"
-  }
-
   global_secondary_index {
     name            = "GSI1"
     hash_key        = "GSI1PK"
     range_key       = "GSI1SK"
     projection_type = "ALL"
   }
-
-  global_secondary_index {
-    name            = "GSI2"
-    hash_key        = "GSI2PK"
-    range_key       = "GSI2SK"
-    projection_type = "ALL"
-  }
-
   server_side_encryption {
     enabled     = true
     kms_key_arn = aws_kms_key.main.arn
@@ -108,13 +90,16 @@ resource "aws_opensearch_domain" "main" {
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
-    instance_type            = local.environment_config[var.environment].opensearch_instance_count == 2 ? "t3.small.search" : "t3.micro.search"
+    instance_type            = local.environment_config[var.environment].opensearch_instance_type
     instance_count           = local.environment_config[var.environment].opensearch_instance_count
     dedicated_master_enabled = var.environment == "prod" ? false : false
     zone_awareness_enabled   = var.environment == "prod" ? true : false
 
-    zone_awareness_config {
-      availability_zone_count = 2
+    dynamic "zone_awareness_config" {
+      for_each = var.environment == "prod" ? [1] : []
+      content {
+        availability_zone_count = 2
+      }
     }
   }
 
@@ -154,6 +139,12 @@ resource "aws_opensearch_domain" "main" {
     }
   }
 
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_audit.arn
+    log_type                 = "AUDIT_LOGS"
+    enabled                  = true
+  }
+
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -171,6 +162,20 @@ resource "aws_opensearch_domain" "main" {
         "es:ESHttpPost", 
         "es:ESHttpPut" ]
         Resource = "${aws_opensearch_domain.main.arn}/*"
+      },
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "es.amazonaws.com"
+        },
+        "Action": [
+          "logs:PutLogEvents",
+          "logs:CreateLogStream"
+        ],
+        "Resource": "${aws_cloudwatch_log_group.opensearch_audit.arn}:*",
+        "Condition": {
+          "ArnLike": { "aws:SourceArn": aws_opensearch_domain.main.arn }
+        }
       }
     ]
   })
@@ -252,15 +257,29 @@ data "archive_file" "dynamodb_sync_zip" {
   source {
     content  = <<EOF
 const { Client } = require('@opensearch-project/opensearch');
+const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
+
+const secretsManager = new SecretsManagerClient({});
+let openSearchPassword;
+
+const getSecret = async () => {
+    if (openSearchPassword) return openSearchPassword;
+    const command = new GetSecretValueCommand({ SecretId: process.env.APP_SECRETS_ARN });
+    const response = await secretsManager.send(command);
+    const secret = JSON.parse(response.SecretString);
+    openSearchPassword = secret.opensearch_master_password;
+    return openSearchPassword;
+};
 
 exports.handler = async (event) => {
     console.log('DynamoDB Stream Event:', JSON.stringify(event, null, 2));
     
+    const password = await getSecret();
     const client = new Client({
         node: 'https://' + process.env.OPENSEARCH_ENDPOINT,
         auth: {
             username: 'admin',
-            password: process.env.OPENSEARCH_PASSWORD
+            password: password
         }
     });
     
