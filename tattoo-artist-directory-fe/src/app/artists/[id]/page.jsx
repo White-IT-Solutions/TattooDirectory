@@ -80,10 +80,10 @@ export default function ArtistPage({ params }) {
           {/* Delist Button */}
           <div className="mt-4">
             <Link
-              href="/delist"
+              href="/takedown"
               className="block bg-red-500 text-white text-center py-2 rounded-lg hover:bg-red-600"
             >
-              Request Delisting
+              Request Profile Removal
             </Link>
           </div>
         </div>
