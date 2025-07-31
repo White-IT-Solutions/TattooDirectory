@@ -1,9 +1,9 @@
 import ArtistCard from "../components/ArtistCard";
-import {mockArtistData} from "../data/mockArtistData";
+import { mockArtistData } from "../data/mockArtistData";
 
 export default async function ArtistsListPage({ searchParams }) {
-	const searchTerm = await searchParams?.q || "";
-	console.log(mockArtistData)
+  const searchTerm = (await searchParams?.q) || "";
+  console.log(mockArtistData);
 
   const filteredArtists =
     searchTerm.trim() === ""
@@ -18,8 +18,10 @@ export default async function ArtistsListPage({ searchParams }) {
 
   return (
     <div className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-center">Artists Directory</h1>
+      <div className="mx-auto">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Artists Directory
+        </h1>
 
         {/* Search Bar */}
         <form method="get" className="mb-8 flex justify-center">
@@ -33,7 +35,7 @@ export default async function ArtistsListPage({ searchParams }) {
         </form>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="w-full mx-auto grid md:grid-cols-2 lg:grid-cols-5 gap-1 p-5">
           {filteredArtists.length > 0 ? (
             filteredArtists.map((artist) => (
               <ArtistCard key={artist.PK} artist={artist} />
