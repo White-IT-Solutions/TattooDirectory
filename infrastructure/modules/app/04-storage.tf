@@ -1,6 +1,6 @@
 # Primary DynamoDB Table (Single-table design)
 resource "aws_dynamodb_table" "main" {
-  name             = "${var.project_name}-main"
+  name             = "${local.name_prefix}}-main"
   billing_mode     = "PAY_PER_REQUEST"
   hash_key         = "PK"
   range_key        = "SK"
@@ -44,18 +44,40 @@ resource "aws_dynamodb_table" "main" {
 
   deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
 
-  tags = {
-    Name = "${var.project_name}-main-table"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-main-table"
+  })
 
   lifecycle {
     prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
+# DynamoDB Auto Scaling for main table
+resource "aws_appautoscaling_target" "dynamodb_table_read_target" {
+  max_capacity       = var.environment == "prod" ? 100 : 10
+  min_capacity       = 1
+  resource_id        = "table/${aws_dynamodb_table.main.name}"
+  scalable_dimension = "dynamodb:table:ReadCapacityUnits"
+  service_namespace  = "dynamodb"
+}
+
+resource "aws_appautoscaling_target" "dynamodb_table_write_target" {
+  max_capacity       = var.environment == "prod" ? 100 : 10
+  min_capacity       = 1
+  resource_id        = "table/${aws_dynamodb_table.main.name}"
+  scalable_dimension = "dynamodb:table:WriteCapacityUnits"
+  service_namespace  = "dynamodb"
+}
+
+# DynamoDB Contributor Insights for performance monitoring
+resource "aws_dynamodb_contributor_insights" "main_table" {
+  table_name = aws_dynamodb_table.main.name
+}
+
 # Denylist DynamoDB Table
 resource "aws_dynamodb_table" "denylist" {
-  name         = "${var.project_name}-denylist"
+  name         = "${local.name_prefix}}-denylist"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "artist_id"
 
@@ -75,18 +97,54 @@ resource "aws_dynamodb_table" "denylist" {
 
   deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
 
-  tags = {
-    Name = "${var.project_name}-denylist-table"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-denylist-table"
+  })
 
   lifecycle {
     prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
   }
 }
 
+# DynamoDB table to store idempotency keys for API requests
+resource "aws_dynamodb_table" "idempotency" {
+  name         = "${local.name_prefix}}-idempotency"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "expiry"
+    type = "N"
+  }
+
+  ttl {
+    attribute_name = "expiry"
+    enabled        = true
+  }
+
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.main.arn
+  }
+
+  point_in_time_recovery {
+    enabled = true
+  }
+
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-idempotency-table"
+  })
+}
+
 # OpenSearch Domain
 resource "aws_opensearch_domain" "main" {
-  domain_name    = "${var.project_name}-search"
+  domain_name    = "${local.name_prefix}}-search"
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
@@ -180,9 +238,9 @@ resource "aws_opensearch_domain" "main" {
     ]
   })
 
-  tags = {
-    Name = "${var.project_name}-opensearch"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-opensearch"
+  })
 
   lifecycle {
     prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
@@ -205,12 +263,6 @@ resource "aws_secretsmanager_secret_version" "opensearch_password" {
   })
 }
 
-# IAM Service Linked Role for OpenSearch
-resource "aws_iam_service_linked_role" "opensearch" {
-  aws_service_name = "es.amazonaws.com"
-  description      = "Service linked role for OpenSearch"
-}
-
 # Data sources
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
@@ -218,7 +270,7 @@ data "aws_caller_identity" "current" {}
 # DynamoDB to OpenSearch Sync Lambda
 resource "aws_lambda_function" "dynamodb_sync" {
   filename      = "dynamodb_sync.zip"
-  function_name = "${var.project_name}-dynamodb-sync"
+  function_name = "${local.name_prefix}}-dynamodb-sync"
   role          = aws_iam_role.lambda_sync_role.arn
   handler       = "index.handler"
   runtime       = "nodejs18.x"
@@ -240,14 +292,20 @@ resource "aws_lambda_function" "dynamodb_sync" {
     }
   }
 
+  tracing_config {
+    mode = "Active"
+    #Swap to active/passthrough depending on environment variables
+    # mode = local.config.enable_advanced_monitoring ? "Active" : "PassThrough"
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.lambda_sync_policy_attachment,
     aws_cloudwatch_log_group.lambda_sync,
   ]
 
-  tags = {
-    Name = "${var.project_name}-dynamodb-sync"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-dynamodb-sync"
+  })
 }
 
 # Create a placeholder zip file for the sync Lambda function
@@ -346,10 +404,193 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream" {
 # CloudWatch Log Group for Sync Lambda
 resource "aws_cloudwatch_log_group" "lambda_sync" {
   name              = "/aws/lambda/${var.project_name}-dynamodb-sync"
-  retention_in_days = 14
+  retention_in_days = local.environment_config[var.environment].log_retention_days
   kms_key_id        = aws_kms_key.main.arn
 
-  tags = {
-    Name = "${var.project_name}-lambda-sync-logs"
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-lambda-sync-logs"
+  })
+}
+
+# CloudWatch Log Group for OpenSearch audit logs
+resource "aws_cloudwatch_log_group" "opensearch_audit" {
+  name              = "/aws/opensearch/domains/${var.project_name}-search/audit-logs"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-opensearch-audit-logs"
+  })
+}
+
+# S3 Bucket for static website hosting
+resource "aws_s3_bucket" "frontend" {
+  bucket = "${var.project_name}-frontend-${random_id.bucket_suffix.hex}"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-frontend"
+  })
+}
+
+resource "random_id" "bucket_suffix" {
+  byte_length = 4
+}
+
+# Block all public access to the S3 bucket
+resource "aws_s3_bucket_public_access_block" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket versioning
+resource "aws_s3_bucket_versioning" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+  versioning_configuration {
+    status = "Enabled"
   }
+}
+
+# S3 bucket encryption
+resource "aws_s3_bucket_server_side_encryption_configuration" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.main.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+# S3 bucket lifecycle configuration
+resource "aws_s3_bucket_lifecycle_configuration" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  rule {
+    id     = "cleanup_old_versions"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# S3 bucket notification configuration for security monitoring
+resource "aws_s3_bucket_notification" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  # This block configures notifications to be sent to an SNS topic.
+  topic {
+    # A unique identifier for this notification configuration
+    id = "s3-object-created-notifications"
+
+    # The ARN of the SNS topic to notify
+    topic_arn = aws_sns_topic.s3_events.arn
+
+    # A list of events that should trigger a notification
+    events = ["s3:ObjectCreated:*"]
+
+    # Optional: You can filter notifications to specific folders (prefixes) or file types (suffixes)
+    # filter_prefix = "uploads/"
+    # filter_suffix = ".jpg"
+  }
+  depends_on = [
+    aws_iam_policy.s3_event_notification_policy
+  ]
+}
+
+# SNS Topic for S3 events
+resource "aws_sns_topic" "s3_events" {
+  name = "${local.name_prefix}}-s3-events"
+  kms_master_key_id = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-s3-events"
+  })
+}
+
+# SNS Topic Policy to allow S3 to publish
+resource "aws_sns_topic_policy" "s3_events_topic_policy" {
+  arn = aws_sns_topic.s3_events.arn
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+        Action = "sns:Publish"
+        Resource = aws_sns_topic.s3_events.arn
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" = aws_s3_bucket.frontend.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+
+# S3 bucket logging for audit trail
+resource "aws_s3_bucket_logging" "frontend" {
+  bucket = aws_s3_bucket.frontend.id
+
+  target_bucket = aws_s3_bucket.access_logs.id
+  target_prefix = "frontend-access-logs/"
+}
+
+# S3 bucket for access logs
+resource "aws_s3_bucket" "access_logs" {
+  bucket = "${var.project_name}-access-logs-${random_id.bucket_suffix.hex}"
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-access-logs"
+  })
+}
+
+resource "aws_s3_bucket_public_access_block" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket versioning for access logs
+resource "aws_s3_bucket_versioning" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# S3 bucket encryption for access logs
+resource "aws_s3_bucket_server_side_encryption_configuration" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.main.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+# S3 bucket logging for the access logs bucket itself
+resource "aws_s3_bucket_logging" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+
+  target_bucket = aws_s3_bucket.access_logs.id
+  target_prefix = "access-logs-self-logs/"
 }

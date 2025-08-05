@@ -332,7 +332,7 @@ The following elements are not included in the "Feature Dependency Map" for thes
 * **Availability Requirements:** The user-facing application requires 99.9% uptime.  
 * **Specific Load Testing Scenarios**: Validate that the API can handle the target load of 2,000 MAU with p95 latency below 500ms.  
   * **Key Metrics to Monitor:** API Gateway p95 Latency, Lambda Duration and Throttles, DynamoDB Read/Write Capacity Units, OpenSearch CPU Utilisation.  
-  * The Staging environment will be used for all tests.  
+  * The Dev/Staging environment will be used for all tests.  
   * A load testing script will be created using a tool like Artillery.io or JMeter.  
   * The script will simulate realistic user behaviour: a mix of searching for artists and retrieving individual profiles.  
   * Tests will be run at increasing concurrent user levels (e.g., 10, 50, 100 concurrent users) to identify the system's breaking point.

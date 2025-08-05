@@ -1,11 +1,11 @@
 # SNS Topic for high-priority alerts
 resource "aws_sns_topic" "alerts" {
-  name              = "${var.project_name}-alerts"
+  name              = "${local.name_prefix}}-alerts"
   kms_master_key_id = aws_kms_key.main.arn
 
-  tags = {
-    Name = "${var.project_name}-alerts-topic"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-alerts-topic"
+  })
 }
 
 # SNS Topic Policy
@@ -45,7 +45,7 @@ resource "aws_sns_topic_subscription" "email_alerts" {
 
 # SQS Queue Depth Alarm
 resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
-  alarm_name          = "${var.project_name}-sqs-queue-depth-high"
+  alarm_name          = "${local.name_prefix}}-sqs-queue-depth-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "ApproximateNumberOfVisibleMessages"
@@ -61,14 +61,14 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
     QueueName = aws_sqs_queue.scraping_queue.name
   }
 
-  tags = {
-    Name = "${var.project_name}-sqs-queue-depth-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-sqs-queue-depth-alarm"
+  })
 }
 
 # SQS Dead-Letter Queue Messages Alarm
 resource "aws_cloudwatch_metric_alarm" "sqs_dlq_messages" {
-  alarm_name          = "${var.project_name}-sqs-dlq-messages-visible"
+  alarm_name          = "${local.name_prefix}}-sqs-dlq-messages-visible"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "ApproximateNumberOfMessagesVisible"
@@ -85,14 +85,14 @@ resource "aws_cloudwatch_metric_alarm" "sqs_dlq_messages" {
     QueueName = aws_sqs_queue.scraping_dlq.name
   }
 
-  tags = {
-    Name = "${var.project_name}-sqs-dlq-messages-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-sqs-dlq-messages-alarm"
+  })
 }
 
 # API Gateway 5xx Errors Alarm
 resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
-  alarm_name          = "${var.project_name}-api-gateway-5xx-errors"
+  alarm_name          = "${local.name_prefix}}-api-gateway-5xx-errors"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "5XXError"
@@ -108,14 +108,14 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
     ApiId = aws_apigatewayv2_api.main.id
   }
 
-  tags = {
-    Name = "${var.project_name}-api-gateway-5xx-errors-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-api-gateway-5xx-errors-alarm"
+  })
 }
 
 # Lambda Function Errors Alarm
 resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
-  alarm_name          = "${var.project_name}-lambda-errors"
+  alarm_name          = "${local.name_prefix}}-lambda-errors"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "Errors"
@@ -131,14 +131,14 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
     FunctionName = aws_lambda_function.api_handler.function_name
   }
 
-  tags = {
-    Name = "${var.project_name}-lambda-errors-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-lambda-errors-alarm"
+  })
 }
 
 # Lambda Function Duration Alarm
 resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
-  alarm_name          = "${var.project_name}-lambda-duration-high"
+  alarm_name          = "${local.name_prefix}}-lambda-duration-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "Duration"
@@ -154,14 +154,14 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
     FunctionName = aws_lambda_function.api_handler.function_name
   }
 
-  tags = {
-    Name = "${var.project_name}-lambda-duration-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-lambda-duration-alarm"
+  })
 }
 
 # DynamoDB Throttled Requests Alarm
 resource "aws_cloudwatch_metric_alarm" "dynamodb_throttles" {
-  alarm_name          = "${var.project_name}-dynamodb-throttles"
+  alarm_name          = "${local.name_prefix}}-dynamodb-throttles"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "ThrottledRequests"
@@ -177,14 +177,37 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_throttles" {
     TableName = aws_dynamodb_table.main.name
   }
 
-  tags = {
-    Name = "${var.project_name}-dynamodb-throttles-alarm"
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-dynamodb-throttles-alarm"
+  })
+}
+
+# DynamoDB Point-in-Time Recovery monitoring
+resource "aws_cloudwatch_metric_alarm" "dynamodb_pitr_status" {
+  count               = local.environment_config[var.environment].backup_enabled ? 1 : 0
+  alarm_name          = "${local.name_prefix}-dynamodb-pitr-disabled"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "PointInTimeRecoveryEnabled"
+  namespace           = "AWS/DynamoDB"
+  period              = "300"
+  statistic           = "Maximum"
+  threshold           = "1"
+  alarm_description   = "This metric monitors DynamoDB Point-in-Time Recovery status"
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+
+  dimensions = {
+    TableName = aws_dynamodb_table.main.name
   }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-dynamodb-pitr-alarm"
+  })
 }
 
 # OpenSearch Cluster Status Alarm
 resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_status" {
-  alarm_name          = "${var.project_name}-opensearch-cluster-status"
+  alarm_name          = "${local.name_prefix}}-opensearch-cluster-status"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "ClusterStatus.red"
@@ -201,14 +224,14 @@ resource "aws_cloudwatch_metric_alarm" "opensearch_cluster_status" {
     ClientId   = data.aws_caller_identity.current.account_id
   }
 
-  tags = {
-    Name = "${var.project_name}-opensearch-cluster-status-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-opensearch-cluster-status-alarm"
+  })
 }
 
 # ECS Service CPU Utilization Alarm
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_utilization" {
-  alarm_name          = "${var.project_name}-ecs-cpu-utilization-high"
+  alarm_name          = "${local.name_prefix}}-ecs-cpu-utilization-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
@@ -225,14 +248,14 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_utilization" {
     ClusterName = aws_ecs_cluster.main.name
   }
 
-  tags = {
-    Name = "${var.project_name}-ecs-cpu-utilization-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-ecs-cpu-utilization-alarm"
+  })
 }
 
 # Step Functions Execution Failed Alarm
 resource "aws_cloudwatch_metric_alarm" "step_functions_failed" {
-  alarm_name          = "${var.project_name}-step-functions-failed"
+  alarm_name          = "${local.name_prefix}}-step-functions-failed"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "ExecutionsFailed"
@@ -248,14 +271,14 @@ resource "aws_cloudwatch_metric_alarm" "step_functions_failed" {
     StateMachineArn = aws_sfn_state_machine.data_aggregation.arn
   }
 
-  tags = {
-    Name = "${var.project_name}-step-functions-failed-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-step-functions-failed-alarm"
+  })
 }
 
 # AWS Budget for daily cost monitoring
 resource "aws_budgets_budget" "daily_spend" {
-  name         = "${var.project_name}-daily-spend-alert"
+  name         = "${local.name_prefix}}-daily-spend-alert"
   budget_type  = "COST"
   limit_amount = "20" # Based on runbook TAD-MVP-RUN-002
   limit_unit   = "GBP"
@@ -273,14 +296,14 @@ resource "aws_budgets_budget" "daily_spend" {
     subscriber_sns_topic_arns = [aws_sns_topic.alerts.arn]
   }
 
-  tags = {
-    Name = "${var.project_name}-daily-spend-budget"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-daily-spend-budget"
+  })
 }
 
 # AWS Cost Anomaly Detection
 resource "aws_cost_anomaly_monitor" "main" {
-  name                  = "${var.project_name}-anomaly-monitor"
+  name                  = "${local.name_prefix}}-anomaly-monitor"
   monitor_type          = "CUSTOM"
   monitor_specification = jsonencode({
     "Tags" = {
@@ -289,13 +312,13 @@ resource "aws_cost_anomaly_monitor" "main" {
     }
   })
 
-  tags = {
-    Name = "${var.project_name}-cost-anomaly-monitor"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-cost-anomaly-monitor"
+  })
 }
 
 resource "aws_cost_anomaly_subscription" "main" {
-  name             = "${var.project_name}-anomaly-subscription"
+  name             = "${local.name_prefix}}-anomaly-subscription"
   monitor_arn_list = [aws_cost_anomaly_monitor.main.arn]
   frequency        = "DAILY"
   threshold        = 10 # Threshold in USD for anomaly notification
@@ -305,15 +328,15 @@ resource "aws_cost_anomaly_subscription" "main" {
     address = aws_sns_topic.alerts.arn
   }
 
-  tags = {
-    Name = "${var.project_name}-cost-anomaly-subscription"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-cost-anomaly-subscription"
+  })
 }
 
 # CloudWatch Dashboard
 resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = "${var.project_name}-dashboard"
-
+  dashboard_name = "${local.name_prefix}}-dashboard"
+  
   dashboard_body = jsonencode({
     widgets = [
       {
@@ -398,16 +421,56 @@ resource "aws_cloudwatch_dashboard" "main" {
           title   = "DynamoDB Metrics"
           period  = 300
         }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 24
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            ["AWS/ES", "ClusterStatus.yellow", "DomainName", aws_opensearch_domain.main.domain_name, "ClientId", data.aws_caller_identity.current.account_id],
+            [".", "ClusterStatus.red", ".", ".", ".", "."],
+            [".", "SearchLatency", ".", ".", ".", "."],
+            [".", "IndexingLatency", ".", ".", ".", "."]
+          ]
+          view    = "timeSeries"
+          stacked = false
+          region  = var.aws_region
+          title   = "OpenSearch Metrics"
+          period  = 300
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 30
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            ["AWS/ECS", "CPUUtilization", "ServiceName", aws_ecs_service.scraper.name, "ClusterName", aws_ecs_cluster.main.name],
+            [".", "MemoryUtilization", ".", ".", ".", "."],
+            [".", "RunningTaskCount", ".", ".", ".", "."]
+          ]
+          view    = "timeSeries"
+          stacked = false
+          region  = var.aws_region
+          title   = "ECS Service Metrics"
+          period  = 300
+        }
       }
     ]
   })
-
 
 }
 
 # CloudWatch Composite Alarm for overall system health
 resource "aws_cloudwatch_composite_alarm" "system_health" {
-  alarm_name        = "${var.project_name}-system-health"
+  alarm_name        = "${local.name_prefix}}-system-health"
   alarm_description = "Composite alarm for overall system health"
 
   alarm_rule = join(" OR ", [
@@ -422,7 +485,26 @@ resource "aws_cloudwatch_composite_alarm" "system_health" {
   alarm_actions = [aws_sns_topic.alerts.arn]
   ok_actions    = [aws_sns_topic.alerts.arn]
 
-  tags = {
-    Name = "${var.project_name}-system-health-alarm"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-system-health-alarm"
+  })
+}
+
+# X-Ray sampling rule for cost control
+resource "aws_xray_sampling_rule" "main" {
+  rule_name      = "${local.name_prefix}}-sampling-rule"
+  priority       = 9000
+  version        = 1
+  reservoir_size = 1
+  fixed_rate     = var.environment == "prod" ? 0.1 : 0.5  # Sample more in dev
+  url_path       = "*"
+  host           = "*"
+  http_method    = "*"
+  service_type   = "*"
+  service_name   = "*"
+  resource_arn   = "*"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-xray-sampling-rule"
+  })
 }
