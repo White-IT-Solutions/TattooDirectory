@@ -156,7 +156,7 @@ A Caching layer utilising Amazon ElastiCache for Redis will be implemented if an
 
 ### **2.3.2 Automated Security Scanning**
 
-This should be integrated into the CI/CD pipeline. This includes running `npm audit` for dependency scanning, using static analysis (SAST) tools to lint code for security issues, and potentially running dynamic scans (DAST) against the staging environment.
+This should be integrated into the CI/CD pipeline. This includes running `npm audit` for dependency scanning, using static analysis (SAST) tools to lint code for security issues, and potentially running dynamic scans (DAST) against the dev/staging environment.
 
 #### **Implementation Trigger:**
 
@@ -587,8 +587,8 @@ A user accesses the platform via a client browser. **Amazon CloudFront** serves 
 
 1. **Source:** A developer pushes code to a Git repository, which triggers the **GitHub Actions**.  
 2. **Build:** An **GitHub Actions** job compiles the code, runs unit tests, and packages the application artifacts (e.g., Lambda deployment packages, Fargate Docker images).  
-3. **Deploy to Staging:** The pipeline uses HashiCorp Terraform to automatically deploy the changes to a production-like staging environment.  
-4. **Test & Approval:** Automated integration tests run against the staging environment. If they pass, the pipeline pauses for a required manual approval before deploying to production.  
+3. **Deploy to Staging:** The pipeline uses HashiCorp Terraform to automatically deploy the changes to a production-like dev/staging environment.  
+4. **Test & Approval:** Automated integration tests run against the dev/staging environment. If they pass, the pipeline pauses for a required manual approval before deploying to production.  
 5. **Deploy to Production:** Upon approval, the exact same artefacts are deployed to the production environment, ensuring consistency and reliability.
 
 ### 
@@ -759,7 +759,7 @@ This is the specified Infrastructure as Code (IaaC) tool for defining all cloud 
 
 ## **3.11. Github Actions**
 
-These services form the CI/CD pipeline that automates the build, testing, and deployment of the application to staging and production environments.
+These services form the CI/CD pipeline that automates the build, testing, and deployment of the application to dev/staging and production environments.
 
 ## **3.12. AWS CloudWatch**
 
@@ -909,7 +909,7 @@ This pillar focuses on minimizing the environmental impacts of running cloud wor
 A multi-account strategy using AWS Organizations is recommended for environment separation to provide a strong security and billing boundary.
 
 * **Development:** An account for developers to experiment and build features.  
-* **Staging/Test:** An account with a production-like configuration for integration testing, performance testing, and UAT.  
+* **Dev/Staging:** An account with a production-like configuration for integration testing, performance testing, and UAT.  
 * **Production:** The live, customer-facing environment. Each environment will have its own completely separate set of resources, deployed via the same IaaC templates to ensure consistency.
 
 ## **5.2. CI/CD Pipeline**
@@ -918,8 +918,8 @@ The deployment process will be fully automated using **GitHub Actions**.
 
 1. **Source:** A developer pushes code to a Git repository.  
 2. **Build:** This triggers **GitHub Actions**, which starts a **GitHub Actions** job. The build job installs dependencies, runs unit tests, and packages the application artefacts (e.g., Lambda deployment packages, Docker images for Fargate).  
-3. **Deploy to Staging:** The pipeline deploys the changes to the Staging environment using HashiCorp Terraform to update the stack. Automated integration and end-to-end tests are run against the Staging environment.  
-4. **Manual Approval:** After successful tests in Staging, the pipeline pauses for a manual approval step before deploying to Production.  
+3. **Deploy to Dev/Staging:** The pipeline deploys the changes to the Dev/Staging environment using HashiCorp Terraform to update the stack. Automated integration and end-to-end tests are run against the Dev/Staging environment.  
+4. **Manual Approval:** After successful tests in Dev/Staging, the pipeline pauses for a manual approval step before deploying to Production.  
 5. **Deploy to Production:** Upon approval, the same artefacts are deployed to the Production environment.
 
 ---
@@ -1055,7 +1055,7 @@ flowchart TD
     U -- HTTPS --> CF
     CF -- Inspects Traffic --> WAF
     CF -- Serves Static Content --> S3
-    U -- API Calls --> APIGW
+    CF -- Forwards API Calls (/v1/*) --> APIGW
     APIGW -- Invokes --> LambdaAPI
     LambdaAPI -- Queries (VPC) --> OpenSearch
     LambdaAPI -- Reads/Writes --> VPC_Endpoints
@@ -1068,8 +1068,8 @@ flowchart TD
     Fargate -- Pulls Image --> VPC_Endpoints
     VPC_Endpoints -- Securely Accesses --> DynamoDB & SQS & ECR
     SQS -- "Triggers Auto-scaling" --> Fargate
-    style VPC fill:#f9f,stroke:#333,stroke-width:2px
     style VPC_Endpoints fill:#e6f3ff,stroke:#0066cc,stroke-width:2px,stroke-dasharray: 5 5
+    style VPC fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
 ### **C4 Model: Level 1 \- System Context**

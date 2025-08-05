@@ -1,6 +1,6 @@
 # API Gateway HTTP API
 resource "aws_apigatewayv2_api" "main" {
-  name          = "${var.project_name}-api"
+  name          = "${local.name_prefix}}-api"
   protocol_type = "HTTP"
   description   = "HTTP API for ${var.project_name}"
 
@@ -15,9 +15,9 @@ resource "aws_apigatewayv2_api" "main" {
     max_age        = 86400
   }
 
-  tags = {
-    Name = "${var.project_name}-api"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-api"
+  })
 }
 
 # API Gateway Stage
@@ -30,7 +30,7 @@ resource "aws_apigatewayv2_stage" "main" {
     # As HTTP APIs only support stage-level throttling, we apply this limit to the whole stage.
     throttling_rate_limit         = var.environment == "prod" ? 100 : 50
     throttling_burst_limit        = var.environment == "prod" ? 200 : 100
-    detailed_metrics_enabled      = local.environment_config[var.environment].enable_detailed_monitoring
+    detailed_metrics_enabled      = local.environment_config[var.environment].enable_advanced_monitoring
     logging_level                 = var.environment == "prod" ? "INFO" : "ERROR"
   }
   access_log_settings {
@@ -49,20 +49,28 @@ resource "aws_apigatewayv2_stage" "main" {
     })
   }
 
-  tags = {
-    Name = "${var.project_name}-api-stage"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-api-stage"
+  })
 }
 
 # Lambda function for API business logic
 resource "aws_lambda_function" "api_handler" {
   filename      = data.archive_file.api_handler_zip.output_path
-  function_name = "${var.project_name}-api-handler"
+  function_name = "${local.name_prefix}-api-handler"
   role          = aws_iam_role.lambda_api_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs18.x"
+  runtime       = "nodejs20.x"  # Updated to latest LTS
   timeout       = 30
   memory_size   = local.environment_config[var.environment].lambda_memory_size
+  
+  # Performance optimizations
+  reserved_concurrent_executions = var.environment == "prod" ? 100 : 10
+  
+  # Dead letter queue for failed invocations
+  dead_letter_config {
+    target_arn = aws_sqs_queue.lambda_dlq.arn
+  }
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -71,28 +79,40 @@ resource "aws_lambda_function" "api_handler" {
   source_code_hash = data.archive_file.api_handler_zip.output_base64sha256
 
   tracing_config {
-    mode = local.environment_config[var.environment].enable_detailed_monitoring ? "Active" : "PassThrough"
+    mode = "Active"
+    #Swap to active/passthrough depending on environment variables
+    #mode = local.config.enable_advanced_monitoring ? "Active" : "PassThrough"
   }
 
   environment {
-    variables = {
+    variables = merge(local.lambda_environment_vars, {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.main.name
       OPENSEARCH_ENDPOINT = aws_opensearch_domain.main.endpoint
       IDEMPOTENCY_TABLE   = aws_dynamodb_table.idempotency.name
-      ENVIRONMENT         = var.environment
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1" # Best practice for performance
-    }
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1"
+      NODE_OPTIONS = "--enable-source-maps"  # Better error reporting
+    })
   }
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_api_policy_attachment,
     aws_cloudwatch_log_group.lambda_api,
-    aws_iam_role_policy_attachment.lambda_api_xray_attachment,
   ]
 
-  tags = {
-    Name = "${var.project_name}-api-handler"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-api-handler"
+  })
+}
+
+# Dead letter queue for Lambda failures
+resource "aws_sqs_queue" "lambda_dlq" {
+  name                      = "${local.name_prefix}-lambda-dlq"
+  message_retention_seconds = 1209600 # 14 days
+  kms_master_key_id         = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-dlq"
+  })
 }
 
 # Create a placeholder zip file for the Lambda function
@@ -217,9 +237,9 @@ resource "aws_cloudwatch_log_group" "api_gateway" {
   retention_in_days = 14
   kms_key_id        = aws_kms_key.main.arn
 
-  tags = {
-    Name = "${var.project_name}-api-gateway-logs"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-api-gateway-logs"
+  })
 }
 
 resource "aws_cloudwatch_log_group" "lambda_api" {
@@ -227,7 +247,7 @@ resource "aws_cloudwatch_log_group" "lambda_api" {
   retention_in_days = 14
   kms_key_id        = aws_kms_key.main.arn
 
-  tags = {
-    Name = "${var.project_name}-lambda-api-logs"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-lambda-api-logs"
+  })
 }

@@ -251,7 +251,7 @@ Testing will focus on the Core API & Data Platform. This includes API functional
 
 To validate that the API can handle the target load of 2,000 MAU with p95 latency below 500ms.
 
-**Methodology:** The Staging environment will be used for all tests, and will utilise a load testing script created using a tool like Artillery.io or JMeter. The script will simulate realistic user behaviour: a mix of searching for artists and retrieving individual profiles. Tests will be run at increasing concurrent user levels (e.g., 10, 50, 100 concurrent users) to identify the system's breaking point.
+**Methodology:** The Dev/Staging environment will be used for all tests, and will utilise a load testing script created using a tool like Artillery.io or JMeter. The script will simulate realistic user behaviour: a mix of searching for artists and retrieving individual profiles. Tests will be run at increasing concurrent user levels (e.g., 10, 50, 100 concurrent users) to identify the system's breaking point.
 
 **Load Testing Target:** The system should be able to sustain a peak load of 10-20 requests per second (RPS) while maintaining a p95 latency of less than 500ms for all API endpoints. This target is derived from an estimated 2,000 monthly active users (MAU), assuming 5 sessions per month and 10 requests per session, with a peak load factor of 50x the average.
 

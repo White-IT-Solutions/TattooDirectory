@@ -222,7 +222,7 @@ The core functionality of the MVP can be summarised as follows:
 
 * **NFR-MNT-01:** 100% of the system's cloud infrastructure shall be defined as code (IaaC) using HashiCorp Terraform.  
 * **NFR-MNT-02:** A fully automated Continuous Integration and Continuous Delivery (CI/CD) Gitlab Actions pipeline shall be implemented to manage testing and deployment.  
-* **NFR-MNT-03:** The CI/CD pipeline must complete a deployment to the Staging environment, including all tests, in under 15 minutes.
+* **NFR-MNT-03:** The CI/CD pipeline must complete a deployment to the Dev/Staging environment, including all tests, in under 15 minutes.
 
 ## **4.7 Data Governance & Compliance** 
 
