@@ -219,8 +219,8 @@ resource "aws_opensearch_domain" "main" {
         Effect = "Allow"
         Principal = { # Restrict access to specific IAM roles
           AWS = [
-            aws_iam_role.lambda_api_role.arn,
-            aws_iam_role.lambda_sync_role.arn
+            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.name_prefix}-lambda-api-role",
+            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.name_prefix}-lambda-sync-role"
             # Add other roles that might need access, e.g., an admin user role
           ]
         }
@@ -228,7 +228,7 @@ resource "aws_opensearch_domain" "main" {
           "es:ESHttpGet",
           "es:ESHttpPost",
         "es:ESHttpPut"]
-        Resource = "${aws_opensearch_domain.main.arn}/*"
+        Resource = "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${local.name_prefix}-search/*"
       },
       {
         "Effect" : "Allow",
@@ -239,9 +239,9 @@ resource "aws_opensearch_domain" "main" {
           "logs:PutLogEvents",
           "logs:CreateLogStream"
         ],
-        "Resource" : "${aws_cloudwatch_log_group.opensearch_audit.arn}:*",
+        "Resource" : "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/opensearch/domains/${local.name_prefix}-search-audit:*",
         "Condition" : {
-          "ArnLike" : { "aws:SourceArn" : aws_opensearch_domain.main.arn }
+          "ArnLike" : { "aws:SourceArn" : "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${local.name_prefix}-search" }
         }
       }
     ]
@@ -302,9 +302,9 @@ resource "aws_lambda_function" "dynamodb_sync" {
 
   environment {
     variables = {
-      OPENSEARCH_ENDPOINT = aws_opensearch_domain.main.endpoint
+      OPENSEARCH_ENDPOINT = "${local.name_prefix}-search.${var.aws_region}.es.amazonaws.com"
       OPENSEARCH_INDEX    = "artists"
-      APP_SECRETS_ARN     = aws_secretsmanager_secret.app_secrets.arn
+      APP_SECRETS_ARN     = "arn:aws:secretsmanager:${var.aws_region}:${data.aws_caller_identity.current.account_id}:secret:${local.name_prefix}-secrets"
       ENVIRONMENT         = var.environment
     }
   }
@@ -461,7 +461,7 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream" {
 
   destination_config {
     on_failure {
-      destination_arn = aws_sqs_queue.lambda_sync_dlq.arn
+      destination_arn = "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-lambda-sync-dlq"
     }
   }
 

@@ -632,10 +632,10 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   origin {
-    domain_name = replace(aws_apigatewayv2_stage.main.invoke_url, "https://", "")
+    domain_name = replace(aws_apigatewayv2_api.main.api_endpoint, "https://", "")
     origin_id   = "APIGW-${aws_apigatewayv2_api.main.id}"
-    # The path part of the invoke_url must be specified here
-    origin_path = "/${aws_apigatewayv2_stage.main.name}"
+    # Use a static path instead of referencing the stage
+    origin_path = "/${var.environment}"
   }
 
   origin_group {

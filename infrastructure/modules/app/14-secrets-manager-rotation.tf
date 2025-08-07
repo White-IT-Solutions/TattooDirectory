@@ -7,7 +7,7 @@ data "archive_file" "secret_rotation_zip" {
   type        = "zip"
   output_path = "${path.module}/secret_rotation.zip"
   source_file = "${path.module}/lambda/secret_rotation.py"
-  output_file_mode = "0666"
+  output_file_mode = "0644"
 }
 
 # CloudWatch Log Group for the rotation Lambda

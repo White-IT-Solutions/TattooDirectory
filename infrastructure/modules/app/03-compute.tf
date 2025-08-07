@@ -9,8 +9,8 @@ resource "aws_apigatewayv2_api" "main" {
     allow_headers     = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token"]
     allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_origins = var.environment == "prod" ? [
-      "https://${aws_cloudfront_distribution.frontend.domain_name}"
-    ] : ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"] # Allow localhost for dev
+      "https://${var.domain_name != "" ? var.domain_name : "*.cloudfront.net"}"
+    ] : ["https://*.cloudfront.net", "http://localhost:3000"] # Allow localhost for dev
     expose_headers = ["date", "keep-alive"]
     max_age        = 86400
   }
@@ -70,7 +70,7 @@ resource "aws_lambda_function" "api_handler" {
 
   # Dead letter queue for failed invocations
   dead_letter_config {
-    target_arn = aws_sqs_queue.lambda_dlq.arn
+    target_arn = "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-lambda-dlq"
   }
 
   vpc_config {
@@ -87,9 +87,9 @@ resource "aws_lambda_function" "api_handler" {
 
   environment {
     variables = merge(local.lambda_environment_vars, {
-      DYNAMODB_TABLE_NAME                 = aws_dynamodb_table.main.name
-      OPENSEARCH_ENDPOINT                 = aws_opensearch_domain.main.endpoint
-      IDEMPOTENCY_TABLE                   = aws_dynamodb_table.idempotency.name
+      DYNAMODB_TABLE_NAME                 = "${local.name_prefix}-main"
+      OPENSEARCH_ENDPOINT                 = "${local.name_prefix}-search.${var.aws_region}.es.amazonaws.com"
+      IDEMPOTENCY_TABLE                   = "${local.name_prefix}-idempotency"
       AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1"
       NODE_OPTIONS                        = "--enable-source-maps" # Better error reporting
     })

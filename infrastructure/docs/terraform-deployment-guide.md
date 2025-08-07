@@ -3,11 +3,13 @@
 ## Deployment Steps
 
 ### 1. Create Lambda Package Directory
+
 ```bash
 mkdir -p infrastructure/modules/app/lambda-packages
 ```
 
 ### 2. Validate Configuration
+
 ```bash
 cd infrastructure/environments/dev
 terraform init
@@ -16,12 +18,14 @@ terraform plan
 ```
 
 ### 3. Test in Development
+
 ```bash
 cd infrastructure/environments/dev
 terraform apply
 ```
 
 ### 4. Apply to Production
+
 ```bash
 cd infrastructure/environments/prod
 terraform init
@@ -39,6 +43,7 @@ terraform apply
 3. **Variable Errors**: Ensure environment-specific variables.tf files are created
 
 ### Validation Commands
+
 ```bash
 # Check syntax
 terraform fmt -check
