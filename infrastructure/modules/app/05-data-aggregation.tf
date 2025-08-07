@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "scraper" {
       name  = "scraper"
       image = "${aws_ecr_repository.scraper.repository_url}:${var.scraper_image_tag}"
 
-      essential = true
+      essential              = true
       readonlyRootFilesystem = true
 
       environment = [
@@ -251,6 +251,15 @@ resource "aws_sfn_state_machine" "data_aggregation" {
   name     = "${local.name_prefix}}-data-aggregation"
   role_arn = aws_iam_role.step_functions_role.arn
 
+  logging_configuration {
+    level = "ALL"
+    include_execution_data = true
+  }
+
+  tracing_configuration {
+    enabled = true
+  }
+
   definition = jsonencode({
     Comment = "Data aggregation workflow for tattoo artist directory"
     StartAt = "DiscoverStudios"
@@ -278,6 +287,7 @@ resource "aws_sfn_state_machine" "data_aggregation" {
       FindArtistsOnSite = {
         Type      = "Map"
         InputPath = "$.DiscoveredStudios.Payload.studios"
+        MaxConcurrency = 10
         Iterator = {
           StartAt = "FindArtistsTask"
           States = {
@@ -391,12 +401,15 @@ resource "aws_cloudwatch_event_target" "step_functions_target" {
 
 # Placeholder Lambda functions for the workflow
 resource "aws_lambda_function" "discover_studios" {
+  # checkov:skip=CKV_AWS_116: Step Functions retry/catch means DLQ is not used
   filename         = data.archive_file.discover_studios_zip.output_path
   function_name    = "${local.name_prefix}}-discover-studios"
   role             = aws_iam_role.discover_studios_role.arn
   handler          = "index.handler"
-  runtime          = "nodejs18.x"
+  runtime          = "nodejs24.x" # Updated to latest LTS
   timeout          = 300
+  reserved_concurrent_executions = 5
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
   source_code_hash = data.archive_file.discover_studios_zip.output_base64sha256
 
   environment {
@@ -406,11 +419,24 @@ resource "aws_lambda_function" "discover_studios" {
     }
   }
 
+  vpc_config {
+    subnet_ids         = values(aws_subnet.private)[*].id
+    security_group_ids = [aws_security_group.lambda.id]
+  }
+
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
+
   tracing_config {
     mode = "Active"
     #Swap to active/passthrough depending on environment variables
     #mode = local.config.enable_advanced_monitoring ? "Active" : "PassThrough"
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.discover_studios_attachment,
+    aws_cloudwatch_log_group.lambda_workflow,
+  ]
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-discover-studios"
@@ -418,12 +444,15 @@ resource "aws_lambda_function" "discover_studios" {
 }
 
 resource "aws_lambda_function" "find_artists_on_site" {
+  # checkov:skip=CKV_AWS_116: Step Functions retry/catch means DLQ is not used
   filename         = data.archive_file.find_artists_on_site_zip.output_path
   function_name    = "${local.name_prefix}}-find-artists-on-site"
   role             = aws_iam_role.find_artists_on_site_role.arn
   handler          = "index.handler"
-  runtime          = "nodejs18.x"
+  runtime          = "nodejs24.x" # Updated to latest LTS
   timeout          = 300
+  reserved_concurrent_executions = 15
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
   source_code_hash = data.archive_file.find_artists_on_site_zip.output_base64sha256
 
   environment {
@@ -432,11 +461,24 @@ resource "aws_lambda_function" "find_artists_on_site" {
     }
   }
 
+  vpc_config {
+    subnet_ids         = values(aws_subnet.private)[*].id
+    security_group_ids = [aws_security_group.lambda.id]
+  }
+
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
+
   tracing_config {
     mode = "Active"
     #Swap to active/passthrough depending on environment variables
     #mode = local.config.enable_advanced_monitoring ? "Active" : "PassThrough"
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.find_artists_on_site_attachment,
+    aws_cloudwatch_log_group.lambda_workflow,
+  ]
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-find-artists-on-site"
@@ -444,12 +486,15 @@ resource "aws_lambda_function" "find_artists_on_site" {
 }
 
 resource "aws_lambda_function" "queue_scraping" {
+  # checkov:skip=CKV_AWS_116: Step Functions retry/catch means DLQ is not used
   filename         = data.archive_file.queue_scraping_zip.output_path
   function_name    = "${local.name_prefix}}-queue-scraping"
   role             = aws_iam_role.queue_scraping_role.arn
   handler          = "index.handler"
-  runtime          = "nodejs18.x"
+  runtime          = "nodejs24.x" # Updated to latest LTS
   timeout          = 300
+  reserved_concurrent_executions = 5
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
   source_code_hash = data.archive_file.queue_scraping_zip.output_base64sha256
 
   environment {
@@ -460,11 +505,24 @@ resource "aws_lambda_function" "queue_scraping" {
     }
   }
 
+  vpc_config {
+    subnet_ids         = values(aws_subnet.private)[*].id
+    security_group_ids = [aws_security_group.lambda.id]
+  }
+
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
+
   tracing_config {
     mode = "Active"
     #Swap to active/passthrough depending on environment variables
     #mode = local.config.enable_advanced_monitoring ? "Active" : "PassThrough"
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.queue_scraping_attachment,
+    aws_cloudwatch_log_group.lambda_workflow,
+  ]
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-queue-scraping"
@@ -549,35 +607,4 @@ exports.handler = async (event) => {
 EOF
     filename = "index.js"
   }
-}
-
-# CloudWatch Log Groups
-resource "aws_cloudwatch_log_group" "ecs_cluster" {
-  name              = "/aws/ecs/${var.project_name}-cluster"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-ecs-cluster-logs"
-  })
-}
-
-resource "aws_cloudwatch_log_group" "fargate_scraper" {
-  name              = "/aws/ecs/${var.project_name}-scraper"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-fargate-scraper-logs"
-  })
-}
-
-resource "aws_cloudwatch_log_group" "lambda_workflow" {
-  name              = "/aws/lambda/${var.project_name}-workflow"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-lambda-workflow-logs"
-  })
 }

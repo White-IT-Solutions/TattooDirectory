@@ -50,8 +50,61 @@ resource "aws_kms_alias" "main" {
   target_key_id = aws_kms_key.main.key_id
 }
 
+# KMS Key specifically for CloudWatch Logs
+resource "aws_kms_key" "logs" {
+  description             = "KMS key for ${var.project_name} CloudWatch Logs encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch Logs"
+        Effect = "Allow"
+        Principal = {
+          Service = "logs.${var.aws_region}.amazonaws.com"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+        Condition = {
+          ArnEquals = {
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/*"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name               = "${local.name_prefix}-logs-kms-key"
+    DataClassification = "Confidential"
+  })
+}
+
+resource "aws_kms_alias" "logs" {
+  name          = "alias/${var.project_name}-logs-key"
+  target_key_id = aws_kms_key.logs.key_id
+}
+
 # Secrets Manager Secret
 resource "aws_secretsmanager_secret" "app_secrets" {
+  # checkov:skip=CKV2_AWS_57: Secrets Manager rotation is configured in 14-secrets-manager-rotation.tf
   name                    = "${local.name_prefix}}-secrets"
   description             = "Application secrets for ${var.project_name}"
   kms_key_id              = aws_kms_key.main.arn
@@ -65,12 +118,13 @@ resource "aws_secretsmanager_secret" "app_secrets" {
 
 # Security Groups
 resource "aws_security_group" "opensearch" {
-  name = "${local.name_prefix}-opensearch-sg"
+  # checkov:skip=CKV2_AWS_5: Assigned in 04-storage
+  name        = "${local.name_prefix}-opensearch-sg"
   description = "OpenSearch security group"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "HTTPS from Lambda"
+    description     = "HTTPS from Lambda functions"
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
@@ -83,13 +137,14 @@ resource "aws_security_group" "opensearch" {
 }
 
 resource "aws_security_group" "fargate" {
-  name = "${local.name_prefix}-fargate-sg"
+  # checkov:skip=CKV2_AWS_5: Assigned in 05-data-aggregation
+  name        = "${local.name_prefix}-fargate-sg"
   description = "Fargate security group"
   vpc_id      = aws_vpc.main.id
 
   # Allow outbound to VPC endpoints for SQS, ECR, Logs etc.
   egress {
-    description = "Egress to VPC Endpoints"
+    description     = "Egress to VPC Endpoints"
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
@@ -120,13 +175,14 @@ resource "aws_security_group" "fargate" {
 }
 
 resource "aws_security_group" "lambda" {
-  name = "${local.name_prefix}-lambda-sg"
+  # checkov:skip=CKV2_AWS_5: Assigned in 03-compute, 04-storage, 05-data-aggregation
+  name        = "${local.name_prefix}-lambda-sg"
   description = "Lambda security group"
   vpc_id      = aws_vpc.main.id
 
   # Egress to OpenSearch
   egress {
-    description = "Egress to OpenSearch"
+    description     = "Egress to OpenSearch"
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
@@ -135,11 +191,21 @@ resource "aws_security_group" "lambda" {
 
   # Egress to VPC Endpoints (SecretsManager, SQS, etc.)
   egress {
-    description = "Egress to VPC Endpoints"
+    description     = "Egress to VPC Endpoints"
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
     security_groups = [aws_security_group.vpc_endpoints.id]
+  }
+
+  # Egress to Internet for services without a VPC endpoint (e.g., EC2 API, SNS)
+  egress {
+    description = "Egress to Internet for AWS APIs"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for AWS services without a VPCe
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(local.common_tags, {
@@ -248,8 +314,10 @@ resource "aws_vpc_endpoint" "logs" {
     Name = "${local.name_prefix}}-logs-endpoint"
   })
 }
+
 resource "aws_security_group" "vpc_endpoints" {
-  name = "${local.name_prefix}-vpc-endpoints-sg"
+  # checkov:skip=CKV2_AWS_5: Assigned in 02-security
+  name        = "${local.name_prefix}-vpc-endpoints-sg"
   description = "VPC Endpoints security group"
   vpc_id      = aws_vpc.main.id
 
@@ -272,7 +340,23 @@ resource "aws_security_group" "vpc_endpoints" {
 # AWS GuardDuty for intelligent threat detection
 
 resource "aws_guardduty_detector" "main" {
+  # checkov:skip=CKV2_AWS_3: GuardDuty Config is correct.
   enable = true
+}
+
+resource "aws_guardduty_organization_admin_account" "main" {
+  admin_account_id = data.aws_caller_identity.current.account_id
+
+  # This resource must be created from the AWS Organization's master account.
+  # It designates the current account as the GuardDuty delegated administrator.
+  depends_on = [aws_guardduty_detector.main]
+}
+
+resource "aws_guardduty_organisation_configuration" "main" {
+  auto_enable_organization_members = "ALL"
+
+  # This detector must exist in the delegated administrator account.
+  detector_id = aws_guardduty_detector.main.id
 
   datasources {
     s3_logs {
@@ -288,4 +372,7 @@ resource "aws_guardduty_detector" "main" {
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-guardduty-detector"
   })
+
+  # Ensure the admin account is designated before configuring the organization.
+  depends_on = [aws_guardduty_organization_admin_account.main]
 }

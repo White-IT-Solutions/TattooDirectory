@@ -49,7 +49,7 @@ resource "aws_dynamodb_table" "main" {
   })
 
   lifecycle {
-    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
+    prevent_destroy = true
   }
 }
 
@@ -98,11 +98,11 @@ resource "aws_dynamodb_table" "denylist" {
   deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-denylist-table"
+    Name = "${local.name_prefix}-denylist-table"
   })
 
   lifecycle {
-    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
+    prevent_destroy = true
   }
 }
 
@@ -136,21 +136,30 @@ resource "aws_dynamodb_table" "idempotency" {
     enabled = true
   }
 
+  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-idempotency-table"
+    Name = "${local.name_prefix}-idempotency-table"
   })
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # OpenSearch Domain
 resource "aws_opensearch_domain" "main" {
+  # checkov:skip=CKV2_AWS_59: MVP Environment, would scale up for production
+  # checkov:skip=CKV_AWS_318: MVP Environment, would scale up for production
   domain_name    = "${local.name_prefix}}-search"
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
     instance_type            = local.environment_config[var.environment].opensearch_instance_type
     instance_count           = local.environment_config[var.environment].opensearch_instance_count
-    dedicated_master_enabled = var.environment == "prod" ? false : false
+    dedicated_master_enabled = var.environment == "prod" ? true : false
+   # master_instance_type     = var.environment == "prod" ? "t3.small.search" : null
+   # master_instance_count    = var.environment == "prod" ? 3 : null
     zone_awareness_enabled   = var.environment == "prod" ? true : false
 
     dynamic "zone_awareness_config" {
@@ -216,34 +225,34 @@ resource "aws_opensearch_domain" "main" {
           ]
         }
         Action = [
-        "es:ESHttpGet",
-        "es:ESHttpPost", 
-        "es:ESHttpPut" ]
+          "es:ESHttpGet",
+          "es:ESHttpPost",
+        "es:ESHttpPut"]
         Resource = "${aws_opensearch_domain.main.arn}/*"
       },
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "es.amazonaws.com"
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "es.amazonaws.com"
         },
-        "Action": [
+        "Action" : [
           "logs:PutLogEvents",
           "logs:CreateLogStream"
         ],
-        "Resource": "${aws_cloudwatch_log_group.opensearch_audit.arn}:*",
-        "Condition": {
-          "ArnLike": { "aws:SourceArn": aws_opensearch_domain.main.arn }
+        "Resource" : "${aws_cloudwatch_log_group.opensearch_audit.arn}:*",
+        "Condition" : {
+          "ArnLike" : { "aws:SourceArn" : aws_opensearch_domain.main.arn }
         }
       }
     ]
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-opensearch"
+    Name = "${local.name_prefix}-opensearch"
   })
 
   lifecycle {
-    prevent_destroy = local.environment_config[var.environment].enable_deletion_protection
+    prevent_destroy = true
   }
 
   depends_on = [aws_iam_service_linked_role.opensearch]
@@ -253,6 +262,9 @@ resource "aws_opensearch_domain" "main" {
 resource "random_password" "opensearch_password" {
   length  = 16
   special = true
+  upper   = true
+  lower   = true
+  numeric = true
 }
 
 # Store OpenSearch password in Secrets Manager
@@ -263,19 +275,24 @@ resource "aws_secretsmanager_secret_version" "opensearch_password" {
   })
 }
 
-# Data sources
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
+
 
 # DynamoDB to OpenSearch Sync Lambda
 resource "aws_lambda_function" "dynamodb_sync" {
+  # checkov:skip=CKV_AWS_116: Used destination_config on event source mapping as stream-based.
   filename      = "dynamodb_sync.zip"
   function_name = "${local.name_prefix}}-dynamodb-sync"
   role          = aws_iam_role.lambda_sync_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs18.x"
+  runtime       = "nodejs24.x"
   timeout       = 300
   memory_size   = local.environment_config[var.environment].lambda_memory_size
+
+  # Security: Configure concurrent execution limit
+  reserved_concurrent_executions = var.environment == "prod" ? 50 : 10
+
+  # Security: Code signing configuration
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -291,6 +308,9 @@ resource "aws_lambda_function" "dynamodb_sync" {
       ENVIRONMENT         = var.environment
     }
   }
+
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
 
   tracing_config {
     mode = "Active"
@@ -384,6 +404,53 @@ EOF
   }
 }
 
+# Dead Letter Queue for Lambda Sync function
+resource "aws_sqs_queue" "lambda_sync_dlq" {
+  name                      = "${local.name_prefix}-lambda-sync-dlq"
+  message_retention_seconds = 1209600 # 14 days
+  kms_master_key_id         = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-sync-dlq"
+  })
+}
+
+# Code Signing Config for Lambda (production only)
+resource "aws_lambda_code_signing_config" "main" {
+  count = var.environment == "prod" ? 1 : 0
+
+  allowed_publishers {
+    signing_profile_version_arns = [aws_signer_signing_profile.lambda[0].arn]
+  }
+
+  policies {
+    untrusted_artifact_on_deployment = "Warn"
+  }
+
+  description = "Code signing config for ${local.name_prefix} Lambda functions"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-code-signing-config"
+  })
+}
+
+# Signer Signing Profile (production only)
+resource "aws_signer_signing_profile" "lambda" {
+  count       = var.environment == "prod" ? 1 : 0
+  platform_id = "AWSLambda-SHA384-ECDSA"
+  name        = "${local.name_prefix}-lambda-signing-profile"
+  name_prefix = null
+
+  signature_validity_period {
+    value = 5
+    type  = "YEARS"
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-signing-profile"
+  })
+}
+
 # Event Source Mapping for DynamoDB Stream
 resource "aws_lambda_event_source_mapping" "dynamodb_stream" {
   event_source_arn                   = aws_dynamodb_table.main.stream_arn
@@ -391,6 +458,12 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream" {
   starting_position                  = "LATEST"
   batch_size                         = 10
   maximum_batching_window_in_seconds = 5
+
+  destination_config {
+    on_failure {
+      destination_arn = aws_sqs_queue.lambda_sync_dlq.arn
+    }
+  }
 
   filter_criteria {
     filter {
@@ -401,27 +474,7 @@ resource "aws_lambda_event_source_mapping" "dynamodb_stream" {
   }
 }
 
-# CloudWatch Log Group for Sync Lambda
-resource "aws_cloudwatch_log_group" "lambda_sync" {
-  name              = "/aws/lambda/${var.project_name}-dynamodb-sync"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
-  kms_key_id        = aws_kms_key.main.arn
 
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-lambda-sync-logs"
-  })
-}
-
-# CloudWatch Log Group for OpenSearch audit logs
-resource "aws_cloudwatch_log_group" "opensearch_audit" {
-  name              = "/aws/opensearch/domains/${var.project_name}-search/audit-logs"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-opensearch-audit-logs"
-  })
-}
 
 # S3 Bucket for static website hosting
 resource "aws_s3_bucket" "frontend" {
@@ -503,14 +556,12 @@ resource "aws_s3_bucket_notification" "frontend" {
     # filter_prefix = "uploads/"
     # filter_suffix = ".jpg"
   }
-  depends_on = [
-    aws_iam_policy.s3_event_notification_policy
-  ]
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
 }
 
 # SNS Topic for S3 events
 resource "aws_sns_topic" "s3_events" {
-  name = "${local.name_prefix}}-s3-events"
+  name              = "${local.name_prefix}}-s3-events"
   kms_master_key_id = aws_kms_key.main.arn
 
   tags = merge(local.common_tags, {
@@ -529,11 +580,22 @@ resource "aws_sns_topic_policy" "s3_events_topic_policy" {
         Principal = {
           Service = "s3.amazonaws.com"
         }
-        Action = "sns:Publish"
+        Action   = "sns:Publish"
         Resource = aws_sns_topic.s3_events.arn
         Condition = {
           ArnLike = {
-            "aws:SourceArn" = aws_s3_bucket.frontend.arn
+            "aws:SourceArn" = concat(
+              [
+                aws_s3_bucket.frontend.arn,
+                aws_s3_bucket.frontend_backup.arn,
+                aws_s3_bucket.access_logs.arn
+              ],
+              var.environment == "prod" ? [
+                aws_s3_bucket.frontend_replica[0].arn,
+                aws_s3_bucket.frontend_backup_replica[0].arn,
+                aws_s3_bucket.access_logs_replica[0].arn
+              ] : []
+            )
           }
         }
       }
@@ -558,6 +620,7 @@ resource "aws_s3_bucket" "access_logs" {
   })
 }
 
+# Block all public access to the access logs bucket
 resource "aws_s3_bucket_public_access_block" "access_logs" {
   bucket = aws_s3_bucket.access_logs.id
 
@@ -593,4 +656,518 @@ resource "aws_s3_bucket_logging" "access_logs" {
 
   target_bucket = aws_s3_bucket.access_logs.id
   target_prefix = "access-logs-self-logs/"
+}
+
+# S3 bucket notification configuration for access logs bucket
+resource "aws_s3_bucket_notification" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+
+  topic {
+    id        = "s3-access-logs-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# S3 Backup Bucket for CloudFront failover
+resource "aws_s3_bucket" "frontend_backup" {
+  bucket = "${var.project_name}-frontend-backup-${random_id.bucket_suffix.hex}"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-frontend-backup"
+  })
+}
+
+# Block all public access to the backup S3 bucket
+resource "aws_s3_bucket_public_access_block" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket versioning for backup
+resource "aws_s3_bucket_versioning" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# S3 bucket encryption for backup
+resource "aws_s3_bucket_server_side_encryption_configuration" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.main.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+# S3 bucket lifecycle configuration for backup
+resource "aws_s3_bucket_lifecycle_configuration" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  rule {
+    id     = "cleanup_old_versions"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# S3 bucket notification configuration for backup bucket
+resource "aws_s3_bucket_notification" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  topic {
+    id        = "s3-backup-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# S3 bucket logging for backup bucket
+resource "aws_s3_bucket_logging" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  target_bucket = aws_s3_bucket.access_logs.id
+  target_prefix = "frontend-backup-access-logs/"
+}
+
+# Cross-region replication for frontend bucket (production only)
+resource "aws_s3_bucket_replication_configuration" "frontend" {
+  count  = var.environment == "prod" ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.frontend.id
+
+  rule {
+    id     = "replicate-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.frontend_replica[0].arn
+      storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
+
+  depends_on = [aws_s3_bucket_versioning.frontend]
+}
+
+# Cross-region replication for backup bucket (production only)
+resource "aws_s3_bucket_replication_configuration" "frontend_backup" {
+  count  = var.environment == "prod" ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  rule {
+    id     = "replicate-backup-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.frontend_backup_replica[0].arn
+      storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
+
+  depends_on = [aws_s3_bucket_versioning.frontend_backup]
+}
+
+# Cross-region replication for access logs bucket (production only)
+resource "aws_s3_bucket_replication_configuration" "access_logs" {
+  count  = var.environment == "prod" ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.access_logs.id
+
+  rule {
+    id     = "replicate-logs-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.access_logs_replica[0].arn
+      storage_class = "GLACIER"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
+
+  depends_on = [aws_s3_bucket_versioning.access_logs]
+}
+
+# Cross-region replication resources (production only)
+
+# KMS Key for replica region (production only)
+resource "aws_kms_key" "replica" {
+  count                   = var.environment == "prod" ? 1 : 0
+  provider                = aws.replica
+  description             = "KMS key for ${var.project_name} replica region encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow S3 Service"
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-replica-kms-key"
+  })
+}
+
+resource "aws_kms_alias" "replica" {
+  count         = var.environment == "prod" ? 1 : 0
+  provider      = aws.replica
+  name          = "alias/${var.project_name}-replica-key"
+  target_key_id = aws_kms_key.replica[0].key_id
+}
+
+# Replica S3 buckets (production only)
+resource "aws_s3_bucket" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = "${var.project_name}-frontend-replica-${random_id.bucket_suffix.hex}"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-frontend-replica"
+  })
+}
+
+resource "aws_s3_bucket" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = "${var.project_name}-frontend-backup-replica-${random_id.bucket_suffix.hex}"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-frontend-backup-replica"
+  })
+}
+
+resource "aws_s3_bucket" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = "${var.project_name}-access-logs-replica-${random_id.bucket_suffix.hex}"
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-access-logs-replica"
+  })
+}
+
+# Configure versioning for replica buckets
+resource "aws_s3_bucket_versioning" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Configure encryption for replica buckets
+resource "aws_s3_bucket_server_side_encryption_configuration" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.replica[0].arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.replica[0].arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.replica[0].arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+# Block public access for replica buckets
+resource "aws_s3_bucket_public_access_block" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket logging for replica buckets
+resource "aws_s3_bucket_logging" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+
+  target_bucket = aws_s3_bucket.access_logs_replica[0].id
+  target_prefix = "frontend-replica-access-logs/"
+}
+
+resource "aws_s3_bucket_public_access_block" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket logging for backup replica bucket
+resource "aws_s3_bucket_logging" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+
+  target_bucket = aws_s3_bucket.access_logs_replica[0].id
+  target_prefix = "frontend-backup-replica-access-logs/"
+}
+
+resource "aws_s3_bucket_public_access_block" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# S3 bucket logging for access logs replica bucket (self-logging)
+resource "aws_s3_bucket_logging" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+
+  target_bucket = aws_s3_bucket.access_logs_replica[0].id
+  target_prefix = "access-logs-replica-self-logs/"
+}
+
+# S3 bucket notification configuration for frontend replica bucket
+resource "aws_s3_bucket_notification" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+
+  topic {
+    id        = "s3-frontend-replica-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# S3 bucket notification configuration for frontend backup replica bucket
+resource "aws_s3_bucket_notification" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+
+  topic {
+    id        = "s3-frontend-backup-replica-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# S3 bucket notification configuration for access logs replica bucket
+resource "aws_s3_bucket_notification" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+
+  topic {
+    id        = "s3-access-logs-replica-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# Add lifecycle configuration for access logs bucket
+resource "aws_s3_bucket_lifecycle_configuration" "access_logs" {
+  bucket = aws_s3_bucket.access_logs.id
+
+  rule {
+    id     = "access_logs_lifecycle"
+    status = "Enabled"
+
+    expiration {
+      days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# Add lifecycle configuration for frontend_backup_replica
+resource "aws_s3_bucket_lifecycle_configuration" "frontend_backup_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_backup_replica[0].id
+
+  rule {
+    id     = "cleanup_old_versions"
+    status = "Enabled"
+
+    expiration {
+      days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# Add lifecycle configuration for frontend_replica
+resource "aws_s3_bucket_lifecycle_configuration" "frontend_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.frontend_replica[0].id
+
+  rule {
+    id     = "cleanup_old_versions"
+    status = "Enabled"
+
+    expiration {
+      days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# Add lifecycle configuration for access_logs_replica
+resource "aws_s3_bucket_lifecycle_configuration" "access_logs_replica" {
+  count    = var.environment == "prod" ? 1 : 0
+  provider = aws.replica
+  bucket   = aws_s3_bucket.access_logs_replica[0].id
+
+  rule {
+    id     = "access_logs_lifecycle"
+    status = "Enabled"
+
+    expiration {
+      days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
 }

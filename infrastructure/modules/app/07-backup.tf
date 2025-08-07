@@ -33,7 +33,7 @@ resource "aws_backup_plan" "main" {
     # NOTE: The copy_action block is for cross-region/cross-account disaster recovery.
     # It is commented out because it currently points to the same vault, which is redundant.
     # To enable, create a backup vault in a different region and reference its ARN here.
-    
+
     # copy_action {
     #   destination_vault_arn = aws_backup_vault.main[0].arn
 

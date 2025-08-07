@@ -1,3 +1,95 @@
+# CloudWatch Log Groups
+resource "aws_cloudwatch_log_group" "lambda_api" {
+  name              = "/aws/lambda/${local.name_prefix}-api-handler"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-api-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "lambda_sync" {
+  name              = "/aws/lambda/${local.name_prefix}-dynamodb-sync"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-sync-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "lambda_workflow" {
+  name              = "/aws/lambda/${local.name_prefix}-workflow"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-lambda-workflow-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "api_gateway" {
+  name              = "/aws/apigateway/${local.name_prefix}-api"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-api-gateway-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "fargate_scraper" {
+  name              = "/aws/ecs/${local.name_prefix}-scraper"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-fargate-scraper-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "ecs_cluster" {
+  name              = "/aws/ecs/${local.name_prefix}-cluster"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-ecs-cluster-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "opensearch_audit" {
+  name              = "/aws/opensearch/domains/${local.name_prefix}-search/audit-logs"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-opensearch-audit-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "cloudtrail" {
+  name              = "/aws/cloudtrail/${local.name_prefix}"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-cloudtrail-logs"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "config_compliance_processor" {
+  count             = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  name              = "/aws/lambda/${local.name_prefix}-config-compliance-processor"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-config-compliance-processor-logs"
+  })
+}
+
 # SNS Topic for high-priority alerts
 resource "aws_sns_topic" "alerts" {
   name              = "${local.name_prefix}}-alerts"
@@ -63,6 +155,38 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-sqs-queue-depth-alarm"
+  })
+}
+
+# CloudWatch Metric Filter for suspicious activity (rejected connections)
+resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
+  name           = "${local.name_prefix}}-rejected-connections"
+  log_group_name = aws_cloudwatch_log_group.vpc_flow_logs.name
+  pattern        = "[version, account, eni, source, destination, srcport, destport, protocol, packets, bytes, windowstart, windowend, action=\"REJECT\", flowlogstatus]"
+
+  metric_transformation {
+    name      = "RejectedConnections"
+    namespace = "${var.project_name}/Security"
+    value     = "1"
+  }
+}
+
+# Alarm for high number of rejected connections
+resource "aws_cloudwatch_metric_alarm" "high_rejected_connections" {
+  alarm_name          = "${local.name_prefix}}-high-rejected-connections"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = aws_cloudwatch_log_metric_filter.rejected_connections.metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.rejected_connections.metric_transformation[0].namespace
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "100"
+  alarm_description   = "High number of rejected network connections detected"
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+  ok_actions          = [aws_sns_topic.alerts.arn]
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-high-rejected-connections-alarm"
   })
 }
 
@@ -282,10 +406,10 @@ resource "aws_budgets_budget" "daily_spend" {
   budget_type  = "COST"
   limit_amount = "20" # Based on runbook TAD-MVP-RUN-002
   limit_unit   = "GBP"
-  time_unit    = "DAILY" 
+  time_unit    = "DAILY"
   cost_filter {
-    name = "Tag"
-    values    = [var.project_name]
+    name   = "Tag"
+    values = [var.project_name]
   }
 
   notification {
@@ -303,8 +427,8 @@ resource "aws_budgets_budget" "daily_spend" {
 
 # AWS Cost Anomaly Detection
 resource "aws_cost_anomaly_monitor" "main" {
-  name                  = "${local.name_prefix}}-anomaly-monitor"
-  monitor_type          = "CUSTOM"
+  name         = "${local.name_prefix}}-anomaly-monitor"
+  monitor_type = "CUSTOM"
   monitor_specification = jsonencode({
     "Tags" = {
       "Key"    = "Project"
@@ -336,7 +460,7 @@ resource "aws_cost_anomaly_subscription" "main" {
 # CloudWatch Dashboard
 resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = "${local.name_prefix}}-dashboard"
-  
+
   dashboard_body = jsonencode({
     widgets = [
       {
@@ -496,7 +620,7 @@ resource "aws_xray_sampling_rule" "main" {
   priority       = 9000
   version        = 1
   reservoir_size = 1
-  fixed_rate     = var.environment == "prod" ? 0.1 : 0.5  # Sample more in dev
+  fixed_rate     = var.environment == "prod" ? 0.1 : 0.5 # Sample more in dev
   url_path       = "*"
   host           = "*"
   http_method    = "*"
