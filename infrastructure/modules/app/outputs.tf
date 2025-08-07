@@ -58,8 +58,9 @@ output "ecr_repository_url" {
 output "lambda_function_names" {
   description = "Names of the Lambda functions"
   value = {
-    api_handler    = aws_lambda_function.api_handler.function_name
-    dynamodb_sync  = aws_lambda_function.dynamodb_sync.function_name
+    api_handler      = aws_lambda_function.api_handler.function_name
+    dynamodb_sync    = aws_lambda_function.dynamodb_sync.function_name
+    secret_rotation  = aws_lambda_function.secret_rotation.function_name
   }
 }
 
@@ -72,8 +73,9 @@ output "sqs_queue_url" {
 output "sns_topic_arns" {
   description = "ARNs of the SNS topics"
   value = {
-    alerts             = aws_sns_topic.alerts.arn
-    config_notifications = aws_sns_topic.config_notifications.arn
+    alerts               = aws_sns_topic.alerts.arn
+    config_notifications = aws_sns_topic.config_notifications.arn,
+    cloudtrail_notifications = aws_sns_topic.cloudtrail_notifications.arn
   }
 }
 
@@ -129,6 +131,17 @@ output "kms_key_id" {
 output "kms_key_arn" {
   description = "ARN of the KMS key"
   value       = aws_kms_key.main.arn
+}
+
+output "secrets_manager_secret_arn" {
+  description = "ARN of the Secrets Manager secret"
+  value       = aws_secretsmanager_secret.app_secrets.arn
+  sensitive   = true
+}
+
+output "secrets_manager_secret_name" {
+  description = "Name of the Secrets Manager secret"
+  value       = aws_secretsmanager_secret.app_secrets.name
 }
 
 # Environment Information

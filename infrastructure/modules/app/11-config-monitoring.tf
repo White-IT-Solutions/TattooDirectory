@@ -117,11 +117,22 @@ resource "aws_lambda_function" "config_compliance_processor" {
   function_name = "${local.name_prefix}}-config-compliance-processor"
   role          = aws_iam_role.config_compliance_processor[0].arn
   handler       = "index.handler"
-  runtime       = "nodejs18.x"
+  runtime       = "nodejs24.x" # Updated to latest LTS
   timeout       = 60
   memory_size   = 256
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
 
   source_code_hash = data.archive_file.config_compliance_processor_zip[0].output_base64sha256
+
+  dead_letter_config {
+    target_arn = aws_sqs_queue.config_compliance_dlq[0].arn
+  }
+  reserved_concurrent_executions = 5
+
+  vpc_config {
+    subnet_ids         = values(aws_subnet.private)[*].id
+    security_group_ids = [aws_security_group.lambda.id]
+  }
 
   environment {
     variables = {
@@ -129,6 +140,9 @@ resource "aws_lambda_function" "config_compliance_processor" {
       PROJECT_NAME  = var.project_name
     }
   }
+
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
 
   depends_on = [
     aws_iam_role_policy_attachment.config_compliance_processor[0],
@@ -153,7 +167,7 @@ data "archive_file" "config_compliance_processor_zip" {
   type        = "zip"
   output_path = "${path.module}/config_compliance_processor.zip"
   source {
-    content = <<EOF
+    content  = <<EOF
 const AWS = require('aws-sdk');
 const sns = new AWS.SNS();
 
@@ -208,18 +222,7 @@ EOF
   }
 }
 
-# CloudWatch Log Group for Config Compliance Processor
-resource "aws_cloudwatch_log_group" "config_compliance_processor" {
-  count = local.config.enable_advanced_monitoring ? 1 : 0
-
-  name              = "/aws/lambda/${var.project_name}-config-compliance-processor"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-config-compliance-processor-logs"
-  })
-}
+# CloudWatch Log Group for Config Compliance Processor is defined in 06-observability.tf
 
 # EventBridge Target for Lambda Processing
 resource "aws_cloudwatch_event_target" "config_compliance_lambda" {
@@ -239,4 +242,17 @@ resource "aws_lambda_permission" "config_compliance_eventbridge" {
   function_name = aws_lambda_function.config_compliance_processor[0].function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.config_compliance_change.arn
+}
+
+# Dead letter queue for Config Compliance Processor failures
+resource "aws_sqs_queue" "config_compliance_dlq" {
+  count = local.config.enable_advanced_monitoring ? 1 : 0
+
+  name                      = "${local.name_prefix}-config-compliance-dlq"
+  message_retention_seconds = 1209600 # 14 days
+  kms_master_key_id         = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-config-compliance-dlq"
+  })
 }

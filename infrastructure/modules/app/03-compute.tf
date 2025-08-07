@@ -28,10 +28,10 @@ resource "aws_apigatewayv2_stage" "main" {
   default_route_settings {
     # LLD 5.3.2 specifies 100 RPS for the search endpoint.
     # As HTTP APIs only support stage-level throttling, we apply this limit to the whole stage.
-    throttling_rate_limit         = var.environment == "prod" ? 100 : 50
-    throttling_burst_limit        = var.environment == "prod" ? 200 : 100
-    detailed_metrics_enabled      = local.environment_config[var.environment].enable_advanced_monitoring
-    logging_level                 = var.environment == "prod" ? "INFO" : "ERROR"
+    throttling_rate_limit    = var.environment == "prod" ? 100 : 50
+    throttling_burst_limit   = var.environment == "prod" ? 200 : 100
+    detailed_metrics_enabled = local.environment_config[var.environment].enable_advanced_monitoring
+    logging_level            = var.environment == "prod" ? "INFO" : "ERROR"
   }
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
@@ -60,13 +60,14 @@ resource "aws_lambda_function" "api_handler" {
   function_name = "${local.name_prefix}-api-handler"
   role          = aws_iam_role.lambda_api_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs20.x"  # Updated to latest LTS
+  runtime       = "nodejs24.x" # Updated to latest LTS
   timeout       = 30
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
   memory_size   = local.environment_config[var.environment].lambda_memory_size
-  
+
   # Performance optimizations
   reserved_concurrent_executions = var.environment == "prod" ? 100 : 10
-  
+
   # Dead letter queue for failed invocations
   dead_letter_config {
     target_arn = aws_sqs_queue.lambda_dlq.arn
@@ -86,13 +87,16 @@ resource "aws_lambda_function" "api_handler" {
 
   environment {
     variables = merge(local.lambda_environment_vars, {
-      DYNAMODB_TABLE_NAME = aws_dynamodb_table.main.name
-      OPENSEARCH_ENDPOINT = aws_opensearch_domain.main.endpoint
-      IDEMPOTENCY_TABLE   = aws_dynamodb_table.idempotency.name
+      DYNAMODB_TABLE_NAME                 = aws_dynamodb_table.main.name
+      OPENSEARCH_ENDPOINT                 = aws_opensearch_domain.main.endpoint
+      IDEMPOTENCY_TABLE                   = aws_dynamodb_table.idempotency.name
       AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1"
-      NODE_OPTIONS = "--enable-source-maps"  # Better error reporting
+      NODE_OPTIONS                        = "--enable-source-maps" # Better error reporting
     })
   }
+  # Security: Encrypt environment variables
+  kms_key_arn = aws_kms_key.main.arn
+
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_api_policy_attachment,
@@ -196,30 +200,35 @@ resource "aws_apigatewayv2_route" "search_artists" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /v1/artists"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "AWS_IAM"
 }
 
 resource "aws_apigatewayv2_route" "get_artist" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /v1/artists/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "AWS_IAM"
 }
 
 resource "aws_apigatewayv2_route" "search_styles" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /v1/styles"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "AWS_IAM"
 }
 
 resource "aws_apigatewayv2_route" "health_check" {
   api_id    = aws_apigatewayv2_api.main.id
   route_key = "GET /health"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "AWS_IAM"
 }
 
 resource "aws_apigatewayv2_route" "removal_request" {
-  api_id	= aws_apigatewayv2_api.main.id
+  api_id    = aws_apigatewayv2_api.main.id
   route_key = "POST /v1/removal-requests"
-  target	= "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+  authorization_type = "AWS_IAM"
 }
 
 # Lambda permission for API Gateway
@@ -229,25 +238,4 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
   function_name = aws_lambda_function.api_handler.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
-}
-
-# CloudWatch Log Groups
-resource "aws_cloudwatch_log_group" "api_gateway" {
-  name              = "/aws/apigateway/${var.project_name}-api"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-api-gateway-logs"
-  })
-}
-
-resource "aws_cloudwatch_log_group" "lambda_api" {
-  name              = "/aws/lambda/${var.project_name}-api-handler"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-lambda-api-logs"
-  })
 }

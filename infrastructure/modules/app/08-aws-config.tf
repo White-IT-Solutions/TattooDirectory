@@ -60,6 +60,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "config" {
     noncurrent_version_expiration {
       noncurrent_days = 30
     }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
   }
 }
 
@@ -108,7 +112,7 @@ resource "aws_s3_bucket_policy" "config" {
         Resource = "${aws_s3_bucket.config.arn}/*"
         Condition = {
           StringEquals = {
-            "s3:x-amz-acl" = "bucket-owner-full-control"
+            "s3:x-amz-acl"      = "bucket-owner-full-control"
             "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
           }
         }
@@ -125,6 +129,42 @@ resource "aws_s3_bucket_logging" "config" {
 
   target_bucket = aws_s3_bucket.access_logs.id
   target_prefix = "config-access-logs/"
+}
+
+# S3 bucket notification configuration for security monitoring
+resource "aws_s3_bucket_notification" "config" {
+  bucket = aws_s3_bucket.config.id
+
+  topic {
+    id = "s3-object-created-notifications"
+
+    topic_arn = aws_sns_topic.s3_events.arn
+
+    events = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+# Cross-region replication for config bucket (production only)
+resource "aws_s3_bucket_replication_configuration" "config" {
+  count  = var.environment == "prod" ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.config.id
+
+  rule {
+    id     = "replicate-config-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.config_replica[0].arn
+      storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
 }
 
 # AWS Config Configuration Recorder
@@ -415,21 +455,21 @@ resource "aws_config_remediation_configuration" "s3_bucket_public_access" {
 
   config_rule_name = aws_config_config_rule.s3_bucket_public_access_prohibited.name
 
-  resource_type    = "AWS::S3::Bucket"
-  target_type      = "SSM_DOCUMENT"
-  target_id        = "AWSConfigRemediation-RemoveS3BucketPublicAccess"
-  target_version   = "1"
-  automatic        = false
+  resource_type              = "AWS::S3::Bucket"
+  target_type                = "SSM_DOCUMENT"
+  target_id                  = "AWSConfigRemediation-RemoveS3BucketPublicAccess"
+  target_version             = "1"
+  automatic                  = false
   maximum_automatic_attempts = 3
 
   parameter {
-    name           = "AutomationAssumeRole"
-    static_value   = aws_iam_role.config_remediation[0].arn
+    name         = "AutomationAssumeRole"
+    static_value = aws_iam_role.config_remediation[0].arn
   }
 
   parameter {
-    name             = "BucketName"
-    resource_value   = "RESOURCE_ID"
+    name           = "BucketName"
+    resource_value = "RESOURCE_ID"
   }
 }
 

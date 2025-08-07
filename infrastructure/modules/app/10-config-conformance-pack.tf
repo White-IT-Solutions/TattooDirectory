@@ -17,8 +17,8 @@ resource "aws_config_conformance_pack" "security_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-s3-public-access"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "S3_BUCKET_PUBLIC_ACCESS_PROHIBITED"
+            Owner            = "AWS"
+            SourceIdentifier = "S3_BUCKET_PUBLIC_ACCESS_PROHIBITED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -27,8 +27,8 @@ resource "aws_config_conformance_pack" "security_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-dynamodb-encryption"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "DYNAMODB_TABLE_ENCRYPTION_ENABLED"
+            Owner            = "AWS"
+            SourceIdentifier = "DYNAMODB_TABLE_ENCRYPTION_ENABLED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -37,8 +37,8 @@ resource "aws_config_conformance_pack" "security_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-lambda-public-access"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED"
+            Owner            = "AWS"
+            SourceIdentifier = "LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -47,8 +47,8 @@ resource "aws_config_conformance_pack" "security_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-cloudfront-https"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "CLOUDFRONT_VIEWER_POLICY_HTTPS"
+            Owner            = "AWS"
+            SourceIdentifier = "CLOUDFRONT_VIEWER_POLICY_HTTPS"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -57,8 +57,8 @@ resource "aws_config_conformance_pack" "security_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-vpc-default-sg"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "VPC_DEFAULT_SECURITY_GROUP_CLOSED"
+            Owner            = "AWS"
+            SourceIdentifier = "VPC_DEFAULT_SECURITY_GROUP_CLOSED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -80,8 +80,8 @@ resource "aws_config_conformance_pack" "operational_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-api-gw-logging"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "API_GW_EXECUTION_LOGGING_ENABLED"
+            Owner            = "AWS"
+            SourceIdentifier = "API_GW_EXECUTION_LOGGING_ENABLED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -90,8 +90,8 @@ resource "aws_config_conformance_pack" "operational_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-vpc-flow-logs"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "VPC_FLOW_LOGS_ENABLED"
+            Owner            = "AWS"
+            SourceIdentifier = "VPC_FLOW_LOGS_ENABLED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -100,8 +100,8 @@ resource "aws_config_conformance_pack" "operational_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-dynamodb-pitr"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "DYNAMODB_PITR_ENABLED"
+            Owner            = "AWS"
+            SourceIdentifier = "DYNAMODB_PITR_ENABLED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -110,8 +110,8 @@ resource "aws_config_conformance_pack" "operational_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-s3-encryption"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED"
+            Owner            = "AWS"
+            SourceIdentifier = "S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED"
           }
         }
         Type = "AWS::Config::ConfigRule"
@@ -120,8 +120,8 @@ resource "aws_config_conformance_pack" "operational_best_practices" {
         Properties = {
           ConfigRuleName = "${local.name_prefix}}-conformance-kms-not-deleted"
           Source = {
-            Owner             = "AWS"
-            SourceIdentifier  = "KMS_CMK_NOT_SCHEDULED_FOR_DELETION"
+            Owner            = "AWS"
+            SourceIdentifier = "KMS_CMK_NOT_SCHEDULED_FOR_DELETION"
           }
         }
         Type = "AWS::Config::ConfigRule"

@@ -84,7 +84,7 @@ variable "aws_region" {
   default     = "eu-west-2"
 
   validation {
-    condition = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
+    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
     error_message = "AWS region must be in the format: us-east-1, eu-west-2, etc."
   }
 }
@@ -108,7 +108,7 @@ variable "notification_email" {
   default     = ""
 
   validation {
-    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
+    condition     = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
     error_message = "Must be a valid email address or empty string."
   }
 }
@@ -134,4 +134,15 @@ variable "scraper_image_tag" {
   description = "The Docker image tag for the Fargate scraper task."
   type        = string
   default     = "latest"
+}
+
+variable "domain_name" {
+  description = "Custom domain name for the CloudFront distribution (optional)"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.domain_name == "" || can(regex("^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\\.[a-zA-Z]{2,}$", var.domain_name))
+    error_message = "Domain name must be a valid domain format or empty string."
+  }
 }

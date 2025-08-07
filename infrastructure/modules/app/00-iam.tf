@@ -394,6 +394,11 @@ resource "aws_iam_role_policy_attachment" "step_functions_policy_attachment" {
   policy_arn = aws_iam_policy.step_functions_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "step_functions_xray_attachment" {
+  role       = aws_iam_role.step_functions_role.name
+  policy_arn = data.aws_iam_policy.aws_xray_daemon_write_access.arn
+}
+
 resource "aws_iam_role" "eventbridge_role" {
   name = "${local.name_prefix}}-eventbridge-role"
 
@@ -491,6 +496,28 @@ resource "aws_iam_policy" "discover_studios_policy" {
         Resource = [
           aws_dynamodb_table.main.arn
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ]
+        Resource = [
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "ec2:Vpc" = aws_vpc.main.arn
+          }
+          "ForAllValues:StringEquals" = {
+            "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
+            "ec2:SecurityGroup" = [aws_security_group.lambda.arn]
+          }
+        }
       }
     ]
   })
@@ -550,6 +577,28 @@ resource "aws_iam_policy" "find_artists_on_site_policy" {
         Resource = [
           aws_dynamodb_table.main.arn
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ]
+        Resource = [
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "ec2:Vpc" = aws_vpc.main.arn
+          }
+          "ForAllValues:StringEquals" = {
+            "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
+            "ec2:SecurityGroup" = [aws_security_group.lambda.arn]
+          }
+        }
       }
     ]
   })
@@ -608,6 +657,28 @@ resource "aws_iam_policy" "queue_scraping_policy" {
         Resource = [
           aws_sqs_queue.scraping_queue.arn
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ]
+        Resource = [
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "ec2:Vpc" = aws_vpc.main.arn
+          }
+          "ForAllValues:StringEquals" = {
+            "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
+            "ec2:SecurityGroup" = [aws_security_group.lambda.arn]
+          }
+        }
       }
     ]
   })
@@ -682,8 +753,8 @@ resource "aws_iam_policy" "rotate_nat_gateway_eip_policy" {
         ]
       },
       {
-        Effect = "Allow"
-        Action = "sns:Publish"
+        Effect   = "Allow"
+        Action   = "sns:Publish"
         Resource = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-alerts"
       }
     ]
@@ -728,30 +799,6 @@ resource "aws_iam_role" "config" {
 resource "aws_iam_role_policy_attachment" "config" {
   role       = aws_iam_role.config.name
   policy_arn = data.aws_iam_policy.config_role.arn
-}
-
-resource "aws_iam_policy" "s3_event_notification_policy" {
-  name        = "${local.name_prefix}-s3-event-notification-policy"
-  description = "Allows S3 to publish events to the SNS topic"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "s3.amazonaws.com"
-        }
-        Action   = "sns:Publish"
-        Resource = aws_sns_topic.s3_events.arn
-        Condition = {
-          ArnLike = {
-            "aws:SourceArn" = aws_s3_bucket.frontend.arn
-          }
-        }
-      }
-    ]
-  })
 }
 
 resource "aws_iam_role_policy" "config_s3" {
@@ -908,6 +955,28 @@ resource "aws_iam_policy" "config_compliance_processor" {
         Resource = [
           "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-config-compliance-*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ]
+        Resource = [
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+        ]
+        Condition = {
+          StringEquals = {
+            "ec2:Vpc" = aws_vpc.main.arn
+          }
+          "ForAllValues:StringEquals" = {
+            "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
+            "ec2:SecurityGroup" = [aws_security_group.lambda.arn]
+          }
+        }
       }
     ]
   })
@@ -953,7 +1022,7 @@ resource "aws_iam_role_policy_attachment" "backup_policy" {
 # DynamoDB Resource Policy for Main Table
 resource "aws_dynamodb_resource_policy" "main_table_policy" {
   resource_arn = aws_dynamodb_table.main.arn
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -1003,7 +1072,7 @@ resource "aws_dynamodb_resource_policy" "main_table_policy" {
 # DynamoDB Resource Policy for Denylist Table
 resource "aws_dynamodb_resource_policy" "denylist_table_policy" {
   resource_arn = aws_dynamodb_table.denylist.arn
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -1030,7 +1099,7 @@ resource "aws_dynamodb_resource_policy" "denylist_table_policy" {
 # DynamoDB Resource Policy for Idempotency Table
 resource "aws_dynamodb_resource_policy" "idempotency_table_policy" {
   resource_arn = aws_dynamodb_table.idempotency.arn
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -1053,7 +1122,7 @@ resource "aws_dynamodb_resource_policy" "idempotency_table_policy" {
 # OpenSearch Domain Access Policy
 resource "aws_opensearch_domain_policy" "main_domain_policy" {
   domain_name = aws_opensearch_domain.main.domain_name
-  
+
   access_policies = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -1140,7 +1209,7 @@ resource "aws_iam_policy" "vpc_flow_logs_policy" {
   description = "Policy for VPC Flow Logs to write to CloudWatch"
 
   policy = jsonencode({
-  #tfsec:ignore:aws-iam-no-policy-wildcards
+    #tfsec:ignore:aws-iam-no-policy-wildcards
     Version = "2012-10-17"
     Statement = [
       {
@@ -1294,4 +1363,96 @@ resource "aws_iam_policy" "eventbridge_lambda_invoke_policy" {
 resource "aws_iam_role_policy_attachment" "eventbridge_lambda_invoke_policy_attachment" {
   role       = aws_iam_role.eventbridge_lambda_invoke_role.name
   policy_arn = aws_iam_policy.eventbridge_lambda_invoke_policy.arn
+}
+
+# IAM Role for S3 replication (production only)
+resource "aws_iam_role" "s3_replication" {
+  count = var.environment == "prod" ? 1 : 0
+  name  = "${local.name_prefix}-s3-replication-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-s3-replication-role"
+  })
+}
+
+# IAM Policy for S3 replication (production only)
+resource "aws_iam_policy" "s3_replication" {
+  count = var.environment == "prod" ? 1 : 0
+  name  = "${local.name_prefix}-s3-replication-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:GetObjectVersionTagging"
+        ]
+        Resource = [
+          "${aws_s3_bucket.frontend.arn}/*",
+          "${aws_s3_bucket.frontend_backup.arn}/*",
+          "${aws_s3_bucket.access_logs.arn}/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.frontend.arn,
+          aws_s3_bucket.frontend_backup.arn,
+          aws_s3_bucket.access_logs.arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ReplicateObject",
+          "s3:ReplicateDelete",
+          "s3:ReplicateTags"
+        ]
+        Resource = [
+          "${aws_s3_bucket.frontend_replica[0].arn}/*",
+          "${aws_s3_bucket.frontend_backup_replica[0].arn}/*",
+          "${aws_s3_bucket.access_logs_replica[0].arn}/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt"
+        ]
+        Resource = aws_kms_key.main.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:GenerateDataKey"
+        ]
+        Resource = aws_kms_key.replica[0].arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3_replication" {
+  count      = var.environment == "prod" ? 1 : 0
+  role       = aws_iam_role.s3_replication[0].name
+  policy_arn = aws_iam_policy.s3_replication[0].arn
 }

@@ -7,6 +7,42 @@ resource "aws_s3_bucket" "cloudtrail" {
   })
 }
 
+# CloudTrail bucket lifecycle
+resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
+  bucket = aws_s3_bucket.cloudtrail.id
+
+  rule {
+    id = "cloudtrail_lifecycle"
+    status = "Enabled"
+
+    expiration {
+      days = var.environment == "prod" ? 3650 : 90 # 10 years for prod, 90 days for dev
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# S3 bucket notification configuration for security monitoring
+resource "aws_s3_bucket_notification" "cloudtrail" {
+  bucket = aws_s3_bucket.cloudtrail.id
+
+  topic {
+    id = "s3-object-created-notifications"
+
+    topic_arn = aws_sns_topic.s3_events.arn
+
+    events = ["s3:ObjectCreated:*"]
+  }
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
 resource "aws_s3_bucket_public_access_block" "cloudtrail" {
   bucket = aws_s3_bucket.cloudtrail.id
 
@@ -68,19 +104,52 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
   })
 }
 
-# CloudWatch Log Group for CloudTrail
-resource "aws_cloudwatch_log_group" "cloudtrail" {
-  name              = "/aws/cloudtrail/${var.project_name}"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
-  kms_key_id        = aws_kms_key.main.arn
+# SNS Topic for CloudTrail notifications
+resource "aws_sns_topic" "cloudtrail_notifications" {
+  name              = "${local.name_prefix}}-cloudtrail-notifications"
+  kms_master_key_id = aws_kms_key.main.arn
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-cloudtrail-logs"
+    Name = "${local.name_prefix}}-cloudtrail-notifications"
   })
 }
 
+# SNS Topic Policy to allow CloudTrail to publish
+resource "aws_sns_topic_policy" "cloudtrail_notifications" {
+  arn    = aws_sns_topic.cloudtrail_notifications.arn
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AWSCloudTrailSNSPolicy"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudtrail.amazonaws.com"
+        }
+        Action   = "sns:Publish"
+        Resource = aws_sns_topic.cloudtrail_notifications.arn
+        Condition = {
+          StringEquals = {
+            "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_sns_topic_subscription" "cloudtrail_email" {
+  count     = var.notification_email != "" ? 1 : 0
+  topic_arn = aws_sns_topic.cloudtrail_notifications.arn
+  protocol  = "email"
+  endpoint  = var.notification_email
+}
+
+# CloudWatch Log Group for CloudTrail is defined in 06-observability.tf
+
 # AWS CloudTrail
 resource "aws_cloudtrail" "main" {
+  # checkov:skip=CKV2_AWS_10: Configuration is correct.
   name                          = "${local.name_prefix}}-trail"
   s3_bucket_name                = aws_s3_bucket.cloudtrail.id
   s3_key_prefix                 = "AWSLogs"
@@ -88,8 +157,9 @@ resource "aws_cloudtrail" "main" {
   include_global_service_events = true
   enable_log_file_validation    = true
   kms_key_id                    = aws_kms_key.main.arn
-  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
-  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_to_cloudwatch.arn
+  sns_topic_name                = aws_sns_topic.cloudtrail_notifications.name
+  cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+  cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail_to_cloudwatch.arn
 
   # Enable CloudTrail Insights for the production environment
   dynamic "insight_selector" {
@@ -102,6 +172,11 @@ resource "aws_cloudtrail" "main" {
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-cloudtrail"
   })
+
+  depends_on = [
+    aws_sns_topic_policy.cloudtrail_notifications,
+    aws_iam_role_policy.cloudtrail_to_cloudwatch
+  ]
 }
 
 # S3 bucket logging for audit trail
@@ -139,6 +214,29 @@ resource "aws_cloudwatch_metric_alarm" "iam_policy_changes" {
   alarm_description   = "Alarm for IAM policy changes"
   alarm_actions       = [aws_sns_topic.alerts.arn]
   ok_actions          = [aws_sns_topic.alerts.arn]
+}
+
+# Cross-region replication for CloudTrail bucket (production only)
+resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
+  count  = var.environment == "prod" ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.cloudtrail.id
+
+  rule {
+    id     = "replicate-cloudtrail-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.cloudtrail_replica[0].arn
+      storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
+
+  depends_on = [aws_s3_bucket_versioning.cloudtrail]
 }
 
 # Metric Filter and Alarm for CloudTrail Insights Events

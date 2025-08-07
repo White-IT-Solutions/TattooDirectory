@@ -9,6 +9,53 @@ resource "aws_vpc" "main" {
   })
 }
 
+# CloudWatch Log Group for VPC Flow Logs
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  name              = "/aws/vpc/flowlogs/${var.project_name}"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-vpc-flow-logs"
+  })
+}
+
+# VPC Flow Logs
+resource "aws_flow_log" "vpc_flow_logs" {
+  iam_role_arn    = aws_iam_role.vpc_flow_logs_role.arn
+  log_destination = aws_cloudwatch_log_group.vpc_flow_logs.arn
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.main.id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-vpc-flow-logs"
+  })
+}
+
+# Optional: Flow logs for individual subnets (for more granular monitoring)
+resource "aws_flow_log" "private_subnet_flow_logs" {
+  for_each = var.environment == "prod" ? aws_subnet.private : {}
+
+  iam_role_arn    = aws_iam_role.vpc_flow_logs_role.arn
+  log_destination = aws_cloudwatch_log_group.vpc_flow_logs.arn
+  traffic_type    = "ALL"
+  subnet_id       = each.value.id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-private-subnet-${each.key}-flow-logs"
+  })
+}
+
+# Default Security Group - Restrict all traffic 
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+  # Remove all default rules by not specifying any ingress/egress rules
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-default-sg-restricted"
+  })
+}
+
 # Public Subnets
 resource "aws_subnet" "public" {
   for_each                = local.availability_zones
@@ -58,7 +105,7 @@ resource "aws_eip" "nat" {
 
 # NAT Gateways
 resource "aws_nat_gateway" "nat" {
-  for_each = var.environment == "prod" ? local.availability_zones : { "a" = local.availability_zones["a"] }
+  for_each      = var.environment == "prod" ? local.availability_zones : { "a" = local.availability_zones["a"] }
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
 
@@ -114,7 +161,8 @@ resource "aws_route_table_association" "private" {
 
 # Network ACL for Public Subnets
 resource "aws_network_acl" "public" {
-  vpc_id = aws_vpc.main.id
+  # checkov:skip=CKV2_AWS_1: Attatched via aws_network_acl_association
+  vpc_id     = aws_vpc.main.id
 
   # Inbound rules for public subnets
   ingress {
@@ -124,6 +172,16 @@ resource "aws_network_acl" "public" {
     cidr_block = "0.0.0.0/0"
     from_port  = 80
     to_port    = 80
+  }
+
+  # Explicitly deny RDP traffic from the internet
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 90
+    action     = "deny"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 3389
+    to_port    = 3389
   }
 
   ingress {
@@ -162,7 +220,8 @@ resource "aws_network_acl" "public" {
 
 # Network ACL for Private Subnets
 resource "aws_network_acl" "private" {
-  vpc_id = aws_vpc.main.id
+# checkov:skip=CKV2_AWS_1: Attatched via aws_network_acl_association
+  vpc_id     = aws_vpc.main.id
 
   # Inbound rules for private subnets
   # Allow all traffic from within the VPC
@@ -173,6 +232,26 @@ resource "aws_network_acl" "private" {
     cidr_block = aws_vpc.main.cidr_block
     from_port  = 0
     to_port    = 0
+  }
+
+  # Explicitly deny RDP traffic from the internet
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 95 # Use a different rule number to avoid conflicts
+    action     = "deny"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 3389
+    to_port    = 3389
+  }
+
+  # Allow return traffic from the internet for outbound connections
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 110
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 1024
+    to_port    = 65535
   }
 
   # Outbound rules for private subnets
@@ -189,7 +268,7 @@ resource "aws_network_acl" "private" {
   # Allow outbound to the internet for Fargate scrapers and software updates
   egress {
     protocol   = "tcp"
-    rule_no    = 110
+    rule_no    = 120
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 80
@@ -198,7 +277,7 @@ resource "aws_network_acl" "private" {
 
   egress {
     protocol   = "tcp"
-    rule_no    = 120
+    rule_no    = 130
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
@@ -210,16 +289,17 @@ resource "aws_network_acl" "private" {
   })
 }
 
-# Associate Public NACL with Public Subnets
+# NACL Associations
 resource "aws_network_acl_association" "public" {
-  for_each        = aws_subnet.public
+  for_each = aws_subnet.public
+
   network_acl_id = aws_network_acl.public.id
   subnet_id      = each.value.id
 }
 
-# Associate Private NACL with Private Subnets
 resource "aws_network_acl_association" "private" {
-  for_each        = aws_subnet.private
+  for_each = aws_subnet.private
+
   network_acl_id = aws_network_acl.private.id
   subnet_id      = each.value.id
 }
@@ -233,7 +313,7 @@ resource "aws_cloudfront_origin_access_control" "frontend" {
   signing_protocol                  = "sigv4"
 }
 
-# S3 Bucket Policy for CloudFront OAC
+# S3 Bucket Policy for CloudFront OAC - Primary
 resource "aws_s3_bucket_policy" "frontend" {
   bucket = aws_s3_bucket.frontend.id
 
@@ -258,6 +338,33 @@ resource "aws_s3_bucket_policy" "frontend" {
   })
 
   depends_on = [aws_s3_bucket_public_access_block.frontend]
+}
+
+# S3 Bucket Policy for CloudFront OAC - Backup
+resource "aws_s3_bucket_policy" "frontend_backup" {
+  bucket = aws_s3_bucket.frontend_backup.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipal"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.frontend_backup.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.frontend.arn
+          }
+        }
+      }
+    ]
+  })
+
+  depends_on = [aws_s3_bucket_public_access_block.frontend_backup]
 }
 
 # WAF Web ACL
@@ -313,18 +420,84 @@ resource "aws_wafv2_web_acl" "frontend" {
     }
   }
 
+    rule {
+    name     = "AWSManagedRulesAnonymousIpList"
+    priority = 3
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAnonymousIpListRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "KnownBadInputsRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesUnixRuleSet"
+    priority = 4
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesUnixRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "UnixRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRulesAmazonIpReputationList"
+    priority = 5
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AmazonIpReputationListMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
   rule {
     name     = "RateLimitRule"
-    priority = 3
+    priority = 6
 
     action {
       block {}
     }
 
     statement {
-      rate_based_statement { # As per LLD 5.3.1
-        limit              = 500 # 500 requests
-        aggregate_key_type = "IP"
+      rate_based_statement {        # As per LLD 5.3.1
+        limit                 = 500 # 500 requests
+        aggregate_key_type    = "IP"
         evaluation_window_sec = 300 # per 5 minutes
         scope_down_statement {
           byte_match_statement {
@@ -333,7 +506,7 @@ resource "aws_wafv2_web_acl" "frontend" {
               uri_path {}
             }
             text_transformation {
-              type = "NONE"
+              type     = "NONE"
               priority = 0
             }
             positional_constraint = "STARTS_WITH"
@@ -341,7 +514,6 @@ resource "aws_wafv2_web_acl" "frontend" {
         }
       }
     }
-
 
     visibility_config {
       cloudwatch_metrics_enabled = true
@@ -361,6 +533,55 @@ resource "aws_wafv2_web_acl" "frontend" {
   })
 }
 
+# WAF Logging Configuration
+resource "aws_wafv2_web_acl_logging_configuration" "frontend" {
+  resource_arn            = aws_wafv2_web_acl.frontend.arn
+  log_destination_configs = [aws_cloudwatch_log_group.waf.arn]
+
+  redacted_fields {
+    single_header {
+      name = "authorization"
+    }
+  }
+
+  redacted_fields {
+    single_header {
+      name = "cookie"
+    }
+  }
+}
+
+# CloudWatch Log Group for WAF
+resource "aws_cloudwatch_log_group" "waf" {
+  name              = "/aws/wafv2/${local.name_prefix}-waf"
+  retention_in_days = 365
+  kms_key_id        = aws_kms_key.logs.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-waf-logs"
+  })
+}
+
+# ACM Certificate for CloudFront (must be in us-east-1)
+resource "aws_acm_certificate" "cloudfront" {
+  count             = var.domain_name != "" ? 1 : 0
+  provider          = aws.us_east_1
+  domain_name       = var.domain_name
+  validation_method = "DNS"
+
+  subject_alternative_names = [
+    "www.${var.domain_name}"
+  ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-cloudfront-cert"
+  })
+}
+
 # CloudFront Response Headers Policy for Security
 resource "aws_cloudfront_response_headers_policy" "security_headers" {
   name    = "${local.name_prefix}}-security-headers"
@@ -370,6 +591,7 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
     strict_transport_security {
       access_control_max_age_sec = 31536000 # 1 year
       include_subdomains         = true
+      preload                    = true
       override                   = true
     }
 
@@ -400,13 +622,36 @@ resource "aws_cloudfront_distribution" "frontend" {
   origin {
     domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
-    origin_id                = "S3-${aws_s3_bucket.frontend.bucket}"
+    origin_id                = "S3-${aws_s3_bucket.frontend.bucket}-primary"
   }
+
+  origin {
+    domain_name              = aws_s3_bucket.frontend_backup.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
+    origin_id                = "S3-${aws_s3_bucket.frontend.bucket}-backup"
+  }
+
   origin {
     domain_name = replace(aws_apigatewayv2_stage.main.invoke_url, "https://", "")
     origin_id   = "APIGW-${aws_apigatewayv2_api.main.id}"
     # The path part of the invoke_url must be specified here
     origin_path = "/${aws_apigatewayv2_stage.main.name}"
+  }
+
+  origin_group {
+    origin_id = "S3-origin-group"
+
+    failover_criteria {
+      status_codes = [403, 404, 500, 502, 503, 504]
+    }
+
+    member {
+      origin_id = "S3-${aws_s3_bucket.frontend.bucket}-primary"
+    }
+
+    member {
+      origin_id = "S3-${aws_s3_bucket.frontend.bucket}-backup"
+    }
   }
 
   enabled             = true
@@ -415,11 +660,11 @@ resource "aws_cloudfront_distribution" "frontend" {
   web_acl_id          = aws_wafv2_web_acl.frontend.arn
 
   default_cache_behavior {
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "S3-${aws_s3_bucket.frontend.bucket}"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "S3-origin-group"
+    compress                   = true
+    viewer_protocol_policy     = "redirect-to-https"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
 
     forwarded_values {
@@ -467,14 +712,11 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
-    minimum_protocol_version = TLSv1
+    acm_certificate_arn            = var.domain_name != "" ? aws_acm_certificate.cloudfront[0].arn : null
+    ssl_support_method             = var.domain_name != "" ? "sni-only" : null
+    minimum_protocol_version       = "TLSv1.2_2021"
+    cloudfront_default_certificate = var.domain_name == "" ? true : false
   }
-
-  # Should update to use TLSv1.2 - once using custom certificate
-  # viewer_certificate {
-  #    cloudfront_default_certificate = aws_acm_certificate.example.arn
-  #    minimum_protocol_version = "TLSv1.2_2021"
 
   custom_error_response {
     error_code         = 404
