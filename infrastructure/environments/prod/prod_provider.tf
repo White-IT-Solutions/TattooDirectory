@@ -1,9 +1,10 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.5"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
+      configuration_aliases = [aws.us_east_1, aws.replica]
     }
     random = {
       source  = "hashicorp/random"
@@ -14,6 +15,19 @@ terraform {
       version = "~> 2.2"
     }
   }
+}
+
+# Provider for us-east-1 region (required for CloudFront ACM certificates)
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+# Provider for replica region, used for cross-region S3 replication in production.
+# Consider using a variable for the region for better configuration management.
+provider "aws" {
+  alias  = "replica"
+  region = var.replica_aws_region
 }
 
 provider "aws" {

@@ -116,23 +116,26 @@ resource "aws_secretsmanager_secret" "app_secrets" {
   })
 }
 
-# Security Groups
+# Security Groups (without rules to avoid cycles)
 resource "aws_security_group" "opensearch" {
   # checkov:skip=CKV2_AWS_5: Assigned in 04-storage
   name        = "${local.name_prefix}-opensearch-sg"
   description = "OpenSearch security group"
   vpc_id      = aws_vpc.main.id
 
-  ingress {
-    description     = "HTTPS from Lambda functions"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.lambda.id]
-  }
-
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-opensearch-sg"
+  })
+}
+
+resource "aws_security_group" "vpc_endpoints" {
+  # checkov:skip=CKV2_AWS_5: Assigned in 02-security
+  name        = "${local.name_prefix}-vpc-endpoints-sg"
+  description = "VPC Endpoints security group"
+  vpc_id      = aws_vpc.main.id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-vpc-endpoints-sg"
   })
 }
 
@@ -141,33 +144,6 @@ resource "aws_security_group" "fargate" {
   name        = "${local.name_prefix}-fargate-sg"
   description = "Fargate security group"
   vpc_id      = aws_vpc.main.id
-
-  # Allow outbound to VPC endpoints for SQS, ECR, Logs etc.
-  egress {
-    description     = "Egress to VPC Endpoints"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.vpc_endpoints.id]
-  }
-
-  egress {
-    description = "Egress to Internet for web scraping (HTTPS)"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for web scraping
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "Egress to Internet for web scraping (HTTP)"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for web scraping
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-fargate-sg"
@@ -180,37 +156,108 @@ resource "aws_security_group" "lambda" {
   description = "Lambda security group"
   vpc_id      = aws_vpc.main.id
 
-  # Egress to OpenSearch
-  egress {
-    description     = "Egress to OpenSearch"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.opensearch.id]
-  }
-
-  # Egress to VPC Endpoints (SecretsManager, SQS, etc.)
-  egress {
-    description     = "Egress to VPC Endpoints"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.vpc_endpoints.id]
-  }
-
-  # Egress to Internet for services without a VPC endpoint (e.g., EC2 API, SNS)
-  egress {
-    description = "Egress to Internet for AWS APIs"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for AWS services without a VPCe
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-lambda-sg"
   })
+}
+
+# Security Group Rules (separate resources to avoid cycles)
+
+# OpenSearch ingress rules
+resource "aws_security_group_rule" "opensearch_ingress_lambda" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.lambda.id
+  security_group_id        = aws_security_group.opensearch.id
+  description              = "HTTPS from Lambda functions"
+}
+
+# VPC Endpoints ingress rules
+resource "aws_security_group_rule" "vpc_endpoints_ingress_lambda" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.lambda.id
+  security_group_id        = aws_security_group.vpc_endpoints.id
+  description              = "HTTPS from Lambda functions"
+}
+
+resource "aws_security_group_rule" "vpc_endpoints_ingress_fargate" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.fargate.id
+  security_group_id        = aws_security_group.vpc_endpoints.id
+  description              = "HTTPS from Fargate tasks"
+}
+
+# Fargate egress rules
+resource "aws_security_group_rule" "fargate_egress_vpc_endpoints" {
+  type                     = "egress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id        = aws_security_group.fargate.id
+  description              = "Egress to VPC Endpoints"
+}
+
+resource "aws_security_group_rule" "fargate_egress_https_internet" {
+  type        = "egress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for web scraping
+  security_group_id = aws_security_group.fargate.id
+  description       = "Egress to Internet for web scraping (HTTPS)"
+}
+
+resource "aws_security_group_rule" "fargate_egress_http_internet" {
+  type        = "egress"
+  from_port   = 80
+  to_port     = 80
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for web scraping
+  security_group_id = aws_security_group.fargate.id
+  description       = "Egress to Internet for web scraping (HTTP)"
+}
+
+# Lambda egress rules
+resource "aws_security_group_rule" "lambda_egress_opensearch" {
+  type                     = "egress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.opensearch.id
+  security_group_id        = aws_security_group.lambda.id
+  description              = "Egress to OpenSearch"
+}
+
+resource "aws_security_group_rule" "lambda_egress_vpc_endpoints" {
+  type                     = "egress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.vpc_endpoints.id
+  security_group_id        = aws_security_group.lambda.id
+  description              = "Egress to VPC Endpoints"
+}
+
+resource "aws_security_group_rule" "lambda_egress_internet" {
+  type        = "egress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for AWS services without a VPCe
+  security_group_id = aws_security_group.lambda.id
+  description       = "Egress to Internet for AWS APIs"
 }
 
 # VPC Endpoints to reduce NAT Gateway costs and improve security
@@ -312,28 +359,6 @@ resource "aws_vpc_endpoint" "logs" {
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}}-logs-endpoint"
-  })
-}
-
-resource "aws_security_group" "vpc_endpoints" {
-  # checkov:skip=CKV2_AWS_5: Assigned in 02-security
-  name        = "${local.name_prefix}-vpc-endpoints-sg"
-  description = "VPC Endpoints security group"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description     = "HTTPS from Lambda and Fargate"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.lambda.id, aws_security_group.fargate.id]
-  }
-
-  # No egress is needed as the endpoints are targets, not sources.
-  # The stateful nature of security groups allows return traffic.
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-vpc-endpoints-sg"
   })
 }
 

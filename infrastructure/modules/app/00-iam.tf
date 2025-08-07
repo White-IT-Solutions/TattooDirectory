@@ -1,5 +1,31 @@
 # IAM roles and policies for the application
 
+# Data sources for AWS managed policies
+data "aws_iam_policy" "aws_xray_daemon_write_access" {
+  arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}
+
+data "aws_iam_policy" "amazon_ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+data "aws_iam_policy" "config_role" {
+  arn = "arn:aws:iam::aws:policy/service-role/ConfigRole"
+}
+
+data "aws_iam_policy" "amazon_ssm_automation_role" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMAutomationRole"
+}
+
+data "aws_iam_policy" "aws_backup_service_role_policy_for_backup" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
+}
+
+# Data sources for current AWS context
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 # =============================================================================
 # API LAMBDA FUNCTIONS
 # =============================================================================
@@ -45,8 +71,8 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.lambda_api.arn,
-          "${aws_cloudwatch_log_group.lambda_api.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-api-handler",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-api-handler:*"
         ]
       },
       {
@@ -57,8 +83,8 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "dynamodb:Scan"
         ]
         Resource = [
-          aws_dynamodb_table.main.arn,
-          "${aws_dynamodb_table.main.arn}/index/*"
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main",
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main/index/*"
         ]
       },
       {
@@ -67,7 +93,7 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "dynamodb:PutItem"
         ]
         Resource = [
-          aws_dynamodb_table.denylist.arn
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-denylist"
         ]
       },
       {
@@ -77,7 +103,7 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "dynamodb:GetItem"
         ]
         Resource = [
-          aws_dynamodb_table.idempotency.arn
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-idempotency"
         ]
       },
       {
@@ -87,7 +113,7 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "es:ESHttpPost",
           "es:ESHttpPut"
         ]
-        Resource = "${aws_opensearch_domain.main.arn}/*"
+        Resource = "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${local.name_prefix}-search/*"
       },
       {
         Effect = "Allow"
@@ -175,8 +201,8 @@ resource "aws_iam_policy" "lambda_sync_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.lambda_sync.arn,
-          "${aws_cloudwatch_log_group.lambda_sync.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-dynamodb-sync",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-dynamodb-sync:*"
         ]
       },
       {
@@ -187,7 +213,7 @@ resource "aws_iam_policy" "lambda_sync_policy" {
           "dynamodb:GetShardIterator",
           "dynamodb:ListStreams"
         ]
-        Resource = aws_dynamodb_table.main.stream_arn
+        Resource = "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main/stream/*"
       },
       {
         Effect = "Allow"
@@ -196,7 +222,7 @@ resource "aws_iam_policy" "lambda_sync_policy" {
           "es:ESHttpPut",
           "es:ESHttpDelete"
         ]
-        Resource = "${aws_opensearch_domain.main.arn}/*"
+        Resource = "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${local.name_prefix}-search/*"
       },
       {
         Effect = "Allow"
@@ -225,7 +251,7 @@ resource "aws_iam_policy" "lambda_sync_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Resource = aws_secretsmanager_secret.app_secrets.arn
+        Resource = "arn:aws:secretsmanager:${var.aws_region}:${data.aws_caller_identity.current.account_id}:secret:${local.name_prefix}-secrets-*"
       }
     ]
   })
@@ -276,8 +302,8 @@ resource "aws_iam_policy" "fargate_task_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.fargate_scraper.arn,
-          "${aws_cloudwatch_log_group.fargate_scraper.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/${local.name_prefix}-fargate-scraper",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/${local.name_prefix}-fargate-scraper:*"
         ]
       },
       {
@@ -289,8 +315,8 @@ resource "aws_iam_policy" "fargate_task_policy" {
           "dynamodb:Query"
         ]
         Resource = [
-          aws_dynamodb_table.main.arn,
-          aws_dynamodb_table.denylist.arn
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main",
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-denylist"
         ]
       },
       {
@@ -300,7 +326,7 @@ resource "aws_iam_policy" "fargate_task_policy" {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes"
         ]
-        Resource = aws_sqs_queue.scraping_queue.arn
+        Resource = "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-scraping-queue"
       }
     ]
   })
@@ -483,8 +509,8 @@ resource "aws_iam_policy" "discover_studios_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.lambda_workflow.arn,
-          "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-discover-studios",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-discover-studios:*"
         ]
       },
       {
@@ -494,7 +520,7 @@ resource "aws_iam_policy" "discover_studios_policy" {
           "dynamodb:Scan"
         ]
         Resource = [
-          aws_dynamodb_table.main.arn
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main"
         ]
       },
       {
@@ -564,8 +590,8 @@ resource "aws_iam_policy" "find_artists_on_site_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.lambda_workflow.arn,
-          "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-find-artists",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-find-artists:*"
         ]
       },
       {
@@ -575,7 +601,7 @@ resource "aws_iam_policy" "find_artists_on_site_policy" {
           "dynamodb:UpdateItem"
         ]
         Resource = [
-          aws_dynamodb_table.main.arn
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${local.name_prefix}-main"
         ]
       },
       {
@@ -645,8 +671,8 @@ resource "aws_iam_policy" "queue_scraping_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          aws_cloudwatch_log_group.lambda_workflow.arn,
-          "${aws_cloudwatch_log_group.lambda_workflow.arn}:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-queue-scraping",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-workflow-queue-scraping:*"
         ]
       },
       {
@@ -655,7 +681,7 @@ resource "aws_iam_policy" "queue_scraping_policy" {
           "sqs:SendMessage"
         ]
         Resource = [
-          aws_sqs_queue.scraping_queue.arn
+          "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-scraping-queue"
         ]
       },
       {
@@ -862,7 +888,7 @@ resource "aws_iam_role_policy" "cloudtrail_to_cloudwatch" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/cloudtrail/${local.name_prefix}-cloudtrail:*"
       }
     ]
   })
@@ -936,7 +962,7 @@ resource "aws_iam_policy" "config_compliance_processor" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "${aws_cloudwatch_log_group.config_compliance_processor[0].arn}:*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-config-compliance-processor:*"
       },
       {
         Effect = "Allow"
@@ -1015,142 +1041,12 @@ resource "aws_iam_role_policy_attachment" "backup_policy" {
   role       = aws_iam_role.backup_role[0].name
   policy_arn = data.aws_iam_policy.aws_backup_service_role_policy_for_backup.arn
 }
-# =============================================================================
-# RESOURCE POLICIES FOR ACCESS CONTROL
-# =============================================================================
-
-# DynamoDB Resource Policy for Main Table
-resource "aws_dynamodb_resource_policy" "main_table_policy" {
-  resource_arn = aws_dynamodb_table.main.arn
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowLambdaAccess"
-        Effect = "Allow"
-        Principal = {
-          AWS = [
-            aws_iam_role.lambda_api_role.arn,
-            aws_iam_role.lambda_sync_role.arn,
-            aws_iam_role.fargate_task_role.arn,
-            aws_iam_role.discover_studios_role.arn,
-            aws_iam_role.find_artists_on_site_role.arn
-          ]
-        }
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem"
-        ]
-        Resource = [
-          aws_dynamodb_table.main.arn,
-          "${aws_dynamodb_table.main.arn}/index/*"
-        ]
-      },
-      {
-        Sid    = "AllowStreamAccess"
-        Effect = "Allow"
-        Principal = {
-          AWS = aws_iam_role.lambda_sync_role.arn
-        }
-        Action = [
-          "dynamodb:DescribeStream",
-          "dynamodb:GetRecords",
-          "dynamodb:GetShardIterator",
-          "dynamodb:ListStreams"
-        ]
-        Resource = aws_dynamodb_table.main.stream_arn
-      }
-    ]
-  })
-}
-
-# DynamoDB Resource Policy for Denylist Table
-resource "aws_dynamodb_resource_policy" "denylist_table_policy" {
-  resource_arn = aws_dynamodb_table.denylist.arn
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowLambdaAccess"
-        Effect = "Allow"
-        Principal = {
-          AWS = [
-            aws_iam_role.lambda_api_role.arn,
-            aws_iam_role.fargate_task_role.arn
-          ]
-        }
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:Query"
-        ]
-        Resource = aws_dynamodb_table.denylist.arn
-      }
-    ]
-  })
-}
-
-# DynamoDB Resource Policy for Idempotency Table
-resource "aws_dynamodb_resource_policy" "idempotency_table_policy" {
-  resource_arn = aws_dynamodb_table.idempotency.arn
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowLambdaAccess"
-        Effect = "Allow"
-        Principal = {
-          AWS = aws_iam_role.lambda_api_role.arn
-        }
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem"
-        ]
-        Resource = aws_dynamodb_table.idempotency.arn
-      }
-    ]
-  })
-}
-
-# OpenSearch Domain Access Policy
-resource "aws_opensearch_domain_policy" "main_domain_policy" {
-  domain_name = aws_opensearch_domain.main.domain_name
-
-  access_policies = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowLambdaAccess"
-        Effect = "Allow"
-        Principal = {
-          AWS = [
-            aws_iam_role.lambda_api_role.arn,
-            aws_iam_role.lambda_sync_role.arn
-          ]
-        }
-        Action = [
-          "es:ESHttpGet",
-          "es:ESHttpPost",
-          "es:ESHttpPut",
-          "es:ESHttpDelete"
-        ]
-        Resource = "${aws_opensearch_domain.main.arn}/*"
-      }
-    ]
-  })
-}
-
-# Note: S3 bucket policies are defined in their respective resource files:
+# Note: Resource policies removed to avoid circular dependencies
+# Access control is handled through IAM role policies above
+# S3 bucket policies are defined in their respective resource files:
 # - Frontend bucket policy: 01-network.tf
 # - Config bucket policy: 09-aws-config.tf
-# - CloudTrail bucket policy: 10-cloudtrail.tf#
+# - CloudTrail bucket policy: 10-cloudtrail.tf
 # =============================================================================
 # ADDITIONAL AWS SERVICE ROLES
 # =============================================================================
@@ -1223,7 +1119,7 @@ resource "aws_iam_policy" "vpc_flow_logs_policy" {
           "logs:DescribeLogStreams"
         ]
         # This is scoped to the specific log group created for flow logs.
-        Resource = aws_cloudwatch_log_group.vpc_flow_logs.arn
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/vpc/flowlogs/${var.project_name}"
       },
       {
         Sid    = "VPCFlowLogPermissionsForLogEvents"
@@ -1235,7 +1131,7 @@ resource "aws_iam_policy" "vpc_flow_logs_policy" {
         # This is the most specific wildcard possible for this action.
         # It is not possible to completely eliminate the wildcard from the IAM policy when directing VPC Flow Logs to CloudWatch Logs. 
         # The service principal for flow logs (vpc-flow-logs.amazonaws.com) requires permission to create log streams with names that are dynamically generated and therefore unknown in advance.
-        Resource = "${aws_cloudwatch_log_group.vpc_flow_logs.arn}:log-stream:*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/vpc/flowlogs/${var.project_name}:log-stream:*"
       }
     ]
   })
