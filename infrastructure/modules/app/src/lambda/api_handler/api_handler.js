@@ -14,7 +14,7 @@ async function getOpenSearchClient() {
     }
     try {
         // Fetch the OpenSearch password from Secrets Manager
-        const secretValue = await secretsManagerClient.send(new GetSecretValueCommand({ SecretId: process.env.APP_SECRETS_ARN }));
+        const secretValue = await secretsManagerClient.send(new GetSecretValueCommand({ SecretId: process.env.APP_SECRETS_ARN })); // Uses the client from the outer scope
         const secrets = JSON.parse(secretValue.SecretString);
         logger.info('Successfully retrieved OpenSearch credentials from Secrets Manager');
 
@@ -61,9 +61,33 @@ breaker.fallback(() => ({
 // --- Route Handlers ---
 async function handleSearchArtists(event) {
     try {
+        const query = event.queryStringParameters?.query;
+        const style = event.queryStringParameters?.style;
+
+        if (!query && !style) {
+            return {
+                statusCode: 400,
+                headers: { 'Content-Type': 'application/problem+json' },
+                body: JSON.stringify({
+                    title: "Bad Request",
+                    detail: "A 'query' or 'style' query string parameter is required for search.",
+                })
+            };
+        }
+
+        // A more realistic search query based on input
+        const searchQuery = {
+            query: {
+                bool: {
+                    must: query ? [{ match: { name: query } }] : [],
+                    filter: style ? [{ term: { "styles.keyword": style } }] : []
+                }
+            }
+        };
+
         const searchParams = {
-            index: process.env.OPENSEARCH_INDEX || 'artists', // Use env var for index name
-            body: { query: { match_all: {} } } // TODO: Replace with actual query logic based on event.queryStringParameters
+            index: process.env.OPENSEARCH_INDEX,
+            body: searchQuery
         };
 
         logger.info('Performing search via circuit breaker', { searchParams });

@@ -1,0 +1,97 @@
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V /
+  \___|_| |_|\___|\___|_|\_\___/ \_/
+
+By Prisma Cloud | version: 3.2.458
+
+terraform scan results:
+
+Passed checks: 665, Failed checks: 17, Skipped checks: 23
+
+
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-4
+Check: CKV_AWS_272: "Ensure AWS Lambda function is configured to validate code-signing"
+        FAILED for resource: aws_lambda_function.api_handler
+        File: \03-compute.tf:49-87
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-272
+
+Check: CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
+        FAILED for resource: aws_lambda_function.api_handler
+        File: \03-compute.tf:49-87
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-a-dead-letter-queue-dlq
+
+Check: CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
+        FAILED for resource: aws_lambda_function.api_handler
+        File: \03-compute.tf:49-87
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-function-level-concurrent-execution-limit
+
+Check: CKV_AWS_309: "Ensure API GatewayV2 routes specify an authorization type"
+        FAILED for resource: aws_apigatewayv2_route.proxy
+        File: \03-compute.tf:110-115
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-309
+
+Check: CKV_AWS_285: "Ensure State Machine has execution history logging enabled"
+        FAILED for resource: aws_sfn_state_machine.data_aggregation
+        File: \05-data-aggregation.tf:32-61
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-285
+
+Check: CKV_AWS_284: "Ensure State Machine has X-Ray tracing enabled"
+        FAILED for resource: aws_sfn_state_machine.data_aggregation
+        File: \05-data-aggregation.tf:32-61
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-284
+
+Check: CKV_AWS_336: "Ensure ECS containers are limited to read-only access to root filesystems"
+        FAILED for resource: aws_ecs_task_definition.scraper
+        File: \05-data-aggregation.tf:78-114
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-336
+
+Check: CKV_AWS_272: "Ensure AWS Lambda function is configured to validate code-signing"
+        FAILED for resource: aws_lambda_function.discover_studios
+        File: \05-data-aggregation.tf:136-166
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-272
+
+Check: CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
+        FAILED for resource: aws_lambda_function.discover_studios
+        File: \05-data-aggregation.tf:136-166
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-a-dead-letter-queue-dlq
+
+Check: CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
+        FAILED for resource: aws_lambda_function.discover_studios
+        File: \05-data-aggregation.tf:136-166
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-function-level-concurrent-execution-limit
+
+Check: CKV_AWS_272: "Ensure AWS Lambda function is configured to validate code-signing"
+        FAILED for resource: aws_lambda_function.find_artists
+        File: \05-data-aggregation.tf:168-198
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-272
+
+Check: CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
+        FAILED for resource: aws_lambda_function.find_artists
+        File: \05-data-aggregation.tf:168-198
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-a-dead-letter-queue-dlq
+
+Check: CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
+        FAILED for resource: aws_lambda_function.find_artists
+        File: \05-data-aggregation.tf:168-198
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-function-level-concurrent-execution-limit
+
+Check: CKV_AWS_272: "Ensure AWS Lambda function is configured to validate code-signing"
+        FAILED for resource: aws_lambda_function.queue_scraping
+        File: \05-data-aggregation.tf:200-232
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-272
+
+Check: CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
+        FAILED for resource: aws_lambda_function.queue_scraping
+        File: \05-data-aggregation.tf:200-232
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-a-dead-letter-queue-dlq
+
+Check: CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
+        FAILED for resource: aws_lambda_function.queue_scraping
+        File: \05-data-aggregation.tf:200-232
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-aws-lambda-function-is-configured-for-function-level-concurrent-execution-limit
+
+Check: CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
+        FAILED for resource: aws_s3_bucket.config_replica
+        File: \08-aws-config.tf:27-40
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default

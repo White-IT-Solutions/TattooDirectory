@@ -5,8 +5,8 @@
 
 data "archive_file" "secret_rotation_zip" {
   type        = "zip"
-  output_path = "${path.module}/secret_rotation.zip"
-  source_file = "${path.module}/lambda/secret_rotation.py"
+  source_dir  = "${path.module}/src/lambda/secret_rotation"
+  output_path = "${path.module}/dist/secret_rotation.zip"
   output_file_mode = "0644"
 }
 
@@ -161,7 +161,8 @@ resource "aws_lambda_function" "secret_rotation" {
   role            = aws_iam_role.secret_rotation_role.arn
   handler         = "secret_rotation.lambda_handler"
   source_code_hash = data.archive_file.secret_rotation_zip.output_base64sha256
-  runtime         = "python3.11" # Ensure this matches the Python version used for the Lambda code
+  runtime         = "python3.12"
+  architectures = ["arm64"]    # Switch to Graviton2 for better price/performance
   timeout         = 300
   
   # Security: Enable KMS encryption for environment variables

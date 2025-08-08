@@ -1,30 +1,31 @@
 # Terraform File Deployment Guide
 
+## Prerequisites
+
+- **Terraform**: This project requires Terraform version `>= 1.5`.
+
+---
+
 ## Deployment Steps
 
-### 1. Create Lambda Package Directory
-
-```bash
-mkdir -p infrastructure/modules/app/lambda-packages
-```
-
-### 2. Validate Configuration
+### 1. Validate Configuration
 
 ```bash
 cd infrastructure/environments/dev
-terraform init
+terraform fmt -check
+terraform init # Initializes the working directory, downloading required provider plugins
 terraform validate
 terraform plan
 ```
 
-### 3. Test in Development
+### 2. Test in Development
 
 ```bash
 cd infrastructure/environments/dev
 terraform apply
 ```
 
-### 4. Apply to Production
+### 3. Apply to Production
 
 ```bash
 cd infrastructure/environments/prod
@@ -41,6 +42,7 @@ terraform apply
 1. **State File Conflicts**: If you encounter state conflicts, use `terraform state mv` to move resources
 2. **Missing Resources**: Check that all old files are removed and new files are in place
 3. **Variable Errors**: Ensure environment-specific variables.tf files are created
+4. **Provider Configuration Not Present**: If you see an error about a missing provider configuration (often with an `alias` like "replica"), it means a provider was removed before the resources it managed were destroyed. Temporarily re-add the provider block, run `terraform apply` to destroy the orphaned resources, and then remove the provider block again.
 
 ### Validation Commands
 

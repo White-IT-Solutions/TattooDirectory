@@ -117,7 +117,8 @@ resource "aws_lambda_function" "config_compliance_processor" {
   function_name = "${local.name_prefix}}-config-compliance-processor"
   role          = aws_iam_role.config_compliance_processor[0].arn
   handler       = "index.handler"
-  runtime       = "nodejs24.x" # Updated to latest LTS
+  runtime       = "nodejs20.x" # Updated to latest LTS
+  architectures = ["arm64"]    # Switch to Graviton2 for better price/performance
   timeout       = 60
   memory_size   = 256
   code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
@@ -163,63 +164,9 @@ resource "aws_lambda_function" "config_compliance_processor" {
 # Lambda function code for Config compliance processing
 data "archive_file" "config_compliance_processor_zip" {
   count = local.config.enable_advanced_monitoring ? 1 : 0
-
   type        = "zip"
-  output_path = "${path.module}/config_compliance_processor.zip"
-  source {
-    content  = <<EOF
-const AWS = require('aws-sdk');
-const sns = new AWS.SNS();
-
-exports.handler = async (event) => {
-    console.log('Config Compliance Event:', JSON.stringify(event, null, 2));
-    
-    try {
-        const detail = event.detail;
-
-        // Process only NON_COMPLIANT events for critical rules
-        // Add checks to ensure the detail object and its properties exist
-        if (detail && detail.newEvaluationResult && detail.newEvaluationResult.complianceType === 'NON_COMPLIANT') {
-            const criticalRules = [
-                's3-bucket-public-access-prohibited',
-                'lambda-function-public-access-prohibited',
-                'dynamodb-table-encryption-enabled'
-            ];
-            
-            const ruleName = detail.configRuleName.toLowerCase();
-            const isCritical = criticalRules.some(rule => ruleName.includes(rule));
-            
-            if (isCritical) {
-                const alertMessage = {
-                    severity: 'HIGH',
-                    rule: detail.configRuleName,
-                    resource: detail.resourceId,
-                    resourceType: detail.resourceType,
-                    complianceType: detail.newEvaluationResult.complianceType,
-                    timestamp: new Date().toISOString(),
-                    account: event.account, // Get account from the top-level event
-                    region: event.region    // Get region from the top-level event
-                };
-                
-                await sns.publish({
-                    TopicArn: process.env.SNS_TOPIC_ARN,
-                    Subject: `CRITICAL: Config Compliance Violation - ${process.env.PROJECT_NAME}`,
-                    Message: JSON.stringify(alertMessage, null, 2)
-                }).promise();
-                
-                console.log('Critical compliance violation alert sent:', alertMessage);
-            }
-        }
-        
-        return { statusCode: 200, body: 'Success' };
-    } catch (error) {
-        console.error('Error processing Config compliance event:', error);
-        throw error;
-    }
-};
-EOF
-    filename = "index.js"
-  }
+  source_dir  = "${path.module}/src/lambda/config_compliance_processor"
+  output_path = "${path.module}/dist/config_compliance_processor.zip"
 }
 
 # CloudWatch Log Group for Config Compliance Processor is defined in 06-observability.tf

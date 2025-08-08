@@ -3,9 +3,132 @@ resource "aws_s3_bucket" "cloudtrail" {
   bucket = "${var.project_name}-cloudtrail-logs-${random_id.bucket_suffix.hex}"
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-cloudtrail-logs"
+    Name = "${local.name_prefix}-cloudtrail-logs"
   })
 }
+
+# ----------------------------------------------------------------------------------------------------------------------
+# S3 Bucket for CloudTrail Logs Replica (for DR)
+# ----------------------------------------------------------------------------------------------------------------------
+resource "aws_s3_bucket" "cloudtrail_replica" {
+  # checkov:skip=CKV_AWS_145: Encryption set
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = "${var.project_name}-cloudtrail-logs-${var.aws_replica_region}-${random_id.bucket_suffix.hex}"
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project_name}-cloudtrail-logs-replica"
+    }
+  )
+}
+
+resource "aws_s3_bucket_versioning" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# CloudTrail replica bucket lifecycle
+resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  rule {
+    id     = "cloudtrail_replica_lifecycle"
+    status = "Enabled"
+
+    filter {}
+
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    expiration {
+      days = var.environment == "prod" ? 3650 : 90
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# CloudTrail replica bucket logging
+resource "aws_s3_bucket_logging" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  target_bucket = aws_s3_bucket.access_logs_replica[0].id
+  target_prefix = "cloudtrail-replica-access-logs/"
+}
+
+# CloudTrail replica bucket notification
+resource "aws_s3_bucket_notification" "cloudtrail_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.cloudtrail_replica[0].id
+
+  topic {
+    id        = "s3-cloudtrail-replica-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+
+
 
 # CloudTrail bucket lifecycle
 resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
@@ -14,6 +137,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
   rule {
     id = "cloudtrail_lifecycle"
     status = "Enabled"
+
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
+    # Transition objects to a cheaper storage tier after 30 days.
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
 
     expiration {
       days = var.environment == "prod" ? 3650 : 90 # 10 years for prod, 90 days for dev
@@ -218,7 +350,7 @@ resource "aws_cloudwatch_metric_alarm" "iam_policy_changes" {
 
 # Cross-region replication for CloudTrail bucket (production only)
 resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
-  count  = var.environment == "prod" ? 1 : 0
+  count  = var.enable_cross_region_replication ? 1 : 0
   role   = aws_iam_role.s3_replication[0].arn
   bucket = aws_s3_bucket.cloudtrail.id
 

@@ -1,18 +1,165 @@
 # AWS Config for compliance monitoring and governance
 
+# Random ID for Config bucket suffix
+resource "random_id" "config_bucket_suffix" {
+  byte_length = 4
+}
+
+# Random ID for main resources (used in replication)
+resource "random_id" "main" {
+  byte_length = 4
+}
+
 # S3 Bucket for AWS Config
 resource "aws_s3_bucket" "config" {
   bucket        = "${var.project_name}-aws-config-${random_id.config_bucket_suffix.hex}"
   force_destroy = var.environment == "dev" ? true : false
 
   tags = merge(local.common_tags, {
-    Name               = "${local.name_prefix}}-config-bucket"
+    Name               = "${local.name_prefix}-config-bucket"
     DataClassification = "Internal"
   })
 }
 
-resource "random_id" "config_bucket_suffix" {
-  byte_length = 4
+# ----------------------------------------------------------------------------------------------------------------------
+# S3 Bucket for AWS Config Replica (for DR)
+# ----------------------------------------------------------------------------------------------------------------------
+resource "aws_s3_bucket" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = "${var.project_name}-aws-config-${var.aws_replica_region}-${random_id.config_bucket_suffix.hex}"
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project_name}-aws-config-replica"
+    }
+  )
+}
+
+resource "aws_s3_bucket_versioning" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Config replica bucket lifecycle
+resource "aws_s3_bucket_lifecycle_configuration" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  rule {
+    id     = "config_replica_lifecycle"
+    status = "Enabled"
+
+    filter {}
+
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    expiration {
+      days = var.environment == "prod" ? 2555 : 90
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# Config replica bucket logging
+resource "aws_s3_bucket_logging" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  target_bucket = aws_s3_bucket.access_logs_replica[0].id
+  target_prefix = "config-replica-access-logs/"
+}
+
+# Config replica bucket notification
+resource "aws_s3_bucket_notification" "config_replica" {
+  count = var.enable_cross_region_replication ? 1 : 0
+
+  provider = aws.replica
+
+  bucket = aws_s3_bucket.config_replica[0].id
+
+  topic {
+    id        = "s3-config-replica-object-created-notifications"
+    topic_arn = aws_sns_topic.s3_events.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
+}
+
+resource "aws_s3_bucket_replication_configuration" "config" {
+  count  = var.enable_cross_region_replication ? 1 : 0
+  role   = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.config.id
+
+  rule {
+    id     = "replicate-config-to-backup-region"
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.config_replica[0].arn
+      storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = aws_kms_key.replica[0].arn
+      }
+    }
+  }
+
+  depends_on = [aws_s3_bucket_versioning.config_replica]
 }
 
 # Block public access to Config bucket
@@ -52,6 +199,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "config" {
   rule {
     id     = "config_lifecycle"
     status = "Enabled"
+
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
+    # Transition objects to a cheaper storage tier after 30 days.
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
 
     expiration {
       days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
@@ -146,26 +302,7 @@ resource "aws_s3_bucket_notification" "config" {
   depends_on = [aws_sns_topic_policy.s3_events_topic_policy]
 }
 
-# Cross-region replication for config bucket (production only)
-resource "aws_s3_bucket_replication_configuration" "config" {
-  count  = var.environment == "prod" ? 1 : 0
-  role   = aws_iam_role.s3_replication[0].arn
-  bucket = aws_s3_bucket.config.id
 
-  rule {
-    id     = "replicate-config-to-backup-region"
-    status = "Enabled"
-
-    destination {
-      bucket        = aws_s3_bucket.config_replica[0].arn
-      storage_class = "STANDARD_IA"
-
-      encryption_configuration {
-        replica_kms_key_id = aws_kms_key.replica[0].arn
-      }
-    }
-  }
-}
 
 # AWS Config Configuration Recorder
 resource "aws_config_configuration_recorder" "main" {
@@ -451,7 +588,7 @@ resource "aws_config_config_rule" "api_gw_execution_logging_enabled" {
 
 # Config Remediation Configuration (for critical rules)
 resource "aws_config_remediation_configuration" "s3_bucket_public_access" {
-  count = local.config.enable_config_remediation ? 1 : 0
+  count = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
 
   config_rule_name = aws_config_config_rule.s3_bucket_public_access_prohibited.name
 

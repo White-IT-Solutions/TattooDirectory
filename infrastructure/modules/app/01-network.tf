@@ -9,17 +9,6 @@ resource "aws_vpc" "main" {
   })
 }
 
-# CloudWatch Log Group for VPC Flow Logs
-resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
-  name              = "/aws/vpc/flowlogs/${var.project_name}"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
-  kms_key_id        = aws_kms_key.main.arn
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-vpc-flow-logs"
-  })
-}
-
 # VPC Flow Logs
 resource "aws_flow_log" "vpc_flow_logs" {
   iam_role_arn    = aws_iam_role.vpc_flow_logs_role.arn

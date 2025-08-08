@@ -1,6 +1,7 @@
 # Data sources for looking up existing AWS resources, like managed policies.
 
 data "aws_caller_identity" "current" {}
+
 data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {
@@ -20,9 +21,7 @@ data "aws_iam_policy" "amazon_ecs_task_execution_role_policy" {
 }
 
 data "aws_iam_policy" "config_role" {
-  # Note: The policy name is "ConfigRole", but the path is "service-role/"
-  # The data source finds it by name regardless of the path.
-  arn = "arn:aws:iam::aws:policy/service-role/ConfigRole"
+  name = "ConfigRole"
 }
 
 data "aws_iam_policy" "amazon_ssm_automation_role" {
@@ -30,7 +29,9 @@ data "aws_iam_policy" "amazon_ssm_automation_role" {
 }
 
 data "aws_iam_policy" "aws_backup_service_role_policy_for_backup" {
-  # Note: The policy name is "AWSBackupServiceRolePolicyForBackup", but the path is "service-role/"
-  # The data source finds it by name regardless of the path.
-  arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
+  name = "AWSBackupServiceRolePolicyForBackup"
+}
+
+data "aws_iam_policy" "amazon_api_gateway_push_to_cloudwatch_logs" {
+  name = "AmazonAPIGatewayPushToCloudWatchLogs"
 }

@@ -6,6 +6,8 @@ locals {
     dev = {
       opensearch_instance_count  = 1
       opensearch_instance_type   = "t3.micro.search"
+      opensearch_master_instance_count = null
+      opensearch_master_instance_type  = null
       lambda_memory_size         = 256
       enable_deletion_protection = false
       enable_advanced_monitoring = false
@@ -19,6 +21,8 @@ locals {
     prod = {
       opensearch_instance_count  = 2
       opensearch_instance_type   = "t3.small.search"
+      opensearch_master_instance_count = 3                 # Recommended minimum for production to maintain quorum
+      opensearch_master_instance_type  = "t3.small.search" # A cost-effective choice for master nodes
       lambda_memory_size         = 512
       enable_deletion_protection = true
       enable_advanced_monitoring = true

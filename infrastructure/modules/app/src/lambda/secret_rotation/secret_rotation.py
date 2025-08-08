@@ -7,9 +7,13 @@ import logging
 import random
 import string
 from typing import Dict, Any, Optional
+from opensearchpy import OpenSearch, RequestsHttpConnection
+from requests_aws4auth import AWS4Auth
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+
+secretsmanager_client = boto3.client('secretsmanager')
 
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> None:
@@ -24,8 +28,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> None:
     token = event['ClientRequestToken']
     step = event['Step']
 
-    service_client = boto3.client('secretsmanager')
-    metadata = service_client.describe_secret(SecretId=arn)
+    metadata = secretsmanager_client.describe_secret(SecretId=arn)
     
     if not metadata['RotationEnabled']:
         logger.error(f"Secret {arn} is not enabled for rotation.")
@@ -44,13 +47,13 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> None:
         raise ValueError(f"Secret version {token} not set as AWSPENDING for rotation of secret {arn}.")
 
     if step == "createSecret":
-        create_secret(service_client, arn, token)
+        create_secret(secretsmanager_client, arn, token)
     elif step == "setSecret":
-        set_secret(service_client, arn, token)
+        set_secret(secretsmanager_client, arn, token)
     elif step == "testSecret":
-        test_secret(service_client, arn, token)
+        test_secret(secretsmanager_client, arn, token)
     elif step == "finishSecret":
-        finish_secret(service_client, arn, token)
+        finish_secret(secretsmanager_client, arn, token)
     else:
         raise ValueError(f"Invalid step parameter: {step}")
 
@@ -64,23 +67,8 @@ def create_secret(service_client: Any, arn: str, token: str) -> None:
         arn: Secret ARN
         token: Client request token
     """
-    current_secret = get_secret_dict(service_client, arn, "AWSCURRENT")
-
-    # Generate a new password, excluding characters that can cause issues
-    exclude_characters = "\"@/\\`'"
-    password_chars = string.ascii_letters + string.digits + string.punctuation
-    allowed_chars = ''.join(c for c in password_chars if c not in exclude_characters)
-    
-    # Generate a 24-character password with mixed case, numbers, and symbols
-    new_password = ''.join(random.choice(allowed_chars) for _ in range(24))
-    
-    # Ensure password complexity requirements
-    if not (any(c.islower() for c in new_password) and 
-            any(c.isupper() for c in new_password) and
-            any(c.isdigit() for c in new_password) and
-            any(c in string.punctuation for c in new_password)):
-        # Regenerate if complexity requirements not met
-        new_password = generate_complex_password(allowed_chars)
+    current_secret = get_secret_dict(service_client, arn, "AWSCURRENT")    
+    new_password = generate_complex_password()
 
     current_secret['opensearch_master_password'] = new_password
     service_client.put_secret_value(
@@ -92,27 +80,22 @@ def create_secret(service_client: Any, arn: str, token: str) -> None:
     logger.info(f"createSecret: Successfully created secret for {arn}.")
 
 
-def generate_complex_password(allowed_chars: str) -> str:
+def generate_complex_password(length: int = 24) -> str:
     """
-    Generate a password that meets complexity requirements.
-    
-    Args:
-        allowed_chars: String of allowed characters
-        
-    Returns:
-        Complex password string
+    Generate a secure, complex password.
     """
-    password = []
-    
-    # Ensure at least one of each required character type
-    password.append(random.choice(string.ascii_lowercase))
-    password.append(random.choice(string.ascii_uppercase))
-    password.append(random.choice(string.digits))
-    password.append(random.choice('!@#$%^&*()_+-=[]{}|;:,.<>?'))
-    
-    # Fill remaining positions
-    for _ in range(20):  # 24 total - 4 required = 20 remaining
-        password.append(random.choice(allowed_chars))
+    if length < 8:
+        raise ValueError("Password length must be at least 8 characters.")
+
+    # Define character sets, excluding problematic characters like " / \ @ '
+    lower = string.ascii_lowercase
+    upper = string.ascii_uppercase
+    digits = string.digits
+    symbols = '!#$%&()*+,-.:;<=>?[]^_{|}~'
+    all_chars = lower + upper + digits + symbols
+
+    password = [random.choice(lower), random.choice(upper), random.choice(digits), random.choice(symbols)]
+    password.extend(random.choice(all_chars) for _ in range(length - 4))
     
     # Shuffle to avoid predictable patterns
     random.shuffle(password)
@@ -160,25 +143,34 @@ def test_secret(service_client: Any, arn: str, token: str) -> None:
         arn: Secret ARN
         token: Client request token
     """
+    logger.info(f"testSecret: Testing new secret for ARN {arn}")
     pending_secret = get_secret_dict(service_client, arn, "AWSPENDING", token)
     
-    # In a production implementation, you would test the connection here
-    # For now, we'll perform basic validation
     password = pending_secret.get('opensearch_master_password')
     username = pending_secret.get('opensearch_master_username')
-    endpoint = pending_secret.get('opensearch_endpoint')
+    host = os.environ['OPENSEARCH_ENDPOINT']
+    region = os.environ['AWS_REGION']
     
-    if not all([password, username, endpoint]):
-        raise ValueError("Missing required credentials in secret")
-    
-    if len(password) < 8:
-        raise ValueError("Password does not meet minimum length requirements")
-    
-    logger.info(f"testSecret: Secret validation successful for {arn}")
-    
-    # TODO: Implement actual OpenSearch connection test
-    # This would involve creating an OpenSearch client and attempting
-    # to authenticate with the new credentials
+    if not all([password, username, host]):
+        raise ValueError("Secret is missing required values for testing (password, username, or endpoint).")
+
+    try:
+        # Use basic auth to test the new master user password
+        client = OpenSearch(
+            hosts=[{'host': host, 'port': 443}],
+            http_auth=(username, password),
+            use_ssl=True,
+            verify_certs=True,
+            connection_class=RequestsHttpConnection
+        )
+        
+        # A simple 'info' call is a good way to test credentials
+        info = client.info()
+        logger.info(f"testSecret: Successfully connected to OpenSearch cluster: {info['cluster_name']}")
+
+    except Exception as e:
+        logger.error(f"testSecret: Failed to connect to OpenSearch with new credentials: {str(e)}")
+        raise
 
 
 def finish_secret(service_client: Any, arn: str, token: str) -> None:

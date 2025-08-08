@@ -146,3 +146,20 @@ variable "domain_name" {
     error_message = "Domain name must be a valid domain format or empty string."
   }
 }
+
+variable "aws_replica_region" {
+  description = "AWS region for cross-region replication (e.g., for CloudTrail, S3 backups)"
+  type        = string
+  default     = "eu-west-1"
+
+  validation {
+    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_replica_region))
+    error_message = "AWS replica region must be in the format: us-east-1, eu-west-2, etc."
+  }
+}
+
+variable "enable_cross_region_replication" {
+  description = "Enable cross-region replication for critical resources (CloudTrail logs, backups)"
+  type        = bool
+  default     = false
+}
