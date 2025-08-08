@@ -255,7 +255,7 @@ resource "aws_security_group_rule" "lambda_egress_internet" {
   to_port     = 443
   protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
-  #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for AWS services without a VPCe
+  #tfsec:ignore:aws-ec2-no-public-egress-sgr - Required for web scraping
   security_group_id = aws_security_group.lambda.id
   description       = "Egress to Internet for AWS APIs"
 }
@@ -367,6 +367,10 @@ resource "aws_vpc_endpoint" "logs" {
 resource "aws_guardduty_detector" "main" {
   # checkov:skip=CKV2_AWS_3: GuardDuty Config is correct.
   enable = true
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-guardduty-detector"
+  })
 }
 
 resource "aws_guardduty_organization_admin_account" "main" {
@@ -377,7 +381,7 @@ resource "aws_guardduty_organization_admin_account" "main" {
   depends_on = [aws_guardduty_detector.main]
 }
 
-resource "aws_guardduty_organisation_configuration" "main" {
+resource "aws_guardduty_organization_configuration" "main" {
   auto_enable_organization_members = "ALL"
 
   # This detector must exist in the delegated administrator account.
@@ -385,7 +389,7 @@ resource "aws_guardduty_organisation_configuration" "main" {
 
   datasources {
     s3_logs {
-      enable = true
+      auto_enable = true
     }
     kubernetes {
       audit_logs {
@@ -393,10 +397,6 @@ resource "aws_guardduty_organisation_configuration" "main" {
       }
     }
   }
-
-  tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-guardduty-detector"
-  })
 
   # Ensure the admin account is designated before configuring the organization.
   depends_on = [aws_guardduty_organization_admin_account.main]

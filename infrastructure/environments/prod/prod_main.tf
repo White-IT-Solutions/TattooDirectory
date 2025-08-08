@@ -14,4 +14,10 @@ module "app" {
   default_data_classification = var.default_data_classification
   scraper_image_tag           = var.scraper_image_tag
   backup_retention_days       = var.backup_retention_days
+
+  # Pass the aliased provider configurations to the module.
+  providers = {
+    aws.replica = aws.replica
+    aws.us_east_1 = aws.us_east_1
+  }
 }

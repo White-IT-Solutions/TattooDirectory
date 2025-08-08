@@ -165,9 +165,9 @@ output "name_prefix" {
 output "dev_notes" {
   description = "Development environment specific notes"
   value = {
-    backup_enabled = false
-    monitoring_level = "basic"
+    backup_enabled    = false
+    monitoring_level  = "basic"
     cost_optimization = "enabled"
-    data_retention = "short_term"
+    data_retention    = "short_term"
   }
 }

@@ -1,12 +1,13 @@
 terraform {
-  required_version = ">= 1.5"
-}
+  required_version = ">= 1.5.0"
 
-# Configure the AWS Provider with default tags
-provider "aws" {
-  region = var.aws_region
-
-  default_tags {
-    tags = local.common_tags
+  # This module requires the AWS provider.
+  # It accepts the default configuration and an optional aliased provider for replication.
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~> 5.0"
+      configuration_aliases = [aws.replica, aws.us_east_1]
+    }
   }
 }

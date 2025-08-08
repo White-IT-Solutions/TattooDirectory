@@ -157,9 +157,9 @@ resource "aws_opensearch_domain" "main" {
   cluster_config {
     instance_type            = local.environment_config[var.environment].opensearch_instance_type
     instance_count           = local.environment_config[var.environment].opensearch_instance_count
-    dedicated_master_enabled = var.environment == "prod" ? true : false
-   # master_instance_type     = var.environment == "prod" ? "t3.small.search" : null
-   # master_instance_count    = var.environment == "prod" ? 3 : null
+    dedicated_master_enabled = local.environment_config[var.environment].opensearch_master_instance_count != null
+    dedicated_master_type    = local.environment_config[var.environment].opensearch_master_instance_type
+    dedicated_master_count   = local.environment_config[var.environment].opensearch_master_instance_count
     zone_awareness_enabled   = var.environment == "prod" ? true : false
 
     dynamic "zone_awareness_config" {
@@ -280,11 +280,12 @@ resource "aws_secretsmanager_secret_version" "opensearch_password" {
 # DynamoDB to OpenSearch Sync Lambda
 resource "aws_lambda_function" "dynamodb_sync" {
   # checkov:skip=CKV_AWS_116: Used destination_config on event source mapping as stream-based.
-  filename      = "dynamodb_sync.zip"
+  filename      = data.archive_file.dynamodb_sync_zip.output_path
   function_name = "${local.name_prefix}}-dynamodb-sync"
   role          = aws_iam_role.lambda_sync_role.arn
   handler       = "index.handler"
-  runtime       = "nodejs24.x"
+  runtime       = "nodejs20.x"
+  architectures = ["arm64"]    # Switch to Graviton2 for better price/performance
   timeout       = 300
   memory_size   = local.environment_config[var.environment].lambda_memory_size
 
@@ -331,77 +332,8 @@ resource "aws_lambda_function" "dynamodb_sync" {
 # Create a placeholder zip file for the sync Lambda function
 data "archive_file" "dynamodb_sync_zip" {
   type        = "zip"
-  output_path = "${path.module}/dynamodb_sync.zip"
-  source {
-    content  = <<EOF
-const { Client } = require('@opensearch-project/opensearch');
-const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
-
-const secretsManager = new SecretsManagerClient({});
-let openSearchPassword;
-
-const getSecret = async () => {
-    if (openSearchPassword) return openSearchPassword;
-    const command = new GetSecretValueCommand({ SecretId: process.env.APP_SECRETS_ARN });
-    const response = await secretsManager.send(command);
-    const secret = JSON.parse(response.SecretString);
-    openSearchPassword = secret.opensearch_master_password;
-    return openSearchPassword;
-};
-
-exports.handler = async (event) => {
-    console.log('DynamoDB Stream Event:', JSON.stringify(event, null, 2));
-    
-    const password = await getSecret();
-    const client = new Client({
-        node: 'https://' + process.env.OPENSEARCH_ENDPOINT,
-        auth: {
-            username: 'admin',
-            password: password
-        }
-    });
-    
-    for (const record of event.Records) {
-        try {
-            if (record.eventName === 'INSERT' || record.eventName === 'MODIFY') {
-                const newImage = record.dynamodb.NewImage;
-                if (newImage && newImage.PK && newImage.PK.S.startsWith('ARTIST#')) {
-                    const document = {
-                        id: newImage.PK.S,
-                        name: newImage.name?.S || '',
-                        styles: newImage.styles?.SS || [],
-                        location: newImage.location?.S || '',
-                    };
-                    
-                    await client.index({
-                        index: process.env.OPENSEARCH_INDEX,
-                        id: newImage.PK.S,
-                        body: document
-                    });
-                    
-                    console.log('Indexed document: ' + newImage.PK.S);
-                }
-            } else if (record.eventName === 'REMOVE') {
-                const oldImage = record.dynamodb.OldImage;
-                if (oldImage && oldImage.PK && oldImage.PK.S.startsWith('ARTIST#')) {
-                    await client.delete({
-                        index: process.env.OPENSEARCH_INDEX,
-                        id: oldImage.PK.S
-                    });
-                    
-                    console.log('Deleted document: ' + oldImage.PK.S);
-                }
-            }
-        } catch (error) {
-            console.error('Error processing record:', error);
-        }
-    }
-    
-    return { statusCode: 200, body: 'Success' };
-};
-EOF
-    filename = "index.js"
-  }
+  source_dir  = "${path.module}/src/lambda/dynamodb_sync"
+  output_path = "${path.module}/dist/dynamodb_sync.zip"
 }
 
 # Dead Letter Queue for Lambda Sync function
@@ -1085,6 +1017,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_logs" {
   rule {
     id     = "access_logs_lifecycle"
     status = "Enabled"
+
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
+    # Transition objects to a cheaper storage tier after 30 days.
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
 
     expiration {
       days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev

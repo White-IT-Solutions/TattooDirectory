@@ -1,14 +1,19 @@
-const AWS = require('aws-sdk');
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const logger = require('./common/logger'); // Assumes logger is copied to a 'common' subdir
+
+// Initialize AWS SDK v3 clients outside the handler for reuse
+const ddbClient = new DynamoDBClient({});
+const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
 async function processArtist(message) {
-    // message is the parsed SQS message body, e.g.:
+    // `message` is the parsed SQS message body, e.g.:
     // { artistId: '...', portfolioUrl: '...', scrapeId: '...' }
 
     // scrapedData is the result of your scraping logic
     const scrapedData = { name: 'Artist Name', styles: ['illustrative', 'neo-traditional'], location: 'London, UK' };
 
-    const params = {
+    const command = new UpdateCommand({
         TableName: process.env.DYNAMODB_TABLE_NAME,
         Key: {
             // Your primary key for the artist item
@@ -28,23 +33,23 @@ async function processArtist(message) {
         },
         ExpressionAttributeValues: {
             ':name': scrapedData.name,
-            ':styles': dynamoDb.createSet(scrapedData.styles), // Use createSet for String Sets
+            ':styles': new Set(scrapedData.styles), // The Document Client automatically handles JS Sets
             ':location': scrapedData.location,
             ':scrapeId': message.scrapeId,
             ':updatedAt': new Date().toISOString()
         }
-    };
+    });
 
     try {
-        await dynamoDb.update(params).promise();
-        console.log(`Successfully updated artist ${message.artistId} for scrape ${message.scrapeId}`);
+        await ddbDocClient.send(command);
+        logger.info(`Successfully updated artist`, { artistId: message.artistId, scrapeId: message.scrapeId });
     } catch (error) {
-        if (error.code === 'ConditionalCheckFailedException') {
+        if (error.name === 'ConditionalCheckFailedException') {
             // This is not an error, but an expected outcome for a duplicate message.
-            console.log(`Skipping update for artist ${message.artistId}, already processed in scrape ${message.scrapeId}.`);
+            logger.warn(`Skipping update for artist, already processed in this scrape run.`, { artistId: message.artistId, scrapeId: message.scrapeId });
         } else {
             // A real error occurred.
-            console.error(`Error updating artist ${message.artistId}:`, error);
+            logger.error(`Error updating artist`, { artistId: message.artistId, error: error.toString() });
             throw error; // Re-throw to let SQS handle retry/DLQ logic.
         }
     }

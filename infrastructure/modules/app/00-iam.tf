@@ -1,35 +1,4 @@
 # IAM roles and policies for the application
-
-# Data sources for AWS managed policies
-data "aws_iam_policy" "aws_xray_daemon_write_access" {
-  arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
-}
-
-data "aws_iam_policy" "amazon_ecs_task_execution_role_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-data "aws_iam_policy" "config_role" {
-  arn = "arn:aws:iam::aws:policy/service-role/ConfigRole"
-}
-
-data "aws_iam_policy" "amazon_ssm_automation_role" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMAutomationRole"
-}
-
-data "aws_iam_policy" "aws_backup_service_role_policy_for_backup" {
-  arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
-}
-
-# Data sources for current AWS context
-data "aws_caller_identity" "current" {}
-
-data "aws_region" "current" {}
-
-# =============================================================================
-# API LAMBDA FUNCTIONS
-# =============================================================================
-
 resource "aws_iam_role" "lambda_api_role" {
   name = "${local.name_prefix}-lambda-api-role"
 
@@ -57,7 +26,7 @@ resource "aws_iam_role" "lambda_api_role" {
 }
 
 resource "aws_iam_policy" "lambda_api_policy" {
-  name        = "${local.name_prefix}}-lambda-api-policy"
+  name        = "${local.name_prefix}-lambda-api-policy"
   description = "Policy for API Lambda functions"
 
   policy = jsonencode({
@@ -123,13 +92,13 @@ resource "aws_iam_policy" "lambda_api_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -166,7 +135,7 @@ resource "aws_iam_role_policy_attachment" "lambda_workflow_xray" {
 # =============================================================================
 
 resource "aws_iam_role" "lambda_sync_role" {
-  name = "${local.name_prefix}}-lambda-sync-role"
+  name = "${local.name_prefix}-lambda-sync-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -182,12 +151,12 @@ resource "aws_iam_role" "lambda_sync_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-lambda-sync-role"
+    Name = "${local.name_prefix}-lambda-sync-role"
   })
 }
 
 resource "aws_iam_policy" "lambda_sync_policy" {
-  name        = "${local.name_prefix}}-lambda-sync-policy"
+  name        = "${local.name_prefix}-lambda-sync-policy"
   description = "Policy for DynamoDB to OpenSearch sync Lambda"
 
   policy = jsonencode({
@@ -232,13 +201,13 @@ resource "aws_iam_policy" "lambda_sync_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -267,7 +236,7 @@ resource "aws_iam_role_policy_attachment" "lambda_sync_policy_attachment" {
 # =============================================================================
 
 resource "aws_iam_role" "fargate_task_role" {
-  name = "${local.name_prefix}}-fargate-task-role"
+  name = "${local.name_prefix}-fargate-task-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -283,12 +252,12 @@ resource "aws_iam_role" "fargate_task_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-fargate-task-role"
+    Name = "${local.name_prefix}-fargate-task-role"
   })
 }
 
 resource "aws_iam_policy" "fargate_task_policy" {
-  name        = "${local.name_prefix}}-fargate-task-policy"
+  name        = "${local.name_prefix}-fargate-task-policy"
   description = "Policy for Fargate scraper tasks"
 
   policy = jsonencode({
@@ -338,7 +307,7 @@ resource "aws_iam_role_policy_attachment" "fargate_task_policy_attachment" {
 }
 
 resource "aws_iam_role" "fargate_execution_role" {
-  name = "${local.name_prefix}}-fargate-execution-role"
+  name = "${local.name_prefix}-fargate-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -354,7 +323,7 @@ resource "aws_iam_role" "fargate_execution_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-fargate-execution-role"
+    Name = "${local.name_prefix}-fargate-execution-role"
   })
 }
 
@@ -368,7 +337,7 @@ resource "aws_iam_role_policy_attachment" "fargate_execution_role_policy" {
 # =============================================================================
 
 resource "aws_iam_role" "step_functions_role" {
-  name = "${local.name_prefix}}-step-functions-role"
+  name = "${local.name_prefix}-step-functions-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -384,12 +353,12 @@ resource "aws_iam_role" "step_functions_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-step-functions-role"
+    Name = "${local.name_prefix}-step-functions-role"
   })
 }
 
 resource "aws_iam_policy" "step_functions_policy" {
-  name        = "${local.name_prefix}}-step-functions-policy"
+  name        = "${local.name_prefix}-step-functions-policy"
   description = "Policy for Step Functions state machine"
 
   policy = jsonencode({
@@ -401,7 +370,7 @@ resource "aws_iam_policy" "step_functions_policy" {
           "lambda:InvokeFunction"
         ]
         Resource = [
-          "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-workflow-*"
+          "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-workflow-*"
         ]
       },
       {
@@ -409,7 +378,7 @@ resource "aws_iam_policy" "step_functions_policy" {
         Action = [
           "sqs:GetQueueAttributes"
         ]
-        Resource = "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-scraping-queue"
+        Resource = "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-scraping-queue"
       }
     ]
   })
@@ -426,7 +395,7 @@ resource "aws_iam_role_policy_attachment" "step_functions_xray_attachment" {
 }
 
 resource "aws_iam_role" "eventbridge_role" {
-  name = "${local.name_prefix}}-eventbridge-role"
+  name = "${local.name_prefix}-eventbridge-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -442,12 +411,12 @@ resource "aws_iam_role" "eventbridge_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-eventbridge-role"
+    Name = "${local.name_prefix}-eventbridge-role"
   })
 }
 
 resource "aws_iam_policy" "eventbridge_policy" {
-  name        = "${local.name_prefix}}-eventbridge-policy"
+  name        = "${local.name_prefix}-eventbridge-policy"
   description = "Policy for EventBridge to invoke Step Functions"
 
   policy = jsonencode({
@@ -458,7 +427,7 @@ resource "aws_iam_policy" "eventbridge_policy" {
         Action = [
           "states:StartExecution"
         ]
-        Resource = "arn:aws:states:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:stateMachine:${local.name_prefix}-data-aggregation"
+        Resource = "arn:aws:states:${var.aws_region}:${data.aws_caller_identity.current.account_id}:stateMachine:${local.name_prefix}-data-aggregation"
       }
     ]
   })
@@ -474,7 +443,7 @@ resource "aws_iam_role_policy_attachment" "eventbridge_policy_attachment" {
 # =============================================================================
 
 resource "aws_iam_role" "discover_studios_role" {
-  name = "${local.name_prefix}}-discover-studios-role"
+  name = "${local.name_prefix}-discover-studios-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -490,12 +459,12 @@ resource "aws_iam_role" "discover_studios_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-discover-studios-role"
+    Name = "${local.name_prefix}-discover-studios-role"
   })
 }
 
 resource "aws_iam_policy" "discover_studios_policy" {
-  name        = "${local.name_prefix}}-discover-studios-policy"
+  name        = "${local.name_prefix}-discover-studios-policy"
   description = "Policy for Discover Studios Lambda function"
 
   policy = jsonencode({
@@ -531,13 +500,13 @@ resource "aws_iam_policy" "discover_studios_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -555,7 +524,7 @@ resource "aws_iam_role_policy_attachment" "discover_studios_attachment" {
 }
 
 resource "aws_iam_role" "find_artists_on_site_role" {
-  name = "${local.name_prefix}}-find-artists-role"
+  name = "${local.name_prefix}-find-artists-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -571,12 +540,12 @@ resource "aws_iam_role" "find_artists_on_site_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-find-artists-role"
+    Name = "${local.name_prefix}-find-artists-role"
   })
 }
 
 resource "aws_iam_policy" "find_artists_on_site_policy" {
-  name        = "${local.name_prefix}}-find-artists-policy"
+  name        = "${local.name_prefix}-find-artists-policy"
   description = "Policy for Find Artists on Site Lambda function"
 
   policy = jsonencode({
@@ -612,13 +581,13 @@ resource "aws_iam_policy" "find_artists_on_site_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -636,7 +605,7 @@ resource "aws_iam_role_policy_attachment" "find_artists_on_site_attachment" {
 }
 
 resource "aws_iam_role" "queue_scraping_role" {
-  name = "${local.name_prefix}}-queue-scraping-role"
+  name = "${local.name_prefix}-queue-scraping-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -652,12 +621,12 @@ resource "aws_iam_role" "queue_scraping_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-queue-scraping-role"
+    Name = "${local.name_prefix}-queue-scraping-role"
   })
 }
 
 resource "aws_iam_policy" "queue_scraping_policy" {
-  name        = "${local.name_prefix}}-queue-scraping-policy"
+  name        = "${local.name_prefix}-queue-scraping-policy"
   description = "Policy for Queue Scraping Lambda function"
 
   policy = jsonencode({
@@ -692,13 +661,13 @@ resource "aws_iam_policy" "queue_scraping_policy" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -720,7 +689,7 @@ resource "aws_iam_role_policy_attachment" "queue_scraping_attachment" {
 # =============================================================================
 
 resource "aws_iam_role" "rotate_nat_gateway_eip_role" {
-  name = "${local.name_prefix}}-rotate-nat-eip-role"
+  name = "${local.name_prefix}-rotate-nat-eip-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -736,12 +705,12 @@ resource "aws_iam_role" "rotate_nat_gateway_eip_role" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}}-rotate-nat-eip-role"
+    Name = "${local.name_prefix}-rotate-nat-eip-role"
   })
 }
 
 resource "aws_iam_policy" "rotate_nat_gateway_eip_policy" {
-  name        = "${local.name_prefix}}-rotate-nat-eip-policy"
+  name        = "${local.name_prefix}-rotate-nat-eip-policy"
   description = "Allows rotating the NAT Gateway EIP and publishing to SNS."
 
   policy = jsonencode({
@@ -755,8 +724,8 @@ resource "aws_iam_policy" "rotate_nat_gateway_eip_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-operational-*",
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-operational-*:*"
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-operational-*",
+          "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${local.name_prefix}-operational-*:*"
         ]
       },
       {
@@ -774,14 +743,14 @@ resource "aws_iam_policy" "rotate_nat_gateway_eip_policy" {
           "ec2:DisassociateAddress"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:elastic-ip/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:natgateway/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:elastic-ip/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:natgateway/*"
         ]
       },
       {
         Effect   = "Allow"
         Action   = "sns:Publish"
-        Resource = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-alerts"
+        Resource = "arn:aws:sns:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-alerts"
       }
     ]
   })
@@ -969,7 +938,7 @@ resource "aws_iam_policy" "config_compliance_processor" {
         Action = [
           "sns:Publish"
         ]
-        Resource = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-config-notifications"
+        Resource = "arn:aws:sns:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-config-notifications"
       },
       {
         Effect = "Allow"
@@ -979,7 +948,7 @@ resource "aws_iam_policy" "config_compliance_processor" {
           "sqs:GetQueueAttributes"
         ]
         Resource = [
-          "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-config-compliance-*"
+          "arn:aws:sqs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${local.name_prefix}-config-compliance-*"
         ]
       },
       {
@@ -990,13 +959,13 @@ resource "aws_iam_policy" "config_compliance_processor" {
           "ec2:DeleteNetworkInterface"
         ]
         Resource = [
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:subnet/*",
-          "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:network-interface/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:subnet/*",
+          "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:security-group/*"
         ]
         Condition = {
           StringEquals = {
-            "ec2:Vpc" = aws_vpc.main.arn
+            "ec2:Vpc" = "arn:aws:ec2:${var.aws_region}:${data.aws_caller_identity.current.account_id}:vpc/${aws_vpc.main.id}"
           }
           "ForAllValues:StringEquals" = {
             "ec2:Subnet"        = [for s in aws_subnet.private : s.arn]
@@ -1075,7 +1044,7 @@ resource "aws_iam_role" "api_gateway_cloudwatch_role" {
 
 resource "aws_iam_role_policy_attachment" "api_gateway_cloudwatch_logs" {
   role       = aws_iam_role.api_gateway_cloudwatch_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+  policy_arn = data.aws_iam_policy.amazon_api_gateway_push_to_cloudwatch_logs.arn
 }
 
 # IAM Role for VPC Flow Logs
@@ -1183,8 +1152,8 @@ resource "aws_iam_policy" "eventbridge_custom_bus_policy" {
           "events:ListTargetsByRule"
         ]
         Resource = [
-          "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:event-bus/${local.name_prefix}-*",
-          "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:rule/${local.name_prefix}-*"
+          "arn:aws:events:${var.aws_region}:${data.aws_caller_identity.current.account_id}:event-bus/${local.name_prefix}-*",
+          "arn:aws:events:${var.aws_region}:${data.aws_caller_identity.current.account_id}:rule/${local.name_prefix}-*"
         ]
       },
       {
@@ -1193,7 +1162,7 @@ resource "aws_iam_policy" "eventbridge_custom_bus_policy" {
           "states:StartExecution"
         ]
         Resource = [
-          "arn:aws:states:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:stateMachine:${local.name_prefix}-*"
+          "arn:aws:states:${var.aws_region}:${data.aws_caller_identity.current.account_id}:stateMachine:${local.name_prefix}-*"
         ]
       },
       {
@@ -1202,7 +1171,7 @@ resource "aws_iam_policy" "eventbridge_custom_bus_policy" {
           "lambda:InvokeFunction"
         ]
         Resource = [
-          "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-workflow-*"
+          "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-workflow-*"
         ]
       }
     ]
@@ -1249,7 +1218,7 @@ resource "aws_iam_policy" "eventbridge_lambda_invoke_policy" {
           "lambda:InvokeFunction"
         ]
         Resource = [
-          "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-*"
+          "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.name_prefix}-*"
         ]
       }
     ]
@@ -1352,3 +1321,100 @@ resource "aws_iam_role_policy_attachment" "s3_replication" {
   role       = aws_iam_role.s3_replication[0].name
   policy_arn = aws_iam_policy.s3_replication[0].arn
 }
+# Step Functions IAM Role
+resource "aws_iam_role" "step_functions" {
+  name = "${local.name_prefix}-step-functions-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "states.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-step-functions-role"
+  })
+}
+
+resource "aws_iam_policy" "step_functions" {
+  name = "${local.name_prefix}-step-functions-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Resource = [
+          aws_lambda_function.discover_studios.arn,
+          aws_lambda_function.find_artists.arn,
+          aws_lambda_function.queue_scraping.arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "step_functions" {
+  role       = aws_iam_role.step_functions.name
+  policy_arn = aws_iam_policy.step_functions.arn
+}
+
+# ECS Execution Role
+resource "aws_iam_role" "ecs_execution" {
+  name = "${local.name_prefix}-ecs-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-ecs-execution-role"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_execution" {
+  role       = aws_iam_role.ecs_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# ECS Task Role
+resource "aws_iam_role" "ecs_task" {
+  name = "${local.name_prefix}-ecs-task-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-ecs-task-role"
+  })
+}
+

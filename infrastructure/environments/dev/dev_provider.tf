@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.5.0"
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+      source                = "hashicorp/aws"
+      version               = "~> 5.0"
       configuration_aliases = [aws.us_east_1, aws.replica]
     }
     random = {
@@ -36,12 +36,12 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project             = var.project_name
-      Environment         = var.environment
-      ManagedBy           = "terraform"
-      Owner               = var.owner_email
-      Version             = var.app_version
-      DataClassification  = var.default_data_classification
+      Project            = var.project_name
+      Environment        = var.environment
+      ManagedBy          = "terraform"
+      Owner              = var.owner_email
+      Version            = var.app_version
+      DataClassification = var.default_data_classification
     }
   }
 }

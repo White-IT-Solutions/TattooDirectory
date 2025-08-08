@@ -158,6 +158,17 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
   })
 }
 
+# CloudWatch Log Group for VPC Flow Logs
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  name              = "/aws/vpc/flowlogs/${var.project_name}"
+  retention_in_days = local.environment_config[var.environment].log_retention_days
+  kms_key_id        = aws_kms_key.main.arn
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}}-vpc-flow-logs"
+  })
+}
+
 # CloudWatch Metric Filter for suspicious activity (rejected connections)
 resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
   name           = "${local.name_prefix}}-rejected-connections"
@@ -426,7 +437,7 @@ resource "aws_budgets_budget" "daily_spend" {
 }
 
 # AWS Cost Anomaly Detection
-resource "aws_cost_anomaly_monitor" "main" {
+resource "aws_ce_anomaly_monitor" "main" {
   name         = "${local.name_prefix}}-anomaly-monitor"
   monitor_type = "CUSTOM"
   monitor_specification = jsonencode({
@@ -441,11 +452,18 @@ resource "aws_cost_anomaly_monitor" "main" {
   })
 }
 
-resource "aws_cost_anomaly_subscription" "main" {
+resource "aws_ce_anomaly_subscription" "main" {
   name             = "${local.name_prefix}}-anomaly-subscription"
-  monitor_arn_list = [aws_cost_anomaly_monitor.main.arn]
+  monitor_arn_list = [aws_ce_anomaly_monitor.main.arn]
   frequency        = "DAILY"
-  threshold        = 10 # Threshold in USD for anomaly notification
+ 
+  threshold_expression {
+    dimension {
+      key           = "ANOMALY_TOTAL_IMPACT_ABSOLUTE"
+      match_options = ["GREATER_THAN_OR_EQUAL"]
+      values        = ["10"] # The threshold value as a string
+    }
+  }
 
   subscriber {
     type    = "SNS"

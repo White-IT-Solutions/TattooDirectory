@@ -21,14 +21,15 @@ resource "aws_cloudwatch_log_group" "rotate_eip" {
 
 resource "aws_lambda_function" "rotate_nat_gateway_eip" {
   # checkov:skip=CKV_AWS_116: Not required due to manual execution
-  filename         = data.archive_file.rotate_eip_zip.output_path
-  function_name    = "${local.name_prefix}-rotate-eip"
-  role             = aws_iam_role.rotate_nat_gateway_eip_role.arn
-  handler          = "index.lambda_handler"
-  runtime          = "python3.12"
-  timeout          = 60
-  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
-  source_code_hash = data.archive_file.rotate_eip_zip.output_base64sha256
+  filename                       = data.archive_file.rotate_eip_zip.output_path
+  function_name                  = "${local.name_prefix}-rotate-eip"
+  role                           = aws_iam_role.rotate_nat_gateway_eip_role.arn
+  handler                        = "index.lambda_handler"
+  runtime                        = "python3.12"
+  architectures = ["arm64"]    # Switch to Graviton2 for better price/performance
+  timeout                        = 60
+  code_signing_config_arn        = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
+  source_code_hash               = data.archive_file.rotate_eip_zip.output_base64sha256
   reserved_concurrent_executions = 2
 
   vpc_config {
