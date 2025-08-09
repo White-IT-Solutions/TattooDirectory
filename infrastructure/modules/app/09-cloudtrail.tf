@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "cloudtrail_replica" {
 
   provider = aws.replica
 
-  bucket = "${var.project_name}-cloudtrail-logs-${var.aws_replica_region}-${random_id.bucket_suffix.hex}"
+  bucket = "${var.project_name}-cloudtrail-logs-${var.replica_aws_region}-${random_id.bucket_suffix.hex}"
 
   tags = merge(
     local.common_tags,
@@ -47,7 +47,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_replic
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      kms_master_key_id = aws_kms_key.replica[0].arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }

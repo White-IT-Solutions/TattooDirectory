@@ -31,6 +31,12 @@ variable "environment" {
   default     = "dev"
 }
 
+variable "replica_aws_region" {
+  description = "The AWS region for disaster recovery resources (e.g., S3 replication)."
+  type        = string
+  default     = "eu-west-1"
+}
+
 variable "app_version" {
   description = "The application version to be deployed to development. Defaults to 'dev-build'."
   type        = string

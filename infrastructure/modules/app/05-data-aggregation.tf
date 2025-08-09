@@ -32,6 +32,15 @@ resource "aws_sqs_queue" "scraping_dlq" {
 resource "aws_sfn_state_machine" "data_aggregation" {
   name     = "${local.name_prefix}-data-aggregation"
   role_arn = aws_iam_role.step_functions.arn
+  
+  logging_configuration {
+    level = "ALL"
+    include_execution_data = true
+  }
+
+  tracing_configuration {
+    enabled = true
+  }
 
   definition = jsonencode({
     Comment = "Data aggregation workflow"
@@ -40,17 +49,63 @@ resource "aws_sfn_state_machine" "data_aggregation" {
       DiscoverStudios = {
         Type     = "Task"
         Resource = aws_lambda_function.discover_studios.arn
-        Next     = "FindArtists"
+        Next     = "FindArtists",
+        Retry = [
+          {
+            ErrorEquals = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+            IntervalSeconds = 2,
+            MaxAttempts = 6,
+            BackoffRate = 2
+          }
+        ],
+        Catch = [
+          {
+            ErrorEquals = ["States.All"],
+            Next = "AggregationFailed"
+          }
+        ]
       }
       FindArtists = {
         Type     = "Task"
         Resource = aws_lambda_function.find_artists.arn
-        Next     = "QueueScraping"
+        Next     = "QueueScraping",
+        Retry = [
+          {
+            ErrorEquals = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+            IntervalSeconds = 2,
+            MaxAttempts = 6,
+            BackoffRate = 2
+          }
+        ],
+        Catch = [
+          {
+            ErrorEquals = ["States.All"],
+            Next = "AggregationFailed"
+          }
+        ]
       }
       QueueScraping = {
         Type     = "Task"
         Resource = aws_lambda_function.queue_scraping.arn
-        End      = true
+        End      = true,
+        Retry = [
+          {
+            ErrorEquals = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+            IntervalSeconds = 2,
+            MaxAttempts = 6,
+            BackoffRate = 2
+          }
+        ],
+        Catch = [
+          {
+            ErrorEquals = ["States.All"],
+            Next = "AggregationFailed"
+          }
+        ]
+      },
+      AggregationFailed = {
+        Type = "Fail",
+        Comment = "The data aggregation process failed."
       }
     }
   })
@@ -74,6 +129,25 @@ resource "aws_ecs_cluster" "main" {
   })
 }
 
+# ECR Repository for the scraper
+resource "aws_ecr_repository" "scraper" {
+  name                 = "${local.name_prefix}/scraper"
+  image_tag_mutability = "IMMUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key         = aws_kms_key.main.arn
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-scraper-ecr"
+  })
+}
+
 # ECS Task Definition
 resource "aws_ecs_task_definition" "scraper" {
   family                   = "${local.name_prefix}-scraper"
@@ -84,11 +158,17 @@ resource "aws_ecs_task_definition" "scraper" {
   execution_role_arn       = aws_iam_role.ecs_execution.arn
   task_role_arn           = aws_iam_role.ecs_task.arn
 
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
+
   container_definitions = jsonencode([
     {
       name  = "scraper"
-      image = "nginx:latest" # Placeholder image
+      image = "${aws_ecr_repository.scraper.repository_url}:${var.scraper_image_tag}"
       essential = true
+      readonlyRootFilesystem = true
       
       logConfiguration = {
         logDriver = "awslogs"
@@ -134,6 +214,7 @@ resource "aws_ecs_service" "scraper" {
 
 # Placeholder Lambda functions for Step Functions
 resource "aws_lambda_function" "discover_studios" {
+  # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
   filename      = data.archive_file.discover_studios_zip.output_path
   function_name = "${local.name_prefix}-discover-studios"
   role          = aws_iam_role.discover_studios_role.arn
@@ -142,6 +223,10 @@ resource "aws_lambda_function" "discover_studios" {
   architectures = ["arm64"]
   timeout       = 300
   memory_size   = local.config.lambda_memory_size
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
+
+  # Set a concurrency limit for reliability and cost control
+  reserved_concurrent_executions = 5
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -166,6 +251,7 @@ resource "aws_lambda_function" "discover_studios" {
 }
 
 resource "aws_lambda_function" "find_artists" {
+  # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
   filename      = data.archive_file.find_artists_zip.output_path
   function_name = "${local.name_prefix}-find-artists"
   role          = aws_iam_role.find_artists_on_site_role.arn
@@ -174,6 +260,10 @@ resource "aws_lambda_function" "find_artists" {
   architectures = ["arm64"]
   timeout       = 300
   memory_size   = local.config.lambda_memory_size
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
+
+  # Set a concurrency limit for reliability and cost control
+  reserved_concurrent_executions = 5
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id
@@ -198,6 +288,7 @@ resource "aws_lambda_function" "find_artists" {
 }
 
 resource "aws_lambda_function" "queue_scraping" {
+  # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
   filename      = data.archive_file.queue_scraping_zip.output_path
   function_name = "${local.name_prefix}-queue-scraping"
   role          = aws_iam_role.queue_scraping_role.arn
@@ -206,6 +297,10 @@ resource "aws_lambda_function" "queue_scraping" {
   architectures = ["arm64"]
   timeout       = 300
   memory_size   = local.config.lambda_memory_size
+  code_signing_config_arn = var.environment == "prod" ? aws_lambda_code_signing_config.main[0].arn : null
+
+  # Set a concurrency limit for reliability and cost control
+  reserved_concurrent_executions = 5
 
   vpc_config {
     subnet_ids         = values(aws_subnet.private)[*].id

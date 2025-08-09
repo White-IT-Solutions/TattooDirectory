@@ -131,9 +131,9 @@ variable "backup_retention_days" {
 }
 
 variable "scraper_image_tag" {
-  description = "The Docker image tag for the Fargate scraper task."
+  description = "The unique Docker image tag for the Fargate scraper task. It is strongly recommended to use the Git commit SHA for this value to ensure traceability and true immutability."
   type        = string
-  default     = "latest"
+  # No default value is provided to ensure a specific tag is always supplied during deployment.
 }
 
 variable "domain_name" {
@@ -147,13 +147,13 @@ variable "domain_name" {
   }
 }
 
-variable "aws_replica_region" {
+variable "replica_aws_region" {
   description = "AWS region for cross-region replication (e.g., for CloudTrail, S3 backups)"
   type        = string
   default     = "eu-west-1"
 
   validation {
-    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_replica_region))
+    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.replica_aws_region))
     error_message = "AWS replica region must be in the format: us-east-1, eu-west-2, etc."
   }
 }

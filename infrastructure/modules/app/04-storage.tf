@@ -148,6 +148,7 @@ resource "aws_dynamodb_table" "idempotency" {
 }
 
 # OpenSearch Domain
+# infracost:ignore-infracost-recommendations
 resource "aws_opensearch_domain" "main" {
   # checkov:skip=CKV2_AWS_59: MVP Environment, would scale up for production
   # checkov:skip=CKV_AWS_318: MVP Environment, would scale up for production
@@ -155,12 +156,15 @@ resource "aws_opensearch_domain" "main" {
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
-    instance_type            = local.environment_config[var.environment].opensearch_instance_type
-    instance_count           = local.environment_config[var.environment].opensearch_instance_count
+    instance_type  = local.environment_config[var.environment].opensearch_instance_type
+    instance_count = local.environment_config[var.environment].opensearch_instance_count
+
+    # Conditionally configure dedicated master nodes. These attributes are set to null if not defined in the environment config.
     dedicated_master_enabled = local.environment_config[var.environment].opensearch_master_instance_count != null
     dedicated_master_type    = local.environment_config[var.environment].opensearch_master_instance_type
     dedicated_master_count   = local.environment_config[var.environment].opensearch_master_instance_count
-    zone_awareness_enabled   = var.environment == "prod" ? true : false
+
+    zone_awareness_enabled = var.environment == "prod" ? true : false
 
     dynamic "zone_awareness_config" {
       for_each = var.environment == "prod" ? [1] : []
@@ -459,6 +463,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "frontend" {
     id     = "cleanup_old_versions"
     status = "Enabled"
 
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
     noncurrent_version_expiration {
       noncurrent_days = 30
     }
@@ -649,6 +656,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "frontend_backup" {
   rule {
     id     = "cleanup_old_versions"
     status = "Enabled"
+
+    # Apply this rule to all objects in the bucket.
+    filter {}
 
     noncurrent_version_expiration {
       noncurrent_days = 30
@@ -1051,6 +1061,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "frontend_backup_replica" {
     id     = "cleanup_old_versions"
     status = "Enabled"
 
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
     expiration {
       days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
     }
@@ -1075,6 +1088,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "frontend_replica" {
     id     = "cleanup_old_versions"
     status = "Enabled"
 
+    # Apply this rule to all objects in the bucket.
+    filter {}
+
     expiration {
       days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
     }
@@ -1098,6 +1114,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_logs_replica" {
   rule {
     id     = "access_logs_lifecycle"
     status = "Enabled"
+
+    # Apply this rule to all objects in the bucket.
+    filter {}
 
     expiration {
       days = var.environment == "prod" ? 2555 : 90 # 7 years for prod, 90 days for dev
