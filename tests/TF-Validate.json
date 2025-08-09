@@ -32,32 +32,7 @@ C:\Users\legob\OneDrive\Documents\Kiro\Tattoo_MVP\infrastructure\environments\de
         "values": []
       }
     },
-    {
-      "severity": "error",
-      "summary": "Reference to undeclared resource",
-      "detail": "A managed resource \"aws_lambda_function\" \"find_artists_on_site\" has not been declared in module.app.",
-      "range": {
-        "filename": "..\\..\\modules\\app\\outputs.tf",
-        "start": {
-          "line": 113,
-          "column": 27,
-          "byte": 3587
-        },
-        "end": {
-          "line": 113,
-          "column": 67,
-          "byte": 3627
-        }
-      },
-      "snippet": {
-        "context": "output \"lambda_function_arns\"",
-        "code": "    find_artists        = aws_lambda_function.find_artists_on_site.arn",
-        "start_line": 113,
-        "highlight_start_offset": 26,
-        "highlight_end_offset": 66,
-        "values": []
-      }
-    },
+
     {
       "severity": "warning",
       "summary": "Invalid Attribute Combination",
@@ -113,56 +88,9 @@ C:\Users\legob\OneDrive\Documents\Kiro\Tattoo_MVP\infrastructure\environments\de
       }
     },
     {
-      "severity": "error",
-      "summary": "Reference to undeclared resource",
-      "detail": "A managed resource \"aws_lambda_function\" \"find_artists_on_site\" has not been declared in module.app.",
-      "range": {
-        "filename": "..\\..\\modules\\app\\outputs.tf",
-        "start": {
-          "line": 100,
-          "column": 27,
-          "byte": 2978
-        },
-        "end": {
-          "line": 100,
-          "column": 67,
-          "byte": 3018
-        }
-      },
-      "snippet": {
-        "context": "output \"lambda_function_names\"",
-        "code": "    find_artists        = aws_lambda_function.find_artists_on_site.function_name",
-        "start_line": 100,
-        "highlight_start_offset": 26,
-        "highlight_end_offset": 66,
-        "values": []
-      }
-    },
+
     {
-      "severity": "error",
-      "summary": "Reference to undeclared resource",
-      "detail": "A managed resource \"aws_ecr_repository\" \"scraper\" has not been declared in module.app.",
-      "range": {
-        "filename": "..\\..\\modules\\app\\outputs.tf",
-        "start": {
-          "line": 90,
-          "column": 17,
-          "byte": 2505
-        },
-        "end": {
-          "line": 90,
-          "column": 43,
-          "byte": 2531
-        }
-      },
-      "snippet": {
-        "context": "output \"ecr_repository_url\"",
-        "code": "  value       = aws_ecr_repository.scraper.repository_url",
-        "start_line": 90,
-        "highlight_start_offset": 16,
-        "highlight_end_offset": 42,
-        "values": []
-      }
+
     },
     {
       "severity": "warning",
@@ -219,30 +147,114 @@ C:\Users\legob\OneDrive\Documents\Kiro\Tattoo_MVP\infrastructure\environments\de
       }
     },
     {
-      "severity": "error",
-      "summary": "Reference to undeclared resource",
-      "detail": "A managed resource \"aws_sqs_queue\" \"lambda_dlq\" has not been declared in module.app.",
-      "range": {
-        "filename": "..\\..\\modules\\app\\outputs.tf",
-        "start": {
-          "line": 135,
-          "column": 23,
-          "byte": 4244
-        },
-        "end": {
-          "line": 135,
-          "column": 47,
-          "byte": 4268
-        }
-      },
-      "snippet": {
-        "context": "output \"sqs_dlq_urls\"",
-        "code": "    lambda_dlq      = aws_sqs_queue.lambda_dlq.url",
-        "start_line": 135,
-        "highlight_start_offset": 22,
-        "highlight_end_offset": 46,
-        "values": []
-      }
-    }
-  ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"severity": "error",
+"summary": "Reference to undeclared resource",
+"detail": "A managed resource \"aws_sqs_queue\" \"lambda_dlq\" has not been declared in module.app.",
+"range": {
+  "filename": "..\\..\\modules\\app\\outputs.tf",
+  "start": {
+    "line": 135,
+    "column": 23,
+    "byte": 4244
+  },
+  "end": {
+    "line": 135,
+    "column": 47,
+    "byte": 4268
+  }
+},
+"snippet": {
+  "context": "output \"sqs_dlq_urls\"",
+  "code": "    lambda_dlq      = aws_sqs_queue.lambda_dlq.url",
+  "start_line": 135,
+  "highlight_start_offset": 22,
+  "highlight_end_offset": 46,
+  "values": []
 }
+}
+]
+}
+
+
+"severity": "error",
+"summary": "Reference to undeclared resource",
+"detail": "A managed resource \"aws_ecr_repository\" \"scraper\" has not been declared in module.app.",
+"range": {
+  "filename": "..\\..\\modules\\app\\outputs.tf",
+  "start": {
+    "line": 90,
+    "column": 17,
+    "byte": 2505
+  },
+  "end": {
+    "line": 90,
+    "column": 43,
+    "byte": 2531
+  }
+},
+"snippet": {
+  "context": "output \"ecr_repository_url\"",
+  "code": "  value       = aws_ecr_repository.scraper.repository_url",
+  "start_line": 90,
+  "highlight_start_offset": 16,
+  "highlight_end_offset": 42,
+  "values": []
+}
+
+"severity": "error",
+"summary": "Reference to undeclared resource",
+"detail": "A managed resource \"aws_lambda_function\" \"find_artists_on_site\" has not been declared in module.app.",
+"range": {
+  "filename": "..\\..\\modules\\app\\outputs.tf",
+  "start": {
+    "line": 100,
+    "column": 27,
+    "byte": 2978
+  },
+  "end": {
+    "line": 100,
+    "column": 67,
+    "byte": 3018
+  }
+},
+"snippet": {
+  "context": "output \"lambda_function_names\"",
+  "code": "    find_artists        = aws_lambda_function.find_artists_on_site.function_name",
+  "start_line": 100,
+  "highlight_start_offset": 26,
+  "highlight_end_offset": 66,
+  "values": []
+}
+},
