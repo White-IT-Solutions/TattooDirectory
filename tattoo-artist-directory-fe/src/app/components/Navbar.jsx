@@ -20,7 +20,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <span className="text-2xl text-white font-semibold">
             <Link
-              href="/home"
+              href="/"
               className="text-2xl font-bold tracking-tight text-grey hover:text-gray-400"
             >
               TD
@@ -32,6 +32,12 @@ export default function Navbar() {
               className="text-base text-gray-200 hover:text-gray-400 transition"
             >
               Artists
+            </Link>
+            <Link
+              href="/"
+              className="text-base text-gray-200 hover:text-gray-400 transition"
+            >
+              Home
             </Link>
             {/* <Link
               href="/login"
