@@ -1,7 +1,7 @@
 # CloudWatch Log Groups
 resource "aws_cloudwatch_log_group" "lambda_api" {
   name              = "/aws/lambda/${local.name_prefix}-api-handler"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -11,7 +11,7 @@ resource "aws_cloudwatch_log_group" "lambda_api" {
 
 resource "aws_cloudwatch_log_group" "lambda_sync" {
   name              = "/aws/lambda/${local.name_prefix}-dynamodb-sync"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -21,7 +21,7 @@ resource "aws_cloudwatch_log_group" "lambda_sync" {
 
 resource "aws_cloudwatch_log_group" "lambda_workflow" {
   name              = "/aws/lambda/${local.name_prefix}-workflow"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_log_group" "lambda_workflow" {
 
 resource "aws_cloudwatch_log_group" "api_gateway" {
   name              = "/aws/apigateway/${local.name_prefix}-api"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_log_group" "api_gateway" {
 
 resource "aws_cloudwatch_log_group" "fargate_scraper" {
   name              = "/aws/ecs/${local.name_prefix}-scraper"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -51,7 +51,7 @@ resource "aws_cloudwatch_log_group" "fargate_scraper" {
 
 resource "aws_cloudwatch_log_group" "ecs_cluster" {
   name              = "/aws/ecs/${local.name_prefix}-cluster"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -61,7 +61,7 @@ resource "aws_cloudwatch_log_group" "ecs_cluster" {
 
 resource "aws_cloudwatch_log_group" "opensearch_audit" {
   name              = "/aws/opensearch/domains/${local.name_prefix}-search/audit-logs"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_log_group" "opensearch_audit" {
 
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = "/aws/cloudtrail/${local.name_prefix}"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -80,9 +80,9 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
 }
 
 resource "aws_cloudwatch_log_group" "config_compliance_processor" {
-  count             = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  count             = local.config.enable_advanced_monitoring ? 1 : 0
   name              = "/aws/lambda/${local.name_prefix}-config-compliance-processor"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.logs.arn
 
   tags = merge(local.common_tags, {
@@ -161,7 +161,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
 # CloudWatch Log Group for VPC Flow Logs
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   name              = "/aws/vpc/flowlogs/${var.project_name}"
-  retention_in_days = local.environment_config[var.environment].log_retention_days
+  retention_in_days = local.config.log_retention_days
   kms_key_id        = aws_kms_key.main.arn
 
   tags = merge(local.common_tags, {
@@ -319,7 +319,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_throttles" {
 
 # DynamoDB Point-in-Time Recovery monitoring
 resource "aws_cloudwatch_metric_alarm" "dynamodb_pitr_status" {
-  count               = local.environment_config[var.environment].backup_enabled ? 1 : 0
+  count               = local.config.backup_enabled ? 1 : 0
   alarm_name          = "${local.name_prefix}-dynamodb-pitr-disabled"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"

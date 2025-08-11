@@ -1351,8 +1351,8 @@ output "environment_config" {
     enable_advanced_monitoring      = local.environment_config[var.environment].enable_advanced_monitoring
     enable_deletion_protection      = local.environment_config[var.environment].enable_deletion_protection
     lambda_memory_size              = local.environment_config[var.environment].lambda_memory_size
-    opensearch_instance_type        = local.environment_config[var.environment].opensearch_instance_type
-    opensearch_instance_count       = local.environment_config[var.environment].opensearch_instance_count
+    opensearch_instance_type        = local.config.opensearch_instance_type
+    opensearch_instance_count       = local.config.opensearch_instance_count
     enable_cross_region_replication = var.enable_cross_region_replication
     domain_name                     = var.domain_name
     allowed_countries               = var.allowed_countries

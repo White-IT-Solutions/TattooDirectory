@@ -589,7 +589,7 @@ resource "aws_config_config_rule" "api_gw_execution_logging_enabled" {
 
 # Config Remediation Configuration (for critical rules)
 resource "aws_config_remediation_configuration" "s3_bucket_public_access" {
-  count = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  count = local.config.enable_advanced_monitoring ? 1 : 0
 
   config_rule_name = aws_config_config_rule.s3_bucket_public_access_prohibited.name
 

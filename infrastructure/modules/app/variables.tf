@@ -113,12 +113,6 @@ variable "notification_email" {
   }
 }
 
-variable "enable_deletion_protection" {
-  description = "Enable deletion protection for critical resources"
-  type        = bool
-  default     = false
-}
-
 variable "backup_retention_days" {
   description = "Number of days to retain backups"
   type        = number

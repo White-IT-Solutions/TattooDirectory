@@ -9,5 +9,13 @@ terraform {
       version               = "~> 5.0"
       configuration_aliases = [aws.replica, aws.us_east_1]
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.2"
+    }
   }
 }

@@ -42,7 +42,7 @@ resource "aws_dynamodb_table" "main" {
     enabled = true
   }
 
-  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+  deletion_protection_enabled = local.config.enable_deletion_protection
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}-main-table"
@@ -95,7 +95,7 @@ resource "aws_dynamodb_table" "denylist" {
     enabled = true
   }
 
-  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+  deletion_protection_enabled = local.config.enable_deletion_protection
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}-denylist-table"
@@ -136,7 +136,7 @@ resource "aws_dynamodb_table" "idempotency" {
     enabled = true
   }
 
-  deletion_protection_enabled = local.environment_config[var.environment].enable_deletion_protection
+  deletion_protection_enabled = local.config.enable_deletion_protection
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}-idempotency-table"
@@ -156,13 +156,13 @@ resource "aws_opensearch_domain" "main" {
   engine_version = "OpenSearch_2.3"
 
   cluster_config {
-    instance_type  = local.environment_config[var.environment].opensearch_instance_type
-    instance_count = local.environment_config[var.environment].opensearch_instance_count
+    instance_type  = local.config.opensearch_instance_type
+    instance_count = local.config.opensearch_instance_count
 
     # Conditionally configure dedicated master nodes. These attributes are set to null if not defined in the environment config.
-    dedicated_master_enabled = local.environment_config[var.environment].opensearch_master_instance_count != null
-    dedicated_master_type    = local.environment_config[var.environment].opensearch_master_instance_type
-    dedicated_master_count   = local.environment_config[var.environment].opensearch_master_instance_count
+    dedicated_master_enabled = local.config.opensearch_master_instance_count != null
+    dedicated_master_type    = local.config.opensearch_master_instance_type
+    dedicated_master_count   = local.config.opensearch_master_instance_count
 
     zone_awareness_enabled = var.environment == "prod" ? true : false
 
@@ -291,7 +291,7 @@ resource "aws_lambda_function" "dynamodb_sync" {
   runtime       = "nodejs20.x"
   architectures = ["arm64"]    # Switch to Graviton2 for better price/performance
   timeout       = 300
-  memory_size   = local.environment_config[var.environment].lambda_memory_size
+  memory_size   = local.config.lambda_memory_size
 
   # Security: Configure concurrent execution limit
   reserved_concurrent_executions = var.environment == "prod" ? 50 : 10

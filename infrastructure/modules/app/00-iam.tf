@@ -868,7 +868,7 @@ resource "aws_iam_role_policy" "cloudtrail_to_cloudwatch" {
 # =============================================================================
 
 resource "aws_iam_role" "config_remediation" {
-  count = local.environment_config[var.environment].enable_config_remediation ? 1 : 0
+  count = local.config.enable_config_remediation ? 1 : 0
   name  = "${local.name_prefix}}-config-remediation-role"
 
   assume_role_policy = jsonencode({
@@ -890,13 +890,13 @@ resource "aws_iam_role" "config_remediation" {
 }
 
 resource "aws_iam_role_policy_attachment" "config_remediation" {
-  count      = local.environment_config[var.environment].enable_config_remediation ? 1 : 0
+  count      = local.config.enable_config_remediation ? 1 : 0
   role       = aws_iam_role.config_remediation[0].name
   policy_arn = data.aws_iam_policy.amazon_ssm_automation_role.arn
 }
 
 resource "aws_iam_role" "config_compliance_processor" {
-  count = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  count = local.config.enable_advanced_monitoring ? 1 : 0
   name  = "${local.name_prefix}}-config-compliance-processor-role"
 
   assume_role_policy = jsonencode({
@@ -918,7 +918,7 @@ resource "aws_iam_role" "config_compliance_processor" {
 }
 
 resource "aws_iam_policy" "config_compliance_processor" {
-  count = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  count = local.config.enable_advanced_monitoring ? 1 : 0
   name  = "${local.name_prefix}}-config-compliance-processor-policy"
 
   policy = jsonencode({
@@ -978,13 +978,13 @@ resource "aws_iam_policy" "config_compliance_processor" {
 }
 
 resource "aws_iam_role_policy_attachment" "config_compliance_processor" {
-  count      = local.environment_config[var.environment].enable_advanced_monitoring ? 1 : 0
+  count      = local.config.enable_advanced_monitoring ? 1 : 0
   role       = aws_iam_role.config_compliance_processor[0].name
   policy_arn = aws_iam_policy.config_compliance_processor[0].arn
 }
 
 resource "aws_iam_role" "backup_role" {
-  count = local.environment_config[var.environment].backup_enabled ? 1 : 0
+  count = local.config.backup_enabled ? 1 : 0
   name  = "${local.name_prefix}}-backup-role"
 
   assume_role_policy = jsonencode({
@@ -1006,7 +1006,7 @@ resource "aws_iam_role" "backup_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "backup_policy" {
-  count      = local.environment_config[var.environment].backup_enabled ? 1 : 0
+  count      = local.config.backup_enabled ? 1 : 0
   role       = aws_iam_role.backup_role[0].name
   policy_arn = data.aws_iam_policy.aws_backup_service_role_policy_for_backup.arn
 }
