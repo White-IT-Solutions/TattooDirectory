@@ -3,6 +3,7 @@
 import { QueryCommand, BatchGetCommand } from "@aws-sdk/lib-dynamodb";
 import { ddb, TABLE_NAME } from "../db.js";
 import { stylePK, artistPK, artistSK } from "../lib/keys.js";
+import { resp } from "../lib/response.js";
 
 export const handler = async (event) => {
   const raw = event.pathParameters?.styles || "";
@@ -53,11 +54,3 @@ export const handler = async (event) => {
 
 const chunk = (arr, size) =>
   arr.reduce((a, _, i) => (i % size ? a : [...a, arr.slice(i, i + size)]), []);
-const resp = (statusCode, body) => ({
-  statusCode,
-  headers: {
-    "content-type": "application/json",
-    "access-control-allow-origin": "*",
-  },
-  body: JSON.stringify(body),
-});

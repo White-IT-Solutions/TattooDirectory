@@ -1,6 +1,7 @@
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { ddb, TABLE_NAME } from "../db.js";
 import { artistPK, artistSK } from "../lib/keys.js";
+import { resp } from "../lib/response.js";
 
 //GET /artist/{id}
 
@@ -18,12 +19,3 @@ export const handler = async (event) => {
   if (!Item) return resp(404, { message: "Artist not found" });
   return resp(200, Item);
 };
-
-const resp = (statusCode, body) => ({
-  statusCode,
-  headers: {
-    "content-type": "application/json",
-    "access-control-allow-origin": "*",
-  },
-  body: JSON.stringify(body),
-});

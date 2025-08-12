@@ -2,6 +2,7 @@
 
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { randomUUID } from "crypto";
+import { resp, safeParse } from "../lib/response.js";
 import { ddb, TABLE_NAME } from "../db.js";
 
 export const handler = async (event) => {
@@ -26,19 +27,3 @@ export const handler = async (event) => {
   await ddb.send(new PutCommand({ TableName: TABLE_NAME, Item: item }));
   return resp(201, { requestId: id });
 };
-
-function safeParse(s) {
-  try {
-    return JSON.parse(s || "{}");
-  } catch {
-    return null;
-  }
-}
-const resp = (statusCode, body) => ({
-  statusCode,
-  headers: {
-    "content-type": "application/json",
-    "access-control-allow-origin": "*",
-  },
-  body: JSON.stringify(body),
-});

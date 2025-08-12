@@ -2,6 +2,7 @@
 
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { ddb, TABLE_NAME } from "../db.js";
+import { resp } from "../lib/response.js";
 
 export const handler = async (event) => {
   const qs = event.queryStringParameters || {};
@@ -27,12 +28,3 @@ export const handler = async (event) => {
 
   return resp(200, { items: Items, nextCursor });
 };
-
-const resp = (statusCode, body) => ({
-  statusCode,
-  headers: {
-    "content-type": "application/json",
-    "access-control-allow-origin": "*",
-  },
-  body: JSON.stringify(body),
-});
