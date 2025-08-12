@@ -1,0 +1,35 @@
+.scroller-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.scroll-btn {
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.scroll-container {
+  width: 80vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-track {
+  display: flex;
+}
+
+.scroll-track > * {
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
