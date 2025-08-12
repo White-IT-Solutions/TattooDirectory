@@ -7,6 +7,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { ddb, TABLE_NAME } from "../db.js";
 import { artistPK, artistSK, stylePK, styleSK } from "../lib/keys.js";
+import { resp, safeParse } from "../lib/response.js";
 
 export const handler = async (event) => {
   const id = event.pathParameters?.id;
@@ -113,20 +114,3 @@ function buildUpdate(obj) {
   });
   return { updateExpr: `SET ${sets.join(", ")}`, names, values };
 }
-
-function safeParse(s) {
-  try {
-    return JSON.parse(s || "{}");
-  } catch {
-    return null;
-  }
-}
-
-const resp = (statusCode, body) => ({
-  statusCode,
-  headers: {
-    "content-type": "application/json",
-    "access-control-allow-origin": "*",
-  },
-  body: typeof body === "string" ? body : JSON.stringify(body),
-});
