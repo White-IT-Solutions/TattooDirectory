@@ -1,4 +1,5 @@
 export function normalizeArtistForEntityIndex(artist) {
+  if (!artist) return {};
   return {
     gsi1pk: "ARTIST",
     gsi1sk: artist.artistsName?.toLowerCase() || artist.artistId,

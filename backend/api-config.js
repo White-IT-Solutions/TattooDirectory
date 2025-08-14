@@ -1,23 +1,25 @@
 // API configuration for frontend integration
 export const API_CONFIG = {
   local: {
-    baseURL: 'http://localhost:3000',
+    baseURL: "http://localhost:3000",
     endpoints: {
-      artists: '/artists',
-      artist: '/artist',
-      artistsByStyles: '/artists',
-      removalRequests: '/removal-requests'
-    }
+      artists: "/artists",
+      artist: "/artist",
+      artistsByStyles: "/artists",
+      removalRequests: "/removal-requests",
+    },
   },
   production: {
-    baseURL: 'https://your-api-gateway-url.execute-api.eu-west-2.amazonaws.com',
+    baseURL:
+      process.env.API_GATEWAY_URL ||
+      "https://your-api-gateway-url.execute-api.eu-west-2.amazonaws.com",
     endpoints: {
-      artists: '/artists',
-      artist: '/artist', 
-      artistsByStyles: '/artists',
-      removalRequests: '/removal-requests'
-    }
-  }
+      artists: "/artists",
+      artist: "/artist",
+      artistsByStyles: "/artists",
+      removalRequests: "/removal-requests",
+    },
+  },
 };
 
 // Usage in frontend:

@@ -5,8 +5,9 @@ import { ddb, TABLE_NAME } from "../db.js";
 
 export const handler = async (event) => {
   const qs = event.queryStringParameters || {};
-  const limit = Math.min(parseInt(qs.limit || "20", 10), 100);
-  
+  const parsedLimit = parseInt(qs.limit || "20", 10);
+  const limit = Math.min(isNaN(parsedLimit) ? 20 : parsedLimit, 100);
+
   let cursor = null;
   if (qs.cursor) {
     try {
@@ -26,7 +27,9 @@ export const handler = async (event) => {
   };
 
   try {
-    const { Items, LastEvaluatedKey } = await ddb.send(new QueryCommand(params));
+    const { Items, LastEvaluatedKey } = await ddb.send(
+      new QueryCommand(params)
+    );
 
     const nextCursor = LastEvaluatedKey
       ? Buffer.from(JSON.stringify(LastEvaluatedKey)).toString("base64")
@@ -34,6 +37,7 @@ export const handler = async (event) => {
 
     return resp(200, { items: Items, nextCursor });
   } catch (error) {
+    console.error("Error listing artists:", error);
     return resp(500, { message: "Internal server error" });
   }
 };

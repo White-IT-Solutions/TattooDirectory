@@ -14,11 +14,11 @@ export const handler = async (event) => {
   if (!styles.length) return resp(400, { message: "No styles provided" });
 
   try {
-    // Query fan-out items per style, collect artistIds, then hydrate full artist profiles
+    // Query fan-out items per style concurrently, collect artistIds, then hydrate full artist profiles
     const artistIds = new Set();
 
-    for (const style of styles) {
-      const { Items } = await ddb.send(
+    const styleQueries = styles.map((style) =>
+      ddb.send(
         new QueryCommand({
           TableName: TABLE_NAME,
           KeyConditionExpression: "pk = :pk AND begins_with(sk, :sk)",
@@ -27,12 +27,16 @@ export const handler = async (event) => {
             ":sk": "ARTIST#",
           },
         })
-      );
+      )
+    );
+
+    const styleQueryResults = await Promise.all(styleQueries);
+    styleQueryResults.forEach(({ Items }) => {
       (Items || []).forEach((i) => {
         const id = i.artistId || i.sk?.split("#")[1];
         if (id) artistIds.add(id);
       });
-    }
+    });
 
     if (!artistIds.size) return resp(200, { items: [] });
 
@@ -54,6 +58,7 @@ export const handler = async (event) => {
 
     return resp(200, { items: results });
   } catch (error) {
+    console.error("Error fetching artists by styles:", error);
     return resp(500, { message: "Internal server error" });
   }
 };

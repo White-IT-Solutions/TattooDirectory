@@ -88,18 +88,32 @@ export const handler = async (event) => {
         });
       }
 
-      // batch write in 25s
+      // batch write in chunks of 25
       for (let i = 0; i < writes.length; i += 25) {
-        await ddb.send(
-          new BatchWriteCommand({
-            RequestItems: { [TABLE_NAME]: writes.slice(i, i + 25) },
-          })
-        );
+        try {
+          await ddb.send(
+            new BatchWriteCommand({
+              RequestItems: { [TABLE_NAME]: writes.slice(i, i + 25) },
+            })
+          );
+        } catch (batchError) {
+          console.error(
+            `Batch write failed for styles update (artist ${encodeURIComponent(
+              id
+            )}):`,
+            batchError.message
+          );
+          throw batchError;
+        }
       }
     }
 
     return resp(204, "");
   } catch (error) {
+    console.error(
+      `Error updating artist ${encodeURIComponent(id)}:`,
+      error.message
+    );
     return resp(500, { message: "Internal server error" });
   }
 };
@@ -109,22 +123,27 @@ function buildUpdate(obj) {
     values = {};
   const sets = [];
   Object.entries(obj).forEach(([k, v], i) => {
-    const nk = `#n${i}`,
-      vk = `:v${i}`;
-    names[nk] = k;
-    values[vk] = v;
-    sets.push(`${nk} = ${vk}`);
+    const nameKey = `#n${i}`,
+      valueKey = `:v${i}`;
+    names[nameKey] = k;
+    values[valueKey] = v;
+    sets.push(`${nameKey} = ${valueKey}`);
   });
   return { updateExpr: `SET ${sets.join(", ")}`, names, values };
 }
 
 function safeParse(s) {
-  if (!s || typeof s !== 'string') return null;
-  
+  if (!s || typeof s !== "string") return null;
+
   try {
     const parsed = JSON.parse(s);
     // Only allow plain objects
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && parsed.constructor === Object) {
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      !Array.isArray(parsed) &&
+      parsed.constructor === Object
+    ) {
       return parsed;
     }
     return null;
