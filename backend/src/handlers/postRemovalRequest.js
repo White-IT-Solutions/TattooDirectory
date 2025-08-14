@@ -23,13 +23,24 @@ export const handler = async (event) => {
     status: "received",
   };
 
-  await ddb.send(new PutCommand({ TableName: TABLE_NAME, Item: item }));
-  return resp(201, { requestId: id });
+  try {
+    await ddb.send(new PutCommand({ TableName: TABLE_NAME, Item: item }));
+    return resp(201, { requestId: id });
+  } catch (error) {
+    return resp(500, { message: "Internal server error" });
+  }
 };
 
 function safeParse(s) {
+  if (!s || typeof s !== 'string') return null;
+  
   try {
-    return JSON.parse(s || "{}");
+    const parsed = JSON.parse(s);
+    // Only allow plain objects
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && parsed.constructor === Object) {
+      return parsed;
+    }
+    return null;
   } catch {
     return null;
   }

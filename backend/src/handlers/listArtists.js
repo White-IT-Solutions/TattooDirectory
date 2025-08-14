@@ -6,9 +6,15 @@ import { ddb, TABLE_NAME } from "../db.js";
 export const handler = async (event) => {
   const qs = event.queryStringParameters || {};
   const limit = Math.min(parseInt(qs.limit || "20", 10), 100);
-  const cursor = qs.cursor
-    ? JSON.parse(Buffer.from(qs.cursor, "base64").toString("utf8"))
-    : null;
+  
+  let cursor = null;
+  if (qs.cursor) {
+    try {
+      cursor = JSON.parse(Buffer.from(qs.cursor, "base64").toString("utf8"));
+    } catch (error) {
+      return resp(400, { message: "Invalid cursor" });
+    }
+  }
 
   const params = {
     TableName: TABLE_NAME,
@@ -19,13 +25,17 @@ export const handler = async (event) => {
     ExclusiveStartKey: cursor || undefined,
   };
 
-  const { Items, LastEvaluatedKey } = await ddb.send(new QueryCommand(params));
+  try {
+    const { Items, LastEvaluatedKey } = await ddb.send(new QueryCommand(params));
 
-  const nextCursor = LastEvaluatedKey
-    ? Buffer.from(JSON.stringify(LastEvaluatedKey)).toString("base64")
-    : null;
+    const nextCursor = LastEvaluatedKey
+      ? Buffer.from(JSON.stringify(LastEvaluatedKey)).toString("base64")
+      : null;
 
-  return resp(200, { items: Items, nextCursor });
+    return resp(200, { items: Items, nextCursor });
+  } catch (error) {
+    return resp(500, { message: "Internal server error" });
+  }
 };
 
 const resp = (statusCode, body) => ({

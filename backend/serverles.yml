@@ -1,6 +1,9 @@
 service: tattoo-directory-backend
 frameworkVersion: "3"
 
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -89,15 +92,9 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 0
-              WriteCapacityUnits: 0
           - IndexName: InstagramIndex
             KeySchema:
               - AttributeName: gsi2pk
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 0
-              WriteCapacityUnits: 0
