@@ -15,89 +15,107 @@ export const handler = async (event) => {
   const body = safeParse(event.body);
   if (!body) return resp(400, { message: "Invalid JSON" });
 
-  // Load current artist
-  const { Item: current } = await ddb.send(
-    new GetCommand({
-      TableName: TABLE_NAME,
-      Key: { pk: artistPK(id), sk: artistSK() },
-    })
-  );
-  if (!current) return resp(404, { message: "Artist not found" });
+  try {
+    // Load current artist
+    const { Item: current } = await ddb.send(
+      new GetCommand({
+        TableName: TABLE_NAME,
+        Key: { pk: artistPK(id), sk: artistSK() },
+      })
+    );
+    if (!current) return resp(404, { message: "Artist not found" });
 
-  // Build UpdateExpression dynamically
-  const allowed = [
-    "artistsName",
-    "instagramHandle",
-    "bio",
-    "avatar",
-    "profileLink",
-    "tattooStudio",
-    "address",
-    "styles",
-    "portfolio",
-    "opted_out",
-  ];
-  const updates = {};
-  for (const k of allowed) if (k in body) updates[k] = body[k];
+    // Build UpdateExpression dynamically
+    const allowed = [
+      "artistsName",
+      "instagramHandle",
+      "bio",
+      "avatar",
+      "profileLink",
+      "tattooStudio",
+      "address",
+      "styles",
+      "portfolio",
+      "opted_out",
+    ];
+    const updates = {};
+    for (const k of allowed) if (k in body) updates[k] = body[k];
 
-  if (!Object.keys(updates).length)
-    return resp(400, { message: "No updatable fields provided" });
+    if (!Object.keys(updates).length)
+      return resp(400, { message: "No updatable fields provided" });
 
-  const { updateExpr, names, values } = buildUpdate(updates);
+    const { updateExpr, names, values } = buildUpdate(updates);
 
-  await ddb.send(
-    new UpdateCommand({
-      TableName: TABLE_NAME,
-      Key: { pk: artistPK(id), sk: artistSK() },
-      UpdateExpression: updateExpr,
-      ExpressionAttributeNames: names,
-      ExpressionAttributeValues: values,
-      ReturnValues: "ALL_NEW",
-    })
-  );
+    await ddb.send(
+      new UpdateCommand({
+        TableName: TABLE_NAME,
+        Key: { pk: artistPK(id), sk: artistSK() },
+        UpdateExpression: updateExpr,
+        ExpressionAttributeNames: names,
+        ExpressionAttributeValues: values,
+        ReturnValues: "ALL_NEW",
+      })
+    );
 
-  // Reconcile styles fan-out if styles changed
-  if ("styles" in updates) {
-    const newStyles = new Set(updates.styles || []);
-    const oldStyles = new Set(current.styles || []);
-    const toAdd = [...newStyles].filter((s) => !oldStyles.has(s));
-    const toRemove = [...oldStyles].filter((s) => !newStyles.has(s));
+    // Reconcile styles fan-out if styles changed
+    if ("styles" in updates) {
+      const newStyles = new Set(updates.styles || []);
+      const oldStyles = new Set(current.styles || []);
+      const toAdd = [...newStyles].filter((s) => !oldStyles.has(s));
+      const toRemove = [...oldStyles].filter((s) => !newStyles.has(s));
 
-    const writes = [];
+      const writes = [];
 
-    toAdd.forEach((style) => {
-      writes.push({
-        PutRequest: {
-          Item: {
-            pk: stylePK(style),
-            sk: styleSK(id),
-            entityType: "STYLE_ARTIST",
-            artistId: id,
-            artistsName: updates.artistsName || current.artistsName,
+      toAdd.forEach((style) => {
+        writes.push({
+          PutRequest: {
+            Item: {
+              pk: stylePK(style),
+              sk: styleSK(id),
+              entityType: "STYLE_ARTIST",
+              artistId: id,
+              artistsName: updates.artistsName || current.artistsName,
+            },
           },
-        },
+        });
       });
-    });
 
-    for (const style of toRemove) {
-      writes.push({
-        DeleteRequest: {
-          Key: { pk: stylePK(style), sk: styleSK(id) },
-        },
-      });
+      for (const style of toRemove) {
+        writes.push({
+          DeleteRequest: {
+            Key: { pk: stylePK(style), sk: styleSK(id) },
+          },
+        });
+      }
+
+      // batch write in chunks of 25
+      for (let i = 0; i < writes.length; i += 25) {
+        try {
+          await ddb.send(
+            new BatchWriteCommand({
+              RequestItems: { [TABLE_NAME]: writes.slice(i, i + 25) },
+            })
+          );
+        } catch (batchError) {
+          console.error(
+            `Batch write failed for styles update (artist ${encodeURIComponent(
+              id
+            )}):`,
+            batchError.message
+          );
+          throw batchError;
+        }
+      }
     }
 
-    // batch write in 25s
-    for (let i = 0; i < writes.length; i += 25) {
-      await ddb.send(
-        new BatchWriteCommand({
-          RequestItems: { [TABLE_NAME]: writes.slice(i, i + 25) },
-        })
-      );
-    }
+    return resp(204, "");
+  } catch (error) {
+    console.error(
+      `Error updating artist ${encodeURIComponent(id)}:`,
+      error.message
+    );
+    return resp(500, { message: "Internal server error" });
   }
-
-  return resp(204, "");
 };
 
 function buildUpdate(obj) {
@@ -105,18 +123,30 @@ function buildUpdate(obj) {
     values = {};
   const sets = [];
   Object.entries(obj).forEach(([k, v], i) => {
-    const nk = `#n${i}`,
-      vk = `:v${i}`;
-    names[nk] = k;
-    values[vk] = v;
-    sets.push(`${nk} = ${vk}`);
+    const nameKey = `#n${i}`,
+      valueKey = `:v${i}`;
+    names[nameKey] = k;
+    values[valueKey] = v;
+    sets.push(`${nameKey} = ${valueKey}`);
   });
   return { updateExpr: `SET ${sets.join(", ")}`, names, values };
 }
 
 function safeParse(s) {
+  if (!s || typeof s !== "string") return null;
+
   try {
-    return JSON.parse(s || "{}");
+    const parsed = JSON.parse(s);
+    // Only allow plain objects
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      !Array.isArray(parsed) &&
+      parsed.constructor === Object
+    ) {
+      return parsed;
+    }
+    return null;
   } catch {
     return null;
   }
