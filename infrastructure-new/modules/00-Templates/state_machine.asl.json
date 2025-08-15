@@ -1,0 +1,31 @@
+{
+  "Comment": "Data aggregation workflow",
+  "StartAt": "DiscoverStudios",
+  "States": {
+    "DiscoverStudios": {
+      "Type": "Task",
+      "Resource": "${discover_studios_arn}",
+      "Next": "FindArtists",
+      "Retry": ${retry_policy},
+      "Catch": ${catch_policy}
+    },
+    "FindArtists": {
+      "Type": "Task",
+      "Resource": "${find_artists_arn}",
+      "Next": "QueueScraping",
+      "Retry": ${retry_policy},
+      "Catch": ${catch_policy}
+    },
+    "QueueScraping": {
+      "Type": "Task",
+      "Resource": "${queue_scraping_arn}",
+      "End": true,
+      "Retry": ${retry_policy},
+      "Catch": ${catch_policy}
+    },
+    "AggregationFailed": {
+      "Type": "Fail",
+      "Comment": "The data aggregation process failed."
+    }
+  }
+}

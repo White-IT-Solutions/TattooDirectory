@@ -1,0 +1,111 @@
+{
+  "Comment": "Data Aggregation State Machine for Tattoo Artist Directory",
+  "StartAt": "DiscoverStudios",
+  "States": {
+    "DiscoverStudios": {
+      "Type": "Task",
+      "Resource": "${discover_studios_arn}",
+      "Comment": "Discover tattoo studios from public sources",
+      "Retry": [
+        {
+          "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "Next": "HandleError",
+          "ResultPath": "$.error"
+        }
+      ],
+      "Next": "FindArtists"
+    },
+    "FindArtists": {
+      "Type": "Task",
+      "Resource": "${find_artists_arn}",
+      "Comment": "Find artists associated with discovered studios",
+      "Retry": [
+        {
+          "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "Next": "HandleError",
+          "ResultPath": "$.error"
+        }
+      ],
+      "Next": "QueueScraping"
+    },
+    "QueueScraping": {
+      "Type": "Task",
+      "Resource": "${queue_scraping_arn}",
+      "Comment": "Queue detailed scraping tasks for Fargate processing",
+      "Retry": [
+        {
+          "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "Next": "HandleError",
+          "ResultPath": "$.error"
+        }
+      ],
+      "Next": "RunScrapingTask"
+    },
+    "RunScrapingTask": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Comment": "Run Fargate task for detailed scraping",
+      "Parameters": {
+        "TaskDefinition": "${ecs_task_definition}",
+        "Cluster": "${ecs_cluster_arn}",
+        "LaunchType": "FARGATE",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "Subnets": ${subnet_ids},
+            "SecurityGroups": ["${fargate_security_group_id}"],
+            "AssignPublicIp": "DISABLED"
+          }
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 30,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "Next": "HandleError",
+          "ResultPath": "$.error"
+        }
+      ],
+      "Next": "Success"
+    },
+    "Success": {
+      "Type": "Succeed",
+      "Comment": "Data aggregation completed successfully"
+    },
+    "HandleError": {
+      "Type": "Fail",
+      "Comment": "Handle errors in the data aggregation process",
+      "Cause": "An error occurred during data aggregation"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/ApiGatewayV2", "Count", "ApiId", "${api_id}"],
+          [".", "4XXError", ".", "."],
+          [".", "5XXError", ".", "."],
+          [".", "Latency", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "API Gateway Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/Lambda", "Duration", "FunctionName", "${lambda_api_handler_name}"],
+          [".", "Errors", ".", "."],
+          [".", "Invocations", ".", "."],
+          [".", "Throttles", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "Lambda Function Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 12,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/SQS", "ApproximateNumberOfVisibleMessages", "QueueName", "${sqs_queue_name}"],
+          [".", "NumberOfMessagesSent", ".", "."],
+          [".", "NumberOfMessagesReceived", ".", "."],
+          [".", "NumberOfMessagesDeleted", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "SQS Queue Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 18,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/DynamoDB", "ConsumedReadCapacityUnits", "TableName", "${dynamodb_table_name}"],
+          [".", "ConsumedWriteCapacityUnits", ".", "."],
+          [".", "ThrottledRequests", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "DynamoDB Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 24,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/ES", "ClusterStatus.yellow", "DomainName", "${opensearch_domain_name}", "ClientId", "${account_id}"],
+          [".", "ClusterStatus.red", ".", ".", ".", "."],
+          [".", "SearchLatency", ".", ".", ".", "."],
+          [".", "IndexingLatency", ".", ".", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "OpenSearch Metrics",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 30,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/ECS", "CPUUtilization", "ServiceName", "${ecs_service_name}", "ClusterName", "${ecs_cluster_name}"],
+          [".", "MemoryUtilization", ".", ".", ".", "."],
+          [".", "RunningTaskCount", ".", ".", ".", "."]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "ECS Service Metrics",
+        "period": 300
+      }
+    }
+  ]
+}
