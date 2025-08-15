@@ -1,4 +1,5 @@
 export function normalizeArtistForEntityIndex(artist) {
+  if (!artist) return {};
   return {
     gsi1pk: "ARTIST",
     gsi1sk: artist.artistsName?.toLowerCase() || artist.artistId,
@@ -7,5 +8,6 @@ export function normalizeArtistForEntityIndex(artist) {
 
 export function instagramIndex(instagramHandle) {
   if (!instagramHandle) return {};
+  if (typeof instagramHandle !== "string") return {};
   return { gsi2pk: instagramHandle.toLowerCase() };
 }

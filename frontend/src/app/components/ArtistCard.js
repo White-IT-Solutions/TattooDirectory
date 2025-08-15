@@ -19,26 +19,26 @@ export default function ArtistCard({ artist }) {
 
         {/* Styles */}
         <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {artist.styles.slice(0, 3).map((style, index) => (
+          {artist.styles?.slice(0, 3).map((style, index) => (
             <span
               key={style + index}
               className="bg-blue-800 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-300"
             >
               #{style}
             </span>
-          ))}
+          )) || []}
         </div>
         {/* Location */}
         <div className="mt-2">
           <span className="bg-blue-200 px-2 py-1 rounded text-xs">
-            {artist.tattooStudio.address.city}
+            {artist.tattooStudio?.address?.city || 'Location not available'}
           </span>
         </div>
       </div>
 
       {/* Portfolio Thumbnails */}
       <div className="mt-4 grid grid-cols-3 gap-1">
-        {artist.portfolio.slice(0, 3).map((img, i) => (
+        {artist.portfolio?.slice(0, 3).map((img, i) => (
           <Image
             key={i}
             src={img}
@@ -47,7 +47,7 @@ export default function ArtistCard({ artist }) {
             height={100}
             className="object-cover rounded-md"
           />
-        ))}
+        )) || []}
       </div>
 
       {/* CTA Buttons */}
@@ -60,7 +60,7 @@ export default function ArtistCard({ artist }) {
           Instagram: @{artist.instagramHandle}
         </Link>
         <Link
-          href={`/artists/${artist.PK}`}
+          href={`/artists/${artist.artistId || artist.PK}`}
           className="bg-black text-white py-2 rounded-lg text-center hover:bg-gray-800"
         >
           View Profile

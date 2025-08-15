@@ -32,27 +32,47 @@ export async function putArtist(artist) {
     ...instagramIndex(artist.instagramHandle),
   };
 
-  await ddb.send(new PutCommand({ TableName: TABLE_NAME, Item: profileItem }));
-
-  // fan-out to styles
-  const styleItems = (artist.styles || []).map((s) => ({
-    PutRequest: {
-      Item: {
-        pk: stylePK(s),
-        sk: styleSK(id),
-        entityType: "STYLE_ARTIST",
-        artistId: id,
-        artistsName: artist.artistsName,
-        instagramHandle: artist.instagramHandle?.toLowerCase(),
-      },
-    },
-  }));
-
-  for (let i = 0; i < styleItems.length; i += 25) {
+  try {
     await ddb.send(
-      new BatchWriteCommand({
-        RequestItems: { [TABLE_NAME]: styleItems.slice(i, i + 25) },
-      })
+      new PutCommand({ TableName: TABLE_NAME, Item: profileItem })
     );
+
+    // fan-out to styles
+    const styleItems = (artist.styles || []).map((s) => ({
+      PutRequest: {
+        Item: {
+          pk: stylePK(s),
+          sk: styleSK(id),
+          entityType: "STYLE_ARTIST",
+          artistId: id,
+          artistsName: artist.artistsName,
+          instagramHandle: artist.instagramHandle?.toLowerCase(),
+        },
+      },
+    }));
+
+    const chunks = [];
+    for (let i = 0; i < styleItems.length; i += 25) {
+      chunks.push(styleItems.slice(i, i + 25));
+    }
+
+    const batchResults = await Promise.allSettled(
+      chunks.map((chunk) =>
+        ddb.send(
+          new BatchWriteCommand({
+            RequestItems: { [TABLE_NAME]: chunk },
+          })
+        )
+      )
+    );
+
+    const failures = batchResults.filter(
+      (result) => result.status === "rejected"
+    );
+    if (failures.length > 0) {
+      throw new Error(`${failures.length} batch operations failed`);
+    }
+  } catch (error) {
+    throw new Error(`Failed to create artist: ${error.message}`);
   }
 }

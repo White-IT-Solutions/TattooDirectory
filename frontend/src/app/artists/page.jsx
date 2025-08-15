@@ -1,20 +1,39 @@
 import ArtistCard from "../components/ArtistCard";
-import { mockArtistData } from "../data/mockArtistData";
+import { api } from "../../lib/api";
 
 export default async function ArtistsListPage({ searchParams }) {
-  const searchTerm = (await searchParams?.q) || "";
-  console.log(mockArtistData);
+  let artists = [];
+  let filteredArtists = [];
 
-  const filteredArtists =
-    searchTerm.trim() === ""
-      ? mockArtistData
-      : mockArtistData.filter((artist) => {
-          const term = searchTerm.toLowerCase();
-          return (
-            artist.artistsName.toLowerCase().includes(term) ||
-            artist.styles.some((style) => style.toLowerCase().includes(term))
-          );
-        });
+  const params = await searchParams;
+  const searchTerm = params?.q || "";
+  const styles = params?.styles || "";
+
+  try {
+    if (styles) {
+      const result = await api.getArtistsByStyles(styles);
+      console.log(result);
+      artists = result.items || [];
+    } else {
+      const result = await api.getArtists();
+      artists = result.items || [];
+    }
+
+    // Filter by search term if provided
+    filteredArtists =
+      searchTerm.trim() === ""
+        ? artists
+        : artists.filter((artist) => {
+            const term = searchTerm.toLowerCase();
+            return (
+              artist.artistsName?.toLowerCase().includes(term) ||
+              artist.styles?.some((style) => style.toLowerCase().includes(term))
+            );
+          });
+  } catch (error) {
+    console.error("Failed to fetch artists:", error);
+    filteredArtists = [];
+  }
 
   return (
     <div className="min-h-screen p-6">
@@ -38,7 +57,7 @@ export default async function ArtistsListPage({ searchParams }) {
         <div className="w-full mx-auto grid md:grid-cols-2 lg:grid-cols-5 gap-1 p-5">
           {filteredArtists.length > 0 ? (
             filteredArtists.map((artist) => (
-              <ArtistCard key={artist.PK} artist={artist} />
+              <ArtistCard key={artist.artistId || artist.PK} artist={artist} />
             ))
           ) : (
             <p className="text-center text-gray-600">

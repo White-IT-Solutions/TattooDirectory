@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { api } from "../../lib/api";
 
 export default function TakedownPage() {
   const [formData, setFormData] = useState({
@@ -19,23 +20,18 @@ export default function TakedownPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Here we just log the object, but you can send it via API
-    console.log("Takedown request submitted:", formData);
+    try {
+      await api.submitRemovalRequest({
+        instagramHandle: formData.instagram,
+        reason: formData.message,
+      });
 
-    // Example: sending data to an API route
-    /*
-    await fetch("/api/takedown", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    */
-
-    // Reset form after submit
-    setFormData({ email: "", instagram: "", message: "" });
-    alert("Your takedown request has been submitted!");
+      setFormData({ email: "", instagram: "", message: "" });
+      alert("Your takedown request has been submitted!");
+    } catch (error) {
+      console.error("Failed to submit request:", error);
+      alert("Failed to submit request. Please try again.");
+    }
   };
 
   return (
