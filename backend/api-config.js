@@ -1,27 +1,13 @@
-// API configuration for frontend integration
 export const API_CONFIG = {
   local: {
     baseURL: "http://localhost:3000",
-    endpoints: {
-      artists: "/artists",
-      artist: "/artist",
-      artistsByStyles: "/artists",
-      removalRequests: "/removal-requests",
-    },
   },
   production: {
-    baseURL:
-      process.env.API_GATEWAY_URL ||
-      "https://your-api-gateway-url.execute-api.eu-west-2.amazonaws.com",
-    endpoints: {
-      artists: "/artists",
-      artist: "/artist",
-      artistsByStyles: "/artists",
-      removalRequests: "/removal-requests",
-    },
+    baseURL: process.env.NEXT_PUBLIC_API_URL || "https://your-api-gateway-url.execute-api.eu-west-2.amazonaws.com",
   },
 };
 
-// Usage in frontend:
-// const config = API_CONFIG[process.env.NODE_ENV === 'production' ? 'production' : 'local'];
-// const response = await fetch(`${config.baseURL}${config.endpoints.artists}`);
+export const getApiUrl = () => {
+  const isDev = process.env.NODE_ENV === 'development';
+  return isDev ? API_CONFIG.local.baseURL : API_CONFIG.production.baseURL;
+};
