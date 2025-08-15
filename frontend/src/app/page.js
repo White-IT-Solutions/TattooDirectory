@@ -1,9 +1,7 @@
 import MapWithSearch from "./components/MapWithSearch";
 import StyleFilter from "./components/StyleFilter";
-import { mockArtistData } from "./data/mockArtistData";
 
 export default function Home() {
-  console.log(mockArtistData);
   return (
     <div>
       <HomeHero />

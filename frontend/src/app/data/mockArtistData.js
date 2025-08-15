@@ -2,7 +2,26 @@
 
 export const mockArtistData = [
   {
-    PK: 3030,
+    pk: "ARTIST#1",
+    sk: "PROFILE",
+    artistId: "1",
+    artistsName: "Test Artist",
+    instagramHandle: "testartist",
+    bio: "Test bio",
+    avatar: "https://via.placeholder.com/150",
+    profileLink: "https://instagram.com/testartist",
+    tattooStudio: {
+      studioName: "Test Studio",
+      address: { city: "London" },
+    },
+    styles: ["Traditional", "Blackwork"],
+    portfolio: ["https://via.placeholder.com/300"],
+    opted_out: false,
+  },
+  {
+    pk: "ARTIST#3030",
+    sk: "PROFILE",
+    artistId: "3030",
     avatar:
       "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
     bio: "slime lover, developer",
@@ -36,7 +55,9 @@ export const mockArtistData = [
     opted_out: false,
   },
   {
-    PK: 602,
+    pk: "ARTIST#602",
+    sk: "PROFILE",
+    artistId: "602",
     avatar: "https://avatars.githubusercontent.com/u/78603067",
     bio: "environmentalist, coach, creator",
     artistsName: "Raymond Stanton",
@@ -63,7 +84,9 @@ export const mockArtistData = [
     opted_out: true,
   },
   {
-    PK: 338,
+    pk: "ARTIST#338",
+    sk: "PROFILE",
+    artistId: "338",
     avatar: "https://avatars.githubusercontent.com/u/36323456",
     bio: "peninsula supporter, teacher 🍸",
     artistsName: "Ms. Tina Kuhn",
@@ -90,7 +113,9 @@ export const mockArtistData = [
     opted_out: false,
   },
   {
-    PK: 1240,
+    pk: "ARTIST#1240",
+    sk: "PROFILE",
+    artistId: "1240",
     avatar: "https://avatars.githubusercontent.com/u/69593879",
     bio: "trick junkie",
     artistsName: "Sadie Strosin",
@@ -117,7 +142,9 @@ export const mockArtistData = [
     opted_out: false,
   },
   {
-    PK: 3172,
+    pk: "ARTIST#3172",
+    sk: "PROFILE",
+    artistId: "3172",
     avatar:
       "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/99.jpg",
     bio: "subsidy devotee",
@@ -147,7 +174,9 @@ export const mockArtistData = [
   // Remaining entries follow the same structure and can be continued here...
   // New entry 6
   {
-    PK: 2672,
+    pk: "ARTIST#2672",
+    sk: "PROFILE",
+    artistId: "2672",
     avatar: "https://avatars.githubusercontent.com/u/11728310",
     bio: "verve lover, traveler",
     artistsName: "Bernard Kuhic",
@@ -175,7 +204,9 @@ export const mockArtistData = [
   },
   // New entry 7
   {
-    PK: 945,
+    pk: "ARTIST#945",
+    sk: "PROFILE",
+    artistId: "945",
     avatar:
       "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/31.jpg",
     bio: "person, dreamer",
@@ -204,7 +235,9 @@ export const mockArtistData = [
   },
   // New entry 8
   {
-    PK: 3990,
+    pk: "ARTIST#3990",
+    sk: "PROFILE",
+    artistId: "3990",
     avatar: "https://avatars.githubusercontent.com/u/42521478",
     bio: "scarification advocate  🧸",
     artistsName: "Jerry Lindgren V",
@@ -232,7 +265,9 @@ export const mockArtistData = [
   },
   // New entry 9
   {
-    PK: 1785,
+    pk: "ARTIST#1785",
+    sk: "PROFILE",
+    artistId: "1785",
     avatar:
       "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/59.jpg",
     bio: "saloon supporter, author",
@@ -261,7 +296,9 @@ export const mockArtistData = [
   },
   // New entry 10
   {
-    PK: 2822,
+    pk: "ARTIST#2822",
+    sk: "PROFILE",
+    artistId: "2822",
     avatar: "https://avatars.githubusercontent.com/u/57040681",
     bio: "coach, educator, friend",
     artistsName: "Carlos Breitenberg",

@@ -1,14 +1,18 @@
 import ArtistCard from "../components/ArtistCard";
-import { api } from "../lib/api";
+import { api } from "../../lib/api";
 
 export default async function ArtistsListPage({ searchParams }) {
-  const searchTerm = (await searchParams?.q) || "";
-  const styles = (await searchParams?.styles) || "";
-
   let artists = [];
+  let filteredArtists = [];
+
+  const params = await searchParams;
+  const searchTerm = params?.q || "";
+  const styles = params?.styles || "";
+
   try {
     if (styles) {
       const result = await api.getArtistsByStyles(styles);
+      console.log(result);
       artists = result.items || [];
     } else {
       const result = await api.getArtists();
@@ -16,7 +20,7 @@ export default async function ArtistsListPage({ searchParams }) {
     }
 
     // Filter by search term if provided
-    const filteredArtists =
+    filteredArtists =
       searchTerm.trim() === ""
         ? artists
         : artists.filter((artist) => {
@@ -28,7 +32,7 @@ export default async function ArtistsListPage({ searchParams }) {
           });
   } catch (error) {
     console.error("Failed to fetch artists:", error);
-    const filteredArtists = [];
+    filteredArtists = [];
   }
 
   return (
