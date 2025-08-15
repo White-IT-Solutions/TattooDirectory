@@ -3,30 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { styleImages } from "../data/testData/tattooStyles";
-import SideScroller from "./SideScroller";
+import { mockArtists } from "../../../../backend/src/data/mockData";
 
 const STYLES = [
-  "Old School",
-  "Traditional",
-  "New School",
-  "Neo Traditional",
-  "Tribal",
-  "Blackwork",
-  "Dotwork",
-  "Geometric",
-  "Illustrative",
-  "Sketch",
-  "Watercolour",
-  "Japanese",
-  "Anime",
-  "Lettering",
-  "Minimalism",
-  "Realism",
-  "Psychedelic",
-  "Surrealism",
-  "Floral",
-  "Fine Line",
-];
+  ...new Set(mockArtists.flatMap((artist) => artist.styles)),
+].sort();
 
 export default function TattooStyleFilter() {
   const router = useRouter();
@@ -60,7 +41,7 @@ export default function TattooStyleFilter() {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto p-4">
+    <div className="w-full max-w-4xl mx-auto p-4">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-lg font-bold text-white">Filter by Tattoo Style</h3>
         {selected.length > 0 && (
@@ -73,7 +54,6 @@ export default function TattooStyleFilter() {
         )}
       </div>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-        <SideScroller>
         {STYLES.map((style) => {
           const isSelected = selected.includes(style);
           return (
@@ -89,16 +69,7 @@ export default function TattooStyleFilter() {
                 hover:scale-110 hover:shadow-[0_0_18px_4px_rgba(59,130,246,0.4)]
                 focus:outline-none
               `}
-              style={{ 
-                           width: "200px",
-            height: "150px",
-            backgroundColor: "#eee",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-}}
+              style={{ minWidth: 0 }}
               title={style}
             >
               {styleImages[style] ? (
@@ -122,7 +93,6 @@ export default function TattooStyleFilter() {
             </button>
           );
         })}
-        </SideScroller>
       </div>
     </div>
   );

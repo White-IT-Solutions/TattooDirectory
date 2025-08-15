@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { mockArtistData } from "../../data/mockArtistData";
+import { api } from "../../../lib/api";
 import Lightbox from "@/app/components/Lightbox";
 
-export default function ArtistPage({ params }) {
-  const artistId = params.id;
-  const artist = [...mockArtistData].find(
-    (artist) => artist.PK.toString() === artistId
-  );
+export default async function ArtistPage({ params }) {
+  const { id: artistId } = await params;
+
+  let artist = null;
+  try {
+    artist = await api.getArtist(artistId);
+  } catch (error) {
+    console.error("Failed to fetch artist:", error);
+  }
 
   if (!artist) {
     return (
@@ -34,20 +38,20 @@ export default function ArtistPage({ params }) {
 
           {/* Styles */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {artist.styles.map((style) => (
+            {artist.styles?.map((style) => (
               <span
                 key={style}
                 className="bg-gray-200 px-2 py-1 rounded text-sm cursor-pointer hover:bg-gray-300"
               >
                 #{style}
               </span>
-            ))}
+            )) || []}
           </div>
 
           {/* Location */}
           <div className="mt-2 flex flex-wrap justify-center gap-2">
             <span className="bg-blue-200 px-2 py-1 rounded text-sm cursor-pointer hover:bg-blue-300">
-              {artist.tattooStudio.address.city}
+              {artist.tattooStudio?.address?.city || 'Location not available'}
             </span>
           </div>
 
@@ -66,16 +70,18 @@ export default function ArtistPage({ params }) {
           </div>
 
           {/* Google Maps */}
-          <div className="mt-4">
-            <iframe
-              className="rounded-lg"
-              width="100%"
-              height="200"
-              frameBorder="0"
-              src={`https://www.google.com/maps?q=${artist.tattooStudio.address.latitude},${artist.tattooStudio.address.longitude}&z=15&output=embed`}
-              allowFullScreen
-            ></iframe>
-          </div>
+          {artist.tattooStudio?.address?.latitude && artist.tattooStudio?.address?.longitude && (
+            <div className="mt-4">
+              <iframe
+                className="rounded-lg"
+                width="100%"
+                height="200"
+                frameBorder="0"
+                src={`https://www.google.com/maps?q=${artist.tattooStudio.address.latitude},${artist.tattooStudio.address.longitude}&z=15&output=embed`}
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
 
           {/* Delist Button */}
           <div className="mt-4">
