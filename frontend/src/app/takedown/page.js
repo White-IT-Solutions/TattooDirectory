@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { api } from "../lib/api";
+import { api } from "../../lib/api";
 
 export default function TakedownPage() {
   const [formData, setFormData] = useState({
@@ -25,11 +25,11 @@ export default function TakedownPage() {
         instagramHandle: formData.instagram,
         reason: formData.message,
       });
-      
+
       setFormData({ email: "", instagram: "", message: "" });
       alert("Your takedown request has been submitted!");
     } catch (error) {
-      console.error('Failed to submit request:', error);
+      console.error("Failed to submit request:", error);
       alert("Failed to submit request. Please try again.");
     }
   };
