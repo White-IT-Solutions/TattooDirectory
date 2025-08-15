@@ -21,8 +21,7 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
       Resource:
-        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:provider.environment.TABLE_NAME}
-        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:provider.environment.TABLE_NAME}/index/*
+        - "*"
 
 functions:
   getArtist:
