@@ -70,18 +70,19 @@ export default async function ArtistPage({ params }) {
           </div>
 
           {/* Google Maps */}
-          {/* {artist.tattooStudio?.address?.latitude && artist.tattooStudio?.address?.longitude && (
-            <div className="mt-4">
-              <iframe
-                className="rounded-lg"
-                width="100%"
-                height="200"
-                frameBorder="0"
-                src={`https://www.google.com/maps?q=${artist.tattooStudio.address.latitude},${artist.tattooStudio.address.longitude}&z=15&output=embed`}
-                allowFullScreen
-              ></iframe>
-            </div>
-          )} */}
+          {artist.tattooStudio?.address?.latitude &&
+            artist.tattooStudio?.address?.longitude && (
+              <div className="mt-4">
+                <iframe
+                  className="rounded-lg"
+                  width="100%"
+                  height="200"
+                  frameBorder="0"
+                  src={`https://www.google.com/maps?q=${artist.tattooStudio.address.latitude}%2C${artist.tattooStudio.address.longitude}&z=15&output=embed`}
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
 
           {/* Delist Button */}
           <div className="mt-4">
