@@ -51,7 +51,7 @@ export default async function ArtistPage({ params }) {
           {/* Location */}
           <div className="mt-2 flex flex-wrap justify-center gap-2">
             <span className="bg-blue-200 px-2 py-1 rounded text-sm cursor-pointer hover:bg-blue-300">
-              {artist.tattooStudio?.address?.city || 'Location not available'}
+              {artist.tattooStudio?.address?.city || "Location not available"}
             </span>
           </div>
 
@@ -70,7 +70,7 @@ export default async function ArtistPage({ params }) {
           </div>
 
           {/* Google Maps */}
-          {artist.tattooStudio?.address?.latitude && artist.tattooStudio?.address?.longitude && (
+          {/* {artist.tattooStudio?.address?.latitude && artist.tattooStudio?.address?.longitude && (
             <div className="mt-4">
               <iframe
                 className="rounded-lg"
@@ -81,7 +81,7 @@ export default async function ArtistPage({ params }) {
                 allowFullScreen
               ></iframe>
             </div>
-          )}
+          )} */}
 
           {/* Delist Button */}
           <div className="mt-4">
