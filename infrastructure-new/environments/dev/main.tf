@@ -15,7 +15,7 @@ module "foundation" {
   context = local.context
 
   providers = {
-    aws.replica = aws.replica
+    aws.replica = aws.infra_replica
   }
 }
 
@@ -30,7 +30,7 @@ module "security_foundation" {
 
   # This module is deployed to the Security Account
   providers = {
-    aws = aws.security
+    aws = aws.security_primary
   }
 }
 
@@ -45,7 +45,7 @@ module "audit_foundation" {
 
   # This module is deployed to the Audit Account
   providers = {
-    aws = aws.audit
+    aws = aws.audit_primary
   }
 }
 
@@ -64,7 +64,7 @@ module "central_logging" {
 
   # This module is deployed to the Security Account
   providers = {
-    aws = aws.security
+    aws = aws.security_primary
   }
 }
 
@@ -82,7 +82,7 @@ module "networking" {
   availability_zones        = module.foundation.availability_zones
 
   providers = {
-    aws.us_east_1 = aws.us_east_1
+    aws.us_east_1 = aws.infra_us_east_1
   }
 }
 
@@ -99,7 +99,7 @@ module "central_security" {
 
   # This module is deployed to the Security Account
   providers = {
-    aws = aws.security
+    aws = aws.security_primary
   }
 }
 
@@ -134,7 +134,7 @@ module "log_storage" {
 
   # This module is deployed to the Audit Account
   providers = {
-    aws         = aws.audit
+    aws         = aws.audit_primary
     aws.replica = aws.audit_replica
   }
 }
@@ -156,7 +156,7 @@ module "app_storage" {
   access_logs_bucket_domain_name = module.log_storage.access_logs_bucket_domain_name
 
   providers = {
-    aws.replica = aws.replica
+    aws.replica = aws.infra_replica
   }
 }
 
@@ -273,7 +273,7 @@ module "security_monitoring" {
 
   # This module is deployed to the Security Account
   providers = {
-    aws = aws.security
+    aws = aws.security_primary
   }
 }
 
@@ -316,7 +316,7 @@ module "backup" {
 
   # This module is deployed to the Audit Account
   providers = {
-    aws         = aws.audit
+    aws         = aws.audit_primary
     aws.replica = aws.audit_replica
   }
 }
@@ -363,7 +363,7 @@ module "audit_governance" {
 
   # This module is deployed to the Audit Account
   providers = {
-    aws = aws.audit
+    aws = aws.audit_primary
   }
 }
 

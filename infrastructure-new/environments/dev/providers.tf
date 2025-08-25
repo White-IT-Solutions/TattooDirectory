@@ -15,7 +15,7 @@ provider "aws" {
 
 # AWS provider for US East 1 (required for CloudFront certificates)
 provider "aws" {
-  alias  = "us_east_1"
+  alias  = "infra_us_east_1"
   region = "us-east-1"
 
   assume_role {
@@ -29,7 +29,7 @@ provider "aws" {
 
 # AWS provider for replica region (cross-region replication)
 provider "aws" {
-  alias  = "replica"
+  alias  = "infra_replica"
   region = var.replica_aws_region
 
   assume_role {
@@ -43,7 +43,7 @@ provider "aws" {
 
 # AWS provider for the Security account (logging, audit, etc.)
 provider "aws" {
-  alias  = "security"
+  alias  = "security_primary"
   region = var.aws_region
 
   assume_role {
@@ -71,7 +71,7 @@ provider "aws" {
 
 # AWS provider for the Audit account (log archive, config history)
 provider "aws" {
-  alias  = "audit"
+  alias  = "audit_primary"
   region = var.aws_region
 
   assume_role {
