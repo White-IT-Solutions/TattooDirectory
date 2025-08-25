@@ -26,6 +26,26 @@ output "config_rule_names" {
   ] : []
 }
 
+output "s3_public_access_rule_name" {
+  description = "Name of the AWS Config rule for S3 public access"
+  value       = var.enable_config ? aws_config_config_rule.s3_bucket_public_access_prohibited[0].name : null
+}
+
+output "dynamodb_encryption_rule_name" {
+  description = "Name of the AWS Config rule for DynamoDB encryption"
+  value       = var.enable_config ? aws_config_config_rule.dynamodb_table_encryption_enabled[0].name : null
+}
+
+output "lambda_public_access_rule_name" {
+  description = "Name of the AWS Config rule for Lambda public access"
+  value       = var.enable_config ? aws_config_config_rule.lambda_function_public_access_prohibited[0].name : null
+}
+
+output "cloudfront_https_rule_name" {
+  description = "Name of the AWS Config rule for CloudFront HTTPS viewer policy"
+  value       = var.enable_config ? aws_config_config_rule.cloudfront_viewer_policy_https[0].name : null
+}
+
 # =============================================================================
 # CLOUDTRAIL
 # =============================================================================
@@ -42,12 +62,12 @@ output "cloudtrail_arn" {
 
 output "cloudtrail_s3_bucket_name" {
   description = "Name of the CloudTrail S3 bucket"
-  value       = aws_s3_bucket.cloudtrail.bucket
+  value       = var.cloudtrail_bucket_name
 }
 
 output "cloudtrail_s3_bucket_arn" {
   description = "ARN of the CloudTrail S3 bucket"
-  value       = aws_s3_bucket.cloudtrail.arn
+  value       = var.cloudtrail_bucket_arn
 }
 
 output "cloudtrail_log_group_name" {

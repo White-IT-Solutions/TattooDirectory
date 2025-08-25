@@ -17,7 +17,7 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = "~> 5.0"
-      configuration_aliases = [aws.us_east_1, aws.replica]
+      configuration_aliases = [aws.us_east_1, aws.replica, aws.security, aws.security_replica, aws.audit]
     }
     random = {
       source  = "hashicorp/random"

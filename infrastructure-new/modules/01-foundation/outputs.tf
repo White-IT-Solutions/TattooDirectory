@@ -56,15 +56,7 @@ output "kms_key_main_arn" {
   value       = aws_kms_key.main.arn
 }
 
-output "kms_key_logs_id" {
-  description = "ID of the logs KMS key"
-  value       = aws_kms_key.logs.key_id
-}
-
-output "kms_key_logs_arn" {
-  description = "ARN of the logs KMS key"
-  value       = aws_kms_key.logs.arn
-}
+# NOTE: The logs KMS key outputs have been moved to the security-foundation module
 
 output "kms_key_replica_id" {
   description = "ID of the replica KMS key"

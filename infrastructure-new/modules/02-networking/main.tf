@@ -55,82 +55,15 @@ resource "aws_default_security_group" "default" {
   })
 }
 
-# VPC Flow Logs
+# VPC Flow Logs - Send directly to S3 bucket in Audit Account
 resource "aws_flow_log" "vpc" {
-  iam_role_arn    = aws_iam_role.flow_log.arn
-  log_destination = aws_cloudwatch_log_group.vpc_flow_logs.arn
-  traffic_type    = "ALL"
-  vpc_id          = aws_vpc.main.id
-}
-
-# CloudWatch Log Group for VPC Flow Logs
-resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
-  name              = "/aws/vpc/flowlogs/${var.context.name_prefix}"
-  retention_in_days = var.context.environment == "prod" ? 365 : 30
-  kms_key_id        = var.kms_key_logs_arn
+  log_destination      = var.vpc_flow_logs_bucket_arn
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.main.id
 
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-vpc-flow-logs"
-  })
-}
-
-# IAM Role for VPC Flow Logs
-resource "aws_iam_role" "flow_log" {
-  name = "${var.context.name_prefix}-vpc-flow-log-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "vpc-flow-logs.amazonaws.com"
-        }
-      }
-    ]
-  })
-
-  tags = merge(var.context.common_tags, {
-    Name = "${var.context.name_prefix}-vpc-flow-log-role"
-  })
-}
-
-# IAM Policy for VPC Flow Logs
-resource "aws_iam_role_policy" "flow_log" {
-  name = "${var.context.name_prefix}-vpc-flow-log-policy"
-  role = aws_iam_role.flow_log.id
-
-  policy = jsonencode({
-    #tfsec:ignore:aws-iam-no-policy-wildcards
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "VPCFlowLogPermissionsForLogGroup"
-        Effect = "Allow"
-        Action = [
-          # DescribeLogGroups is needed for the service to verify the log group exists.
-          "logs:DescribeLogGroups",
-          # CreateLogStream and DescribeLogStreams are needed to create and check for log streams.
-          "logs:CreateLogStream",
-          "logs:DescribeLogStreams"
-        ]
-        # This is scoped to the specific log group created for flow logs.
-        Resource = "arn:aws:logs:${var.context.aws_region}:${var.context.account_id}:log-group:/aws/vpc/flowlogs/${var.context.project_name}"
-      },
-      {
-        Sid    = "VPCFlowLogPermissionsForLogEvents"
-        Effect = "Allow"
-        Action = [
-          "logs:PutLogEvents"
-        ]
-        # This wildcard is necessary because the service creates log streams with dynamic names.
-        # This is the most specific wildcard possible for this action.
-        # It is not possible to completely eliminate the wildcard from the IAM policy when directing VPC Flow Logs to CloudWatch Logs. 
-        # The service principal for flow logs (vpc-flow-logs.amazonaws.com) requires permission to create log streams with names that are dynamically generated and therefore unknown in advance.
-        Resource = "arn:aws:logs:${var.context.aws_region}:${var.context.account_id}:log-group:/aws/vpc/flowlogs/${var.context.project_name}:log-stream:*"
-      }
-    ]
   })
 }
 

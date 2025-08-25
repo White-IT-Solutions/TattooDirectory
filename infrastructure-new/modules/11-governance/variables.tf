@@ -53,11 +53,6 @@ variable "kms_key_logs_arn" {
   type        = string
 }
 
-variable "random_suffix" {
-  description = "Random suffix for unique resource naming"
-  type        = string
-}
-
 # IAM role ARNs
 variable "config_role_arn" {
   description = "ARN of the AWS Config service role"
@@ -79,7 +74,19 @@ variable "cloudtrail_role_arn" {
 
 # Resource references
 variable "config_bucket_name" {
-  description = "Name of the S3 bucket for AWS Config"
+  description = "Name of the S3 bucket for AWS Config (from Audit Account)"
+  type        = string
+  default     = ""
+}
+
+variable "cloudtrail_bucket_name" {
+  description = "Name of the S3 bucket for CloudTrail (from Audit Account)"
+  type        = string
+  default     = ""
+}
+
+variable "cloudtrail_bucket_arn" {
+  description = "ARN of the S3 bucket for CloudTrail (from Audit Account)"
   type        = string
   default     = ""
 }

@@ -14,7 +14,7 @@ resource "aws_backup_vault" "main" {
   count = var.backup_enabled ? 1 : 0
 
   name        = "${var.context.name_prefix}-backup-vault"
-  kms_key_arn = var.kms_key_main_arn
+  kms_key_arn = var.kms_key_audit_arn
 
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-backup-vault"
@@ -28,7 +28,7 @@ resource "aws_backup_vault" "replica" {
   provider = aws.replica
 
   name        = "${var.context.name_prefix}-backup-vault-replica"
-  kms_key_arn = var.kms_key_replica_arn
+  kms_key_arn = var.kms_key_audit_replica_arn
 
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-backup-vault-replica"

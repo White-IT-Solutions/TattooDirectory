@@ -24,7 +24,10 @@ locals {
     # AWS Specific
     aws_region         = var.aws_region
     replica_aws_region = var.replica_aws_region
-    account_id         = data.aws_caller_identity.current.account_id
+    #account_id         = data.aws_caller_identity.current.account_id
+    account_id          = var.infra_account_id
+    security_account_id = var.security_account_id
+    audit_account_id    = var.audit_account_id
 
     # Common Configuration & Metadata
     common_tags                     = local.common_tags

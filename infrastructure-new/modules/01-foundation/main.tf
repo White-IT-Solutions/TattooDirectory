@@ -61,6 +61,17 @@ resource "aws_kms_key" "main" {
         }
         Action   = "kms:*"
         Resource = "*"
+      },
+      {
+        Sid    = "Allow S3 Replication to Decrypt from Source"
+        Effect = "Allow"
+        Principal = {
+          # This is the service principal for the S3 Replication role.
+          Service = "s3.amazonaws.com"
+        }
+        # This permission is required for the S3 replication role to read encrypted objects.
+        Action   = "kms:Decrypt"
+        Resource = "*"
       }
     ]
   })
@@ -75,56 +86,8 @@ resource "aws_kms_alias" "main" {
   target_key_id = aws_kms_key.main.key_id
 }
 
-# Logs KMS key for CloudWatch logs encryption
-resource "aws_kms_key" "logs" {
-  description             = "KMS key for CloudWatch logs encryption"
-  deletion_window_in_days = var.context.environment == "prod" ? 30 : 7
-  enable_key_rotation     = true
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "Enable IAM User Permissions"
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::${var.context.account_id}:root"
-        }
-        Action   = "kms:*"
-        Resource = "*"
-      },
-      {
-        Sid    = "Allow CloudWatch Logs"
-        Effect = "Allow"
-        Principal = {
-          Service = "logs.${var.context.aws_region}.amazonaws.com"
-        }
-        Action = [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:DescribeKey"
-        ]
-        Resource = "*"
-        Condition = {
-          ArnEquals = {
-            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${var.context.aws_region}:${var.context.account_id}:*"
-          }
-        }
-      }
-    ]
-  })
-
-  tags = merge(var.context.common_tags, {
-    Name = "${var.context.name_prefix}-logs-key"
-  })
-}
-
-resource "aws_kms_alias" "logs" {
-  name          = "alias/${var.context.name_prefix}-logs"
-  target_key_id = aws_kms_key.logs.key_id
-}
+# NOTE: The logs KMS key has been moved to the security-foundation module
+# as it should be managed in the Security Account for centralized logging
 
 # Replica KMS key for cross-region replication (only in prod)
 resource "aws_kms_key" "replica" {
@@ -135,6 +98,28 @@ resource "aws_kms_key" "replica" {
   description             = "Replica KMS key for ${var.context.name_prefix}"
   deletion_window_in_days = var.context.environment == "prod" ? 30 : 7
   enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions for Replica Key"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${var.context.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid       = "Allow S3 Replication to Encrypt in Destination"
+        Effect    = "Allow"
+        Principal = { Service = "s3.amazonaws.com" }
+        Action    = ["kms:Encrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:DescribeKey"]
+        Resource  = "*"
+      }
+    ]
+  })
 
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-replica-key"

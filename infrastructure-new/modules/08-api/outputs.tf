@@ -58,12 +58,5 @@ output "custom_domain_target" {
 # CLOUDWATCH LOG GROUP
 # =============================================================================
 
-output "log_group_name" {
-  description = "Name of the API Gateway CloudWatch log group"
-  value       = aws_cloudwatch_log_group.api_gateway.name
-}
-
-output "log_group_arn" {
-  description = "ARN of the API Gateway CloudWatch log group"
-  value       = aws_cloudwatch_log_group.api_gateway.arn
-}
+# NOTE: Log group outputs moved to central-logging module
+# The API Gateway log group is now managed in the Security Account

@@ -31,8 +31,8 @@ variable "context" {
 }
 
 # Module-specific variables
-variable "kms_key_logs_arn" {
-  description = "ARN of the logs KMS key for CloudWatch logs encryption"
+variable "api_gateway_log_group_arn" {
+  description = "ARN of the API Gateway CloudWatch log group from the Security Account"
   type        = string
 }
 

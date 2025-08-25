@@ -8,18 +8,11 @@
 # - CORS setup
 
 # =============================================================================
-# CLOUDWATCH LOG GROUP FOR API GATEWAY
+# NOTE: API GATEWAY LOG GROUP MOVED TO CENTRAL-LOGGING MODULE
 # =============================================================================
-
-resource "aws_cloudwatch_log_group" "api_gateway" {
-  name              = "/aws/apigateway/${var.context.name_prefix}"
-  retention_in_days = var.context.log_retention_days
-  kms_key_id        = var.kms_key_logs_arn
-
-  tags = merge(var.context.common_tags, {
-    Name = "${var.context.name_prefix}-api-gateway-logs"
-  })
-}
+# The CloudWatch log group for API Gateway access logs has been moved to the
+# central-logging module to be deployed in the Security Account for centralized
+# logging. The log group ARN is now passed as a variable.
 
 # =============================================================================
 # API GATEWAY V2 (HTTP API)
@@ -57,7 +50,7 @@ resource "aws_apigatewayv2_stage" "main" {
   deployment_id = var.context.environment == "prod" ? aws_apigatewayv2_deployment.main[0].id : null
 
   access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.api_gateway.arn
+    destination_arn = var.api_gateway_log_group_arn
     format = jsonencode({
       requestId      = "$context.requestId"
       ip             = "$context.identity.sourceIp"

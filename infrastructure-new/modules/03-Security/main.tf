@@ -67,8 +67,6 @@ resource "aws_secretsmanager_secret_version" "opensearch_master" {
 # WAF WEB ACL
 # =============================================================================
 
-
-
 # CloudWatch Log Group for WAF
 resource "aws_cloudwatch_log_group" "waf" {
   name              = "/aws/wafv2/${var.context.name_prefix}"

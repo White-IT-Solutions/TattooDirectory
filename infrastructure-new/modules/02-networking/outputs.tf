@@ -169,10 +169,7 @@ output "vpc_flow_log_id" {
   value       = aws_flow_log.vpc.id
 }
 
-output "vpc_flow_log_group_name" {
-  description = "Name of the VPC Flow Log CloudWatch Log Group"
-  value       = aws_cloudwatch_log_group.vpc_flow_logs.name
-}
+# NOTE: VPC Flow Log Group outputs have been moved to the central-logging module
 
 # =============================================================================
 # DEFAULT SECURITY GROUP

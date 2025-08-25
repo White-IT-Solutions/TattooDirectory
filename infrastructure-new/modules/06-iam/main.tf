@@ -1,8 +1,12 @@
 # =============================================================================
-# IAM MODULE
+# IAM MODULE - INFRASTRUCTURE ACCOUNT ROLES
 # =============================================================================
-# This module contains all IAM roles and policies
-# It accepts ARNs from other modules as inputs to build proper policies
+# This module creates all necessary IAM roles within the Infrastructure Account.
+# It includes cross-account trust policies that allow services from the Security
+# Account to assume certain roles (Config, Backup) for centralized management.
+# 
+# All application roles (Lambda, ECS, Step Functions) remain in this account
+# for direct access to Infrastructure Account resources.
 
 # =============================================================================
 # DATA SOURCES FOR AWS MANAGED POLICIES
@@ -734,6 +738,18 @@ resource "aws_iam_role" "backup" {
         Principal = {
           Service = "backup.amazonaws.com"
         }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${var.context.audit_account_id}:root"
+        }
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = "${var.context.name_prefix}-backup-cross-account"
+          }
+        }
       }
     ]
   })
@@ -765,6 +781,18 @@ resource "aws_iam_role" "config" {
         Effect = "Allow"
         Principal = {
           Service = "config.amazonaws.com"
+        }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${var.context.audit_account_id}:root"
+        }
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = "${var.context.name_prefix}-config-cross-account"
+          }
         }
       }
     ]

@@ -48,13 +48,13 @@ variable "backup_retention_days" {
   }
 }
 
-variable "kms_key_main_arn" {
-  description = "ARN of the main KMS key for encryption"
+variable "kms_key_audit_arn" {
+  description = "ARN of the audit KMS key for encryption"
   type        = string
 }
 
-variable "kms_key_replica_arn" {
-  description = "ARN of the replica KMS key for cross-region backups"
+variable "kms_key_audit_replica_arn" {
+  description = "ARN of the audit replica KMS key for cross-region backups"
   type        = string
   default     = ""
 }

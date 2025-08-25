@@ -49,6 +49,36 @@ variable "domain_name" {
 # AWS Provider & Region Configuration
 # ------------------------------------------------------------------------------
 
+variable "infra_account_id" {
+  description = "AWS Account ID for the Infrastructure Account"
+  type        = string
+
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.infra_account_id))
+    error_message = "AWS Account ID must be a 12-digit number."
+  }
+}
+
+variable "security_account_id" {
+  description = "AWS Account ID for the Security Account"
+  type        = string
+
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.security_account_id))
+    error_message = "AWS Account ID must be a 12-digit number."
+  }
+}
+
+variable "audit_account_id" {
+  description = "AWS Account ID for the Audit Account"
+  type        = string
+
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.audit_account_id))
+    error_message = "AWS Account ID must be a 12-digit number."
+  }
+}
+
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string

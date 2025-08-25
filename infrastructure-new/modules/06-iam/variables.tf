@@ -11,9 +11,11 @@ variable "context" {
     name_prefix  = string
 
     # AWS Specific
-    aws_region         = string
-    replica_aws_region = string
-    account_id         = string
+    aws_region          = string
+    replica_aws_region  = string
+    account_id          = string # Infrastructure account
+    security_account_id = string # Security account
+    audit_account_id    = string # Audit account
 
     # Common Configuration & Metadata
     common_tags                     = map(string)

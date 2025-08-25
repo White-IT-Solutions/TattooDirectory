@@ -81,6 +81,20 @@ resource "aws_config_config_rule" "s3_bucket_public_access_prohibited" {
   depends_on = [aws_config_configuration_recorder.main]
 }
 
+# S3 bucket server-side encryption enabled
+resource "aws_config_config_rule" "s3_bucket_server_side_encryption_enabled" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-s3-bucket-server-side-encryption-enabled"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
 # DynamoDB encryption enabled
 resource "aws_config_config_rule" "dynamodb_table_encryption_enabled" {
   count = var.enable_config ? 1 : 0
@@ -90,6 +104,20 @@ resource "aws_config_config_rule" "dynamodb_table_encryption_enabled" {
   source {
     owner             = "AWS"
     source_identifier = "DYNAMODB_TABLE_ENCRYPTION_ENABLED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# DynamoDB point-in-time recovery enabled
+resource "aws_config_config_rule" "dynamodb_pitr_enabled" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-dynamodb-pitr-enabled"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "DYNAMODB_PITR_ENABLED"
   }
 
   depends_on = [aws_config_configuration_recorder.main]
@@ -114,6 +142,34 @@ resource "aws_config_config_rule" "lambda_concurrency_check" {
   depends_on = [aws_config_configuration_recorder.main]
 }
 
+# Lambda function public access prohibited
+resource "aws_config_config_rule" "lambda_function_public_access_prohibited" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-lambda-function-public-access-prohibited"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# Lambda function inside VPC
+resource "aws_config_config_rule" "lambda_inside_vpc" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-lambda-inside-vpc"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "LAMBDA_INSIDE_VPC"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
 # API Gateway execution logging enabled
 resource "aws_config_config_rule" "api_gw_execution_logging_enabled" {
   count = var.enable_config ? 1 : 0
@@ -123,6 +179,104 @@ resource "aws_config_config_rule" "api_gw_execution_logging_enabled" {
   source {
     owner             = "AWS"
     source_identifier = "API_GW_EXECUTION_LOGGING_ENABLED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# CloudFront origin access control enabled
+resource "aws_config_config_rule" "cloudfront_origin_access_control_enabled" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-cloudfront-origin-access-control-enabled"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "CLOUDFRONT_ORIGIN_ACCESS_CONTROL_ENABLED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# CloudFront viewer policy HTTPS
+resource "aws_config_config_rule" "cloudfront_viewer_policy_https" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-cloudfront-viewer-policy-https"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "CLOUDFRONT_VIEWER_POLICY_HTTPS"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# VPC default security group closed
+resource "aws_config_config_rule" "vpc_default_security_group_closed" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-vpc-default-security-group-closed"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "VPC_DEFAULT_SECURITY_GROUP_CLOSED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# VPC flow logs enabled
+resource "aws_config_config_rule" "vpc_flow_logs_enabled" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-vpc-flow-logs-enabled"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "VPC_FLOW_LOGS_ENABLED"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# IAM policy no statements with admin access
+resource "aws_config_config_rule" "iam_policy_no_statements_with_admin_access" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-iam-policy-no-statements-with-admin-access"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "IAM_POLICY_NO_STATEMENTS_WITH_ADMIN_ACCESS"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# IAM user no policies check
+resource "aws_config_config_rule" "iam_user_no_policies_check" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-iam-user-no-policies-check"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "IAM_USER_NO_POLICIES_CHECK"
+  }
+
+  depends_on = [aws_config_configuration_recorder.main]
+}
+
+# KMS CMK not scheduled for deletion
+resource "aws_config_config_rule" "kms_cmk_not_scheduled_for_deletion" {
+  count = var.enable_config ? 1 : 0
+
+  name = "${var.context.name_prefix}-kms-cmk-not-scheduled-for-deletion"
+
+  source {
+    owner             = "AWS"
+    source_identifier = "KMS_CMK_NOT_SCHEDULED_FOR_DELETION"
   }
 
   depends_on = [aws_config_configuration_recorder.main]
@@ -160,82 +314,7 @@ resource "aws_config_remediation_configuration" "s3_bucket_public_access_prohibi
 # CLOUDTRAIL
 # =============================================================================
 
-# CloudTrail S3 bucket
-resource "aws_s3_bucket" "cloudtrail" {
-  bucket = "${var.context.name_prefix}-cloudtrail-${var.random_suffix}"
-
-  tags = merge(var.context.common_tags, {
-    Name = "${var.context.name_prefix}-cloudtrail"
-  })
-}
-
-resource "aws_s3_bucket_versioning" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = var.kms_key_main_arn
-      sse_algorithm     = "aws:kms"
-    }
-    bucket_key_enabled = true
-  }
-}
-
-resource "aws_s3_bucket_public_access_block" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
-# CloudTrail S3 bucket policy
-resource "aws_s3_bucket_policy" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AWSCloudTrailAclCheck"
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudtrail.amazonaws.com"
-        }
-        Action   = "s3:GetBucketAcl"
-        Resource = aws_s3_bucket.cloudtrail.arn
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = "arn:aws:cloudtrail:${var.context.aws_region}:${var.context.account_id}:trail/${var.context.name_prefix}-cloudtrail"
-          }
-        }
-      },
-      {
-        Sid    = "AWSCloudTrailWrite"
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudtrail.amazonaws.com"
-        }
-        Action   = "s3:PutObject"
-        Resource = "${aws_s3_bucket.cloudtrail.arn}/*"
-        Condition = {
-          StringEquals = {
-            "s3:x-amz-acl" = "bucket-owner-full-control"
-            "AWS:SourceArn" = "arn:aws:cloudtrail:${var.context.aws_region}:${var.context.account_id}:trail/${var.context.name_prefix}-cloudtrail"
-          }
-        }
-      }
-    ]
-  })
-}
+# CloudTrail now uses the centralized bucket in the Audit Account
 
 # CloudWatch log group for CloudTrail
 resource "aws_cloudwatch_log_group" "cloudtrail" {
@@ -251,7 +330,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
 # CloudTrail
 resource "aws_cloudtrail" "main" {
   name           = "${var.context.name_prefix}-cloudtrail"
-  s3_bucket_name = aws_s3_bucket.cloudtrail.bucket
+  s3_bucket_name = var.cloudtrail_bucket_name
 
   event_selector {
     read_write_type                 = "All"

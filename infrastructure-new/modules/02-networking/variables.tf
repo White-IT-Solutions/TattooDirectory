@@ -11,9 +11,10 @@ variable "context" {
     name_prefix  = string
 
     # AWS Specific
-    aws_region         = string
-    replica_aws_region = string
-    account_id         = string
+    aws_region          = string
+    replica_aws_region  = string
+    account_id          = string # Infrastructure Account
+    security_account_id = string # Security Account
 
     # Common Configuration & Metadata
     common_tags                     = map(string)
@@ -49,5 +50,10 @@ variable "availability_zones" {
 
 variable "kms_key_logs_arn" {
   description = "ARN of the KMS key for CloudWatch logs encryption"
+  type        = string
+}
+
+variable "vpc_flow_logs_bucket_arn" {
+  description = "ARN of the VPC Flow Logs S3 bucket (from log-storage module in Audit Account)"
   type        = string
 }

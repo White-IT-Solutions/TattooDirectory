@@ -153,3 +153,17 @@ output "s3_replication_role_name" {
   description = "Name of the S3 replication role"
   value       = var.context.enable_cross_region_replication ? aws_iam_role.s3_replication[0].name : null
 }
+
+# =============================================================================
+# CROSS-ACCOUNT ACCESS
+# =============================================================================
+
+output "config_cross_account_external_id" {
+  description = "External ID for cross-account Config role assumption"
+  value       = "${var.context.name_prefix}-config-cross-account"
+}
+
+output "backup_cross_account_external_id" {
+  description = "External ID for cross-account Backup role assumption"
+  value       = "${var.context.name_prefix}-backup-cross-account"
+}
