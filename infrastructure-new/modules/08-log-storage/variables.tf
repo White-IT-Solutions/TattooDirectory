@@ -1,0 +1,56 @@
+# =============================================================================
+# LOG STORAGE MODULE VARIABLES
+# =============================================================================
+
+variable "context" {
+  description = "A single object containing all shared configuration values."
+  type = object({
+    # Core Identifiers
+    project_name = string
+    environment  = string
+    name_prefix  = string
+
+    # AWS Specific
+    aws_region          = string
+    replica_aws_region  = string
+    account_id          = string # Infrastructure Account ID
+    security_account_id = string # Security Account ID
+    audit_account_id    = string # Audit Account ID
+
+    # Common Configuration & Metadata
+    common_tags                     = map(string)
+    notification_email              = string
+    allowed_countries               = list(string)
+    enable_cross_region_replication = bool
+    enable_advanced_monitoring      = bool
+    log_retention_days              = number
+    domain_name                     = string
+
+    # Lambda environment variables
+    lambda_environment_vars = map(string)
+  })
+  nullable = false
+}
+
+# Module-specific variables
+variable "kms_key_audit_arn" {
+  description = "ARN of the audit KMS key for encryption (from Audit Account)"
+  type        = string
+}
+
+variable "random_suffix" {
+  description = "Random suffix for unique resource naming"
+  type        = string
+}
+
+variable "kms_key_audit_replica_arn" {
+  description = "ARN of the audit replica KMS key for cross-region replication"
+  type        = string
+  default     = null
+}
+
+variable "s3_replication_role_arn" {
+  description = "ARN of the IAM role for S3 replication"
+  type        = string
+  default     = null
+}

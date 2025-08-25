@@ -25,7 +25,7 @@ module "foundation" {
 # ------------------------------------------------------------------------------
 
 module "security_foundation" {
-  source  = "../../modules/security-foundation"
+  source  = "../../modules/02-security-foundation"
   context = local.context
 
   # This module is deployed to the Security Account
@@ -40,7 +40,7 @@ module "security_foundation" {
 # ------------------------------------------------------------------------------
 
 module "audit_foundation" {
-  source  = "../../modules/audit-foundation"
+  source  = "../../modules/03-audit-foundation"
   context = local.context
 
   # This module is deployed to the Audit Account
@@ -55,7 +55,7 @@ module "audit_foundation" {
 # ------------------------------------------------------------------------------
 
 module "central_logging" {
-  source  = "../../modules/central-logging"
+  source  = "../../modules/04-central-logging"
   context = local.context
 
   kms_key_logs_arn    = module.security_foundation.kms_key_logs_arn
@@ -74,7 +74,7 @@ module "central_logging" {
 # ------------------------------------------------------------------------------
 
 module "networking" {
-  source  = "../../modules/02-networking"
+  source  = "../../modules/05-networking"
   context = local.context
 
   kms_key_logs_arn          = module.security_foundation.kms_key_logs_arn
@@ -92,7 +92,7 @@ module "networking" {
 # ------------------------------------------------------------------------------
 
 module "central_security" {
-  source  = "../../modules/central-security"
+  source  = "../../modules/06-central-security"
   context = local.context
 
   kms_key_logs_arn = module.security_foundation.kms_key_logs_arn
@@ -109,7 +109,7 @@ module "central_security" {
 # ------------------------------------------------------------------------------
 
 module "app_security" {
-  source  = "../../modules/app-security"
+  source  = "../../modules/07-app-security"
   context = local.context
 
   kms_key_main_arn           = module.foundation.kms_key_main_arn
@@ -124,7 +124,7 @@ module "app_security" {
 # ------------------------------------------------------------------------------
 
 module "log_storage" {
-  source  = "../../modules/log-storage"
+  source  = "../../modules/08-log-storage"
   context = local.context
 
   kms_key_audit_arn         = module.audit_foundation.kms_key_audit_arn
@@ -145,18 +145,13 @@ module "log_storage" {
 # ------------------------------------------------------------------------------
 
 module "app_storage" {
-  source  = "../../modules/app-storage"
+  source  = "../../modules/09-app-storage"
   context = local.context
 
   kms_key_main_arn               = module.foundation.kms_key_main_arn
   kms_key_replica_arn            = module.foundation.kms_key_replica_arn
   random_suffix                  = module.foundation.random_suffix
-  enable_deletion_protection     = var.enable_deletion_protection
-  waf_web_acl_arn                = module.app_security.waf_web_acl_arn
-  cloudfront_certificate_arn     = module.networking.cloudfront_certificate_arn
   s3_replication_role_arn        = module.iam.s3_replication_role_arn
-  api_gateway_id                 = module.api.api_id
-  api_gateway_endpoint           = module.api.api_endpoint
   access_logs_bucket_id          = module.log_storage.access_logs_bucket_id
   access_logs_bucket_domain_name = module.log_storage.access_logs_bucket_domain_name
 
@@ -171,7 +166,7 @@ module "app_storage" {
 # ------------------------------------------------------------------------------
 
 module "search" {
-  source  = "../../modules/05-search"
+  source  = "../../modules/10-search"
   context = local.context
 
   kms_key_main_arn                 = module.foundation.kms_key_main_arn
@@ -183,6 +178,7 @@ module "search" {
   opensearch_instance_count        = var.opensearch_instance_count
   opensearch_master_instance_type  = var.opensearch_master_instance_type
   opensearch_master_instance_count = var.opensearch_master_instance_count
+  lambda_role_arns                 = module.iam.lambda_role_arns
 }
 
 # ------------------------------------------------------------------------------
@@ -191,25 +187,11 @@ module "search" {
 # ------------------------------------------------------------------------------
 
 module "iam" {
-  source  = "../../modules/06-iam"
+  source  = "../../modules/11-iam"
   context = local.context
 
-  main_table_arn        = module.app_storage.main_table_arn
-  opensearch_domain_arn = module.search.domain_arn
-  app_secrets_arn       = module.app_security.app_secrets_arn
-  scraping_queue_arn    = module.compute.scraping_queue_arn
-  config_bucket_arn     = module.log_storage.config_bucket_arn
-  backup_enabled        = var.backup_enabled
-  enable_config         = true
-  kms_key_replica_arn   = module.foundation.kms_key_replica_arn
-  s3_replication_source_bucket_arns = concat(
-    [for k, v in module.app_storage.s3_bucket_arns : v],
-    [for k, v in module.log_storage.s3_bucket_arns : v]
-  )
-  s3_replication_destination_bucket_arns = concat(
-    [for k, v in module.app_storage.s3_bucket_arns : "${replace(v, module.foundation.random_suffix, "replica-${module.foundation.random_suffix}")}"],
-    [for k, v in module.log_storage.s3_bucket_arns : "${replace(v, module.foundation.random_suffix, "replica-${module.foundation.random_suffix}")}"]
-  )
+  backup_enabled = var.backup_enabled
+  enable_config  = true
 }
 
 # ------------------------------------------------------------------------------
@@ -218,7 +200,7 @@ module "iam" {
 # ------------------------------------------------------------------------------
 
 module "compute" {
-  source  = "../../modules/07-compute"
+  source  = "../../modules/12-compute"
   context = local.context
 
   kms_key_main_arn                  = module.foundation.kms_key_main_arn
@@ -236,15 +218,25 @@ module "compute" {
   lambda_queue_scraping_role_arn         = module.iam.lambda_queue_scraping_role_arn
   lambda_rotate_nat_gateway_eip_role_arn = module.iam.lambda_rotate_nat_gateway_eip_role_arn
   step_functions_role_arn                = module.iam.step_functions_role_arn
+  step_functions_role_name               = module.iam.step_functions_role_name
   ecs_task_execution_role_arn            = module.iam.ecs_task_execution_role_arn
   ecs_task_role_arn                      = module.iam.ecs_task_role_arn
+  lambda_api_role_name                   = module.iam.lambda_api_role_name
+  lambda_sync_role_name                  = module.iam.lambda_sync_role_name
+  lambda_discover_studios_role_name      = module.iam.lambda_discover_studios_role_name
+  lambda_find_artists_role_name          = module.iam.lambda_find_artists_role_name
+  ecs_task_role_name                     = module.iam.ecs_task_role_name
 
   # Resource references
-  main_table_name     = module.app_storage.main_table_name
-  opensearch_endpoint = module.search.domain_endpoint
-  app_secrets_arn     = module.app_security.app_secrets_arn
-  lambda_memory_size  = var.lambda_memory_size
-  scraper_image_tag   = var.scraper_image_tag
+  main_table_name       = module.app_storage.dynamodb_table_names["main"]
+  main_table_arn        = module.app_storage.dynamodb_table_arns["main"]
+  denylist_table_arn    = module.app_storage.dynamodb_table_arns["denylist"]
+  idempotency_table_arn = module.app_storage.dynamodb_table_arns["idempotency"]
+  main_table_stream_arn = module.app_storage.main_table_stream_arn
+  opensearch_endpoint   = module.search.domain_endpoint
+  app_secrets_arn       = module.app_security.app_secrets_arn
+  lambda_memory_size    = var.lambda_memory_size
+  scraper_image_tag     = var.scraper_image_tag
 }
 
 # ------------------------------------------------------------------------------
@@ -253,7 +245,7 @@ module "compute" {
 # ------------------------------------------------------------------------------
 
 module "api" {
-  source  = "../../modules/08-api"
+  source  = "../../modules/13-api"
   context = local.context
 
   api_gateway_log_group_arn        = module.central_logging.api_gateway_log_group_arn # This now comes from the central_logging module
@@ -270,14 +262,14 @@ module "api" {
 # ------------------------------------------------------------------------------
 
 module "security_monitoring" {
-  source  = "../../modules/security-monitoring"
+  source  = "../../modules/14-security-monitoring"
   context = local.context
 
   kms_key_logs_arn             = module.security_foundation.kms_key_logs_arn
   guardduty_detector_id        = module.central_security.guardduty_detector_id
   enable_config_monitoring     = true
   enable_cloudtrail_monitoring = true
-  security_log_group_names     = [] # TODO: Add CloudTrail log group names when available
+  cloudtrail_log_group_name    = module.governance.cloudtrail_log_group_name
 
   # This module is deployed to the Security Account
   providers = {
@@ -291,7 +283,7 @@ module "security_monitoring" {
 # ------------------------------------------------------------------------------
 
 module "app_monitoring" {
-  source  = "../../modules/app-monitoring"
+  source  = "../../modules/15-app-monitoring"
   context = local.context
 
   kms_key_main_arn                  = module.foundation.kms_key_main_arn
@@ -310,7 +302,7 @@ module "app_monitoring" {
 # ------------------------------------------------------------------------------
 
 module "backup" {
-  source  = "../../modules/10-backup"
+  source  = "../../modules/16-backup"
   context = local.context
 
   backup_enabled                = var.backup_enabled
@@ -335,11 +327,11 @@ module "backup" {
 # ------------------------------------------------------------------------------
 
 module "governance" {
-  source  = "../../modules/11-governance"
+  source  = "../../modules/17-governance"
   context = local.context
 
   enable_config                   = true
-  enable_config_remediation       = false # Use caution enabling this in dev
+  enable_config_remediation       = var.enable_config_remediation # Use caution enabling this in dev
   kms_key_main_arn                = module.foundation.kms_key_main_arn
   kms_key_logs_arn                = module.security_foundation.kms_key_logs_arn
   config_role_arn                 = module.iam.config_role_arn
@@ -350,7 +342,6 @@ module "governance" {
   cloudtrail_bucket_arn           = module.log_storage.cloudtrail_bucket_arn
   frontend_bucket_arn             = module.app_storage.frontend_bucket_arn
   dynamodb_table_arns             = values(module.app_storage.dynamodb_table_arns)
-  security_notification_topic_arn = module.security_monitoring.security_alerts_topic_arn
 
   # This module remains in the Infrastructure Account
 }
@@ -361,7 +352,7 @@ module "governance" {
 # ------------------------------------------------------------------------------
 
 module "audit_governance" {
-  source  = "../../modules/audit-governance"
+  source  = "../../modules/18-audit-governance"
   context = local.context
 
   enable_config              = true
@@ -374,4 +365,98 @@ module "audit_governance" {
   providers = {
     aws = aws.audit
   }
+}
+
+# ------------------------------------------------------------------------------
+# Delivery Layer
+# Contains CloudFront distribution
+# ------------------------------------------------------------------------------
+
+module "delivery" {
+  source  = "../../modules/19-delivery"
+  context = local.context
+
+  # S3 Bucket Inputs
+  frontend_bucket_id                          = module.app_storage.frontend_bucket_id
+  frontend_bucket_regional_domain_name        = module.app_storage.frontend_bucket_regional_domain_name
+  frontend_backup_bucket_id                   = module.app_storage.frontend_backup_bucket_id
+  frontend_backup_bucket_regional_domain_name = module.app_storage.frontend_backup_bucket_regional_domain_name
+
+  # API Gateway Inputs
+  api_gateway_id     = module.api.api_id
+  api_gateway_endpoint = module.api.api_endpoint
+
+  # Security & Logging Inputs
+  waf_web_acl_arn                = module.app_security.waf_web_acl_arn
+  cloudfront_certificate_arn     = module.networking.cloudfront_certificate_arn
+  access_logs_bucket_domain_name = module.log_storage.access_logs_bucket_domain_name
+}
+
+# ------------------------------------------------------------------------------
+# IAM Policy for S3 Replication (Orchestration Layer)
+# This policy is defined here to break the circular dependency between the
+# IAM module (which creates the role) and the storage modules (which create
+# the buckets the role needs access to).
+# ------------------------------------------------------------------------------
+
+locals {
+  # Consolidate all bucket ARNs for the replication policy
+  all_source_buckets_arns = local.context.enable_cross_region_replication ? concat(
+    values(module.app_storage.s3_bucket_arns),
+    values(module.log_storage.s3_bucket_arns)
+  ) : []
+  all_source_buckets_object_arns = [for arn in local.all_source_buckets_arns : "${arn}/*"]
+
+  all_replica_buckets_arns = local.context.enable_cross_region_replication ? concat(
+    values(module.app_storage.s3_replica_bucket_arns),
+    values(module.log_storage.s3_replica_bucket_arns)
+  ) : []
+  all_replica_buckets_object_arns = [for arn in local.all_replica_buckets_arns : "${arn}/*"]
+}
+
+resource "aws_iam_policy" "s3_replication" {
+  count = local.context.enable_cross_region_replication ? 1 : 0
+  name  = "${local.context.name_prefix}-s3-replication-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "AllowReadFromSourceBuckets"
+        Effect   = "Allow"
+        Action   = ["s3:GetObjectVersionForReplication", "s3:GetObjectVersionAcl", "s3:GetObjectVersionTagging"]
+        Resource = local.all_source_buckets_object_arns
+      },
+      {
+        Sid      = "AllowListSourceBuckets"
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = local.all_source_buckets_arns
+      },
+      {
+        Sid      = "AllowWriteToReplicaBuckets"
+        Effect   = "Allow"
+        Action   = ["s3:ReplicateObject", "s3:ReplicateDelete", "s3:ReplicateTags"]
+        Resource = local.all_replica_buckets_object_arns
+      },
+      {
+        Sid      = "AllowKmsDecryptOnSourceKeys"
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt"]
+        Resource = compact([module.foundation.kms_key_main_arn, module.audit_foundation.kms_key_audit_arn])
+      },
+      {
+        Sid      = "AllowKmsEncryptOnDestinationKeys"
+        Effect   = "Allow"
+        Action   = ["kms:Encrypt"]
+        Resource = compact([module.foundation.kms_key_replica_arn]) # Both app and log replicas use the same key
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3_replication" {
+  count      = local.context.enable_cross_region_replication ? 1 : 0
+  role       = module.iam.s3_replication_role_name
+  policy_arn = aws_iam_policy.s3_replication[0].arn
 }
