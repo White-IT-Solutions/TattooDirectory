@@ -1,0 +1,120 @@
+import Image from "next/image";
+import Link from "next/link";
+import { api } from "../../../lib/api";
+import Lightbox from "@/app/components/Lightbox";
+
+export default async function ArtistPage({ params }) {
+  const { id: artistId } = await params;
+
+  let artist = null;
+  try {
+    artist = await api.getArtist(artistId);
+  } catch (error) {
+    console.error("Failed to fetch artist:", error);
+  }
+
+  if (!artist) {
+    return (
+      <div className="p-10 text-center">
+        <p>Artist not found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <aside className="w-80 bg-white p-6 shadow-lg">
+        <div className="text-center">
+          <Image
+            src={artist.avatar}
+            alt={artist.artistsName}
+            width={120}
+            height={120}
+            className="rounded-full mx-auto"
+          />
+          <h2 className="mt-4 text-xl font-semibold">{artist.artistsName}</h2>
+          <p className="text-gray-600">{artist.bio}</p>
+
+          {/* Styles */}
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {artist.styles?.map((style) => (
+              <span
+                key={style}
+                className="bg-gray-200 px-2 py-1 rounded text-sm cursor-pointer hover:bg-gray-300"
+              >
+                #{style}
+              </span>
+            )) || []}
+          </div>
+
+          {/* Location */}
+          <div className="mt-2 flex flex-wrap justify-center gap-2">
+            <span className="bg-blue-200 px-2 py-1 rounded text-sm cursor-pointer hover:bg-blue-300">
+              {artist.tattooStudio?.address?.city || "Location not available"}
+            </span>
+          </div>
+
+          {/* Social + contact */}
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <Link
+              href={artist.profileLink}
+              target="_blank"
+              className="text-blue-600 hover:underline"
+            >
+              Instagram: @{artist.instagramHandle}
+            </Link>
+            <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+              Contact the artist
+            </button>
+          </div>
+
+          {/* Google Maps */}
+          {artist.tattooStudio?.address?.latitude &&
+            artist.tattooStudio?.address?.longitude && (
+              <div className="mt-4">
+                <iframe
+                  className="rounded-lg"
+                  width="100%"
+                  height="200"
+                  frameBorder="0"
+                  src={`https://www.google.com/maps?q=${artist.tattooStudio.address.latitude}%2C${artist.tattooStudio.address.longitude}&z=15&output=embed`}
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+
+          {/* Delist Button */}
+          <div className="mt-4">
+            <Link
+              href="/takedown"
+              className="block bg-red-500 text-white text-center py-2 rounded-lg hover:bg-red-600"
+            >
+              Request Profile Removal
+            </Link>
+          </div>
+        </div>
+      </aside>
+      {/* Main Section */}
+      <main className="flex-1 p-6 overflow-y-auto">
+        {artist.portfolio && artist.portfolio.length > 0 ? (
+          <Lightbox images={artist.portfolio} grid />
+        ) : (
+          <div className="text-center mt-20">
+            <p className="text-lg text-gray-600">
+              Portfolio not available. Please check their{" "}
+              <Link
+                href={artist.profileLink}
+                target="_blank"
+                className="text-blue-600 underline"
+              >
+                social media
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+      </main>{" "}
+    </div>
+  );
+}

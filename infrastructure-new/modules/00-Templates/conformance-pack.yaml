@@ -1,0 +1,85 @@
+Resources:
+  s3_bucket_public_access_prohibited:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_PUBLIC_ACCESS_PROHIBITED
+  s3_bucket_server_side_encryption_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
+  dynamodb_table_encryption_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: DYNAMODB_TABLE_ENCRYPTION_ENABLED
+  dynamodb_pitr_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: DYNAMODB_PITR_ENABLED
+  lambda_function_public_access_prohibited:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED
+  lambda_inside_vpc:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: LAMBDA_INSIDE_VPC
+  cloudfront_origin_access_control_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: CLOUDFRONT_ORIGIN_ACCESS_CONTROL_ENABLED
+  cloudfront_viewer_policy_https:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: CLOUDFRONT_VIEWER_POLICY_HTTPS
+  vpc_default_security_group_closed:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: VPC_DEFAULT_SECURITY_GROUP_CLOSED
+  vpc_flow_logs_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: VPC_FLOW_LOGS_ENABLED
+  iam_policy_no_statements_with_admin_access:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: IAM_POLICY_NO_STATEMENTS_WITH_ADMIN_ACCESS
+  iam_user_no_policies_check:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: IAM_USER_NO_POLICIES_CHECK
+  kms_cmk_not_scheduled_for_deletion:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: KMS_CMK_NOT_SCHEDULED_FOR_DELETION
+  api_gw_execution_logging_enabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      Source:
+        Owner: AWS
+        SourceIdentifier: API_GW_EXECUTION_LOGGING_ENABLED

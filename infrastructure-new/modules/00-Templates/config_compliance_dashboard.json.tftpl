@@ -1,0 +1,24 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["AWS/Config", "ComplianceByConfigRule", "ConfigRuleName", "${s3_public_access_rule_name}"],
+          [".", ".", ".", "${dynamodb_encryption_rule_name}"],
+          [".", ".", ".", "${lambda_public_access_rule_name}"],
+          [".", ".", ".", "${cloudfront_https_rule_name}"]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${aws_region}",
+        "title": "Config Rule Compliance Status",
+        "period": 300
+      }
+    }
+  ]
+}

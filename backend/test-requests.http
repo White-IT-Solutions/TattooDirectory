@@ -1,0 +1,28 @@
+# Test API endpoints locally (use with REST Client extension)
+
+### Get all artists
+GET http://localhost:3000/artists
+
+### Get artist by ID
+GET http://localhost:3000/artist/123
+
+### Get artists by styles
+GET http://localhost:3000/artists/Tribal,Old%20School
+
+### Update artist
+PATCH http://localhost:3000/artist/123
+Content-Type: application/json
+
+{
+  "artistsName": "Updated Name",
+  "bio": "Updated bio"
+}
+
+### Submit removal request
+POST http://localhost:3000/removal-requests
+Content-Type: application/json
+
+{
+  "instagramHandle": "test_artist",
+  "reason": "Privacy request"
+}

@@ -72,26 +72,30 @@ This procedure uses a pre-configured Lambda function to automate the EIP rotatio
 
 #### **4.2 Manual Fallback Procedure (If Lambda Fails)**
 
-If the Lambda function fails or the URL is unavailable, perform the following steps using the AWS CLI:
+If the Lambda function fails or the URL is unavailable, use the provided helper script to perform the rotation via the AWS CLI. This script automates the process of allocating a new EIP and associating it with a specific NAT Gateway.
 
-**Allocate a new EIP:**
+**Prerequisites:**
+- You must have the AWS CLI installed and configured with appropriate permissions (the same permissions as the Lambda function).
+- You must have the project repository checked out locally.
+- You must know the **NAT Gateway ID** (e.g., `nat-xxxxxxxxxxxxxxxxx`) of the gateway you are targeting. This can be found in the AWS VPC Console or via Terraform outputs.
 
-**Bash**  
-aws ec2 allocate-address \--domain vpc \--query "AllocationId"  
-\# Note the new AllocationId (e.g., eipalloc-xxxxxxxxxxxxxxxxx)
+**Execute the script:**
 
-**Describe the NAT Gateway to find its Network Interface ID:**
+1.  Navigate to the `scripts/` directory in the project's root folder.
+2.  Make the script executable (if it's the first time):
+    ```bash
+    chmod +x rotate-nat-eip-manual.sh
+    ```
+3.  Run the script:
+    ```bash
+    ./rotate-nat-eip-manual.sh <nat_gateway_id>
+    ```
+    **Example:**
+    ```bash
+    ./rotate-nat-eip-manual.sh nat-0a1b2c3d4e5f67890
+    ```
 
-**Bash**
-
-aws ec2 describe-nat-gateways \--filter "Name=tag:Name,Values=TAD-MVP-NAT-Gateway" \--query "NatGateways\[0\].NatGatewayAddresses\[0\].NetworkInterfaceId"
-
-\# Note the NetworkInterfaceId (e.g., eni-xxxxxxxxxxxxxxxxx)
-
-**Associate the new EIP:**
-
-**Bash**  
-aws ec2 associate-address \--allocation-id \<new\_eipalloc\_id\_from\_step\_1\> \--network-interface-id \<eni\_id\_from\_step\_2\>  
+The script will provide real-time feedback on its progress and will exit with an error if any step fails. If an error occurs after the new EIP is allocated but before it's associated, the script will automatically release the unused EIP to prevent orphaned resources.
 ---
 
 ## **5.0 Validation**
@@ -105,40 +109,76 @@ aws ec2 associate-address \--allocation-id \<new\_eipalloc\_id\_from\_step\_1\> 
 
 ## **6.0 Rollback Procedure**
 
-If the EIP rotation worsens the issue or was performed in error, re-associate the *previous* EIP to revert the change.
+If the EIP rotation worsens the issue or was performed in error, use the provided helper script to re-associate the *previous* EIP and revert the change.
 
-**Find the old EIP Allocation ID:** This will be available in the initial SNS notification or by checking the CloudTrail event history for the DisassociateAddress event.
+**Prerequisites:**
+- You must have the AWS CLI installed and configured with appropriate permissions.
+- You must have the project repository checked out locally.
+- You must know the **NAT Gateway ID** (e.g., `nat-xxxxxxxxxxxxxxxxx`) of the gateway you are targeting. This can be found in the AWS VPC Console or via Terraform outputs.
+- You must know the **Allocation ID** of the EIP you want to roll back to (e.g., `eipalloc-xxxxxxxxxxxxxxxxx`). This ID is provided in the success notification from the initial rotation.
 
-**Execute the re-association:**
+**Execute the script:**
 
-**Bash**  
-aws ec2 associate-address \--allocation-id \<old\_eipalloc\_id\> \--network-interface-id \<eni\_id\_from\_remediation\_step\_2\>  
+1.  Navigate to the `scripts/` directory in the project's root folder.
+2.  Make the script executable (if it's the first time):
+    ```bash
+    chmod +x rollback-nat-eip-manual.sh
+    ```
+3.  Run the script, providing the old EIP Allocation ID as an argument:
+    ```bash
+    ./rollback-nat-eip-manual.sh <nat_gateway_id> <old_eip_allocation_id>
+    ```
+    **Example:**
+    ```bash
+    ./rollback-nat-eip-manual.sh nat-0a1b2c3d4e5f67890 eipalloc-0a1b2c3d4e5f67890
+    ```
+
+The script will perform the re-association on the specified NAT Gateway, restoring the previous state.
 ---
 
 ## **7.0 Appendix: Implementation Details**
 
 #### **A.1 Lambda IAM Role Policy**
 
-The rotate-nat-gateway-eip-role requires the following IAM policy:
+The `rotate-nat-gateway-eip-role` requires the following IAM policy. This policy is configured to follow the principle of least privilege, matching the secure configuration in the Terraform infrastructure-as-code.
+
+**Key Security Controls:**
+- The `ec2:AssociateAddress` permission is restricted by a `Condition` to only allow association with a network interface that has the specific tag `Name: TAD-MVP-NAT-Gateway`. This prevents the function from accidentally modifying other critical network resources.
+- The `ec2:DisassociateAddress` permission is not included because the `ec2:AssociateAddress` API call automatically handles the disassociation of any previously attached EIP.
+- Permissions for `ec2:DescribeNatGateways` and `ec2:AllocateAddress` must use a wildcard (`*`) for the resource, as required by AWS for these specific actions.
 
 **JSON**  
 {  
     "Version": "2012-10-17",  
     "Statement": \[  
         {  
+            "Sid": "DescribeNATGateway",
             "Effect": "Allow",  
-            "Action": \[  
-                "ec2:AllocateAddress",  
-                "ec2:AssociateAddress",  
-                "ec2:DisassociateAddress",  
-                "ec2:DescribeNatGateways"  
-            \],  
+            "Action": "ec2:DescribeNatGateways",
             "Resource": "\*"  
         },  
         {  
+            "Sid": "AllocateEIP",
+            "Effect": "Allow",
+            "Action": "ec2:AllocateAddress",
+            "Resource": "\*"
+        },
+        {
+            "Sid": "AssociateEIPWithNATGatewayENI",
+            "Effect": "Allow",
+            "Action": "ec2:AssociateAddress",
+            "Resource": "arn:aws:ec2:eu-west-2:123456789012:network-interface/\*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Name": "TAD-MVP-NAT-Gateway"
+                }
+            }
+        },
+        {  
+            "Sid": "PublishSNSNotification",
             "Effect": "Allow",  
             "Action": "sns:Publish",  
-            "Resource": "arn:aws:sns:eu-west-2:123456789012:TAD-MVP-Alerts"  
+            "Resource": "arn:aws:sns:eu-west-2:123456789012:TAD-MVP-critical-alerts"  
         }  
     \]  
 }
@@ -331,4 +371,3 @@ After any cost anomaly is resolved:
 1. **Document the RCA:** Create a brief "lessons learned" document detailing the root cause.  
 2. **Refine Alarms:** If the anomaly could have been caught earlier, create a more specific CloudWatch metric alarm (e.g., alarm on Fargate task count).  
 3. **Adjust Budget:** If the increased spend was legitimate (e.g., due to planned growth), adjust the AWS Budgets threshold to reflect the new baseline.
-
