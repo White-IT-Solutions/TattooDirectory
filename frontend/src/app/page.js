@@ -1,5 +1,4 @@
-import MapWithSearch from "./components/MapWithSearch";
-import StyleFilter from "./components/StyleFilter";
+import MapWithSearch from "./components/MapWithSearch.js";
 
 export default function Home() {
   return (
@@ -12,7 +11,6 @@ export default function Home() {
           find your artist
         </h2>
         <MapWithSearch />
-        <StyleFilter />
       </section>
     </div>
   );
