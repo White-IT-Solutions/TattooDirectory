@@ -24,6 +24,18 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { dev }) => {
+    if (!dev) {
+      config.devtool = false;
+    }
+    return config;
+  },
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = 'source-map';
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
