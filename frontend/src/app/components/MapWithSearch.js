@@ -8,6 +8,7 @@ import {
 } from "@react-google-maps/api";
 import { api } from "../../lib/api";
 import { useSearchParams } from "next/navigation";
+import StyleFilter from "./StyleFilter";
 
 const darkMapStyle = [
   {
@@ -316,6 +317,8 @@ export default function MapWithSearch() {
           </InfoWindow>
         )}
       </GoogleMap>
+      {/* Style Filter */}
+      <StyleFilter />
     </div>
   );
 }
