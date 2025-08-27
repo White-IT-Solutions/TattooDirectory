@@ -3,6 +3,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-offline
+  - serverless-dynamodb-local
 
 provider:
   name: aws
@@ -11,6 +12,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     TABLE_NAME: ${self:service}-${sls:stage}-TattooDirectory
+    IS_OFFLINE: ${env:IS_OFFLINE, ''}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -97,3 +99,12 @@ resources:
                 KeyType: HASH
             Projection:
               ProjectionType: KEYS_ONLY
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    stages:
+      - dev
