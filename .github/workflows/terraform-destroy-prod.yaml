@@ -1,0 +1,44 @@
+# .github/workflows/terraform-destroy-prod.yaml
+
+name: 'Terraform Destroy (prod)'
+
+on:
+  workflow_dispatch: # Manually triggered, no inputs
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read  # Required to check out the repository's code
+
+jobs:
+  destroy:
+    name: 'Terraform Destroy (prod)'
+    runs-on: ubuntu-latest
+
+    # Hardcoded to the 'prod' environment.
+    # This will enforce the manual approval rule for 'prod'.
+    environment:
+      name: prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: eu-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: >= 1.5.0
+
+      - name: Terraform Init
+        run: terraform init -backend-config="key=prod/terraform.tfstate"
+
+      - name: Terraform Destroy
+        run: |
+          echo "Executing terraform destroy for the 'prod' environment."
+          echo "Resources with 'prevent_destroy = true' will be preserved."
+          terraform destroy -auto-approve -var-file="environments/prod/main.tfvars"

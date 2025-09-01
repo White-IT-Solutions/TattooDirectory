@@ -1,0 +1,13 @@
+# c:\Users\legob\OneDrive\Documents\Kiro\Tattoo_MVP\infrastructure\infracost.yml
+version: 0.1
+
+projects:
+  - path: environments/dev
+    name: tattoo_mvp_dev
+    terraform_var_files:
+      - environments/dev/dev.tfvars
+
+  - path: environments/prod
+    name: tattoo_mvp_prod
+    terraform_var_files:
+      - environments/prod/prod.tfvars

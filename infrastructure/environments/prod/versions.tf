@@ -1,0 +1,32 @@
+terraform {
+  # This backend block configures Terraform to store its state file remotely in S3.
+  # This is a critical best practice for collaboration and state integrity.
+  # IMPORTANT: You must create the S3 bucket and DynamoDB table manually before running `terraform init`.
+  # backend "s3" {
+  #   bucket         = "tattoo-mvp-tfstate" # Use a globally unique name for your S3 bucket
+  #   key            = "environments/prod/terraform.tfstate"
+  #   region         = "eu-west-2"
+  #   encrypt        = true
+  #   dynamodb_table = "tattoo-mvp-tfstate-lock" # The name of your DynamoDB table for state locking
+  # }
+
+  required_version = ">= 1.5.0"
+
+  # This module requires the AWS provider.
+  # It accepts the default configuration and an optional aliased provider for replication.
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~> 5.0"
+      configuration_aliases = [aws.infra_us_east_1, aws.infra_replica, aws.audit_primary, aws.audit_replica, aws.log_archive_primary, aws.log_archive_replica]
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.2"
+    }
+  }
+}

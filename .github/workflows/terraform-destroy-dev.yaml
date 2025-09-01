@@ -1,0 +1,44 @@
+# .github/workflows/terraform-destroy-dev.yaml
+
+name: 'Terraform Destroy (dev)'
+
+on:
+  workflow_dispatch: # Manually triggered, no inputs
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read  # Required to check out the repository's code
+
+jobs:
+  destroy:
+    name: 'Terraform Destroy (dev)'
+    runs-on: ubuntu-latest
+
+    # Hardcoded to the 'dev' environment.
+    # This will enforce the manual approval rule for 'dev'.
+    environment:
+      name: dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: eu-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: >= 1.5.0
+
+      - name: Terraform Init
+        run: terraform init -backend-config="key=dev/terraform.tfstate"
+
+      - name: Terraform Destroy
+        run: |
+          echo "Executing terraform destroy for the 'dev' environment."
+          echo "Resources with 'prevent_destroy = true' will be preserved."
+          terraform destroy -auto-approve -var-file="environments/dev/main.tfvars"

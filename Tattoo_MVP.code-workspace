@@ -4,10 +4,10 @@
 			"path": "."
 		},
 		{
-			"path": "infrastructure-new/environments/dev"
+			"path": "infrastructure/environments/dev"
 		},
 		{
-			"path": "infrastructure-new/environments/prod"
+			"path": "infrastructure/environments/prod"
 		}
 	],
 	"settings": {

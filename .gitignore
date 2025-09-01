@@ -25,6 +25,7 @@ out/
 *.swp
 *.swo
 *.sublime-*
+*code-workspace
 
 # OS files
 .DS_Store
