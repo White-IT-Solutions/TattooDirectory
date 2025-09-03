@@ -100,3 +100,6 @@ coverage/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Misc Directories
+**/AI_Assisted_Documentation/*
