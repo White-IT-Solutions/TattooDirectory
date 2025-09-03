@@ -22,6 +22,7 @@ out/
 .vscode/
 .kiro/
 .idea/
+.gitignore
 *.swp
 *.swo
 *.sublime-*
