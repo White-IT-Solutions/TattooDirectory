@@ -16,10 +16,10 @@ resource "aws_cloudwatch_log_group" "security_tools" {
   kms_key_id        = var.kms_key_logs_arn
 
   tags = merge(var.context.common_tags, {
-    Name        = "${var.context.name_prefix}-security-tools-logs"
-    Account     = "Security"
-    LogType     = "SecurityTools"
-    Compliance  = "Required"
+    Name       = "${var.context.name_prefix}-security-tools-logs"
+    Account    = "Security"
+    LogType    = "SecurityTools"
+    Compliance = "Required"
   })
 }
 
@@ -30,10 +30,10 @@ resource "aws_cloudwatch_log_group" "incident_response" {
   kms_key_id        = var.kms_key_logs_arn
 
   tags = merge(var.context.common_tags, {
-    Name        = "${var.context.name_prefix}-incident-response-logs"
-    Account     = "Security"
-    LogType     = "IncidentResponse"
-    Compliance  = "Required"
+    Name       = "${var.context.name_prefix}-incident-response-logs"
+    Account    = "Security"
+    LogType    = "IncidentResponse"
+    Compliance = "Required"
   })
 }
 
@@ -44,10 +44,10 @@ resource "aws_cloudwatch_log_group" "api_gateway" {
   kms_key_id        = var.kms_key_logs_arn
 
   tags = merge(var.context.common_tags, {
-    Name        = "${var.context.name_prefix}-api-gateway-logs"
-    Account     = "Security"
-    LogType     = "APIGateway"
-    Compliance  = "Required"
+    Name       = "${var.context.name_prefix}-api-gateway-logs"
+    Account    = "Security"
+    LogType    = "APIGateway"
+    Compliance = "Required"
   })
 }
 
@@ -71,7 +71,7 @@ resource "aws_iam_role" "firehose_waf" {
 
 # IAM Policy for the Firehose Role
 resource "aws_iam_policy" "firehose_waf" {
-  name   = "${var.context.name_prefix}-firehose-waf-policy"
+  name = "${var.context.name_prefix}-firehose-waf-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -113,11 +113,11 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs" {
   destination = "extended_s3"
 
   extended_s3_configuration {
-    role_arn           = aws_iam_role.firehose_waf.arn
-    bucket_arn         = var.waf_logs_bucket_arn
-    kms_key_arn        = var.kms_key_log_archive_arn
-    compression_format = "GZIP"
-    prefix             = "waf-logs/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
+    role_arn            = aws_iam_role.firehose_waf.arn
+    bucket_arn          = var.waf_logs_bucket_arn
+    kms_key_arn         = var.kms_key_log_archive_arn
+    compression_format  = "GZIP"
+    prefix              = "waf-logs/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
     error_output_prefix = "waf-logs-errors/!{firehose:error-output-type}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
 
 
@@ -129,9 +129,9 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs" {
   }
 
   server_side_encryption {
-    enabled   = true
-    key_type  = "CUSTOMER_MANAGED_CMK"
-    key_arn   = var.kms_key_logs_arn
+    enabled  = true
+    key_type = "CUSTOMER_MANAGED_CMK"
+    key_arn  = var.kms_key_logs_arn
   }
 
   tags = merge(var.context.common_tags, {

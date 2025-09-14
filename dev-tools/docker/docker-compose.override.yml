@@ -1,0 +1,123 @@
+# Docker Compose Override for Development
+# This file provides platform-specific overrides and development optimizations
+# It automatically extends docker-compose.local.yml when running docker-compose commands
+
+services:
+  localstack:
+    # Platform-specific volume handling for Docker socket
+    volumes:
+      # Use conditional volume mounting based on platform
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        consistency: cached
+      - type: volume
+        source: localstack-data
+        target: /var/lib/localstack
+      - type: bind
+        source: ../../localstack-init
+        target: /etc/localstack/init/ready.d
+        read_only: true
+        consistency: cached
+
+  backend:
+    # Optimized volume mounts for cross-platform development
+    volumes:
+      - type: bind
+        source: ../../backend/src
+        target: /var/task/src
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../backend/package.json
+        target: /var/task/package.json
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../backend/package-lock.json
+        target: /var/task/package-lock.json
+        read_only: true
+        consistency: cached
+
+  frontend:
+    # Enhanced volume configuration for hot reloading across platforms
+    volumes:
+      - type: bind
+        source: ../../frontend/src
+        target: /app/src
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/public
+        target: /app/public
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/package.json
+        target: /app/package.json
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/package-lock.json
+        target: /app/package-lock.json
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/next.config.mjs
+        target: /app/next.config.mjs
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/tailwind.config.js
+        target: /app/tailwind.config.js
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/postcss.config.mjs
+        target: /app/postcss.config.mjs
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/jsconfig.json
+        target: /app/jsconfig.json
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../frontend/.eslintrc.json
+        target: /app/.eslintrc.json
+        read_only: true
+        consistency: cached
+      # Anonymous volumes for performance
+      - /app/node_modules
+      - /app/.next
+    environment:
+      # Enhanced polling for file watching on all platforms
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+
+  swagger-ui:
+    volumes:
+      - type: bind
+        source: ../../backend/docs/openapi.yaml
+        target: /usr/share/nginx/html/openapi/openapi.yaml
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../backend/docs/swagger-ui.html
+        target: /usr/share/nginx/html/index.html
+        read_only: true
+        consistency: cached
+      - type: bind
+        source: ../../backend/docs/swagger-config.js
+        target: /usr/share/nginx/html/swagger-config.js
+        read_only: true
+        consistency: cached
+
+  data-seeder:
+    volumes:
+      - type: bind
+        source: ../../scripts/test-data
+        target: /app/test-data
+        read_only: true
+        consistency: cached

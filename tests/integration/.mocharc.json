@@ -1,0 +1,10 @@
+{
+  "spec": ["api/**/*.test.js", "data/**/*.test.js"],
+  "require": "./setup/test-setup.js",
+  "recursive": true,
+  "timeout": 30000,
+  "reporter": "spec",
+  "exit": true,
+  "color": true,
+  "node-option": ["experimental-specifier-resolution=node"]
+}

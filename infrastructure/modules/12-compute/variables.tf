@@ -13,7 +13,7 @@ variable "context" {
     # AWS Specific
     aws_region         = string
     replica_aws_region = string
-    infra_account_id         = string
+    infra_account_id   = string
 
     # Common Configuration & Metadata
     common_tags                     = map(string)
@@ -92,6 +92,11 @@ variable "lambda_rotate_nat_gateway_eip_role_arn" {
   type        = string
 }
 
+variable "lambda_secret_rotation_role_arn" {
+  description = "ARN of the Secret Rotation Lambda role"
+  type        = string
+}
+
 variable "lambda_api_role_name" {
   description = "Name of the API Lambda role"
   type        = string
@@ -109,6 +114,11 @@ variable "lambda_discover_studios_role_name" {
 
 variable "lambda_find_artists_role_name" {
   description = "Name of the Find Artists Lambda role"
+  type        = string
+}
+
+variable "lambda_secret_rotation_role_name" {
+  description = "Name of the Secret Rotation Lambda role"
   type        = string
 }
 
@@ -174,6 +184,11 @@ variable "opensearch_endpoint" {
   type        = string
 }
 
+variable "opensearch_domain_arn" {
+  description = "ARN of the OpenSearch domain"
+  type        = string
+}
+
 variable "app_secrets_arn" {
   description = "ARN of the application secrets in Secrets Manager"
   type        = string
@@ -201,4 +216,53 @@ variable "scraper_image_tag" {
   description = "Tag for the scraper Docker image"
   type        = string
   default     = "20"
+}
+
+# Lambda S3 artifact keys
+variable "lambda_api_handler_s3_key" {
+  description = "S3 key for the API handler Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/api-handler/latest/api-handler.zip"
+}
+
+variable "lambda_dynamodb_sync_s3_key" {
+  description = "S3 key for the DynamoDB sync Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/dynamodb-sync/latest/dynamodb-sync.zip"
+}
+
+variable "lambda_discover_studios_s3_key" {
+  description = "S3 key for the discover studios Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/discover-studios/latest/discover-studios.zip"
+}
+
+variable "lambda_find_artists_s3_key" {
+  description = "S3 key for the find artists Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/find-artists/latest/find-artists.zip"
+}
+
+variable "lambda_queue_scraping_s3_key" {
+  description = "S3 key for the queue scraping Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/queue-scraping/latest/queue-scraping.zip"
+}
+
+variable "lambda_rotate_nat_gateway_eip_s3_key" {
+  description = "S3 key for the rotate NAT gateway EIP Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/rotate-nat-gateway-eip/latest/rotate-nat-gateway-eip.zip"
+}
+
+variable "lambda_secret_rotation_s3_key" {
+  description = "S3 key for the secret rotation Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/secret-rotation/latest/secret-rotation.zip"
+}
+
+variable "lambda_deployment_version" {
+  description = "Version identifier for the Lambda deployment (for tracking purposes)"
+  type        = string
+  default     = "latest"
 }

@@ -1,0 +1,96 @@
+{
+  "name": "@tattoo-directory/backend-consolidated",
+  "version": "1.0.0",
+  "description": "Consolidated backend implementation for Tattoo Artist Directory MVP",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --coverage --watchAll=false",
+    "build": "echo 'No build step required for Lambda functions'",
+    "package": "npm run test:ci && echo 'Tests passed, ready for packaging'",
+    "lint": "echo 'Linting not configured yet'",
+    "clean": "rm -rf coverage/ .nyc_output/ node_modules/.cache/"
+  },
+  "keywords": [
+    "tattoo",
+    "directory",
+    "aws",
+    "lambda",
+    "serverless",
+    "opensearch",
+    "dynamodb"
+  ],
+  "author": "Tattoo Directory Team",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/client-secrets-manager": "^3.883.0",
+    "@aws-sdk/client-sqs": "^3.883.0",
+    "@aws-sdk/lib-dynamodb": "^3.864.0",
+    "@aws-sdk/util-dynamodb": "^3.864.0",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "opossum": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "@jest/globals": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "globals": {
+      "__DEV__": true
+    },
+    "injectGlobals": true,
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/*.test.js",
+      "!**/__tests__/**",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!jest.setup.js",
+      "!common/dynamodb-usage-example.js",
+      "!containers/fargate-scraper/common/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html",
+      "json-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
+    "testMatch": [
+      "**/__tests__/**/*.test.js",
+      "**/*.test.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/coverage/"
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+    "verbose": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tattoo-directory/backend"
+  },
+  "bugs": {
+    "url": "https://github.com/tattoo-directory/backend/issues"
+  },
+  "homepage": "https://github.com/tattoo-directory/backend#readme"
+}

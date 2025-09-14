@@ -159,22 +159,22 @@ resource "aws_config_remediation_configuration" "s3_bucket_public_access_prohibi
 
   config_rule_name = aws_config_config_rule.managed_rules["s3-bucket-public-access-prohibited"].name
 
-  resource_type    = "AWS::S3::Bucket"
-  target_type      = "SSM_DOCUMENT"
-  target_id        = "AWSConfigRemediation-RemoveS3BucketPublicAccess"
-  target_version   = "1"
+  resource_type  = "AWS::S3::Bucket"
+  target_type    = "SSM_DOCUMENT"
+  target_id      = "AWSConfigRemediation-RemoveS3BucketPublicAccess"
+  target_version = "1"
 
   parameter {
-    name           = "AutomationAssumeRole"
-    static_value   = var.config_remediation_role_arn
+    name         = "AutomationAssumeRole"
+    static_value = var.config_remediation_role_arn
   }
 
   parameter {
-    name                = "S3BucketName"
-    resource_value      = "RESOURCE_ID"
+    name           = "S3BucketName"
+    resource_value = "RESOURCE_ID"
   }
 
-  automatic                = false
+  automatic                  = false
   maximum_automatic_attempts = 3
 }
 
@@ -201,8 +201,8 @@ resource "aws_cloudtrail" "main" {
   s3_bucket_name = var.cloudtrail_bucket_name
 
   event_selector {
-    read_write_type                 = "All"
-    include_management_events       = true
+    read_write_type                  = "All"
+    include_management_events        = true
     exclude_management_event_sources = []
 
     data_resource {

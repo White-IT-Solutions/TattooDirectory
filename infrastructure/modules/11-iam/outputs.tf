@@ -66,6 +66,16 @@ output "lambda_rotate_nat_gateway_eip_role_name" {
   value       = aws_iam_role.lambda_rotate_nat_gateway_eip.name
 }
 
+output "lambda_secret_rotation_role_arn" {
+  description = "ARN of the Secret Rotation Lambda role"
+  value       = aws_iam_role.lambda_secret_rotation.arn
+}
+
+output "lambda_secret_rotation_role_name" {
+  description = "Name of the Secret Rotation Lambda role"
+  value       = aws_iam_role.lambda_secret_rotation.name
+}
+
 # =============================================================================
 # WORKFLOW ROLES
 # =============================================================================

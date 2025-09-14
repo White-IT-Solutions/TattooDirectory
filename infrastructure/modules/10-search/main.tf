@@ -12,13 +12,13 @@
 
 locals {
   opensearch_config = {
-    instance_type                = var.opensearch_instance_type
-    instance_count               = var.opensearch_instance_count
-    master_instance_type         = var.opensearch_master_instance_type
-    master_instance_count        = var.opensearch_master_instance_count
-    enable_dedicated_master      = var.opensearch_master_instance_count != null && var.opensearch_master_instance_count > 0
-    enable_zone_awareness        = var.context.environment == "prod"
-    availability_zone_count      = var.context.environment == "prod" ? 2 : 1
+    instance_type           = var.opensearch_instance_type
+    instance_count          = var.opensearch_instance_count
+    master_instance_type    = var.opensearch_master_instance_type
+    master_instance_count   = var.opensearch_master_instance_count
+    enable_dedicated_master = var.opensearch_master_instance_count != null && var.opensearch_master_instance_count > 0
+    enable_zone_awareness   = var.context.environment == "prod"
+    availability_zone_count = var.context.environment == "prod" ? 2 : 1
   }
 
   # OpenSearch domain names have a strict length limit of 28 characters.

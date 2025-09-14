@@ -1,0 +1,109 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Ink & Steel Studio",
+    "address": "123 Brick Lane, Shoreditch, London E1 6SB",
+    "postcode": "E1 6SB",
+    "geohash": "gcpvj0u",
+    "latitude": 51.5225,
+    "longitude": -0.0786,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7946 0958",
+      "email": "info@inkandsteel.com",
+      "website": "https://inkandsteel.com",
+      "instagram": "@inkandsteelstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-001"
+    ],
+    "rating": 4.7,
+    "reviewCount": 89,
+    "established": 2015,
+    "specialties": [
+      "traditional",
+      "neo_traditional"
+    ]
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Northern Ink Collective",
+    "address": "45 Oldham Street, Northern Quarter, Manchester M1 1JG",
+    "postcode": "M1 1JG",
+    "geohash": "gcw2j1k",
+    "latitude": 53.4839,
+    "longitude": -2.2374,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 234 5678",
+      "email": "hello@northernink.co.uk",
+      "website": "https://northernink.co.uk",
+      "instagram": "@northerninkcollective"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-002"
+    ],
+    "rating": 4.9,
+    "reviewCount": 156,
+    "established": 2012,
+    "specialties": [
+      "realism",
+      "blackwork"
+    ]
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Artisan Ink Studio",
+    "address": "78 Vyse Street, Jewellery Quarter, Birmingham B18 6HA",
+    "postcode": "B18 6HA",
+    "geohash": "gcqcr2m",
+    "latitude": 52.4862,
+    "longitude": -1.9015,
+    "locationDisplay": "Jewellery Quarter, Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 7890",
+      "email": "studio@artisanink.co.uk",
+      "website": "https://artisanink.co.uk",
+      "instagram": "@artisaninkstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-17:00",
+      "tuesday": "10:00-17:00",
+      "wednesday": "10:00-17:00",
+      "thursday": "10:00-19:00",
+      "friday": "10:00-19:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": [
+      "artist-003",
+      "artist-007"
+    ],
+    "rating": 4.6,
+    "reviewCount": 73,
+    "established": 2018,
+    "specialties": [
+      "watercolour",
+      "geometric",
+      "new_school"
+    ]
+  }
+]

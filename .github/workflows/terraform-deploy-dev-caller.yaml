@@ -1,0 +1,18 @@
+# .github/workflows/terraform-deploy-dev.yaml
+
+name: 'Terraform CI/CD (dev)'
+
+on:
+  push:
+    branches:
+      - release-dev
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/terraform-reusable-deploy.yml
+    with:
+      environment: dev
+      tf_state_key: dev/terraform.tfstate
+    secrets:
+      # Pass the AWS role from the 'dev' environment secrets
+      AWS_ROLE_TO_ASSUME_DEV: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}

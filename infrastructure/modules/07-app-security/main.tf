@@ -27,9 +27,9 @@ resource "aws_secretsmanager_secret_version" "app_secrets" {
   secret_id = aws_secretsmanager_secret.app_secrets.id
   secret_string = jsonencode({
     opensearch_master_password = var.opensearch_master_password
-    app_password              = var.app_secrets_password
-    database_url              = "placeholder"
-    api_keys                  = {
+    app_password               = var.app_secrets_password
+    database_url               = "placeholder"
+    api_keys = {
       external_service = "placeholder"
     }
   })
@@ -179,8 +179,8 @@ resource "aws_wafv2_web_acl" "enhanced_frontend" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                 = "GeneralRateLimit"
-      sampled_requests_enabled    = true
+      metric_name                = "GeneralRateLimit"
+      sampled_requests_enabled   = true
     }
   }
 
@@ -190,8 +190,8 @@ resource "aws_wafv2_web_acl" "enhanced_frontend" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                 = "${var.context.name_prefix}-EnhancedWAF"
-    sampled_requests_enabled    = true
+    metric_name                = "${var.context.name_prefix}-EnhancedWAF"
+    sampled_requests_enabled   = true
   }
 }
 

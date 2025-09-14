@@ -1,0 +1,22 @@
+FROM node:20-alpine
+
+# Install AWS CLI and curl for health checks
+RUN apk add --no-cache aws-cli curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files for seeder
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy seeder scripts
+COPY . .
+
+# Make scripts executable
+RUN chmod +x *.sh
+
+# Default command runs the seeding process
+CMD ["npm", "start"]

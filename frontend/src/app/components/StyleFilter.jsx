@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { styleImages } from "../data/testData/tattooStyles";
-import { mockArtists } from "../../../../backend/src/data/mockData";
+import { mockArtistData as mockArtists } from "../data/mockArtistData";
 
 //decide how style options for the filter are going to be handled. A list of common styles (originally done this way), was updated to include only styles that the artists in data have.
 const STYLES = [
@@ -22,10 +22,13 @@ export default function TattooStyleFilter() {
   }, [searchParams]);
 
   const updateSearchParams = (newSelected) => {
-    const params = new URLSearchParams(window.location.search);
-    if (newSelected.length > 0) params.set("styles", newSelected.join(","));
-    else params.delete("styles");
-    router.replace(`?${params.toString()}`, { scroll: false });
+    if (newSelected.length > 0) {
+      // Navigate to artists page with style filter
+      router.push(`/artists?styles=${newSelected.join(",")}`);
+    } else {
+      // Navigate to artists page without filters
+      router.push('/artists');
+    }
   };
 
   //improve readability
@@ -43,7 +46,7 @@ export default function TattooStyleFilter() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-4xl mx-auto p-4" data-testid="style-filter">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-lg font-bold text-white">Filter by Tattoo Style</h3>
         {selected.length > 0 && (
@@ -74,6 +77,7 @@ export default function TattooStyleFilter() {
               `}
                 style={{ minWidth: 0 }}
                 title={style}
+                data-testid={`style-button-${style.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {styleImages[style] ? (
                   <>

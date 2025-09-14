@@ -1,0 +1,27 @@
+# .github/workflows/frontend-dev.yaml
+
+name: 'Frontend Build & Deploy (dev)'
+
+on:
+  push:
+    branches:
+      - release-dev
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-dev.yaml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/frontend-reusable-deploy.yaml
+    with:
+      environment: dev
+      ssm_prefix: /tattoo-directory-dev
+      next_public_environment: development
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}

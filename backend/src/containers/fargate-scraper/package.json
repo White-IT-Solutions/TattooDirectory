@@ -1,0 +1,57 @@
+{
+  "name": "@tattoo-directory/fargate-scraper",
+  "version": "1.0.0",
+  "description": "Fargate container for tattoo artist data scraping",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "dev": "node app.js",
+    "health-check": "node -e \"console.log('Health check passed'); process.exit(0)\""
+  },
+  "keywords": [
+    "tattoo",
+    "scraper",
+    "fargate",
+    "aws",
+    "dynamodb",
+    "sqs"
+  ],
+  "author": "Tattoo Directory Team",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/client-sqs": "^3.883.0",
+    "@aws-sdk/lib-dynamodb": "^3.864.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/*.test.js",
+      "!**/__tests__/**",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js",
+      "**/*.test.js"
+    ],
+    "verbose": true
+  }
+}

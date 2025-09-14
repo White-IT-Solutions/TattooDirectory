@@ -1,0 +1,27 @@
+{
+  "name": "tattoo-directory-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for managing tattoo directory test data and S3 uploads",
+  "main": "setup-test-data.js",
+  "scripts": {
+    "setup": "node setup-test-data.js",
+    "upload-images": "node upload-images-to-s3.js",
+    "update-data": "node update-test-data.js",
+    "seed": "cd data-seeder && npm run seed",
+    "seed:clean": "cd data-seeder && npm run clean",
+    "seed:validate": "cd data-seeder && npm run validate"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "tattoo",
+    "directory",
+    "test-data",
+    "s3",
+    "localstack"
+  ],
+  "author": "",
+  "license": "MIT"
+}

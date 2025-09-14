@@ -9,12 +9,13 @@
 
 locals {
   lambda_functions = {
-    api_handler             = aws_lambda_function.api_handler
-    dynamodb_sync           = aws_lambda_function.dynamodb_sync
-    discover_studios        = aws_lambda_function.discover_studios
-    find_artists            = aws_lambda_function.find_artists
-    queue_scraping          = aws_lambda_function.queue_scraping
-    rotate_nat_gateway_eip  = aws_lambda_function.rotate_nat_gateway_eip
+    api_handler            = aws_lambda_function.api_handler
+    dynamodb_sync          = aws_lambda_function.dynamodb_sync
+    discover_studios       = aws_lambda_function.discover_studios
+    find_artists           = aws_lambda_function.find_artists
+    queue_scraping         = aws_lambda_function.queue_scraping
+    rotate_nat_gateway_eip = aws_lambda_function.rotate_nat_gateway_eip
+    secret_rotation        = aws_lambda_function.secret_rotation
   }
 }
 
@@ -26,16 +27,17 @@ locals {
 # It depends on the CI/CD pipeline uploading the package to a predictable S3 key.
 data "aws_s3_object" "lambda_artifacts" {
   for_each = {
-    api_handler            = "api-handler"
-    dynamodb_sync          = "dynamodb-sync"
-    discover_studios       = "discover-studios"
-    find_artists           = "find-artists"
-    queue_scraping         = "queue-scraping"
-    rotate_nat_gateway_eip = "rotate-nat-gateway-eip"
+    api_handler            = var.lambda_api_handler_s3_key
+    dynamodb_sync          = var.lambda_dynamodb_sync_s3_key
+    discover_studios       = var.lambda_discover_studios_s3_key
+    find_artists           = var.lambda_find_artists_s3_key
+    queue_scraping         = var.lambda_queue_scraping_s3_key
+    rotate_nat_gateway_eip = var.lambda_rotate_nat_gateway_eip_s3_key
+    secret_rotation        = var.lambda_secret_rotation_s3_key
   }
 
   bucket = var.lambda_artifacts_bucket_id
-  key    = "lambda-artifacts/${each.value}.zip"
+  key    = each.value
 }
 
 # =============================================================================
@@ -60,8 +62,8 @@ resource "aws_sqs_queue" "scraping_queue" {
 
 # Dead letter queue for scraping
 resource "aws_sqs_queue" "scraping_dlq" {
-  name                       = "${var.context.name_prefix}-scraping-dlq"
-  message_retention_seconds  = 1209600 # 14 days
+  name                      = "${var.context.name_prefix}-scraping-dlq"
+  message_retention_seconds = 1209600 # 14 days
   kms_master_key_id         = var.kms_key_main_arn
 
   tags = merge(var.context.common_tags, {
@@ -78,8 +80,8 @@ resource "aws_sqs_queue_policy" "scraping_queue" {
     Id      = "SQSScrapingQueuePolicy"
     Statement = [
       {
-        Sid       = "Allow-ECS-Task-To-Use-Queue"
-        Effect    = "Allow"
+        Sid    = "Allow-ECS-Task-To-Use-Queue"
+        Effect = "Allow"
         Principal = {
           AWS = var.ecs_task_role_arn
         }
@@ -91,8 +93,8 @@ resource "aws_sqs_queue_policy" "scraping_queue" {
         Resource = aws_sqs_queue.scraping_queue.arn
       },
       {
-        Sid       = "Allow-Queue-Scraping-Lambda-To-Use-Queue"
-        Effect    = "Allow"
+        Sid    = "Allow-Queue-Scraping-Lambda-To-Use-Queue"
+        Effect = "Allow"
         Principal = {
           AWS = var.lambda_queue_scraping_role_arn
         }
@@ -107,8 +109,8 @@ resource "aws_sqs_queue_policy" "scraping_queue" {
 
 # Dead letter queue for Lambda sync
 resource "aws_sqs_queue" "lambda_sync_dlq" {
-  name                       = "${var.context.name_prefix}-lambda-sync-dlq"
-  message_retention_seconds  = 1209600 # 14 days
+  name                      = "${var.context.name_prefix}-lambda-sync-dlq"
+  message_retention_seconds = 1209600 # 14 days
   kms_master_key_id         = var.kms_key_main_arn
 
   tags = merge(var.context.common_tags, {
@@ -123,8 +125,8 @@ resource "aws_sqs_queue" "lambda_sync_dlq" {
 # API Handler Lambda Function
 resource "aws_lambda_function" "api_handler" {
   # checkov:skip=CKV_AWS_116: DLQ is not required as the function is invoked synchronously by API Gateway. Errors are handled by the caller and monitored via CloudWatch Alarms.
-  s3_bucket     = var.lambda_artifacts_bucket_id
-  s3_key        = "lambda-artifacts/api-handler.zip" # Key must match CI/CD pipeline
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_api_handler_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["api_handler"].version_id
 
   function_name = "${var.context.name_prefix}-api-handler"
@@ -142,7 +144,7 @@ resource "aws_lambda_function" "api_handler" {
   code_signing_config_arn = var.lambda_code_signing_config_arn
 
   vpc_config {
-    subnet_ids         = var.private_subnet_ids
+    subnet_ids = var.private_subnet_ids
     # This function only communicates with DynamoDB and OpenSearch within the VPC.
     security_group_ids = [var.lambda_internal_security_group_id]
   }
@@ -168,7 +170,7 @@ resource "aws_lambda_function" "api_handler" {
 
 # DynamoDB policy for API Handler Lambda
 resource "aws_iam_policy" "api_handler_dynamodb" {
-  name   = "${var.context.name_prefix}-api-handler-dynamodb-policy"
+  name = "${var.context.name_prefix}-api-handler-dynamodb-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -194,8 +196,8 @@ resource "aws_iam_role_policy_attachment" "api_handler_dynamodb" {
 
 # DynamoDB to OpenSearch Sync Lambda Function
 resource "aws_lambda_function" "dynamodb_sync" {
-  s3_bucket     = var.lambda_artifacts_bucket_id
-  s3_key        = "lambda-artifacts/dynamodb-sync.zip" # Key must match CI/CD pipeline
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_dynamodb_sync_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["dynamodb_sync"].version_id
 
   function_name = "${var.context.name_prefix}-dynamodb-sync"
@@ -240,7 +242,7 @@ resource "aws_lambda_function" "dynamodb_sync" {
 
 # DynamoDB Stream policy for Sync Lambda
 resource "aws_iam_policy" "dynamodb_sync_stream" {
-  name   = "${var.context.name_prefix}-dynamodb-sync-stream-policy"
+  name = "${var.context.name_prefix}-dynamodb-sync-stream-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -259,11 +261,29 @@ resource "aws_iam_role_policy_attachment" "dynamodb_sync_stream" {
   policy_arn = aws_iam_policy.dynamodb_sync_stream.arn
 }
 
+# DynamoDB Stream Event Source Mapping for Sync Lambda
+resource "aws_lambda_event_source_mapping" "dynamodb_sync" {
+  event_source_arn                   = var.main_table_stream_arn
+  function_name                      = aws_lambda_function.dynamodb_sync.arn
+  starting_position                  = "LATEST"
+  batch_size                         = 10
+  maximum_batching_window_in_seconds = 5
+
+  # Filter to only process INSERT and MODIFY events
+  filter_criteria {
+    filter {
+      pattern = jsonencode({
+        eventName = ["INSERT", "MODIFY"]
+      })
+    }
+  }
+}
+
 # Discover Studios Lambda Function
 resource "aws_lambda_function" "discover_studios" {
   # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
-  s3_bucket     = var.lambda_artifacts_bucket_id
-  s3_key        = "lambda-artifacts/discover-studios.zip" # Key must match CI/CD pipeline
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_discover_studios_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["discover_studios"].version_id
 
   function_name = "${var.context.name_prefix}-discover-studios"
@@ -301,12 +321,12 @@ resource "aws_lambda_function" "discover_studios" {
 
 # DynamoDB policy for Discover Studios Lambda
 resource "aws_iam_policy" "discover_studios_dynamodb" {
-  name   = "${var.context.name_prefix}-discover-studios-dynamodb-policy"
+  name = "${var.context.name_prefix}-discover-studios-dynamodb-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = ["dynamodb:Query", "dynamodb:Scan", "dynamodb:GetItem"]
+      Effect = "Allow"
+      Action = ["dynamodb:Query", "dynamodb:Scan", "dynamodb:GetItem"]
       Resource = [
         var.main_table_arn,
         "${var.main_table_arn}/index/*",
@@ -324,8 +344,8 @@ resource "aws_iam_role_policy_attachment" "discover_studios_dynamodb" {
 # Find Artists Lambda Function
 resource "aws_lambda_function" "find_artists" {
   # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
-  s3_bucket     = var.lambda_artifacts_bucket_id
-  s3_key        = "lambda-artifacts/find-artists.zip" # Key must match CI/CD pipeline
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_find_artists_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["find_artists"].version_id
 
   function_name = "${var.context.name_prefix}-find-artists"
@@ -363,12 +383,12 @@ resource "aws_lambda_function" "find_artists" {
 
 # DynamoDB policy for Find Artists Lambda
 resource "aws_iam_policy" "find_artists_dynamodb" {
-  name   = "${var.context.name_prefix}-find-artists-dynamodb-policy"
+  name = "${var.context.name_prefix}-find-artists-dynamodb-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = ["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:GetItem"]
+      Effect = "Allow"
+      Action = ["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:GetItem"]
       Resource = [
         var.main_table_arn,
         var.denylist_table_arn
@@ -385,8 +405,8 @@ resource "aws_iam_role_policy_attachment" "find_artists_dynamodb" {
 # Queue Scraping Lambda Function
 resource "aws_lambda_function" "queue_scraping" {
   # checkov:skip=CKV_AWS_116: Not required as function is invoked as synchronous task within state machine.
-  s3_bucket     = var.lambda_artifacts_bucket_id
-  s3_key        = "lambda-artifacts/queue-scraping.zip" # Key must match CI/CD pipeline
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_queue_scraping_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["queue_scraping"].version_id
 
   function_name = "${var.context.name_prefix}-queue-scraping"
@@ -430,12 +450,12 @@ resource "aws_lambda_function" "rotate_nat_gateway_eip" {
 
   # Point to the S3 bucket for the deployment package
   s3_bucket         = var.lambda_artifacts_bucket_id
-  s3_key            = "lambda-artifacts/rotate-nat-gateway-eip.zip" # Key must match CI/CD pipeline
+  s3_key            = var.lambda_rotate_nat_gateway_eip_s3_key
   s3_object_version = data.aws_s3_object.lambda_artifacts["rotate_nat_gateway_eip"].version_id
 
   function_name = "${var.context.name_prefix}-rotate-eip"
   role          = var.lambda_rotate_nat_gateway_eip_role_arn
-  handler       = "rotate-nat-gateway-eip.lambda_handler"
+  handler       = "index.lambda_handler"
   runtime       = "python3.12"
   architectures = ["arm64"]
   timeout       = 60
@@ -476,13 +496,59 @@ resource "aws_lambda_function_url" "rotate_eip" {
   authorization_type = "AWS_IAM"
 }
 
+# Secret Rotation Lambda Function
+resource "aws_lambda_function" "secret_rotation" {
+  # checkov:skip=CKV_AWS_116: Not required due to manual execution and Secrets Manager integration
+
+  # Point to the S3 bucket for the deployment package
+  s3_bucket         = var.lambda_artifacts_bucket_id
+  s3_key            = var.lambda_secret_rotation_s3_key
+  s3_object_version = data.aws_s3_object.lambda_artifacts["secret_rotation"].version_id
+
+  function_name = "${var.context.name_prefix}-secret-rotation"
+  role          = var.lambda_secret_rotation_role_arn
+  handler       = "index.lambda_handler"
+  runtime       = "python3.12"
+  architectures = ["arm64"]
+  timeout       = 300
+  memory_size   = 256
+
+  reserved_concurrent_executions = 2
+
+  # Code signing configuration (production only)
+  code_signing_config_arn = var.lambda_code_signing_config_arn
+
+  vpc_config {
+    subnet_ids         = var.private_subnet_ids
+    security_group_ids = [var.lambda_internal_security_group_id]
+  }
+
+  environment {
+    variables = merge(var.context.lambda_environment_vars, {
+      OPENSEARCH_ENDPOINT = var.opensearch_endpoint
+      APP_SECRETS_ARN     = var.app_secrets_arn
+    })
+  }
+
+  kms_key_arn = var.kms_key_main_arn
+
+  tracing_config {
+    mode = "Active"
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name    = "${var.context.name_prefix}-secret-rotation"
+    Purpose = "Secrets Management"
+  })
+}
+
 # =============================================================================
 # ECS CLUSTER
 # =============================================================================
 
 resource "aws_ecs_cluster" "main" {
   name = "${var.context.name_prefix}-cluster"
-  
+
   setting {
     name  = "containerInsights"
     value = "enabled"
@@ -493,9 +559,9 @@ resource "aws_ecs_cluster" "main" {
       kms_key_id = var.kms_key_main_arn
       logging    = "OVERRIDE"
 
-    log_configuration {
-      cloud_watch_encryption_enabled = true
-      cloud_watch_log_group_name      = aws_cloudwatch_log_group.ecs_cluster.name
+      log_configuration {
+        cloud_watch_encryption_enabled = true
+        cloud_watch_log_group_name     = aws_cloudwatch_log_group.ecs_cluster.name
       }
     }
   }
@@ -524,16 +590,16 @@ resource "aws_ecs_task_definition" "scraper" {
   cpu                      = 256
   memory                   = 512
   execution_role_arn       = var.ecs_task_execution_role_arn
-  task_role_arn           = var.ecs_task_role_arn
+  task_role_arn            = var.ecs_task_role_arn
 
   container_definitions = jsonencode([
     {
       name  = "scraper"
       image = "${var.scraper_image_repository}:${var.scraper_image_tag}"
-      
-      essential = true
+
+      essential              = true
       readonlyRootFilesystem = true
-      
+
       environment = [
         {
           name  = "ENVIRONMENT"
@@ -574,12 +640,12 @@ resource "aws_ecs_task_definition" "scraper" {
 
 # DynamoDB policy for ECS Task
 resource "aws_iam_policy" "ecs_task_dynamodb" {
-  name   = "${var.context.name_prefix}-ecs-task-dynamodb-policy"
+  name = "${var.context.name_prefix}-ecs-task-dynamodb-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = ["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:GetItem"]
+      Effect = "Allow"
+      Action = ["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:GetItem"]
       Resource = [
         var.main_table_arn,
         var.denylist_table_arn,
@@ -592,6 +658,63 @@ resource "aws_iam_policy" "ecs_task_dynamodb" {
 resource "aws_iam_role_policy_attachment" "ecs_task_dynamodb" {
   role       = var.ecs_task_role_name
   policy_arn = aws_iam_policy.ecs_task_dynamodb.arn
+}
+
+# Secrets Manager policy for Secret Rotation Lambda
+resource "aws_iam_policy" "secret_rotation_secrets" {
+  name = "${var.context.name_prefix}-secret-rotation-secrets-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:PutSecretValue",
+          "secretsmanager:UpdateSecretVersionStage"
+        ]
+        Resource = var.app_secrets_arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetRandomPassword"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secret_rotation_secrets" {
+  role       = var.lambda_secret_rotation_role_name
+  policy_arn = aws_iam_policy.secret_rotation_secrets.arn
+}
+
+# OpenSearch policy for Secret Rotation Lambda
+resource "aws_iam_policy" "secret_rotation_opensearch" {
+  name = "${var.context.name_prefix}-secret-rotation-opensearch-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "es:ESHttpPost",
+          "es:ESHttpPut",
+          "es:ESHttpGet",
+          "es:ESHttpHead"
+        ]
+        Resource = "${var.opensearch_domain_arn}/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secret_rotation_opensearch" {
+  role       = var.lambda_secret_rotation_role_name
+  policy_arn = aws_iam_policy.secret_rotation_opensearch.arn
 }
 
 # Scraper CloudWatch Log Group
@@ -659,9 +782,9 @@ resource "aws_iam_policy" "step_functions" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid      = "AllowLambdaInvocation"
-        Effect   = "Allow"
-        Action   = "lambda:InvokeFunction"
+        Sid    = "AllowLambdaInvocation"
+        Effect = "Allow"
+        Action = "lambda:InvokeFunction"
         Resource = [
           aws_lambda_function.discover_studios.arn,
           aws_lambda_function.find_artists.arn,
@@ -686,9 +809,9 @@ resource "aws_iam_policy" "step_functions" {
         Resource = "arn:aws:ecs:${var.context.aws_region}:${var.context.infra_account_id}:task/${aws_ecs_cluster.main.name}/*"
       },
       {
-        Sid      = "AllowPassRoleForECS"
-        Effect   = "Allow"
-        Action   = "iam:PassRole"
+        Sid    = "AllowPassRoleForECS"
+        Effect = "Allow"
+        Action = "iam:PassRole"
         Resource = [
           var.ecs_task_execution_role_arn,
           var.ecs_task_role_arn

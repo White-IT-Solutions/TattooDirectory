@@ -83,8 +83,7 @@ temp/
 # Lambda deployment packages
 *.zip
 
-# Serverless Framework
-.serverless/
+
 
 # CDK
 cdk.out/

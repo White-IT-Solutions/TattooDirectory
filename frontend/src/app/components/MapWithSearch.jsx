@@ -12,8 +12,8 @@ import {
 //   Map,
 //   MapCameraChangedEvent,
 // } from "@vis.gl/react-google-maps";
-import { mockArtists } from "../../../../backend/src/data/mockData";
-import { useSearchParams } from "next/navigation";
+import { mockArtistData as mockArtists } from "../data/mockArtistData";
+import { useSearchParams, useRouter } from "next/navigation";
 import { createRoot } from "react-dom/client";
 
 const darkMapStyle = [
@@ -193,10 +193,12 @@ const defaultCenter = {
 export default function MapWithSearch() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [center, setCenter] = useState(defaultCenter);
   const [filteredArtists, setFilteredArtists] = useState(mockArtists);
   const [selectedStudio, setSelectedStudio] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const inputRef = useRef(null);
   const mapRef = useRef();
   useEffect(() => {
@@ -214,18 +216,42 @@ export default function MapWithSearch() {
 
   // When the user picks a place, move the map
   const handlePlaceSelect = () => {
-    const autocomplete = new window.google.maps.places.Autocomplete(
-      inputRef.current
-    );
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-      if (place.geometry) {
-        setCenter({
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
+    // Check if Google Maps API is loaded
+    if (typeof window !== 'undefined' && window.google && window.google.maps && window.google.maps.places) {
+      try {
+        const autocomplete = new window.google.maps.places.Autocomplete(
+          inputRef.current
+        );
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            setCenter({
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            });
+          }
         });
+      } catch (error) {
+        console.warn('Google Maps Places API not available:', error);
       }
-    });
+    } else {
+      console.warn('Google Maps API not loaded yet');
+    }
+  };
+
+  // Handle search functionality
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      router.push(`/artists?q=${encodeURIComponent(searchTerm.trim())}`);
+    } else {
+      router.push('/artists');
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   // const GoogleMapDisplay = () => {
@@ -275,16 +301,33 @@ export default function MapWithSearch() {
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col items-center">
       {/* Search Bar */}
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Search address or city..."
-        className="w-full max-w-md rounded-full px-6 py-3 text-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black/60 transition-all shadow-md mb-6"
-        onFocus={handlePlaceSelect}
-      />
+      <div className="w-full max-w-md flex gap-2 mb-6">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search for artists or styles..."
+          className="flex-1 rounded-full px-6 py-3 text-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black/60 transition-all shadow-md"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={handleKeyPress}
+          onFocus={handlePlaceSelect}
+          data-testid="search-input"
+        />
+        <button
+          onClick={handleSearch}
+          className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-all shadow-md"
+          data-testid="search-button"
+        >
+          Search
+        </button>
+      </div>
       {/* Map */}
-      {
-        <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
+      {apiKey ? (
+        <LoadScript 
+          googleMapsApiKey={apiKey} 
+          libraries={["places"]}
+          onError={(error) => console.warn('Google Maps API loading error:', error)}
+        >
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
@@ -296,6 +339,7 @@ export default function MapWithSearch() {
               fullscreenControl: false,
             }}
             onLoad={(map) => (mapRef.current = map)}
+            data-testid="map-container"
           >
             {filteredArtists
               .filter(
@@ -350,7 +394,11 @@ export default function MapWithSearch() {
             )}
           </GoogleMap>
         </LoadScript>
-      }
+      ) : (
+        <div className="w-full h-96 bg-gray-200 rounded-3xl flex items-center justify-center">
+          <p className="text-gray-600">Map loading...</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -127,7 +127,7 @@ output "log_group_arns" {
 
 output "lambda_log_group_names" {
   description = "List of all Lambda function CloudWatch log group names."
-  value       = [
+  value = [
     # The log group name format is /aws/lambda/<function_name>
     for func in local.lambda_functions : "/aws/lambda/${func.function_name}"
   ]

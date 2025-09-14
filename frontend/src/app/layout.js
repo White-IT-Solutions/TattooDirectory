@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,19 +27,21 @@ export default function RootLayout({ children }) {
         <link
           href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
           rel="stylesheet"
-        ></link>
-
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap"
           rel="stylesheet"
-        ></link>
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ErrorBoundary>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ErrorBoundary>
       </body>
     </html>
   );

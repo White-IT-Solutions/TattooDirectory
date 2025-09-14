@@ -38,13 +38,13 @@ output "alarm_arns" {
   description = "Map of CloudWatch alarm ARNs"
   value = merge(
     {
-      api_4xx_errors = aws_cloudwatch_metric_alarm.api_gateway_4xx_errors.arn
-      api_5xx_errors = aws_cloudwatch_metric_alarm.api_gateway_5xx_errors.arn
-      api_latency    = aws_cloudwatch_metric_alarm.api_gateway_latency.arn
-      dynamodb_throttles = aws_cloudwatch_metric_alarm.dynamodb_throttles.arn
-      dynamodb_errors = aws_cloudwatch_metric_alarm.dynamodb_errors.arn
+      api_4xx_errors            = aws_cloudwatch_metric_alarm.api_gateway_4xx_errors.arn
+      api_5xx_errors            = aws_cloudwatch_metric_alarm.api_gateway_5xx_errors.arn
+      api_latency               = aws_cloudwatch_metric_alarm.api_gateway_latency.arn
+      dynamodb_throttles        = aws_cloudwatch_metric_alarm.dynamodb_throttles.arn
+      dynamodb_errors           = aws_cloudwatch_metric_alarm.dynamodb_errors.arn
       opensearch_cluster_status = aws_cloudwatch_metric_alarm.opensearch_cluster_status.arn
-      opensearch_cpu = aws_cloudwatch_metric_alarm.opensearch_cpu_utilization.arn
+      opensearch_cpu            = aws_cloudwatch_metric_alarm.opensearch_cpu_utilization.arn
     },
     {
       for k, v in aws_cloudwatch_metric_alarm.lambda_errors : "lambda_${k}_errors" => v.arn

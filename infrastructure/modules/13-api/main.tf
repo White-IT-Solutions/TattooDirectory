@@ -90,6 +90,10 @@ resource "aws_apigatewayv2_deployment" "main" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_apigatewayv2_route.proxy.id,
+      aws_apigatewayv2_route.health.id,
+      aws_apigatewayv2_route.artists.id,
+      aws_apigatewayv2_route.artist_by_id.id,
+      aws_apigatewayv2_route.styles.id,
       aws_apigatewayv2_integration.lambda.id,
     ]))
   }
@@ -121,8 +125,8 @@ resource "aws_apigatewayv2_integration" "lambda" {
 resource "aws_apigatewayv2_route" "proxy" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "ANY /{proxy+}"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
+  route_key          = "ANY /{proxy+}"
+  target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
   authorization_type = "AWS_IAM"
 }
 
@@ -135,11 +139,11 @@ resource "aws_apigatewayv2_route" "health" {
   authorization_type = "NONE"
 }
 
-# Artists routes (public read access for directory)
+# Artists routes (public read access for directory) - v1 API
 resource "aws_apigatewayv2_route" "artists" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key          = "GET /artists"
+  route_key          = "GET /v1/artists"
   target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
   authorization_type = "NONE"
 }
@@ -147,16 +151,16 @@ resource "aws_apigatewayv2_route" "artists" {
 resource "aws_apigatewayv2_route" "artist_by_id" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key          = "GET /artists/{id}"
+  route_key          = "GET /v1/artists/{artistId}"
   target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
   authorization_type = "NONE"
 }
 
-# Search route (public access for directory search)
-resource "aws_apigatewayv2_route" "search" {
+# Styles route (public access for style filtering)
+resource "aws_apigatewayv2_route" "styles" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key          = "GET /search"
+  route_key          = "GET /v1/styles"
   target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
   authorization_type = "NONE"
 }

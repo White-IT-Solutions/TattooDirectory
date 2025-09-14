@@ -42,7 +42,39 @@ Comprehensive project documentation is available in the `/docs` folder:
 
 ## 🚀 Getting Started
 
-### Frontend Development
+### Quick Start (5 minutes)
+
+**New to the project?** Follow the [Quick Start Guide](QUICK_START.md) to get running in under 5 minutes.
+
+### Local Development Environment
+
+Set up the complete local development environment with LocalStack:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up test data with realistic images
+cd scripts
+npm install
+npm run setup
+cd ..
+
+# 3. Start the local environment
+npm run local:start
+
+# 4. Verify everything is running
+npm run local:health
+```
+
+**Access Points:**
+- Frontend: http://localhost:3000
+- API Documentation: http://localhost:8080  
+- LocalStack UI: http://localhost:4566/_localstack/cockpit
+
+### Frontend Development Only
+
+For frontend-only development:
 
 ```bash
 cd frontend
@@ -50,20 +82,31 @@ npm install
 npm run dev
 ```
 
-The frontend is a React + TypeScript application with shadcn/ui components, running on Vite.
-
 ### Project Structure
 
 ```
 ├── docs/                    # Comprehensive project documentation
-├── frontend/                # React/TypeScript web application
+├── frontend/                # Next.js web application
 ├── backend/                 # AWS Lambda functions and APIs
 ├── infrastructure/          # Terraform Infrastructure as Code
-├── scripts/                 # Build and deployment scripts
+├── scripts/                 # Development and deployment scripts
+│   ├── data-seeder/        # LocalStack data seeding
+│   └── test-data/          # Realistic test data with S3 images
 └── tests/                   # Integration and E2E tests
 ```
 
-*Backend and infrastructure setup instructions will be added as development progresses.*
+### Development Scripts
+
+See [Development Workflow](scripts/README-Development-Workflow.md) for complete script documentation.
+
+**Quick Commands:**
+```bash
+npm run local:start         # Start complete environment
+npm run local:stop          # Stop all services
+npm run local:health        # Check service health
+npm run local:logs          # View all logs
+npm run seed               # Seed test data
+```
 
 ## 📊 Success Metrics
 
