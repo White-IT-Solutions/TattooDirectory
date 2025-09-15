@@ -1,0 +1,227 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2024-01-15T00:00:00Z",
+  "environment": "local-development",
+  
+  "networkSecurity": {
+    "isolatedNetwork": {
+      "name": "tattoo-directory-local",
+      "subnet": "172.20.0.0/16",
+      "gateway": "172.20.0.1",
+      "hostBinding": "127.0.0.1"
+    },
+    "serviceIPs": {
+      "localstack": "172.20.0.10",
+      "backend": "172.20.0.20",
+      "frontend": "172.20.0.30",
+      "swagger": "172.20.0.40",
+      "seeder": "172.20.0.50"
+    },
+    "allowedPorts": {
+      "frontend": 3000,
+      "backend": 9000,
+      "swagger": 8080,
+      "localstack": 4566,
+      "backendDebug": 9229,
+      "frontendDebug": 9230
+    },
+    "portBindingPolicy": "localhost-only"
+  },
+  
+  "containerSecurity": {
+    "globalPolicies": {
+      "noNewPrivileges": true,
+      "nonRootUser": true,
+      "readOnlyFilesystem": true,
+      "restrictedTmpfs": true,
+      "resourceLimits": true
+    },
+    "serviceSpecificPolicies": {
+      "localstack": {
+        "readOnlyFilesystem": false,
+        "reason": "LocalStack requires write access for AWS service simulation"
+      },
+      "backend": {
+        "securityLevel": "high",
+        "user": "1000:1000",
+        "tmpfsSize": "100m"
+      },
+      "frontend": {
+        "securityLevel": "high",
+        "user": "1000:1000",
+        "tmpfsSize": "200m"
+      },
+      "swagger": {
+        "securityLevel": "low",
+        "user": "101:101",
+        "tmpfsSize": "10m"
+      },
+      "seeder": {
+        "securityLevel": "medium",
+        "user": "1000:1000",
+        "tmpfsSize": "50m"
+      }
+    }
+  },
+  
+  "environmentSecurity": {
+    "requiredVariables": [
+      "NODE_ENV",
+      "AWS_ENDPOINT_URL",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY",
+      "DYNAMODB_TABLE_NAME"
+    ],
+    "forbiddenVariables": [
+      "AWS_PROFILE",
+      "AWS_SESSION_TOKEN",
+      "PROD_DATABASE_URL",
+      "PRODUCTION_API_KEY",
+      "STRIPE_LIVE_KEY",
+      "SENDGRID_API_KEY"
+    ],
+    "sensitivePatterns": [
+      "sk_live_[a-zA-Z0-9]+",
+      "pk_live_[a-zA-Z0-9]+",
+      "AKIA[0-9A-Z]{16}",
+      "[0-9a-zA-Z/+]{40}",
+      "xoxb-[0-9]+-[0-9]+-[0-9]+-[a-z0-9]+",
+      "ghp_[a-zA-Z0-9]{36}",
+      "gho_[a-zA-Z0-9]{36}"
+    ],
+    "allowedValues": {
+      "NODE_ENV": ["development", "test"],
+      "AWS_ACCESS_KEY_ID": ["test"],
+      "AWS_SECRET_ACCESS_KEY": ["test"]
+    }
+  },
+  
+  "accessControl": {
+    "serviceMatrix": {
+      "frontend": {
+        "canAccess": ["backend"],
+        "externalAccess": true,
+        "debugAccess": true
+      },
+      "backend": {
+        "canAccess": ["localstack"],
+        "externalAccess": true,
+        "debugAccess": true
+      },
+      "swagger": {
+        "canAccess": ["backend"],
+        "externalAccess": true,
+        "debugAccess": false
+      },
+      "localstack": {
+        "canAccess": [],
+        "externalAccess": false,
+        "debugAccess": false
+      },
+      "seeder": {
+        "canAccess": ["localstack"],
+        "externalAccess": false,
+        "debugAccess": false
+      }
+    },
+    "corsPolicy": {
+      "allowedOrigins": ["http://localhost:3000"],
+      "allowedMethods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "allowedHeaders": ["Content-Type", "Authorization", "X-Requested-With"]
+    }
+  },
+  
+  "dataProtection": {
+    "sensitiveFiles": [
+      ".env.production",
+      ".env.staging",
+      "aws-credentials.json",
+      "service-account.json",
+      "private-key.pem",
+      ".aws/credentials"
+    ],
+    "gitignorePatterns": [
+      ".env.local",
+      ".env.production",
+      ".env.staging",
+      "*.pem",
+      "aws-credentials.json",
+      "service-account.json",
+      "logs/security/*.log"
+    ],
+    "testDataRules": {
+      "noRealEmails": true,
+      "noRealPhones": true,
+      "noRealAddresses": true,
+      "syntheticDataOnly": true
+    }
+  },
+  
+  "monitoring": {
+    "securityEvents": [
+      "container_start",
+      "container_stop",
+      "network_connection_attempt",
+      "environment_validation_failure",
+      "resource_limit_violation",
+      "security_policy_violation"
+    ],
+    "alertThresholds": {
+      "criticalFailures": 1,
+      "securityViolations": 1,
+      "resourceUsage": 90,
+      "failedConnections": 5
+    },
+    "logRetention": {
+      "securityLogs": "30d",
+      "accessLogs": "7d",
+      "errorLogs": "14d"
+    }
+  },
+  
+  "compliance": {
+    "standards": [
+      "OWASP-Top-10",
+      "Docker-Security-Best-Practices",
+      "Container-Security-Guidelines"
+    ],
+    "auditFrequency": {
+      "daily": ["environment_validation", "container_security"],
+      "weekly": ["network_security", "access_controls"],
+      "monthly": ["comprehensive_security_audit"]
+    }
+  },
+  
+  "incidentResponse": {
+    "severity": {
+      "critical": {
+        "examples": [
+          "production_credentials_detected",
+          "external_network_access_to_internal_services",
+          "container_privilege_escalation",
+          "sensitive_data_exposure"
+        ],
+        "responseTime": "immediate",
+        "actions": ["stop_services", "isolate_environment", "preserve_evidence"]
+      },
+      "high": {
+        "examples": [
+          "resource_limit_violations",
+          "network_configuration_changes",
+          "environment_validation_failures"
+        ],
+        "responseTime": "15m",
+        "actions": ["investigate", "fix_configuration", "restart_services"]
+      },
+      "medium": {
+        "examples": [
+          "log_file_size_violations",
+          "performance_degradation",
+          "non_critical_service_failures"
+        ],
+        "responseTime": "1h",
+        "actions": ["log_incident", "schedule_fix"]
+      }
+    }
+  }
+}
