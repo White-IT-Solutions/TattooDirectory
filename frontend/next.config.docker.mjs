@@ -1,71 +1,72 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable static export for local development
-  output: undefined,
-  trailingSlash: true,
-  
-  // Enable hot reloading in Docker with enhanced debugging support
-  webpack: (config, { dev, isServer }) => {
-    if (dev) {
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
-      };
-      // Enhanced source maps for debugging
-      config.devtool = 'eval-source-map';
-      
-      // Ensure source maps are generated for all modules
-      config.module.rules.push({
-        test: /\.(js|jsx|ts|tsx)$/,
-        use: {
-          loader: 'source-map-loader',
-        },
-        enforce: 'pre',
-      });
-    }
-    return config;
-  },
-  
   images: {
-    // Disable image optimization for local development
-    unoptimized: true,
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "cdn.jsdelivr.net",
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4566',
       },
       {
-        protocol: "https",
-        hostname: "i.pinimg.com",
+        protocol: 'http',
+        hostname: 'localhost',
       },
       {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
+        protocol: 'http',
+        hostname: 'backend',
       },
       {
-        protocol: "https",
-        hostname: "raw.githubusercontent.com",
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
       },
       {
-        protocol: "https",
-        hostname: "loremflickr.com",
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pinimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'loremflickr.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+    unoptimized: process.env.NODE_ENV === 'development',
   },
-  
-  // Environment-specific configuration for Docker
   env: {
-    NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT || 'local',
+    NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
-  
-  // Enable experimental features for better Docker performance
-  experimental: {
-    // Reduce memory usage
-    workerThreads: false,
-    cpus: 1,
+  // Enable source maps in development
+  productionBrowserSourceMaps: false,
+  // Configure webpack for better development experience in Docker
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.watchOptions = {
+        poll: 2000, // Increased polling interval for Docker
+        aggregateTimeout: 300,
+        ignored: /node_modules/,
+      };
+    }
+    return config;
   },
+  // Docker-specific configuration
+  output: 'standalone',
 };
 
 export default nextConfig;

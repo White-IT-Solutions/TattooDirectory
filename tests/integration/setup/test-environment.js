@@ -4,7 +4,7 @@ import path from 'path';
 
 const execPromise = util.promisify(exec);
  
-const DOCKER_COMPOSE_FILE = 'dev-tools/docker/docker-compose.local.yml';
+const DOCKER_COMPOSE_FILE = 'devtools/docker/docker-compose.local.yml';
 const DOCKER_START_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} up -d`;
 const DOCKER_STOP_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} down --volumes --remove-orphans`;
 const DOCKER_HEALTH_CHECK_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} ps --services --filter "status=running"`;

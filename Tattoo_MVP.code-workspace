@@ -1,17 +1,7 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "infrastructure/environments/dev"
-		},
-		{
-			"path": "infrastructure/environments/prod"
-		}
-	],
-	"settings": {
-		"semgrep.scan.onlyGitDirty": false,
-		"highlight.regexes": {}
-	}
+    "folders": [
+        {
+            "path": "."
+        }
+    ]
 }

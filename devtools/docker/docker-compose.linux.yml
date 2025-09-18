@@ -1,0 +1,7 @@
+# Linux-specific overrides
+services:
+  frontend:
+    environment:
+      # Native inotify works well, no polling needed
+      - WATCHPACK_POLLING=false
+      - CHOKIDAR_USEPOLLING=false

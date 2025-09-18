@@ -4,9 +4,9 @@
   "description": "Scripts for managing tattoo directory test data and S3 uploads",
   "main": "setup-test-data.js",
   "scripts": {
-    "setup": "node setup-test-data.js",
-    "upload-images": "node upload-images-to-s3.js",
-    "update-data": "node update-test-data.js",
+    "setup": "node data-management/setup-test-data.js",
+    "upload-images": "node aws/upload-images-to-s3.js",
+    "update-data": "node data-management/update-test-data.js",
     "seed": "cd data-seeder && npm run seed",
     "seed:clean": "cd data-seeder && npm run clean",
     "seed:validate": "cd data-seeder && npm run validate"

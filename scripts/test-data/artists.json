@@ -7,41 +7,69 @@
     "locationDisplay": "Shoreditch, London, UK",
     "latitude": 51.5225,
     "longitude": -0.0786,
-    "styles": ["traditional", "neo_traditional"],
-    "avatar": "https://i.pravatar.cc/150?img=7",
-    "specialties": ["roses", "eagles", "nautical", "vintage"],
+    "styles": [
+      "traditional",
+      "neo_traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-4.jpg",
+    "specialties": [
+      "roses",
+      "eagles",
+      "nautical",
+      "vintage"
+    ],
     "rating": 4.8,
     "reviewCount": 127,
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
         "description": "Traditional rose with thorns",
         "style": "traditional",
-        "tags": ["rose", "flowers", "color"]
+        "tags": [
+          "rose",
+          "flowers",
+          "color"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_103.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
         "description": "Neo-traditional eagle with geometric elements",
         "style": "traditional",
-        "tags": ["eagle", "geometric", "bold"]
+        "tags": [
+          "eagle",
+          "geometric",
+          "bold"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_102.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_87.png",
         "description": "Traditional anchor",
         "style": "traditional",
-        "tags": ["anchor", "nautical", "classic"]
+        "tags": [
+          "anchor",
+          "nautical",
+          "classic"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_109.png",
         "description": "Traditional swallow pair",
         "style": "traditional",
-        "tags": ["swallow", "birds", "symmetry"]
+        "tags": [
+          "swallow",
+          "birds",
+          "symmetry"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_104.png",
         "description": "Neo-traditional wolf portrait",
         "style": "traditional",
-        "tags": ["wolf", "animal", "portrait"]
+        "tags": [
+          "wolf",
+          "animal",
+          "portrait"
+        ]
       }
     ],
     "contactInfo": {
@@ -68,7 +96,10 @@
     "experience": {
       "yearsActive": 8,
       "apprenticeshipCompleted": true,
-      "certifications": ["Bloodborne Pathogen", "First Aid"]
+      "certifications": [
+        "Bloodborne Pathogen",
+        "First Aid"
+      ]
     }
   },
   {
@@ -79,38 +110,61 @@
     "locationDisplay": "Northern Quarter, Manchester, UK",
     "latitude": 53.4839,
     "longitude": -2.2374,
-    "styles": ["realism", "blackwork"],
-    "avatar": "https://i.pravatar.cc/150?img=11",
+    "styles": [
+      "realism",
+      "blackwork"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-79.jpg",
     "portfolioImages": [
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_21.png",
         "description": "Hyperrealistic portrait tattoo",
         "style": "realism",
-        "tags": ["portrait", "realistic", "detailed"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_27.png",
-        "description": "Blackwork geometric sleeve",
-        "style": "realism",
-        "tags": ["geometric", "sleeve", "bold"]
+        "tags": [
+          "portrait",
+          "realistic",
+          "detailed"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_23.png",
+        "description": "Blackwork geometric sleeve",
+        "style": "realism",
+        "tags": [
+          "geometric",
+          "sleeve",
+          "bold"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_38.png",
         "description": "Realistic animal portrait",
         "style": "realism",
-        "tags": ["animal", "dog", "memorial"]
+        "tags": [
+          "animal",
+          "dog",
+          "memorial"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_26.png",
         "description": "Blackwork mandala design",
         "style": "realism",
-        "tags": ["mandala", "spiritual", "intricate"]
+        "tags": [
+          "mandala",
+          "spiritual",
+          "intricate"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_24.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_84.png",
         "description": "Celebrity portrait realism",
         "style": "realism",
-        "tags": ["celebrity", "famous", "likeness"]
+        "tags": [
+          "celebrity",
+          "famous",
+          "likeness"
+        ]
       }
     ],
     "contactInfo": {
@@ -137,7 +191,11 @@
     "experience": {
       "yearsActive": 12,
       "apprenticeshipCompleted": true,
-      "certifications": ["Bloodborne Pathogen", "First Aid", "Advanced Realism"]
+      "certifications": [
+        "Bloodborne Pathogen",
+        "First Aid",
+        "Advanced Realism"
+      ]
     }
   },
   {
@@ -148,38 +206,61 @@
     "locationDisplay": "Jewellery Quarter, Birmingham, UK",
     "latitude": 52.4862,
     "longitude": -1.9015,
-    "styles": ["watercolour", "geometric"],
-    "avatar": "https://i.pravatar.cc/150?img=19",
+    "styles": [
+      "watercolour",
+      "geometric"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-32.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_125.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_28.png",
         "description": "Watercolour butterfly with splash effects",
         "style": "watercolour",
-        "tags": ["butterfly", "colorful", "splash"]
+        "tags": [
+          "butterfly",
+          "colorful",
+          "splash"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_76.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_73.png",
         "description": "Sacred geometry mandala",
         "style": "watercolour",
-        "tags": ["mandala", "sacred", "precise"]
+        "tags": [
+          "mandala",
+          "sacred",
+          "precise"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_126.png",
         "description": "Watercolour landscape",
         "style": "watercolour",
-        "tags": ["landscape", "abstract", "flowing"]
+        "tags": [
+          "landscape",
+          "abstract",
+          "flowing"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_75.png",
         "description": "Geometric animal silhouette",
         "style": "watercolour",
-        "tags": ["animal", "silhouette", "modern"]
+        "tags": [
+          "animal",
+          "silhouette",
+          "modern"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_74.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_76.png",
         "description": "Watercolour floral arrangement",
         "style": "watercolour",
-        "tags": ["flowers", "delicate", "feminine"]
+        "tags": [
+          "flowers",
+          "delicate",
+          "feminine"
+        ]
       }
     ],
     "contactInfo": {
@@ -206,7 +287,10 @@
     "experience": {
       "yearsActive": 6,
       "apprenticeshipCompleted": true,
-      "certifications": ["Bloodborne Pathogen", "Color Theory Advanced"]
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Color Theory Advanced"
+      ]
     }
   },
   {
@@ -217,38 +301,61 @@
     "locationDisplay": "City Centre, Leeds, UK",
     "latitude": 53.796,
     "longitude": -1.5446,
-    "styles": ["traditional", "tribal"],
-    "avatar": "https://i.pravatar.cc/150?img=23",
+    "styles": [
+      "traditional",
+      "tribal"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-50.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_104.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_87.png",
         "description": "Traditional anchor with rope",
         "style": "traditional",
-        "tags": ["anchor", "nautical", "rope"]
+        "tags": [
+          "anchor",
+          "nautical",
+          "rope"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
         "description": "Tribal koi fish design",
         "style": "traditional",
-        "tags": ["koi", "fish", "tribal"]
+        "tags": [
+          "koi",
+          "fish",
+          "tribal"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_22.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_106.png",
         "description": "Tribal dragon sleeve",
         "style": "traditional",
-        "tags": ["dragon", "sleeve", "mythical"]
+        "tags": [
+          "dragon",
+          "sleeve",
+          "mythical"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_107.png",
         "description": "Traditional pin-up girl",
         "style": "traditional",
-        "tags": ["pin-up", "vintage", "classic"]
+        "tags": [
+          "pin-up",
+          "vintage",
+          "classic"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_109.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_108.png",
         "description": "Traditional cherry blossom branch",
         "style": "traditional",
-        "tags": ["cherry-blossom", "branch", "delicate"]
+        "tags": [
+          "cherry-blossom",
+          "branch",
+          "delicate"
+        ]
       }
     ],
     "contactInfo": {
@@ -290,38 +397,62 @@
     "locationDisplay": "West End, Glasgow, UK",
     "latitude": 55.8642,
     "longitude": -4.2518,
-    "styles": ["fineline", "minimalism", "floral"],
-    "avatar": "https://i.pravatar.cc/150?img=12",
+    "styles": [
+      "fineline",
+      "minimalism",
+      "floral"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-35.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_4.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_47.png",
         "description": "Fine line floral wreath",
         "style": "fineline",
-        "tags": ["floral", "wreath", "delicate"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_7.png",
-        "description": "Minimalist mountain range",
-        "style": "fineline",
-        "tags": ["mountain", "landscape", "simple"]
+        "tags": [
+          "floral",
+          "wreath",
+          "delicate"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_5.png",
+        "description": "Minimalist mountain range",
+        "style": "fineline",
+        "tags": [
+          "mountain",
+          "landscape",
+          "simple"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_48.png",
         "description": "Floral leaf collection",
         "style": "fineline",
-        "tags": ["leaves", "nature", "botanical"]
+        "tags": [
+          "leaves",
+          "nature",
+          "botanical"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_46.png",
         "description": "Fine line constellation map",
         "style": "fineline",
-        "tags": ["stars", "constellation", "celestial"]
+        "tags": [
+          "stars",
+          "constellation",
+          "celestial"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_9.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_4.png",
         "description": "Minimalist geometric shapes",
         "style": "fineline",
-        "tags": ["geometric", "clean", "modern"]
+        "tags": [
+          "geometric",
+          "clean",
+          "modern"
+        ]
       }
     ],
     "contactInfo": {
@@ -348,7 +479,10 @@
     "experience": {
       "yearsActive": 4,
       "apprenticeshipCompleted": true,
-      "certifications": ["Bloodborne Pathogen", "Fine Line Specialist"]
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Fine Line Specialist"
+      ]
     }
   },
   {
@@ -359,38 +493,61 @@
     "locationDisplay": "Camden, London, UK",
     "latitude": 51.5392,
     "longitude": -0.1426,
-    "styles": ["blackwork", "tribal"],
-    "avatar": "https://i.pravatar.cc/150?img=46",
+    "styles": [
+      "blackwork",
+      "tribal"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-22.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
         "description": "Full blackwork sleeve",
         "style": "blackwork",
-        "tags": ["blackwork", "sleeve", "bold"]
+        "tags": [
+          "blackwork",
+          "sleeve",
+          "bold"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
         "description": "Blackwork rose design",
         "style": "blackwork",
-        "tags": ["blackwork", "rose", "bold"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_66.png",
-        "description": "Modern tribal design",
-        "style": "blackwork",
-        "tags": ["tribal", "modern", "bold"]
+        "tags": [
+          "blackwork",
+          "rose",
+          "bold"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_42.png",
-        "description": "Blackwork geometric patterns",
+        "description": "Modern tribal design",
         "style": "blackwork",
-        "tags": ["geometric", "patterns", "solid"]
+        "tags": [
+          "tribal",
+          "modern",
+          "bold"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+        "description": "Blackwork geometric patterns",
+        "style": "blackwork",
+        "tags": [
+          "geometric",
+          "patterns",
+          "solid"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
         "description": "Large scale blackwork project",
         "style": "blackwork",
-        "tags": ["large-scale", "project", "bold"]
+        "tags": [
+          "large-scale",
+          "project",
+          "bold"
+        ]
       }
     ],
     "contactInfo": {
@@ -432,38 +589,60 @@
     "locationDisplay": "Digbeth, Birmingham, UK",
     "latitude": 52.4751,
     "longitude": -1.8909,
-    "styles": ["new_school"],
-    "avatar": "https://i.pravatar.cc/150?img=27",
+    "styles": [
+      "new_school"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_86.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_20.png",
         "description": "New school cartoon character",
         "style": "new_school",
-        "tags": ["cartoon", "character", "vibrant"]
+        "tags": [
+          "cartoon",
+          "character",
+          "vibrant"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_12.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_18.png",
         "description": "New school comic book style",
         "style": "new_school",
-        "tags": ["comic", "colorful", "bold"]
+        "tags": [
+          "comic",
+          "colorful",
+          "bold"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_14.png",
         "description": "New school animal design",
         "style": "new_school",
-        "tags": ["animal", "cute", "exaggerated"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_20.png",
-        "description": "New school graffiti style",
-        "style": "new_school",
-        "tags": ["graffiti", "street-art", "colorful"]
+        "tags": [
+          "animal",
+          "cute",
+          "exaggerated"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_15.png",
+        "description": "New school graffiti style",
+        "style": "new_school",
+        "tags": [
+          "graffiti",
+          "street-art",
+          "colorful"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
         "description": "New school portrait design",
         "style": "new_school",
-        "tags": ["portrait", "colorful", "modern"]
+        "tags": [
+          "portrait",
+          "colorful",
+          "modern"
+        ]
       }
     ],
     "contactInfo": {
@@ -505,38 +684,61 @@
     "locationDisplay": "Old Town, Edinburgh, UK",
     "latitude": 55.9533,
     "longitude": -3.1883,
-    "styles": ["tribal", "traditional"],
-    "avatar": "https://i.pravatar.cc/150?img=16",
+    "styles": [
+      "tribal",
+      "traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-75.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_115.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_116.png",
         "description": "Tribal knot armband",
         "style": "tribal",
-        "tags": ["knot", "armband", "heritage"]
+        "tags": [
+          "knot",
+          "armband",
+          "heritage"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_113.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_111.png",
         "description": "Traditional thistle design",
         "style": "tribal",
-        "tags": ["thistle", "heritage", "scotland"]
+        "tags": [
+          "thistle",
+          "heritage",
+          "scotland"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_112.png",
         "description": "Tribal cross with intricate details",
         "style": "tribal",
-        "tags": ["cross", "religious", "detailed"]
+        "tags": [
+          "cross",
+          "religious",
+          "detailed"
+        ]
       },
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_111.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_115.png",
         "description": "Traditional warrior portrait",
         "style": "tribal",
-        "tags": ["warrior", "heritage", "historical"]
+        "tags": [
+          "warrior",
+          "heritage",
+          "historical"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_114.png",
         "description": "Tribal fusion design",
         "style": "tribal",
-        "tags": ["fusion", "modern", "heritage"]
+        "tags": [
+          "fusion",
+          "modern",
+          "heritage"
+        ]
       }
     ],
     "contactInfo": {
@@ -578,38 +780,61 @@
     "locationDisplay": "Brick Lane, London, UK",
     "latitude": 51.5201,
     "longitude": -0.0712,
-    "styles": ["dotwork", "geometric"],
-    "avatar": "https://i.pravatar.cc/150?img=34",
+    "styles": [
+      "dotwork",
+      "geometric"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-35.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_62.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_60.png",
         "description": "Intricate dotwork shoulder piece",
         "style": "dotwork",
-        "tags": ["dotwork", "shoulder", "intricate"]
+        "tags": [
+          "dotwork",
+          "shoulder",
+          "intricate"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_61.png",
         "description": "Dotwork geometric pattern",
         "style": "dotwork",
-        "tags": ["dots", "geometric", "pattern"]
+        "tags": [
+          "dots",
+          "geometric",
+          "pattern"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_67.png",
         "description": "Geometric henna-inspired design",
         "style": "dotwork",
-        "tags": ["henna", "geometric", "cultural"]
+        "tags": [
+          "henna",
+          "geometric",
+          "cultural"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_62.png",
+        "description": "Sacred geometry design",
+        "style": "dotwork",
+        "tags": [
+          "sacred",
+          "geometry",
+          "spiritual"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_65.png",
-        "description": "Sacred geometry design",
-        "style": "dotwork",
-        "tags": ["sacred", "geometry", "spiritual"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_63.png",
         "description": "Dotwork animal portrait",
         "style": "dotwork",
-        "tags": ["animal", "portrait", "stippling"]
+        "tags": [
+          "animal",
+          "portrait",
+          "stippling"
+        ]
       }
     ],
     "contactInfo": {
@@ -651,38 +876,61 @@
     "locationDisplay": "Chapel Allerton, Leeds, UK",
     "latitude": 53.8269,
     "longitude": -1.5346,
-    "styles": ["blackwork", "surrealism"],
-    "avatar": "https://i.pravatar.cc/150?img=17",
+    "styles": [
+      "blackwork",
+      "surrealism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-17.jpg",
     "portfolioImages": [
       {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_66.png",
         "description": "Blackwork mechanical arm piece",
         "style": "blackwork",
-        "tags": ["blackwork", "mechanical", "bold"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
-        "description": "Surreal character portrait",
-        "style": "blackwork",
-        "tags": ["surreal", "portrait", "artistic"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
-        "description": "Surreal skull composition",
-        "style": "blackwork",
-        "tags": ["skull", "surreal", "artistic"]
-      },
-      {
-        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_66.png",
-        "description": "Blackwork spine design",
-        "style": "blackwork",
-        "tags": ["spine", "blackwork", "detailed"]
+        "tags": [
+          "blackwork",
+          "mechanical",
+          "bold"
+        ]
       },
       {
         "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+        "description": "Surreal character portrait",
+        "style": "blackwork",
+        "tags": [
+          "surreal",
+          "portrait",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+        "description": "Surreal skull composition",
+        "style": "blackwork",
+        "tags": [
+          "skull",
+          "surreal",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_85.png",
+        "description": "Blackwork spine design",
+        "style": "blackwork",
+        "tags": [
+          "spine",
+          "blackwork",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
         "description": "Surreal sleeve section",
         "style": "blackwork",
-        "tags": ["sleeve", "surreal", "narrative"]
+        "tags": [
+          "sleeve",
+          "surreal",
+          "narrative"
+        ]
       }
     ],
     "contactInfo": {

@@ -1,23 +1,94 @@
 # Tattoo Directory Scripts
 
-This directory contains scripts for managing test data and S3 image uploads for the Tattoo Directory project.
+This directory contains organized utility scripts for the Tattoo Directory MVP project.
 
-## Overview
+## 📁 Folder Structure
 
-The scripts help set up realistic test data with proper image handling using LocalStack S3 for local development.
+The scripts are organized into logical categories for better maintainability:
 
-## Files
+### 🚀 deployment/
+Scripts for environment setup and deployment:
+- `platform-launcher.js` - Cross-platform environment launcher
+- `start-local.sh/bat` - Start local development environment
+- `stop-local.sh/bat` - Stop local development environment
+- `startup-optimizer.js` - Optimize startup performance
+- `docker-cache-optimizer.js` - Docker cache optimization
 
-### Core Scripts
+### 📊 monitoring/
+Health checks and monitoring utilities:
+- `health-check.js` - Service health verification
+- `localstack-monitor.js` - LocalStack monitoring
+- `resource-monitor.js` - System resource monitoring
+- `log-aggregator.js` - Log collection and aggregation
+- `log-viewer.js` - Interactive log viewer
+- `monitoring-dashboard.js` - Comprehensive monitoring dashboard
 
-- `setup-test-data.js` - Main orchestrator script that runs the complete setup process
-- `upload-images-to-s3.js` - Uploads test images from `tests/Test_Data/ImageSet/` to LocalStack S3
-- `update-test-data.js` - Updates test data files with S3 URLs and new style IDs
+### ⚡ performance/
+Performance testing and optimization:
+- `performance-monitor.js` - Performance metrics collection
+- `performance-benchmarks.js` - Benchmark testing
+- `performance-dashboard.js` - Performance visualization
 
-### Test Data Files
+### ✅ validation/
+Environment and deployment validation:
+- `environment-validator.js` - Environment setup validation
+- `production-parity-validator.js` - Production environment comparison
+- `comprehensive-test-runner.js` - Full test suite execution
+- `final-integration-tester.js` - Integration testing
 
-- `test-data/styles.json` - Updated with new style IDs matching image folders
-- `test-data/artists.json` - Updated with new styles, S3 image URLs, and faker.js avatars
+### 💾 data-management/
+Data seeding and management utilities:
+- `data-management.sh/bat` - Data management operations
+- `backend/src/scripts/seed-opensearch.js` - Database seeding
+- `setup-test-data.js` - Test data initialization
+- `update-test-data.js` - Test data updates
+
+### 🛠️ utilities/
+General development utilities:
+- `dev-utils.js` - Development helper functions
+- `get-api-url.js` - API endpoint utilities
+
+### ☁️ aws/
+AWS-specific operations:
+- `upload-images-to-s3.js` - S3 image upload utility
+- `rollback-nat-eip-manual.sh` - NAT EIP rollback
+- `rotate-nat-eip-manual.sh` - NAT EIP rotation
+
+### 🧪 testing/
+Testing utilities:
+- `test-image-urls.js` - Image URL validation
+- `test-monitoring-system.js` - Monitoring system tests
+
+### 📂 Existing Organized Folders
+- `data-seeder/` - Comprehensive data seeding utilities
+- `security/` - Security validation and management
+- `test-data/` - Static test data files
+
+## 🚀 Quick Start
+
+All scripts can be run via npm commands from the project root:
+
+```bash
+# Environment management
+npm run local:start          # Start local environment
+npm run local:stop           # Stop local environment
+npm run local:health         # Check service health
+
+# Data management
+npm run data:seed            # Seed test data
+npm run data:validate        # Validate data integrity
+
+# Monitoring
+npm run local:monitor        # Monitor resources
+npm run logs:view            # View aggregated logs
+
+# Performance
+npm run performance:monitor  # Monitor performance metrics
+```
+
+## 📋 Migration Notes
+
+This directory was reorganized on 2025-09-16 to improve maintainability. All npm script references have been automatically updated to use the new folder structure.
 - `test-data/studios.json` - Updated with matching specialties
 
 ### Generated Files

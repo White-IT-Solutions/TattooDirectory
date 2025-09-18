@@ -91,8 +91,8 @@ class EnvironmentValidator {
     validateEnvironmentFiles(results) {
         const envFiles = [
             '.env.local',
-            'dev-tools/.env.local',
-            'dev-tools/.env.debug.example',
+            'devtools/.env.local',
+            'devtools/.env.debug.example',
             'frontend/.env.local',
             'frontend/.env.docker.local'
         ];

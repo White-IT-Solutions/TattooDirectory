@@ -56,19 +56,45 @@ function createLambdaEvent(method, path, searchParams = null, body = null) {
 export async function lambdaRequest(lambdaUrl, method, path, searchParams = null, body = null) {
   const lambdaEvent = createLambdaEvent(method, path, searchParams, body);
   
+  // Ensure we always send valid JSON
+  const requestBody = JSON.stringify(lambdaEvent);
+  
+  console.log('Lambda RIE Request:', {
+    url: lambdaUrl,
+    method: 'POST',
+    body: requestBody,
+    event: lambdaEvent
+  });
+  
   const response = await fetch(lambdaUrl, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
-    body: JSON.stringify(lambdaEvent)
+    body: requestBody
   });
 
   if (!response.ok) {
-    throw new Error(`Lambda request failed: ${response.status} ${response.statusText}`);
+    const errorText = await response.text();
+    console.error('Lambda RIE Error Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText
+    });
+    throw new Error(`Lambda request failed: ${response.status} ${response.statusText} - ${errorText}`);
   }
 
-  const lambdaResponse = await response.json();
+  const responseText = await response.text();
+  console.log('Lambda RIE Response:', responseText);
+  
+  let lambdaResponse;
+  try {
+    lambdaResponse = JSON.parse(responseText);
+  } catch (parseError) {
+    console.error('Failed to parse Lambda response:', responseText);
+    throw new Error(`Invalid JSON response from Lambda: ${parseError.message}`);
+  }
   
   // Lambda RIE returns a response object with statusCode, headers, and body
   // We need to convert this back to a regular fetch Response

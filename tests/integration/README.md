@@ -315,18 +315,18 @@ Integration tests include performance validation across both data sources:
    docker logs tattoo-directory-backend --tail 20
 
    # Restart backend container
-   docker-compose -f dev-tools/docker/docker-compose.local.yml restart backend
+   docker-compose -f devtools/docker/docker-compose.local.yml restart backend
 
    # Rebuild if needed
-   docker-compose -f dev-tools/docker/docker-compose.local.yml build backend
+   docker-compose -f devtools/docker/docker-compose.local.yml build backend
    ```
 
 3. **Socket Hang Up Errors**
 
    ```bash
    # Usually indicates container instability - rebuild and restart
-   docker-compose -f dev-tools/docker/docker-compose.local.yml build backend
-   docker-compose -f dev-tools/docker/docker-compose.local.yml up -d
+   docker-compose -f devtools/docker/docker-compose.local.yml build backend
+   docker-compose -f devtools/docker/docker-compose.local.yml up -d
 
    # Check container resources
    docker stats tattoo-directory-backend

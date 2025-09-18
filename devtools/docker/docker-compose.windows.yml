@@ -1,0 +1,44 @@
+# Docker Compose Override for Windows
+# Use this file on Windows systems for optimal performance and compatibility
+# Usage: docker-compose -f dev-tools/docker/docker-compose.local.yml -f dev-tools/docker/docker-compose.windows.yml up
+
+# Windows-specific overrides for performance and compatibility
+services:
+  localstack:
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
+      - localstack-data:/var/lib/localstack
+      - ../../localstack-init:/etc/localstack/init/ready.d:ro
+
+  backend:
+    volumes:
+      - ../../backend/src:/var/task/src:ro,cached
+      - ../../backend/package.json:/var/task/package.json:ro,cached
+      - ../../package-lock.json:/var/task/package-lock.json:ro,cached
+
+  frontend:
+    volumes:
+      - ../../frontend/src:/app/frontend/src:ro,cached
+      - ../../frontend/public:/app/frontend/public:ro,cached
+      - ../../frontend/package.json:/app/frontend/package.json:ro,cached
+      - ../../frontend/next.config.mjs:/app/frontend/next.config.mjs:ro,cached
+      - ../../frontend/tailwind.config.js:/app/frontend/tailwind.config.js:ro,cached
+      - ../../frontend/postcss.config.mjs:/app/frontend/postcss.config.mjs:ro,cached
+      - ../../frontend/jsconfig.json:/app/frontend/jsconfig.json:ro,cached
+      - ../../frontend/.eslintrc.json:/app/frontend/.eslintrc.json:ro,cached
+      # Root workspace files
+      - ../../package.json:/app/package.json:ro,cached
+      - ../../package-lock.json:/app/package-lock.json:ro,cached
+      # Performance volumes for Windows
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/frontend/.next
+    environment:
+      # Enable polling for file watching on Windows
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=2000
+
+# Named volumes for frontend performance
+volumes:
+  frontend_node_modules:
+  frontend_next:

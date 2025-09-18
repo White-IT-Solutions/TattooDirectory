@@ -56,7 +56,7 @@ class SecureStartup {
      */
     loadSecurityConfig() {
         try {
-            const configPath = path.join(process.cwd(), 'dev-tools', 'security-config.json');
+            const configPath = path.join(process.cwd(), 'devtools', 'scripts', 'security-config.json');
             return JSON.parse(fs.readFileSync(configPath, 'utf8'));
         } catch (error) {
             console.warn('⚠️  Could not load security config, using defaults');
@@ -229,7 +229,7 @@ class SecureStartup {
         console.log('   🐳 Validating container security configurations...');
         
         // Check if docker-compose file has security configurations
-        const composeFile = path.join(process.cwd(), 'dev-tools', 'docker', 'docker-compose.local.yml');
+        const composeFile = path.join(process.cwd(), 'devtools', 'docker', 'docker-compose.local.yml');
         if (!fs.existsSync(composeFile)) {
             console.log('   ❌ Docker compose file not found');
             return false;
@@ -265,7 +265,7 @@ class SecureStartup {
             // Start services using docker-compose
             const composeCommand = [
                 'docker-compose',
-                '-f', 'dev-tools/docker/docker-compose.local.yml',
+                '-f', 'devtools/docker/docker-compose.local.yml',
                 'up', '-d', '--remove-orphans'
             ];
             
@@ -435,7 +435,7 @@ class SecureStartup {
         try {
             // Stop all services immediately
             console.log('🛑 Stopping all services...');
-            execSync('docker-compose -f dev-tools/docker/docker-compose.local.yml down --remove-orphans', { stdio: 'inherit' });
+            execSync('docker-compose -f devtools/docker/docker-compose.local.yml down --remove-orphans', { stdio: 'inherit' });
             
             // Remove network
             console.log('🌐 Removing Docker network...');

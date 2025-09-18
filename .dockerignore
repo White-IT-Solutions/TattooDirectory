@@ -1,0 +1,96 @@
+# Node modules from all workspaces
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Build outputs
+.next/
+*/.next/
+**/.next/
+out/
+*/out/
+**/out/
+
+# Environment files
+.env*
+*/.env*
+**/.env*
+
+# IDE files
+.vscode/
+.idea/
+*/.vscode/
+*/.idea/
+**/.vscode/
+**/.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+*/.DS_Store
+*/Thumbs.db
+**/.DS_Store
+**/Thumbs.db
+
+# Git
+.git/
+.gitignore
+*/.git/
+*/.gitignore
+**/.git/
+**/.gitignore
+
+# Logs
+*.log
+*/*.log
+**/*.log
+
+# Coverage
+coverage/
+*/coverage/
+**/coverage/
+
+# Cache directories
+.npm/
+.eslintcache
+*/.npm/
+*/.eslintcache
+**/.npm/
+**/.eslintcache
+
+# Temporary files
+*.tmp
+*.temp
+*/*.tmp
+*/*.temp
+**/*.tmp
+**/*.temp
+
+# Docker files (except the one we're using)
+Dockerfile*
+docker-compose*
+*/Dockerfile*
+*/docker-compose*
+**/Dockerfile*
+**/docker-compose*
+
+# But include the specific Dockerfile we need
+!frontend/docker/Dockerfile.local
+
+# Test directories
+tests/
+*/tests/
+**/tests/
+
+# Documentation
+docs/
+*/docs/
+**/docs/
+README*.md
+*/README*.md
+**/README*.md
+
+# Scripts (except package.json files)
+scripts/
+devtools/
+localstack-init/

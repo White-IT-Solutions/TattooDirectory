@@ -128,10 +128,14 @@ class DataSeeder {
   }
 
   async loadTestData(filename) {
-    const testDataPath = path.join(__dirname, '..', 'test-data', filename);
+    // Try Docker container path first, then fallback to relative path
+    const dockerPath = path.join('/app', 'test-data', filename);
+    const relativePath = path.join(__dirname, '..', 'test-data', filename);
+    
+    const testDataPath = fs.existsSync(dockerPath) ? dockerPath : relativePath;
     
     if (!fs.existsSync(testDataPath)) {
-      throw new Error(`Test data file not found: ${filename}`);
+      throw new Error(`Test data file not found: ${filename} (tried ${dockerPath} and ${relativePath})`);
     }
     
     try {

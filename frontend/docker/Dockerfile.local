@@ -1,0 +1,56 @@
+# Frontend Docker configuration for local development
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy root workspace files for npm workspaces
+COPY package*.json ./
+COPY frontend/package*.json ./frontend/
+
+# Install dependencies using npm workspaces
+RUN npm ci
+
+# Copy only essential frontend files (volumes will override for hot reloading)
+COPY frontend/next.config.docker.mjs ./frontend/next.config.mjs
+COPY frontend/tailwind.config.js ./frontend/
+COPY frontend/postcss.config.mjs ./frontend/
+COPY frontend/jsconfig.json ./frontend/
+COPY frontend/.eslintrc.json ./frontend/
+COPY frontend/docker/docker-entrypoint-debug.sh ./frontend/docker/
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Set executable permissions for entrypoint script
+RUN chmod +x ./frontend/docker/docker-entrypoint-debug.sh
+
+# Create directories and set permissions for hot reloading
+RUN mkdir -p frontend/.next && chown -R nextjs:nodejs frontend/.next
+RUN mkdir -p node_modules/.cache && chown -R nextjs:nodejs node_modules/.cache
+
+# Change ownership of the app directory
+RUN chown -R nextjs:nodejs /app
+
+# Switch to non-root user
+USER nextjs
+
+# Set working directory to frontend workspace
+WORKDIR /app/frontend
+
+# Expose ports
+EXPOSE 3000
+EXPOSE 9230
+
+# Set environment to development
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Enable hot reloading for Docker
+ENV WATCHPACK_POLLING=true
+ENV CHOKIDAR_USEPOLLING=true
+
+# Start development server with optional debugging
+ENTRYPOINT ["./docker/docker-entrypoint-debug.sh"]
+CMD ["npm", "run", "dev", "--workspace=frontend"]

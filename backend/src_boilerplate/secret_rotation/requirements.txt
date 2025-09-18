@@ -1,5 +1,0 @@
-# AWS SDK for Python - included in Lambda runtime
-# boto3>=1.26.0
-# botocore>=1.29.0
-opensearch-py>=2.0.0
-requests-aws4auth>=1.1.2

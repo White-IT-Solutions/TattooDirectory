@@ -1,23 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configure workspace root to fix lockfile warning
-  outputFileTracingRoot: process.env.NODE_ENV === 'development' ? '../' : undefined,
-  
-  // Enable static export for S3 deployment (disabled in development)
-  output: process.env.NODE_ENV === 'development' ? undefined : 'export',
-  trailingSlash: process.env.NODE_ENV === 'development' ? false : true,
-  
   images: {
-    // Disable image optimization for static export
-    unoptimized: true,
     remotePatterns: [
       {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4566",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+
+      {
         protocol: "https",
-        hostname: "cdn.jsdelivr.net",
+        hostname: "via.placeholder.com",
       },
       {
         protocol: "https",
-        hostname: "i.pinimg.com",
+        hostname: "cdn.jsdelivr.net",
       },
       {
         protocol: "https",
@@ -25,30 +26,45 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "raw.githubusercontent.com",
+        hostname: "i.pinimg.com",
       },
       {
         protocol: "https",
         hostname: "loremflickr.com",
       },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
+    formats: ["image/webp", "image/avif"],
+    unoptimized: process.env.NODE_ENV === "development", // Disable optimization for LocalStack images
   },
-  
-  // Environment-specific configuration
   env: {
-    NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
+    NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_API_URL_DEV: process.env.NEXT_PUBLIC_API_URL_DEV,
-    NEXT_PUBLIC_API_URL_PROD: process.env.NEXT_PUBLIC_API_URL_PROD,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
+      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
-  
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.devtool = 'source-map';
-    } else {
-      config.devtool = false;
+  // Enable source maps in development
+  productionBrowserSourceMaps: false,
+  // Configure webpack for better development experience
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+      };
     }
     return config;
+  },
+  // Remove deprecated options
+  experimental: {
+    // appDir is now default in Next.js 13+, no need to specify
   },
 };
 

@@ -281,6 +281,11 @@ async function getStylesFromDynamoDB() {
   }
 }
 
+// --- Helper Functions ---
+function getRequestId(event) {
+  return event.requestContext?.requestId || event.awsRequestId || 'unknown';
+}
+
 // --- RFC 9457 Error Response Helper ---
 function createErrorResponse(statusCode, title, detail, instance, type = null) {
   const errorType =
@@ -498,7 +503,7 @@ async function handleSearchArtists(event, logger) {
           500,
           "Internal Server Error",
           "Search service is currently unavailable.",
-          event.requestContext.requestId
+          getRequestId(event)
         );
       }
     }
@@ -800,7 +805,7 @@ async function handleSearchArtists(event, logger) {
       500,
       "Internal Server Error",
       "An unexpected error occurred during the search operation.",
-      event.requestContext.requestId
+      getRequestId(event)
     );
   }
 }
@@ -815,7 +820,7 @@ async function handleGetArtist(event, logger) {
         400,
         "Bad Request",
         "Artist ID is required in the path.",
-        event.requestContext.requestId
+        getRequestId(event)
       );
     }
 
@@ -848,7 +853,7 @@ async function handleGetArtist(event, logger) {
             404,
             "Not Found",
             `Artist with ID '${artistId}' was not found.`,
-            event.requestContext.requestId
+            getRequestId(event)
           );
         }
 
@@ -890,7 +895,7 @@ async function handleGetArtist(event, logger) {
           500,
           "Internal Server Error",
           "An unexpected error occurred while retrieving the artist.",
-          event.requestContext.requestId
+          getRequestId(event)
         );
       }
     }
@@ -937,7 +942,7 @@ async function handleGetArtist(event, logger) {
                 404,
                 "Not Found",
                 `Artist with ID '${artistId}' was not found.`,
-                event.requestContext.requestId
+                getRequestId(event)
               );
             }
 
@@ -978,7 +983,7 @@ async function handleGetArtist(event, logger) {
               404,
               "Not Found",
               `Artist with ID '${artistId}' was not found.`,
-              event.requestContext.requestId
+              getRequestId(event)
             );
           }
         }
@@ -997,7 +1002,7 @@ async function handleGetArtist(event, logger) {
               404,
               "Not Found",
               `Artist with ID '${artistId}' was not found.`,
-              event.requestContext.requestId
+              getRequestId(event)
             );
           }
 
@@ -1038,7 +1043,7 @@ async function handleGetArtist(event, logger) {
             404,
             "Not Found",
             `Artist with ID '${artistId}' was not found.`,
-            event.requestContext.requestId
+            getRequestId(event)
           );
         }
       }
@@ -1082,7 +1087,7 @@ async function handleGetArtist(event, logger) {
         500,
         "Internal Server Error",
         "Unexpected response from search service.",
-        event.requestContext.requestId
+        getRequestId(event)
       );
     }
 
@@ -1092,7 +1097,7 @@ async function handleGetArtist(event, logger) {
         404,
         "Not Found",
         `Artist with ID '${artistId}' was not found.`,
-        event.requestContext.requestId
+        getRequestId(event)
       );
     }
 
@@ -1138,7 +1143,7 @@ async function handleGetArtist(event, logger) {
       500,
       "Internal Server Error",
       "An unexpected error occurred while retrieving the artist.",
-      event.requestContext.requestId
+      getRequestId(event)
     );
   }
 }
@@ -1179,7 +1184,7 @@ async function handleGetStyles(event, logger) {
           500,
           "Internal Server Error",
           "An unexpected error occurred while retrieving styles.",
-          event.requestContext.requestId
+          getRequestId(event)
         );
       }
     }
@@ -1310,7 +1315,7 @@ async function handleGetStyles(event, logger) {
       500,
       "Internal Server Error",
       "An unexpected error occurred while retrieving styles.",
-      event.requestContext.requestId
+      getRequestId(event)
     );
   }
 }
@@ -1340,7 +1345,7 @@ export const handler = async (event, context) => {
     logger.info("API Handler invoked", {
       path: event.rawPath,
       method: event.requestContext?.http?.method,
-      correlationId: event.requestContext?.requestId,
+      correlationId: getRequestId(event),
       eventKeys: Object.keys(event),
     });
   } catch (initError) {
@@ -1366,6 +1371,15 @@ export const handler = async (event, context) => {
     logger = createLogger(context, event);
   }
 
+  // Health check endpoint
+  if (path === "/health" && method === "GET") {
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "healthy", timestamp: new Date().toISOString() }),
+    };
+  }
+
   if (path === "/v1/artists" && method === "GET") {
     return handleSearchArtists(event, logger);
   }
@@ -1384,6 +1398,6 @@ export const handler = async (event, context) => {
     404,
     "Not Found",
     `Route ${method} ${path} not found.`,
-    event.requestContext.requestId
+    getRequestId(event)
   );
 };

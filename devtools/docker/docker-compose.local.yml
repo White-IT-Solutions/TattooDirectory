@@ -1,0 +1,201 @@
+# Main service definitions
+services:
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: tattoo-directory-localstack
+    command: "/usr/bin/tini -s -- /usr/local/bin/docker-entrypoint.sh"
+    ports:
+      - "${LOCALSTACK_PORT:-4566}:4566"
+      - "${LOCALSTACK_EXTERNAL_PORT_START:-4510}-${LOCALSTACK_EXTERNAL_PORT_END:-4559}:4510-4559"
+    environment:
+      - SERVICES=dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_HOST=localstack
+      - PERSISTENCE=1
+      - DATA_DIR=/var/lib/localstack/data
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_REMOTE_DOCKER=false
+      - LOCALSTACK_VOLUME_DIR=/var/lib/localstack
+      - SKIP_INFRA_DOWNLOADS=1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "localstack-data:/var/lib/localstack"
+      - "../../localstack-init:/etc/localstack/init/ready.d"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: "1.0"
+        reservations:
+          memory: 768M
+          cpus: "0.5"
+    networks:
+      - tattoo-directory-local
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: backend/docker/Dockerfile.local
+    container_name: tattoo-directory-backend
+    ports:
+      - "${BACKEND_PORT:-9000}:8080"
+      - "${BACKEND_DEBUG_PORT:-9229}:9229"
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=eu-west-2
+      - DYNAMODB_TABLE_NAME=tattoo-directory-local
+      - OPENSEARCH_ENDPOINT=http://localstack:4566
+      - NODE_ENV=development
+      - LAMBDA_TASK_ROOT=/var/task
+      - ENABLE_DEBUG=${ENABLE_BACKEND_DEBUG:-false}
+    depends_on:
+      localstack:
+        condition: service_healthy
+    volumes:
+      - ../../backend/src:/var/task/src:ro
+      - ../../backend/package.json:/var/task/package.json:ro
+      - ../../package-lock.json:/var/task/package-lock.json:ro
+    healthcheck:
+      test: ["CMD", "echo", "healthy"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+        reservations:
+          memory: 256M
+          cpus: "0.25"
+    networks:
+      - tattoo-directory-local
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: frontend/docker/Dockerfile.local
+    container_name: tattoo-directory-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+      - "${FRONTEND_DEBUG_PORT:-9230}:9230"
+    env_file:
+      - ../.env.local
+    environment:
+      - NEXT_PUBLIC_ENVIRONMENT=local
+      - NEXT_PUBLIC_API_URL=http://backend:8080/2015-03-31/functions/function/invocations
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - ENABLE_DEBUG=${ENABLE_FRONTEND_DEBUG:-false}
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - ../../frontend/src:/app/frontend/src:ro
+      - ../../frontend/public:/app/frontend/public:ro
+      - ../../frontend/config:/app/frontend/config:ro
+      - ../../frontend/package.json:/app/frontend/package.json:ro
+      - ../../frontend/next.config.docker.mjs:/app/frontend/next.config.mjs:ro
+      - ../../frontend/tailwind.config.js:/app/frontend/tailwind.config.js:ro
+      - ../../frontend/postcss.config.mjs:/app/frontend/postcss.config.mjs:ro
+      - ../../frontend/jsconfig.json:/app/frontend/jsconfig.json:ro
+      - ../../frontend/.eslintrc.json:/app/frontend/.eslintrc.json:ro
+      # Root workspace files
+      - ../../package.json:/app/package.json:ro
+      - ../../package-lock.json:/app/package-lock.json:ro
+      - /app/node_modules
+      - /app/frontend/.next
+    healthcheck:
+      test: ["CMD", "node", "/app/health-check.js"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+        reservations:
+          memory: 512M
+          cpus: "0.25"
+    networks:
+      - tattoo-directory-local
+
+  swagger-ui:
+    image: nginx:alpine
+    container_name: tattoo-directory-swagger
+    ports:
+      - "${SWAGGER_PORT:-8080}:80"
+    volumes:
+      - ../../backend/docs/openapi.yaml:/usr/share/nginx/html/openapi/openapi.yaml:ro
+      - ../../backend/docs/swagger-ui.html:/usr/share/nginx/html/index.html:ro
+      - ../../backend/docs/swagger-config.js:/usr/share/nginx/html/swagger-config.js:ro
+    depends_on:
+      backend:
+        condition: service_started
+    healthcheck:
+      test:
+        ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: "0.1"
+        reservations:
+          memory: 32M
+          cpus: "0.05"
+    networks:
+      - tattoo-directory-local
+
+  data-seeder:
+    build:
+      context: ../../scripts
+      dockerfile: data-seeder/Dockerfile.seeder
+    container_name: tattoo-directory-seeder
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=eu-west-2
+      - DYNAMODB_TABLE_NAME=tattoo-directory-local
+      - OPENSEARCH_ENDPOINT=http://localstack:4566
+    depends_on:
+      localstack:
+        condition: service_healthy
+    volumes:
+      - ../../scripts/test-data:/app/test-data:ro
+    profiles:
+      - seeding
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.25"
+        reservations:
+          memory: 128M
+          cpus: "0.1"
+    networks:
+      - tattoo-directory-local
+
+networks:
+  tattoo-directory-local:
+    driver: bridge
+
+volumes:
+  localstack-data:
+    driver: local

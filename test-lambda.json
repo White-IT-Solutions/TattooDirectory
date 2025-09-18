@@ -1,0 +1,13 @@
+{
+  "rawPath": "/health",
+  "requestContext": {
+    "http": {
+      "method": "GET"
+    },
+    "requestId": "test-123"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "body": null,
+  "headers": {}
+}

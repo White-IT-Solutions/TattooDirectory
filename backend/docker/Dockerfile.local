@@ -1,0 +1,31 @@
+# Dockerfile for local development with Lambda Runtime Interface Emulator
+FROM public.ecr.aws/lambda/nodejs:20
+
+# Set working directory
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+# Copy backend package.json and install its dependencies directly
+COPY backend/package.json ./package.json
+
+# Install backend dependencies directly (not using workspaces in container)
+RUN npm install --only=production
+
+# Install nodemon for development hot reloading
+RUN npm install -g nodemon
+
+# Copy source code directly to working directory (where node_modules are)
+COPY backend/src/ ./
+
+# Install Lambda Runtime Interface Emulator
+ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/bin/aws-lambda-rie
+RUN chmod +x /usr/bin/aws-lambda-rie
+
+# Copy entrypoint script
+COPY backend/docker/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Set entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# Default command - can be overridden in docker-compose
+CMD ["handlers/api-handler/index.handler"]
