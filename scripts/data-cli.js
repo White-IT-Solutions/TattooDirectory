@@ -47,20 +47,23 @@ const SYMBOLS = {
  */
 const COMMANDS = {
   'setup-data': {
-    description: 'Set up all data and services for development',
+    description: 'Set up all data and services for development with enhanced frontend-sync-processor',
     usage: 'setup-data [options]',
     options: [
-      { flag: '--frontend-only', description: 'Generate mock data without AWS services' },
+      { flag: '--frontend-only', description: 'Generate enhanced mock data without AWS services (includes business data, ratings, pricing)' },
       { flag: '--images-only', description: 'Process and upload images only' },
       { flag: '--force', description: 'Force full processing, ignore incremental changes' },
-      { flag: '--scenario <name>', description: 'Use specific scenario for setup' }
+      { flag: '--scenario <name>', description: 'Use specific scenario for setup (supports enhanced scenarios with business data)' },
+      { flag: '--export', description: 'Export generated data to file for reuse' },
+      { flag: '--validate', description: 'Validate data consistency and structure during generation' }
     ],
     examples: [
       'setup-data',
-      'setup-data --frontend-only',
-      'setup-data --force --scenario minimal'
+      'setup-data --frontend-only --export',
+      'setup-data --force --scenario london-focused --validate',
+      'setup-data --frontend-only --scenario high-rated'
     ],
-    requirements: ['1.1', '2.1', '8.1', '8.2']
+    requirements: ['1.1', '2.1', '8.1', '8.2', '13.1', '13.2', '13.3', '13.4']
   },
   'reset-data': {
     description: 'Reset system to specific state',
@@ -83,42 +86,52 @@ const COMMANDS = {
     requirements: ['4.1', '4.2', '4.3', '4.4', '4.5']
   },
   'seed-scenario': {
-    description: 'Seed system with specific test scenario',
+    description: 'Seed system with enhanced test scenarios including business data and realistic profiles',
     usage: 'seed-scenario <scenario-name>',
     options: [
-      { flag: 'minimal', description: 'Quick testing with minimal data (3 artists)' },
-      { flag: 'search-basic', description: 'Basic search functionality testing (5 artists)' },
-      { flag: 'london-artists', description: 'London-focused artist testing (5 artists)' },
-      { flag: 'high-rated', description: 'High-rated artists for quality testing (3 artists)' },
-      { flag: 'new-artists', description: 'Recently added artists (4 artists)' },
-      { flag: 'booking-available', description: 'Artists with open booking slots (6 artists)' },
-      { flag: 'portfolio-rich', description: 'Artists with extensive portfolios (4 artists)' },
-      { flag: 'multi-style', description: 'Artists with multiple style specializations (3 artists)' },
-      { flag: 'pricing-range', description: 'Mid-range pricing testing (5 artists)' },
-      { flag: 'full-dataset', description: 'Complete test dataset with all styles (10 artists)' }
+      { flag: 'minimal', description: 'Quick testing with minimal data (3 artists with business data)' },
+      { flag: 'search-basic', description: 'Basic search functionality testing (5 artists with ratings/pricing)' },
+      { flag: 'london-artists', description: 'London-focused artist testing (5 artists with studio relationships)' },
+      { flag: 'london-focused', description: 'Enhanced London-focused testing with comprehensive studio data (10 artists)' },
+      { flag: 'high-rated', description: 'High-rated artists for quality testing (3 artists, 4.5+ ratings)' },
+      { flag: 'new-artists', description: 'Recently added artists with experience data (4 artists)' },
+      { flag: 'booking-available', description: 'Artists with open booking slots and availability data (6 artists)' },
+      { flag: 'portfolio-rich', description: 'Artists with extensive portfolios and style metadata (4 artists)' },
+      { flag: 'multi-style', description: 'Artists with multiple style specializations and characteristics (3 artists)' },
+      { flag: 'style-diverse', description: 'Diverse styles for filtering tests with enhanced metadata (12 artists)' },
+      { flag: 'pricing-range', description: 'Mid-range pricing testing with detailed pricing data (5 artists)' },
+      { flag: 'full-dataset', description: 'Complete test dataset with all enhanced features (10 artists)' },
+      { flag: 'empty', description: 'Empty results for testing no-data states (0 artists)' },
+      { flag: 'single', description: 'Single result for minimal data display testing (1 artist)' },
+      { flag: 'performance-test', description: 'Large dataset for performance testing (50+ artists)' }
     ],
     examples: [
       'seed-scenario minimal',
-      'seed-scenario london-artists',
-      'seed-scenario full-dataset'
+      'seed-scenario london-focused',
+      'seed-scenario style-diverse',
+      'seed-scenario performance-test'
     ],
-    requirements: ['3.1', '3.2', '3.3']
+    requirements: ['3.1', '3.2', '3.3', '13.3', '13.4', '13.5']
   },
   'validate-data': {
-    description: 'Validate data consistency and integrity',
+    description: 'Validate data consistency, integrity, and enhanced frontend-sync-processor data structures',
     usage: 'validate-data [type]',
     options: [
-      { flag: 'all', description: 'Comprehensive validation (default)' },
-      { flag: 'consistency', description: 'Cross-service data consistency' },
+      { flag: 'all', description: 'Comprehensive validation including enhanced data structures (default)' },
+      { flag: 'consistency', description: 'Cross-service data consistency and frontend-sync alignment' },
       { flag: 'images', description: 'Image accessibility and integrity' },
-      { flag: 'scenarios', description: 'Scenario data integrity' }
+      { flag: 'scenarios', description: 'Enhanced scenario data integrity with business data validation' },
+      { flag: 'frontend', description: 'Frontend mock data structure and content validation' },
+      { flag: 'business-data', description: 'Business data validation (ratings, pricing, availability, experience)' },
+      { flag: 'studio-relationships', description: 'Artist-studio relationship validation and bidirectional linking' }
     ],
     examples: [
       'validate-data',
-      'validate-data consistency',
-      'validate-data images'
+      'validate-data frontend',
+      'validate-data business-data',
+      'validate-data studio-relationships'
     ],
-    requirements: ['5.3', '5.4', '5.5', '5.6']
+    requirements: ['5.3', '5.4', '5.5', '5.6', '13.8', '14.6', '14.7']
   },
   'health-check': {
     description: 'Check service connectivity and health',
@@ -133,6 +146,47 @@ const COMMANDS = {
     options: [],
     examples: ['data-status'],
     requirements: ['5.1', '5.2', '5.7']
+  },
+  'scenarios': {
+    description: 'List available scenarios',
+    usage: 'scenarios',
+    options: [],
+    examples: ['scenarios'],
+    requirements: []
+  },
+  'reset-states': {
+    description: 'List available reset states',
+    usage: 'reset-states',
+    options: [],
+    examples: ['reset-states'],
+    requirements: []
+  },
+  'frontend-sync': {
+    description: 'Enhanced frontend sync processor with advanced mock data generation',
+    usage: 'frontend-sync <command> [options]',
+    options: [
+      { flag: 'generate [count]', description: 'Generate mock artists with business data' },
+      { flag: 'scenario <name>', description: 'Generate specific enhanced scenario' },
+      { flag: 'validate', description: 'Validate existing mock data structure' },
+      { flag: 'export <scenario>', description: 'Export data to file with validation' },
+      { flag: 'error <type>', description: 'Generate RFC 9457 compliant error response' },
+      { flag: 'performance', description: 'Generate performance test data' },
+      { flag: 'studios', description: 'Generate and display studio data' }
+    ],
+    examples: [
+      'frontend-sync generate --count 10 --scenario normal',
+      'frontend-sync scenario london-focused --export',
+      'frontend-sync error validation --instance /v1/search',
+      'frontend-sync performance --count 50'
+    ],
+    requirements: ['13.1', '13.2', '13.3', '13.4', '13.5', '13.6', '13.7', '13.8', '13.9', '13.10']
+  },
+  'help': {
+    description: 'Show help information',
+    usage: 'help [command]',
+    options: [],
+    examples: ['help', 'help setup-data', 'help frontend-sync'],
+    requirements: []
   }
 };
 
@@ -306,7 +360,14 @@ class DataCLI {
         case 'data-status':
           return await this.handleDataStatus(args, options);
         case 'help':
-          return this.showHelp(args[0]);
+          this.showHelp(args[0]);
+          return true;
+        case 'scenarios':
+          this.showAvailableScenarios();
+          return true;
+        case 'reset-states':
+          this.showAvailableResetStates();
+          return true;
         default:
           this.printError(`Unknown command: ${command}`);
           this.showHelp();
@@ -753,10 +814,23 @@ class DataCLI {
       return;
     }
 
-    console.log(`${COLORS.bright}${COLORS.blue}Data Management CLI${COLORS.reset}`);
+    // Handle special help commands
+    if (specificCommand === 'scenarios') {
+      this.showAvailableScenarios();
+      return;
+    }
+
+    if (specificCommand === 'reset-states') {
+      this.showAvailableResetStates();
+      return;
+    }
+
+    console.log(`${COLORS.bright}${COLORS.blue}Enhanced Data Management CLI${COLORS.reset}`);
     console.log('='.repeat(50));
     console.log('');
     console.log('Unified command-line interface for all data management operations.');
+    console.log('Now includes enhanced frontend-sync-processor with comprehensive mock data generation,');
+    console.log('realistic business data, multiple testing scenarios, and RFC 9457 error responses.');
     console.log('');
 
     console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
@@ -771,23 +845,92 @@ class DataCLI {
 
     console.log('');
     console.log(`${COLORS.bright}EXAMPLES:${COLORS.reset}`);
-    console.log(`  ${COLORS.dim}# Set up all data and services${COLORS.reset}`);
+    console.log(`  ${COLORS.dim}# Set up all data and services with enhanced capabilities${COLORS.reset}`);
     console.log(`  npm run setup-data`);
     console.log('');
-    console.log(`  ${COLORS.dim}# Frontend development mode${COLORS.reset}`);
-    console.log(`  npm run setup-data --frontend-only`);
+    console.log(`  ${COLORS.dim}# Enhanced frontend development mode with business data${COLORS.reset}`);
+    console.log(`  npm run setup-data --frontend-only --export --validate`);
     console.log('');
     console.log(`  ${COLORS.dim}# Reset to clean state${COLORS.reset}`);
     console.log(`  npm run reset-data clean`);
     console.log('');
-    console.log(`  ${COLORS.dim}# Seed specific scenario${COLORS.reset}`);
-    console.log(`  npm run seed-scenario minimal`);
+    console.log(`  ${COLORS.dim}# Seed enhanced scenario with comprehensive data${COLORS.reset}`);
+    console.log(`  npm run seed-scenario london-focused`);
+    console.log('');
+    console.log(`  ${COLORS.dim}# Use enhanced frontend-sync-processor directly${COLORS.reset}`);
+    console.log(`  npm run frontend-sync scenario style-diverse --export`);
+    console.log('');
+    console.log(`  ${COLORS.dim}# Generate performance test data${COLORS.reset}`);
+    console.log(`  npm run frontend-sync performance --count 100`);
     console.log('');
 
+    console.log(`${COLORS.bright}ENHANCED FEATURES:${COLORS.reset}`);
+    console.log(`  ${COLORS.cyan}Business Data:${COLORS.reset}     Realistic ratings, pricing, availability, experience`);
+    console.log(`  ${COLORS.cyan}Studio Data:${COLORS.reset}       Comprehensive studio information and artist relationships`);
+    console.log(`  ${COLORS.cyan}Style Metadata:${COLORS.reset}    Enhanced style characteristics and difficulty levels`);
+    console.log(`  ${COLORS.cyan}Error Responses:${COLORS.reset}   RFC 9457 compliant error generation for testing`);
+    console.log(`  ${COLORS.cyan}Data Export:${COLORS.reset}       Export and reuse generated datasets`);
+    console.log(`  ${COLORS.cyan}Performance Data:${COLORS.reset} Large datasets for performance and stress testing`);
+    console.log('');
     console.log(`${COLORS.bright}GET HELP:${COLORS.reset}`);
     console.log(`  npm run help <command>     Show help for specific command`);
-    console.log(`  npm run scenarios          List available scenarios`);
+    console.log(`  npm run help frontend-sync Show enhanced frontend-sync-processor help`);
+    console.log(`  npm run scenarios          List available enhanced scenarios`);
     console.log(`  npm run reset-states       List available reset states`);
+    console.log('');
+  }
+
+  /**
+   * Show available scenarios
+   */
+  showAvailableScenarios() {
+    console.log(`${COLORS.bright}${COLORS.blue}Available Scenarios${COLORS.reset}`);
+    console.log('='.repeat(50));
+    console.log('');
+    console.log('Test scenarios for seeding the system with specific data sets:');
+    console.log('');
+
+    Object.entries(this.config.scenarios).forEach(([scenarioName, config]) => {
+      console.log(`${COLORS.cyan}${scenarioName.padEnd(20)}${COLORS.reset} ${config.description}`);
+      console.log(`${COLORS.dim}${''.padEnd(20)} Artists: ${config.artistCount}, Studios: ${config.studioCount || 'auto'}${COLORS.reset}`);
+      console.log('');
+    });
+
+    console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
+    console.log(`  npm run seed-scenario <scenario-name>`);
+    console.log('');
+    console.log(`${COLORS.bright}EXAMPLES:${COLORS.reset}`);
+    console.log(`  npm run seed-scenario minimal`);
+    console.log(`  npm run seed-scenario london-artists`);
+    console.log(`  npm run seed-scenario full-dataset`);
+    console.log('');
+  }
+
+  /**
+   * Show available reset states
+   */
+  showAvailableResetStates() {
+    console.log(`${COLORS.bright}${COLORS.blue}Available Reset States${COLORS.reset}`);
+    console.log('='.repeat(50));
+    console.log('');
+    console.log('System reset states for different testing and development needs:');
+    console.log('');
+
+    Object.entries(this.config.resetStates).forEach(([stateName, config]) => {
+      console.log(`${COLORS.cyan}${stateName.padEnd(20)}${COLORS.reset} ${config.description}`);
+      if (config.preserveData) {
+        console.log(`${COLORS.dim}${''.padEnd(20)} Preserves: ${config.preserveData.join(', ')}${COLORS.reset}`);
+      }
+      console.log('');
+    });
+
+    console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
+    console.log(`  npm run reset-data <state-name>`);
+    console.log('');
+    console.log(`${COLORS.bright}EXAMPLES:${COLORS.reset}`);
+    console.log(`  npm run reset-data clean`);
+    console.log(`  npm run reset-data search-ready`);
+    console.log(`  npm run reset-data frontend-ready`);
     console.log('');
   }
 

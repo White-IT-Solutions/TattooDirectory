@@ -92,6 +92,7 @@ class HealthMonitor {
       { name: "DynamoDB", check: () => this.checkDynamoDBHealth() },
       { name: "S3", check: () => this.checkS3Health() },
       { name: "OpenSearch", check: () => this.checkOpenSearchHealth() },
+      { name: "FrontendSync", check: () => this.checkFrontendSyncHealth() },
     ];
 
     for (const service of services) {
@@ -863,6 +864,57 @@ class HealthMonitor {
         timestamp: new Date().toISOString(),
       });
       throw error;
+    }
+  }
+
+  /**
+   * Check frontend sync processor health and capabilities
+   */
+  async checkFrontendSyncHealth() {
+    try {
+      const { FrontendSyncProcessor } = require('./frontend-sync-processor');
+      const processor = new FrontendSyncProcessor(this.config);
+      
+      // Test basic functionality
+      const testResult = await processor.generateMockData({
+        artistCount: 1,
+        scenario: 'single',
+        validateData: true
+      });
+      
+      const health = {
+        status: testResult.success ? 'healthy' : 'unhealthy',
+        lastCheck: new Date().toISOString(),
+        capabilities: {
+          enhancedGeneration: true,
+          businessData: true,
+          studioRelationships: true,
+          dataValidation: true,
+          exportFunctionality: true,
+          scenarioSupport: true
+        },
+        performance: testResult.stats?.performance || {},
+        errors: testResult.stats?.errors || []
+      };
+      
+      if (!testResult.success) {
+        health.error = testResult.error;
+        health.details = 'Enhanced frontend sync processor test failed';
+      }
+      
+      this.healthStatus.services.frontendSync = health;
+      return health;
+      
+    } catch (error) {
+      const health = {
+        status: 'unhealthy',
+        lastCheck: new Date().toISOString(),
+        error: error.message,
+        details: 'Frontend sync processor initialization failed'
+      };
+      
+      this.healthStatus.services.frontendSync = health;
+      return health;
     }
   }
 

@@ -1,0 +1,709 @@
+{
+  "summary": {
+    "total": 16,
+    "passed": 8,
+    "failed": 8,
+    "skipped": 0,
+    "errors": [
+      {
+        "command": "setup-data:frontend-only",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "seed-scenario:minimal",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "setup-data",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "seed-scenario:london-artists",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "seed-scenario:high-rated",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "seed-scenario:full-dataset",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "reset-data:search-ready",
+        "error": null,
+        "details": {}
+      },
+      {
+        "command": "reset-data:performance-test",
+        "error": null,
+        "details": {}
+      }
+    ],
+    "duration": 55,
+    "successRate": 50
+  },
+  "results": {
+    "health-check": {
+      "command": "health-check",
+      "status": "passed",
+      "startTime": 1758276131591,
+      "endTime": 1758276133431,
+      "duration": 1840,
+      "output": "\n> tattoo-directory-mvp@1.0.0 health-check\n> node scripts/data-cli.js health-check\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Performing health check...\u001b[0m\n⠋ Checking service connectivity...🔍 Performing health check...\n🔍 Checking all services...\n  📡 Checking service connectivity...\n    🔌 Checking LocalStack...\n    ✅ LocalStack is healthy\n    🔌 Checking DynamoDB...\n    ✅ DynamoDB is healthy\n    🔌 Checking S3...\n\r                                                                                \r⠙ Checking service connectivity...\r                                                                                \r⠹ Checking service connectivity...    ✅ S3 is healthy\n    🔌 Checking OpenSearch...\n    ✅ OpenSearch is healthy\n    🔌 Checking FrontendSync...\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n🎨 Generating enhanced mock data for 1 artists...\n📋 Using scenario: single\n✅ Generated 1 enhanced mock artists in 2ms\n    ✅ FrontendSync is healthy\n✅ Service check completed\n✅ Health check completed\n\r                                                                                \r\u001b[32m✅ Health check completed successfully!\u001b[0m\n\n\u001b[1mOverall status: healthy\u001b[0m\n  \u001b[31m• ❌ LocalStack: [object Object]\u001b[0m\n  \u001b[31m• ❌ DynamoDB: [object Object]\u001b[0m\n  \u001b[31m• ❌ S3: [object Object]\u001b[0m\n  \u001b[31m• ❌ OpenSearch: [object Object]\u001b[0m\n  \u001b[31m• ❌ frontendSync: [object Object]\u001b[0m\n  \u001b[31m• ❌ FrontendSync: [object Object]\u001b[0m\n\n\u001b[1mSummary:\u001b[0m\n  \u001b[0m• [object Object]\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {}
+    },
+    "setup-data:frontend-only": {
+      "command": "setup-data:frontend-only",
+      "status": "failed",
+      "startTime": 1758276133432,
+      "endTime": 1758276137979,
+      "duration": 4547,
+      "output": "\n> tattoo-directory-mvp@1.0.0 setup-data:frontend-only\n> node scripts/data-cli.js setup-data --frontend-only\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Starting data setup...\u001b[0m\n\u001b[34mℹ️ 🎨 Frontend-only mode: Generating mock data without AWS services\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Initializing setup (0s)🚀 Starting data setup...\n📋 Executing frontend-only pipeline with 5 stages\n\u001b[34mℹ️ Step 0/100: Validate system prerequisites and service availability\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate system prerequisites and service availability (0s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate system prerequisites and service availability (0s)\u001b[34mℹ️ Step 100/100: Validate system prerequisites and service availability completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate system prerequisites and service availability completed (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate system prerequisites and service availability completed (0s)\u001b[34mℹ️ Step 0/100: Detect file changes and determine required operations\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Detect file changes and determine required operations (0s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Detect file changes and determine required operations (0s)\u001b[34mℹ️ Step 100/100: Detect file changes and determine required operations completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Detect file changes and determine required operations completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Detect file changes and determine required operations completed (1s)\u001b[34mℹ️ Step 0/100: Validate data consistency across all services\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate data consistency across all services (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate data consistency across all services (1s)\u001b[34mℹ️ Step 100/100: Validate data consistency across all services completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate data consistency across all services completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate data consistency across all services completed (1s)\u001b[34mℹ️ Step 0/100: Update state tracking with completed operations\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Update state tracking with completed operations (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Update state tracking with completed operations (1s)\u001b[34mℹ️ Step 100/100: Update state tracking with completed operations completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Update state tracking with completed operations completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Update state tracking with completed operations completed (1s)\u001b[34mℹ️ Step 0/100: Generate and sync frontend mock data\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Generate and sync frontend mock data (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Generate and sync frontend mock data (1s)\u001b[34mℹ️ Step 0/3: Starting enhanced frontend synchronization\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Starting enhanced frontend synchronization (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Starting enhanced frontend synchronization (1s)🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n✅ Generated 8 enhanced mock artists in 1ms\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 8 artists\n✅ Frontend synchronization completed\n\u001b[34mℹ️ Step 1/3: Frontend data synchronized\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Frontend data synchronized (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 50% Frontend data synchronized (1s) ETA: 1s\u001b[34mℹ️ Step 3/3: Enhanced frontend synchronization complete\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Enhanced frontend synchronization complete (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Enhanced frontend synchronization complete (1s)\u001b[34mℹ️ Step 100/100: Generate and sync frontend mock data completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (1s)✅ Data setup completed successfully\n\r                                                                                \r\u001b[32m✅ Setup completed successfully!\u001b[0m\n\n\u001b[1mFrontend-only setup summary:\u001b[0m\n  \u001b[0m• Generated 8 mock artists\u001b[0m\n  \u001b[0m• Updated frontend mock data file\u001b[0m\n\u001b[1m\u001b[32m✓ Frontend ready for development!\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: setup-data\u001b[0m\n  \u001b[0m• Duration: 3.1s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n  \u001b[0m• Images processed: 0\u001b[0m\n  \u001b[0m• Images uploaded: 0\u001b[0m\n  \u001b[0m• Artists seeded: 0\u001b[0m\n  \u001b[0m• Studios seeded: 0\u001b[0m\n  \u001b[0m• Documents indexed: 0\u001b[0m\n  \u001b[0m• Frontend updated: Yes\u001b[0m\n  \u001b[0m• Mock artists: 8\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [
+              "rating",
+              "pricing",
+              "availability",
+              "experience"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 8
+          },
+          "message": "Missing fields: rating, pricing, availability, experience"
+        },
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "validate-data": {
+      "command": "validate-data",
+      "status": "passed",
+      "startTime": 1758276137984,
+      "endTime": 1758276139630,
+      "duration": 1646,
+      "output": "\n> tattoo-directory-mvp@1.0.0 validate-data\n> node scripts/data-cli.js validate-data\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Validating data (type: all)...\u001b[0m\n⠋ Running all validation...🔍 Validating data (type: all)...\n🔍 Validating data (type: all)...\n    🔄 Validating cross-service consistency...\n    ✅ Artist counts consistent: 10\n    🖼️  Validating image accessibility...\n    📊 Image accessibility: 0/15 (0.0%)\n\r                                                                                \r⠙ Running all validation...    📋 Scenario integrity: 5/5 scenarios valid\n✅ Data validation completed\n✅ Data validation completed\n\r                                                                                \r\u001b[32m✅ Data validation (all) completed successfully!\u001b[0m\n\n\u001b[1mValidation summary:\u001b[0m\n  \u001b[0m• All validations passed\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        }
+      }
+    },
+    "reset-data:clean": {
+      "command": "reset-data:clean",
+      "status": "passed",
+      "startTime": 1758276139631,
+      "endTime": 1758276142881,
+      "duration": 3250,
+      "output": "\n> tattoo-directory-mvp@1.0.0 reset-data:clean\n> node scripts/data-cli.js reset-data clean\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🔄 Resetting data to 'clean' state...\u001b[0m\n\u001b[34mℹ️ 📋 Empty all databases but keep services running\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Resetting to clean (0s)\u001b[34mℹ️ Step 1/1: Clearing existing data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing existing data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing databases (0s)🔄 Resetting data to 'clean' state...\n📋 Empty all databases but keep services running\n🧹 Clearing all existing data...\n🧹 Clearing all data...\n🗑️  Clearing DynamoDB data...\n🗑️  Deleted 25 items from DynamoDB\n🗑️  Deleted 5 items from DynamoDB\n✅ Cleared 30 items from DynamoDB\n🗑️  Clearing OpenSearch data...\n✅ Cleared OpenSearch index\n✅ All data cleared successfully\n✅ Data reset to 'clean' completed successfully\n\r                                                                                \r\u001b[32m✅ Data reset to 'clean' completed successfully!\u001b[0m\n\n\u001b[1mReset summary:\u001b[0m\n  \u001b[0m• Cleared existing data\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: reset-data\u001b[0m\n  \u001b[0m• Duration: 1.9s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {}
+    },
+    "reset-data:minimal": {
+      "command": "reset-data:minimal",
+      "status": "passed",
+      "startTime": 1758276142882,
+      "endTime": 1758276146434,
+      "duration": 3552,
+      "output": "\n> tattoo-directory-mvp@1.0.0 reset-data:minimal\n> node scripts/data-cli.js reset-data minimal\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🔄 Resetting data to 'minimal' state...\u001b[0m\n\u001b[34mℹ️ 📋 Minimal data for quick testing\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Resetting to minimal (0s)\u001b[34mℹ️ Step 1/3: Clearing existing data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing existing data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)🔄 Resetting data to 'minimal' state...\n📋 Minimal data for quick testing\n🧹 Clearing all existing data...\n🧹 Clearing all data...\n🗑️  Clearing DynamoDB data...\n📋 DynamoDB table is already empty\n🗑️  Clearing OpenSearch data...\n📋 OpenSearch index does not exist\n✅ All data cleared successfully\n🎯 Seeding scenario: minimal\n🎯 Seeding scenario: minimal\n📋 Minimal dataset for quick testing\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: Minimal dataset for quick testing\n📊 Filtered data: 2 artists, 1 studios, 2 styles\n🔍 Setting up OpenSearch index...\n✅ OpenSearch index created successfully\n🎭 Seeding 2 styles...\n✅ Seeded style: Traditional\n✅ Seeded style: Realism\n🏢 Seeding 1 studios...\n✅ Seeded studio: Ink & Steel Studio\n🎨 Seeding 2 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n🔍 Indexing 2 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)✅ Indexed artist: Marcus Chen\n✅ OpenSearch index refreshed\n✅ Scenario 'minimal' seeded successfully\n✅ Data reset to 'minimal' completed successfully\n\r                                                                                \r\u001b[32m✅ Data reset to 'minimal' completed successfully!\u001b[0m\n\n\u001b[1mReset summary:\u001b[0m\n  \u001b[0m• Cleared existing data\u001b[0m\n  \u001b[0m• Seeded new data\u001b[0m\n  \u001b[0m•   → 2 artists\u001b[0m\n  \u001b[0m•   → 1 studios\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: reset-data\u001b[0m\n  \u001b[0m• Duration: 2.1s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "passed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 8
+          },
+          "message": "All expected fields present (1/1)"
+        }
+      }
+    },
+    "seed-scenario:minimal": {
+      "command": "seed-scenario:minimal",
+      "status": "failed",
+      "startTime": 1758276146435,
+      "endTime": 1758276149876,
+      "duration": 3441,
+      "output": "\n> tattoo-directory-mvp@1.0.0 seed-scenario:minimal\n> node scripts/data-cli.js seed-scenario minimal\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🎯 Seeding scenario: minimal\u001b[0m\n\u001b[34mℹ️ 📋 Quick testing with minimal data (3 artists)\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seeding minimal (0s)\u001b[34mℹ️ Step 1/4: Preparing scenario data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Preparing scenario data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)🎯 Seeding scenario: minimal\n📋 Quick testing with minimal data\n🎯 Seeding scenario: minimal\n📋 Minimal dataset for quick testing\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: Minimal dataset for quick testing\n📊 Filtered data: 2 artists, 1 studios, 2 styles\n🔍 Setting up OpenSearch index...\n📋 Deleted existing OpenSearch index\n✅ OpenSearch index created successfully\n🎭 Seeding 2 styles...\n✅ Seeded style: Traditional\n✅ Seeded style: Realism\n🏢 Seeding 1 studios...\n✅ Seeded studio: Ink & Steel Studio\n🎨 Seeding 2 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n🔍 Indexing 2 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)✅ Indexed artist: Marcus Chen\n✅ OpenSearch index refreshed\n✅ Scenario 'minimal' seeded successfully\n🎨 Updating frontend with enhanced scenario data...\n🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n📋 Using scenario: minimal\n✅ Generated 3 enhanced mock artists in 2ms\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 3 artists\n✅ Frontend synchronization completed\n✅ Scenario 'minimal' seeded successfully\n\r                                                                                \r\u001b[32m✅ Scenario 'minimal' seeded successfully!\u001b[0m\n\n\u001b[1mScenario summary:\u001b[0m\n  \u001b[0m• Seeded 2 artists\u001b[0m\n  \u001b[0m• Seeded 1 studios\u001b[0m\n  \u001b[0m• Indexed 2 documents\u001b[0m\n  \u001b[0m• Updated frontend mock data\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: seed-scenario\u001b[0m\n  \u001b[0m• Duration: 2.0s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "passed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 3
+          },
+          "message": "All expected fields present (1/1)"
+        },
+        "artistCount": {
+          "status": "passed",
+          "details": {
+            "expected": 3,
+            "actual": 3,
+            "difference": 0
+          },
+          "message": "Artist count matches expectation (3)"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "validate-data:consistency": {
+      "command": "validate-data:consistency",
+      "status": "passed",
+      "startTime": 1758276149878,
+      "endTime": 1758276151321,
+      "duration": 1443,
+      "output": "\n> tattoo-directory-mvp@1.0.0 validate-data:consistency\n> node scripts/data-cli.js validate-data consistency\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Validating data (type: consistency)...\u001b[0m\n⠋ Running consistency validation...🔍 Validating data (type: consistency)...\n🔍 Validating data (type: consistency)...\n    🔄 Validating cross-service consistency...\n    ✅ Artist counts consistent: 2\n✅ Data validation completed\n✅ Data validation completed\n\r                                                                                \r\u001b[32m✅ Data validation (consistency) completed successfully!\u001b[0m\n\n\u001b[1mValidation summary:\u001b[0m\n  \u001b[0m• All validations passed\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        }
+      }
+    },
+    "reset-data:fresh": {
+      "command": "reset-data:fresh",
+      "status": "passed",
+      "startTime": 1758276151322,
+      "endTime": 1758276155998,
+      "duration": 4676,
+      "output": "\n> tattoo-directory-mvp@1.0.0 reset-data:fresh\n> node scripts/data-cli.js reset-data fresh\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🔄 Resetting data to 'fresh' state...\u001b[0m\n\u001b[34mℹ️ 📋 Clean databases and seed with full dataset\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Resetting to fresh (0s)\u001b[34mℹ️ Step 1/3: Clearing existing data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing existing data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)🔄 Resetting data to 'fresh' state...\n📋 Clean databases and seed with full dataset\n🧹 Clearing all existing data...\n🧹 Clearing all data...\n🗑️  Clearing DynamoDB data...\n🗑️  Deleted 5 items from DynamoDB\n✅ Cleared 5 items from DynamoDB\n🗑️  Clearing OpenSearch data...\n✅ Cleared OpenSearch index\n✅ All data cleared successfully\n🌱 Seeding full dataset...\n🌱 Seeding complete dataset...\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎭 Seeding 17 styles...\n✅ Seeded style: Watercolour\n✅ Seeded style: Tribal\n✅ Seeded style: Traditional\n✅ Seeded style: Surrealism\n✅ Seeded style: Sketch\n✅ Seeded style: Realism\n✅ Seeded style: Psychedelic\n✅ Seeded style: Old School\n✅ Seeded style: New School\n✅ Seeded style: Neo-Traditional\n✅ Seeded style: Minimalism\n✅ Seeded style: Lettering\n✅ Seeded style: Geometric\n✅ Seeded style: Floral\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)✅ Seeded style: Fine Line\n✅ Seeded style: Blackwork\n✅ Seeded style: Dotwork\n🏢 Seeding 3 studios...\n✅ Seeded studio: Ink & Steel Studio\n✅ Seeded studio: Northern Ink Collective\n✅ Seeded studio: Artisan Ink Studio\n🎨 Seeding 10 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n✅ Seeded artist: James Thompson\n✅ Seeded artist: Zoe Campbell\n✅ Seeded artist: David Wilson\n✅ Seeded artist: Lisa Park\n✅ Seeded artist: Robert MacLeod\n✅ Seeded artist: Priya Sharma\n✅ Seeded artist: Tom Bradley\n🔍 Setting up OpenSearch index...\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (1s) ETA: 2s✅ OpenSearch index created successfully\n🔍 Indexing 10 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ Indexed artist: James Thompson\n✅ Indexed artist: Zoe Campbell\n✅ Indexed artist: David Wilson\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (1s) ETA: 2s✅ Indexed artist: Lisa Park\n✅ Indexed artist: Robert MacLeod\n✅ Indexed artist: Priya Sharma\n✅ Indexed artist: Tom Bradley\n✅ OpenSearch index refreshed\n✅ Data reset to 'fresh' completed successfully\n\r                                                                                \r\u001b[32m✅ Data reset to 'fresh' completed successfully!\u001b[0m\n\n\u001b[1mReset summary:\u001b[0m\n  \u001b[0m• Cleared existing data\u001b[0m\n  \u001b[0m• Seeded new data\u001b[0m\n  \u001b[0m•   → 10 artists\u001b[0m\n  \u001b[0m•   → 3 studios\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: reset-data\u001b[0m\n  \u001b[0m• Duration: 3.3s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "passed",
+          "details": {
+            "presentFields": [
+              "bio",
+              "tattooStudio"
+            ],
+            "missingFields": [],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 3
+          },
+          "message": "All expected fields present (2/2)"
+        }
+      }
+    },
+    "setup-data": {
+      "command": "setup-data",
+      "status": "failed",
+      "startTime": 1758276155998,
+      "endTime": 1758276163272,
+      "duration": 7274,
+      "output": "\n> tattoo-directory-mvp@1.0.0 setup-data\n> node scripts/data-cli.js setup-data\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Starting data setup...\u001b[0m\n\u001b[34mℹ️ ⚡ Incremental mode: Processing only changed files\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Initializing setup (0s)🚀 Starting data setup...\n📋 Executing incremental pipeline with 7 stages\n\u001b[34mℹ️ Step 0/100: Validate system prerequisites and service availability\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate system prerequisites and service availability (0s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate system prerequisites and service availability (0s)\u001b[34mℹ️ Step 100/100: Validate system prerequisites and service availability completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate system prerequisites and service availability completed (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate system prerequisites and service availability completed (0s)\u001b[34mℹ️ Step 0/100: Detect file changes and determine required operations\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Detect file changes and determine required operations (0s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Detect file changes and determine required operations (0s)\u001b[34mℹ️ Step 100/100: Detect file changes and determine required operations completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Detect file changes and determine required operations completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Detect file changes and determine required operations completed (1s)\u001b[34mℹ️ Step 0/100: Validate data consistency across all services\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate data consistency across all services (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Validate data consistency across all services (1s)\u001b[34mℹ️ Step 100/100: Validate data consistency across all services completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate data consistency across all services completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Validate data consistency across all services completed (1s)\u001b[34mℹ️ Step 0/100: Update state tracking with completed operations\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Update state tracking with completed operations (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Update state tracking with completed operations (1s)\u001b[34mℹ️ Step 100/100: Update state tracking with completed operations completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Update state tracking with completed operations completed (1s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Update state tracking with completed operations completed (1s)\u001b[34mℹ️ Step 0/100: Process and upload images to S3\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Process and upload images to S3 (1s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Process and upload images to S3 (1s)🖼️  Starting image processing...\n📋 No image changes detected, skipping processing\n\u001b[34mℹ️ Step 0/100: Seed DynamoDB and OpenSearch with test data\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seed DynamoDB and OpenSearch with test data (2s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seed DynamoDB and OpenSearch with test data (2s)\u001b[34mℹ️ Step 1/1: Seeding database\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Seeding database (2s)\r                                                                                \r[▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 16% Seeding database (2s) ETA: 10s🌱 Seeding complete dataset...\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n\u001b[34mℹ️ Step 0/100: Generate and sync frontend mock data\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Generate and sync frontend mock data (2s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Generate and sync frontend mock data (2s)\u001b[34mℹ️ Step 0/3: Starting enhanced frontend synchronization\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Starting enhanced frontend synchronization (2s)\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Starting enhanced frontend synchronization (2s)🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Generated 8 enhanced mock artists in 2ms\n\u001b[34mℹ️ Step 100/100: Process and upload images to S3 completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Process and upload images to S3 completed (2s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Process and upload images to S3 completed (2s)✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 8 artists\n✅ Loaded 17 styles records\n✅ Frontend synchronization completed\n🎭 Seeding 17 styles...\n\u001b[34mℹ️ Step 1/3: Frontend data synchronized\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Frontend data synchronized (2s)\r                                                                                \r[▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 16% Frontend data synchronized (2s) ETA: 10s\u001b[34mℹ️ Step 3/3: Enhanced frontend synchronization complete\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Enhanced frontend synchronization complete (2s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 50% Enhanced frontend synchronization complete (2s) ETA: 2s\u001b[34mℹ️ Step 100/100: Generate and sync frontend mock data completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (2s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (2s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (2s)✅ Seeded style: Watercolour\n✅ Seeded style: Tribal\n✅ Seeded style: Traditional\n✅ Seeded style: Surrealism\n✅ Seeded style: Sketch\n✅ Seeded style: Realism\n✅ Seeded style: Psychedelic\n✅ Seeded style: Old School\n✅ Seeded style: New School\n✅ Seeded style: Neo-Traditional\n✅ Seeded style: Minimalism\n✅ Seeded style: Lettering\n✅ Seeded style: Geometric\n✅ Seeded style: Floral\n✅ Seeded style: Fine Line\n✅ Seeded style: Blackwork\n✅ Seeded style: Dotwork\n🏢 Seeding 3 studios...\n✅ Seeded studio: Ink & Steel Studio\n✅ Seeded studio: Northern Ink Collective\n✅ Seeded studio: Artisan Ink Studio\n🎨 Seeding 10 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n✅ Seeded artist: James Thompson\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (3s)✅ Seeded artist: Zoe Campbell\n✅ Seeded artist: David Wilson\n✅ Seeded artist: Lisa Park\n✅ Seeded artist: Robert MacLeod\n✅ Seeded artist: Priya Sharma\n✅ Seeded artist: Tom Bradley\n🔍 Setting up OpenSearch index...\n📋 Deleted existing OpenSearch index\n✅ OpenSearch index created successfully\n🔍 Indexing 10 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (3s)✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ Indexed artist: James Thompson\n✅ Indexed artist: Zoe Campbell\n✅ Indexed artist: David Wilson\n✅ Indexed artist: Lisa Park\n✅ Indexed artist: Robert MacLeod\n✅ Indexed artist: Priya Sharma\n✅ Indexed artist: Tom Bradley\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Generate and sync frontend mock data completed (4s)✅ OpenSearch index refreshed\n\u001b[34mℹ️ Step 100/100: Seed DynamoDB and OpenSearch with test data completed\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Seed DynamoDB and OpenSearch with test data completed (4s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Seed DynamoDB and OpenSearch with test data completed (4s)✅ Data setup completed successfully\n\r                                                                                \r\u001b[32m✅ Setup completed successfully!\u001b[0m\n\n\u001b[1mFull setup summary:\u001b[0m\n  \u001b[0m• Processed 0 images\u001b[0m\n  \u001b[0m• Seeded 10 artists\u001b[0m\n  \u001b[0m• Indexed 10 documents\u001b[0m\n  \u001b[0m• Updated frontend mock data\u001b[0m\n\u001b[1m\u001b[32m✓ All services ready for development!\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: setup-data\u001b[0m\n  \u001b[0m• Duration: 5.9s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n  \u001b[0m• Images processed: 0\u001b[0m\n  \u001b[0m• Images uploaded: 0\u001b[0m\n  \u001b[0m• Artists seeded: 10\u001b[0m\n  \u001b[0m• Studios seeded: 3\u001b[0m\n  \u001b[0m• Documents indexed: 10\u001b[0m\n  \u001b[0m• Frontend updated: Yes\u001b[0m\n  \u001b[0m• Mock artists: 8\u001b[0m\n\n\u001b[1m\u001b[36mPerformance Metrics:\u001b[0m\n  \u001b[0m• Total time: 5.9s\u001b[0m\n  \u001b[0m• Database seeding rate: 1.7 artists/sec\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "passed",
+          "details": {
+            "presentFields": [
+              "bio",
+              "tattooStudio",
+              "pk",
+              "sk",
+              "opted_out"
+            ],
+            "missingFields": [],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 8
+          },
+          "message": "All expected fields present (5/5)"
+        },
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "validate-data:images": {
+      "command": "validate-data:images",
+      "status": "passed",
+      "startTime": 1758276163275,
+      "endTime": 1758276164834,
+      "duration": 1559,
+      "output": "\n> tattoo-directory-mvp@1.0.0 validate-data:images\n> node scripts/data-cli.js validate-data images\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Validating data (type: images)...\u001b[0m\n⠋ Running images validation...🔍 Validating data (type: images)...\n🔍 Validating data (type: images)...\n    🖼️  Validating image accessibility...\n    📊 Image accessibility: 0/15 (0.0%)\n✅ Data validation completed\n✅ Data validation completed\n\r                                                                                \r\u001b[32m✅ Data validation (images) completed successfully!\u001b[0m\n\n\u001b[1mValidation summary:\u001b[0m\n  \u001b[0m• All validations passed\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        }
+      }
+    },
+    "seed-scenario:london-artists": {
+      "command": "seed-scenario:london-artists",
+      "status": "failed",
+      "startTime": 1758276164835,
+      "endTime": 1758276168769,
+      "duration": 3934,
+      "output": "\n> tattoo-directory-mvp@1.0.0 seed-scenario:london-artists\n> node scripts/data-cli.js seed-scenario london-artists\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🎯 Seeding scenario: london-artists\u001b[0m\n\u001b[34mℹ️ 📋 London-focused artist testing (5 artists)\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seeding london-artists (0s)\u001b[34mℹ️ Step 1/4: Preparing scenario data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Preparing scenario data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)🎯 Seeding scenario: london-artists\n📋 London-focused artist testing\n🎯 Seeding scenario: london-artists\n📋 London-based artists for location testing\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: London-based artists for location testing\n📊 Filtered data: 5 artists, 0 studios, 8 styles\n🔍 Setting up OpenSearch index...\n📋 Deleted existing OpenSearch index\n✅ OpenSearch index created successfully\n🎭 Seeding 8 styles...\n✅ Seeded style: Watercolour\n✅ Seeded style: Tribal\n✅ Seeded style: Traditional\n✅ Seeded style: Realism\n✅ Seeded style: Neo-Traditional\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)✅ Seeded style: Geometric\n✅ Seeded style: Blackwork\n✅ Seeded style: Dotwork\n🏢 Seeding 0 studios...\n🎨 Seeding 5 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: David Wilson\n✅ Seeded artist: Priya Sharma\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n🔍 Indexing 5 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: David Wilson\n✅ Indexed artist: Priya Sharma\n✅ Indexed artist: Marcus Chen\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (1s) ETA: 3s✅ Indexed artist: Emma Rodriguez\n✅ OpenSearch index refreshed\n✅ Scenario 'london-artists' seeded successfully\n🎨 Updating frontend with enhanced scenario data...\n🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n📋 Using scenario: london-artists\n✅ Generated 5 enhanced mock artists in 1ms\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 5 artists\n✅ Frontend synchronization completed\n✅ Scenario 'london-artists' seeded successfully\n\r                                                                                \r\u001b[32m✅ Scenario 'london-artists' seeded successfully!\u001b[0m\n\n\u001b[1mScenario summary:\u001b[0m\n  \u001b[0m• Seeded 5 artists\u001b[0m\n  \u001b[0m• Seeded 0 studios\u001b[0m\n  \u001b[0m• Indexed 5 documents\u001b[0m\n  \u001b[0m• Updated frontend mock data\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: seed-scenario\u001b[0m\n  \u001b[0m• Duration: 2.5s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [
+              "locationDisplay"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 5
+          },
+          "message": "Missing fields: locationDisplay"
+        },
+        "artistCount": {
+          "status": "passed",
+          "details": {
+            "expected": 5,
+            "actual": 5,
+            "difference": 0
+          },
+          "message": "Artist count matches expectation (5)"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "seed-scenario:high-rated": {
+      "command": "seed-scenario:high-rated",
+      "status": "failed",
+      "startTime": 1758276168770,
+      "endTime": 1758276172510,
+      "duration": 3740,
+      "output": "\n> tattoo-directory-mvp@1.0.0 seed-scenario:high-rated\n> node scripts/data-cli.js seed-scenario high-rated\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🎯 Seeding scenario: high-rated\u001b[0m\n\u001b[34mℹ️ 📋 High-rated artists for quality testing (3 artists)\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seeding high-rated (0s)\u001b[34mℹ️ Step 1/4: Preparing scenario data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Preparing scenario data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)🎯 Seeding scenario: high-rated\n📋 High-rated artists for quality testing\n🎯 Seeding scenario: high-rated\n📋 High-rated artists for rating tests\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: High-rated artists for rating tests\n📊 Filtered data: 3 artists, 0 studios, 6 styles\n🔍 Setting up OpenSearch index...\n📋 Deleted existing OpenSearch index\n✅ OpenSearch index created successfully\n🎭 Seeding 6 styles...\n✅ Seeded style: Watercolour\n✅ Seeded style: Traditional\n✅ Seeded style: Realism\n✅ Seeded style: Neo-Traditional\n✅ Seeded style: Geometric\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)✅ Seeded style: Blackwork\n🏢 Seeding 0 studios...\n🎨 Seeding 3 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n🔍 Indexing 3 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ OpenSearch index refreshed\n✅ Scenario 'high-rated' seeded successfully\n🎨 Updating frontend with enhanced scenario data...\n🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n📋 Using scenario: high-rated\n✅ Generated 6 enhanced mock artists in 2ms\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 6 artists\n✅ Frontend synchronization completed\n✅ Scenario 'high-rated' seeded successfully\n\r                                                                                \r\u001b[32m✅ Scenario 'high-rated' seeded successfully!\u001b[0m\n\n\u001b[1mScenario summary:\u001b[0m\n  \u001b[0m• Seeded 3 artists\u001b[0m\n  \u001b[0m• Seeded 0 studios\u001b[0m\n  \u001b[0m• Indexed 3 documents\u001b[0m\n  \u001b[0m• Updated frontend mock data\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: seed-scenario\u001b[0m\n  \u001b[0m• Duration: 2.3s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [
+              "rating"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 6
+          },
+          "message": "Missing fields: rating"
+        },
+        "artistCount": {
+          "status": "failed",
+          "details": {
+            "expected": 3,
+            "actual": 6,
+            "difference": 3
+          },
+          "message": "Artist count mismatch: expected 3, got 6"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "seed-scenario:full-dataset": {
+      "command": "seed-scenario:full-dataset",
+      "status": "failed",
+      "startTime": 1758276172512,
+      "endTime": 1758276177072,
+      "duration": 4560,
+      "output": "\n> tattoo-directory-mvp@1.0.0 seed-scenario:full-dataset\n> node scripts/data-cli.js seed-scenario full-dataset\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🎯 Seeding scenario: full-dataset\u001b[0m\n\u001b[34mℹ️ 📋 Complete test dataset with all styles (10 artists)\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Seeding full-dataset (0s)\u001b[34mℹ️ Step 1/4: Preparing scenario data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Preparing scenario data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)🎯 Seeding scenario: full-dataset\n📋 Complete test dataset with all styles\n🎯 Seeding scenario: full-dataset\n📋 Complete test dataset with all styles\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: Complete test dataset with all styles\n🔍 Setting up OpenSearch index...\n📋 Deleted existing OpenSearch index\n✅ OpenSearch index created successfully\n🎭 Seeding 17 styles...\n✅ Seeded style: Watercolour\n✅ Seeded style: Tribal\n✅ Seeded style: Traditional\n✅ Seeded style: Surrealism\n✅ Seeded style: Sketch\n✅ Seeded style: Realism\n✅ Seeded style: Psychedelic\n✅ Seeded style: Old School\n✅ Seeded style: New School\n✅ Seeded style: Neo-Traditional\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (0s)✅ Seeded style: Minimalism\n✅ Seeded style: Lettering\n✅ Seeded style: Geometric\n✅ Seeded style: Floral\n✅ Seeded style: Fine Line\n✅ Seeded style: Blackwork\n✅ Seeded style: Dotwork\n🏢 Seeding 3 studios...\n✅ Seeded studio: Ink & Steel Studio\n✅ Seeded studio: Northern Ink Collective\n✅ Seeded studio: Artisan Ink Studio\n🎨 Seeding 10 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n✅ Seeded artist: James Thompson\n✅ Seeded artist: Zoe Campbell\n✅ Seeded artist: David Wilson\n✅ Seeded artist: Lisa Park\n✅ Seeded artist: Robert MacLeod\n✅ Seeded artist: Priya Sharma\n✅ Seeded artist: Tom Bradley\n🔍 Indexing 10 artists in OpenSearch...\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (1s) ETA: 3s✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ Indexed artist: James Thompson\n✅ Indexed artist: Zoe Campbell\n✅ Indexed artist: David Wilson\n✅ Indexed artist: Lisa Park\n✅ Indexed artist: Robert MacLeod\n\r                                                                                \r[▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 25% Clearing existing data (1s) ETA: 3s✅ Indexed artist: Priya Sharma\n✅ Indexed artist: Tom Bradley\n✅ OpenSearch index refreshed\n✅ Scenario 'full-dataset' seeded successfully\n🎨 Updating frontend with enhanced scenario data...\n🔄 Synchronizing frontend with backend data...\n🎨 Generating enhanced mock data for 8 artists...\n📋 Using scenario: full-dataset\n✅ Generated 10 enhanced mock artists in 1ms\n📝 Updating frontend mock data file...\n✅ Updated frontend mock data: C:\\dev\\Tattoo_MVP\\frontend\\src\\app\\data\\mockArtistData.js\n📊 Mock data contains 10 artists\n✅ Frontend synchronization completed\n✅ Scenario 'full-dataset' seeded successfully\n\r                                                                                \r\u001b[32m✅ Scenario 'full-dataset' seeded successfully!\u001b[0m\n\n\u001b[1mScenario summary:\u001b[0m\n  \u001b[0m• Seeded 10 artists\u001b[0m\n  \u001b[0m• Seeded 3 studios\u001b[0m\n  \u001b[0m• Indexed 10 documents\u001b[0m\n  \u001b[0m• Updated frontend mock data\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: seed-scenario\u001b[0m\n  \u001b[0m• Duration: 3.2s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [
+              "rating",
+              "pricing",
+              "availability",
+              "experience"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 10
+          },
+          "message": "Missing fields: rating, pricing, availability, experience"
+        },
+        "artistCount": {
+          "status": "passed",
+          "details": {
+            "expected": 10,
+            "actual": 10,
+            "difference": 0
+          },
+          "message": "Artist count matches expectation (10)"
+        },
+        "frontendIntegration": {
+          "status": "failed",
+          "details": {
+            "hasEnhancedData": true,
+            "hasBusinessData": false,
+            "hasContactInfo": false,
+            "hasStudioData": true,
+            "hasSystemFields": true,
+            "score": "3/5",
+            "percentage": 60
+          },
+          "message": "Frontend integration score: 3/5 (60%)"
+        }
+      }
+    },
+    "validate-data:scenarios": {
+      "command": "validate-data:scenarios",
+      "status": "passed",
+      "startTime": 1758276177074,
+      "endTime": 1758276178587,
+      "duration": 1513,
+      "output": "\n> tattoo-directory-mvp@1.0.0 validate-data:scenarios\n> node scripts/data-cli.js validate-data scenarios\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ Validating data (type: scenarios)...\u001b[0m\n⠋ Running scenarios validation...🔍 Validating data (type: scenarios)...\n🔍 Validating data (type: scenarios)...\n\r                                                                                \r⠙ Running scenarios validation...    📋 Scenario integrity: 5/5 scenarios valid\n✅ Data validation completed\n✅ Data validation completed\n\r                                                                                \r\u001b[32m✅ Data validation (scenarios) completed successfully!\u001b[0m\n\n\u001b[1mValidation summary:\u001b[0m\n  \u001b[0m• All validations passed\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "dataConsistency": {
+          "status": "passed",
+          "details": {
+            "allHaveIds": true,
+            "allHaveNames": true,
+            "allHaveStyles": true,
+            "allHavePortfolios": true,
+            "uniqueIds": true
+          },
+          "message": "All consistency checks passed"
+        }
+      }
+    },
+    "reset-data:search-ready": {
+      "command": "reset-data:search-ready",
+      "status": "failed",
+      "startTime": 1758276178587,
+      "endTime": 1758276182510,
+      "duration": 3923,
+      "output": "\n> tattoo-directory-mvp@1.0.0 reset-data:search-ready\n> node scripts/data-cli.js reset-data search-ready\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🔄 Resetting data to 'search-ready' state...\u001b[0m\n\u001b[34mℹ️ 📋 Optimized for search testing\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Resetting to search-ready (0s)\u001b[34mℹ️ Step 1/3: Clearing existing data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing existing data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)🔄 Resetting data to 'search-ready' state...\n📋 Optimized for search testing\n🧹 Clearing all existing data...\n🧹 Clearing all data...\n🗑️  Clearing DynamoDB data...\n🗑️  Deleted 25 items from DynamoDB\n🗑️  Deleted 5 items from DynamoDB\n✅ Cleared 30 items from DynamoDB\n🗑️  Clearing OpenSearch data...\n✅ Cleared OpenSearch index\n✅ All data cleared successfully\n🎯 Seeding scenario: search-basic\n🎯 Seeding scenario: search-basic\n📋 Basic search functionality testing\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: Basic search functionality testing\n📊 Filtered data: 3 artists, 2 studios, 3 styles\n🔍 Setting up OpenSearch index...\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)✅ OpenSearch index created successfully\n🎭 Seeding 3 styles...\n✅ Seeded style: Traditional\n✅ Seeded style: Realism\n✅ Seeded style: Blackwork\n🏢 Seeding 2 studios...\n✅ Seeded studio: Ink & Steel Studio\n✅ Seeded studio: Northern Ink Collective\n🎨 Seeding 3 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n🔍 Indexing 3 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ OpenSearch index refreshed\n✅ Scenario 'search-basic' seeded successfully\n✅ Data reset to 'search-ready' completed successfully\n\r                                                                                \r\u001b[32m✅ Data reset to 'search-ready' completed successfully!\u001b[0m\n\n\u001b[1mReset summary:\u001b[0m\n  \u001b[0m• Cleared existing data\u001b[0m\n  \u001b[0m• Seeded new data\u001b[0m\n  \u001b[0m•   → 3 artists\u001b[0m\n  \u001b[0m•   → 2 studios\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: reset-data\u001b[0m\n  \u001b[0m• Duration: 2.4s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio",
+              "styles"
+            ],
+            "missingFields": [
+              "locationDisplay"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 10
+          },
+          "message": "Missing fields: locationDisplay"
+        }
+      }
+    },
+    "reset-data:performance-test": {
+      "command": "reset-data:performance-test",
+      "status": "failed",
+      "startTime": 1758276182511,
+      "endTime": 1758276187049,
+      "duration": 4538,
+      "output": "\n> tattoo-directory-mvp@1.0.0 reset-data:performance-test\n> node scripts/data-cli.js reset-data performance-test\n\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n📚 Loaded test data: 10 artists, 3 studios, 17 styles\n\u001b[34mℹ️ 🔄 Resetting data to 'performance-test' state...\u001b[0m\n\u001b[34mℹ️ 📋 Performance testing dataset\u001b[0m\n\r                                                                                \r[▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 0% Resetting to performance-test (0s)\u001b[34mℹ️ Step 1/3: Clearing existing data\u001b[0m\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰] 100% Clearing existing data (0s)\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)🔄 Resetting data to 'performance-test' state...\n📋 Performance testing dataset\n🧹 Clearing all existing data...\n🧹 Clearing all data...\n🗑️  Clearing DynamoDB data...\n🗑️  Deleted 8 items from DynamoDB\n✅ Cleared 8 items from DynamoDB\n🗑️  Clearing OpenSearch data...\n✅ Cleared OpenSearch index\n✅ All data cleared successfully\n🎯 Seeding scenario: full-dataset\n🎯 Seeding scenario: full-dataset\n📋 Complete test dataset with all styles\n📊 Loading all test data...\n📊 Loaded 10 records from artists.json\n✅ Loaded 10 artists records\n📊 Loaded 3 records from studios.json\n✅ Loaded 3 studios records\n📊 Loaded 17 records from styles.json\n✅ Loaded 17 styles records\n🎯 Filtering data for scenario: Complete test dataset with all styles\n🔍 Setting up OpenSearch index...\n✅ OpenSearch index created successfully\n🎭 Seeding 17 styles...\n✅ Seeded style: Watercolour\n✅ Seeded style: Tribal\n✅ Seeded style: Traditional\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (0s)✅ Seeded style: Surrealism\n✅ Seeded style: Sketch\n✅ Seeded style: Realism\n✅ Seeded style: Psychedelic\n✅ Seeded style: Old School\n✅ Seeded style: New School\n✅ Seeded style: Neo-Traditional\n✅ Seeded style: Minimalism\n✅ Seeded style: Lettering\n✅ Seeded style: Geometric\n✅ Seeded style: Floral\n✅ Seeded style: Fine Line\n✅ Seeded style: Blackwork\n✅ Seeded style: Dotwork\n🏢 Seeding 3 studios...\n✅ Seeded studio: Ink & Steel Studio\n✅ Seeded studio: Northern Ink Collective\n✅ Seeded studio: Artisan Ink Studio\n🎨 Seeding 10 artists...\n✅ Seeded artist: Sarah Mitchell\n✅ Seeded artist: Marcus Chen\n✅ Seeded artist: Emma Rodriguez\n✅ Seeded artist: James Thompson\n✅ Seeded artist: Zoe Campbell\n✅ Seeded artist: David Wilson\n✅ Seeded artist: Lisa Park\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (1s) ETA: 2s✅ Seeded artist: Robert MacLeod\n✅ Seeded artist: Priya Sharma\n✅ Seeded artist: Tom Bradley\n🔍 Indexing 10 artists in OpenSearch...\n✅ Indexed artist: Sarah Mitchell\n✅ Indexed artist: Marcus Chen\n✅ Indexed artist: Emma Rodriguez\n✅ Indexed artist: James Thompson\n✅ Indexed artist: Zoe Campbell\n✅ Indexed artist: David Wilson\n✅ Indexed artist: Lisa Park\n\r                                                                                \r[▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱▱] 33% Clearing databases (1s) ETA: 2s✅ Indexed artist: Robert MacLeod\n✅ Indexed artist: Priya Sharma\n✅ Indexed artist: Tom Bradley\n✅ OpenSearch index refreshed\n✅ Scenario 'full-dataset' seeded successfully\n✅ Data reset to 'performance-test' completed successfully\n\r                                                                                \r\u001b[32m✅ Data reset to 'performance-test' completed successfully!\u001b[0m\n\n\u001b[1mReset summary:\u001b[0m\n  \u001b[0m• Cleared existing data\u001b[0m\n  \u001b[0m• Seeded new data\u001b[0m\n  \u001b[0m•   → 10 artists\u001b[0m\n  \u001b[0m•   → 3 studios\u001b[0m\n\n\u001b[1mNext steps:\u001b[0m\n  \u001b[0m• Run `npm run dev --workspace=frontend` to start frontend\u001b[0m\n  \u001b[0m• Run `npm run health-check` to verify system status\u001b[0m\n  \u001b[0m• Run `npm run data-status` to check data counts\u001b[0m\n\n\u001b[1mOperation Summary:\u001b[0m\n  \u001b[0m• Operation: reset-data\u001b[0m\n  \u001b[0m• Duration: 3.2s\u001b[0m\n  \u001b[0m• Status: Success\u001b[0m\n\n\u001b[1m\u001b[36mStatistics:\u001b[0m\n",
+      "error": null,
+      "details": {},
+      "validations": {
+        "fileExistence": {
+          "status": "passed",
+          "details": {
+            "frontend/src/app/data/mockArtistData.js": true
+          },
+          "message": "All expected files exist"
+        },
+        "dataStructure": {
+          "status": "failed",
+          "details": {
+            "presentFields": [
+              "bio"
+            ],
+            "missingFields": [
+              "rating"
+            ],
+            "structureChecks": {
+              "hasArtistName": true,
+              "hasBio": true,
+              "hasTattooStudio": true,
+              "hasLatLongInAddress": true,
+              "hasSystemFields": true,
+              "hasOptedOut": true
+            },
+            "artistCount": 10
+          },
+          "message": "Missing fields: rating"
+        }
+      }
+    }
+  },
+  "timestamp": "2025-09-19T10:03:07.050Z"
+}

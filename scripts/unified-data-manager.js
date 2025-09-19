@@ -182,14 +182,23 @@ class UnifiedDataManager {
         results.seedStats = scenarioResult.stats;
       }
 
-      // Handle frontend-only reset
+      // Handle frontend-only reset with enhanced capabilities
       if (resetConfig.frontendOnly) {
-        console.log('🎨 Updating frontend mock data...');
+        console.log('🎨 Updating frontend mock data with enhanced capabilities...');
         const frontendResult = await this.frontendSyncProcessor.processFrontendOnly({
-          scenario: resetConfig.scenario
+          scenario: resetConfig.scenario,
+          includeBusinessData: true,
+          validateData: true,
+          exportToFile: false
         });
         results.frontendUpdated = frontendResult.success;
         results.frontendStats = frontendResult.stats;
+        
+        // Log enhanced statistics if available
+        if (frontendResult.stats && frontendResult.stats.performance) {
+          console.log(`   Generated in ${frontendResult.stats.performance.duration}ms`);
+          console.log(`   Memory usage: ${Math.round(frontendResult.stats.performance.memoryUsage / 1024 / 1024)}MB`);
+        }
       }
 
       // End operation tracking
@@ -267,10 +276,12 @@ class UnifiedDataManager {
         throw new Error(seedResult.error);
       }
 
-      // Update frontend with scenario data
-      console.log('🎨 Updating frontend with scenario data...');
+      // Update frontend with enhanced scenario data
+      console.log('🎨 Updating frontend with enhanced scenario data...');
       const frontendResult = await this.frontendSyncProcessor.syncWithBackend({
-        scenario: scenarioName
+        scenario: scenarioName,
+        includeBusinessData: true,
+        validateData: true
       });
 
       const results = {
@@ -332,7 +343,7 @@ class UnifiedDataManager {
       images: { processed: 0, uploaded: 0, failed: 0 },
       database: { artists: 0, studios: 0, styles: 0 },
       opensearch: { documents: 0, indexed: 0 },
-      frontend: { updated: false, artistCount: 0 }
+      frontend: { updated: false, artistCount: 0, enhancedCapabilities: false }
     };
 
     // Process image results
@@ -363,13 +374,19 @@ class UnifiedDataManager {
       }
     }
 
-    // Process frontend results
+    // Process enhanced frontend results
     if (pipelineResults.has('sync-frontend')) {
       const frontendResult = pipelineResults.get('sync-frontend');
       if (frontendResult) {
         results.frontend = {
           updated: frontendResult.success || false,
-          artistCount: frontendResult.artistCount || 0
+          artistCount: frontendResult.artistCount || 0,
+          studioCount: frontendResult.studioCount || 0,
+          generationTime: frontendResult.stats?.performance?.duration || 0,
+          memoryUsage: frontendResult.stats?.performance?.memoryUsage || 0,
+          validationErrors: frontendResult.stats?.errors?.length || 0,
+          scenarios: frontendResult.stats?.scenarios || {},
+          enhancedCapabilities: frontendResult.enhancedCapabilities || false
         };
       }
     }

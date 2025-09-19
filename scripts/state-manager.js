@@ -401,7 +401,16 @@ class StateManager {
         images: { processed: 0, uploaded: 0, failed: 0 },
         database: { artists: 0, studios: 0, styles: 0 },
         opensearch: { documents: 0, indexed: 0 },
-        frontend: { updated: false, artistCount: 0 }
+        frontend: { 
+          updated: false, 
+          artistCount: 0, 
+          studioCount: 0,
+          generationTime: 0,
+          memoryUsage: 0,
+          validationErrors: 0,
+          enhancedCapabilities: false,
+          lastScenario: null
+        }
       },
       services: {
         localstack: { status: 'unknown', lastChecked: null },

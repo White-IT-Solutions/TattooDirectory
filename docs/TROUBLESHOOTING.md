@@ -299,48 +299,173 @@ curl -H "Origin: http://localhost:3000" \
 **Symptoms:**
 - Frontend displays old artist data
 - Mock data file not reflecting recent changes
-- Frontend shows placeholder data instead of realistic data
+- Frontend shows placeholder data instead of enhanced business data
+- Missing business data (ratings, pricing, availability)
+- Missing studio relationships or contact information
 
 **Diagnosis:**
 ```bash
 # Check mock data file timestamp
 ls -la frontend/src/app/data/mockArtistData.js
 
-# Verify mock data content
+# Verify enhanced mock data content
 head -20 frontend/src/app/data/mockArtistData.js
 
-# Check frontend sync logs
+# Check for business data fields
+grep -E "(rating|pricing|availability|experience)" frontend/src/app/data/mockArtistData.js
+
+# Check frontend sync logs with enhanced processor
 DEBUG=frontend-sync npm run setup-data:frontend-only
+
+# Validate enhanced data structure
+npm run validate-data:frontend
 ```
 
 **Solutions:**
 
-1. **Force frontend data update:**
+1. **Force enhanced frontend data update:**
    ```bash
-   npm run setup-data:frontend-only
+   # Generate with enhanced business data
+   npm run setup-data:frontend-only --validate
    
-   # Verify update
-   npm run validate-data:frontend
+   # Use enhanced frontend-sync-processor directly
+   npm run frontend-sync generate --count 10 --scenario normal
+   
+   # Verify enhanced data structure
+   npm run validate-data:business-data
    ```
 
-2. **Check file permissions:**
+2. **Check enhanced data generation:**
    ```bash
-   # Ensure file is writable
-   chmod 644 frontend/src/app/data/mockArtistData.js
+   # Ensure business data is included
+   npm run frontend-sync scenario london-focused --export
    
-   # Check directory permissions
-   ls -la frontend/src/app/data/
+   # Validate studio relationships
+   npm run validate-data:studio-relationships
+   
+   # Check for missing fields
+   npm run frontend-sync validate
    ```
 
-3. **Manual mock data generation:**
+3. **Manual enhanced mock data generation:**
    ```bash
-   # Generate fresh mock data
+   # Generate fresh enhanced mock data
    cd scripts
+   node frontend-sync-processor.js generate --count 5 --business-data --validate
+   
+   # Test specific scenario
+   node frontend-sync-processor.js scenario high-rated --export
+   ```
+
+#### Problem: "Enhanced frontend-sync-processor errors" or "Business data generation failures"
+
+**Symptoms:**
+- Missing business data in generated mock data
+- Studio relationship data not linking properly
+- Error responses not following RFC 9457 format
+- Data export/import functionality failing
+
+**Diagnosis:**
+```bash
+# Test enhanced processor directly
+cd scripts
+node frontend-sync-processor.js validate
+
+# Check business data generation
+node frontend-sync-processor.js generate --count 3 --business-data --dry-run
+
+# Validate data structure alignment
+npm run validate-data:business-data
+
+# Check studio relationship generation
+npm run validate-data:studio-relationships
+
+# Test error response generation
+node frontend-sync-processor.js error validation --instance /test
+```
+
+**Solutions:**
+
+1. **Reset and regenerate with enhanced features:**
+   ```bash
+   # Clear existing data and regenerate
+   rm -f frontend/src/app/data/mockArtistData.js
+   npm run frontend-sync generate --count 5 --scenario normal --validate
+   
+   # Test specific business data scenarios
+   npm run frontend-sync scenario high-rated --export
+   ```
+
+2. **Validate enhanced data structure:**
+   ```bash
+   # Check data structure compliance
+   npm run validate-data:frontend
+   
+   # Verify business data fields
    node -e "
-   const { FrontendSyncProcessor } = require('./frontend-sync-processor');
-   const processor = new FrontendSyncProcessor();
-   processor.generateMockData().then(console.log);
+   const fs = require('fs');
+   const content = fs.readFileSync('frontend/src/app/data/mockArtistData.js', 'utf8');
+   const match = content.match(/export const mockArtistData = (\[[\s\S]*\]);/);
+   if (match) {
+     const data = JSON.parse(match[1]);
+     const sample = data[0] || {};
+     console.log('Has rating:', !!sample.rating);
+     console.log('Has pricing:', !!sample.pricing);
+     console.log('Has availability:', !!sample.availability);
+     console.log('Has experience:', !!sample.experience);
+     console.log('Has tattooStudio:', !!sample.tattooStudio);
+     console.log('Has bio field:', !!sample.bio);
+   }
    "
+   ```
+
+3. **Debug enhanced processor configuration:**
+   ```bash
+   # Check processor configuration
+   node -e "
+   const { FrontendSyncProcessor } = require('./scripts/frontend-sync-processor');
+   const processor = new FrontendSyncProcessor();
+   console.log('Processor config:', processor.config);
+   "
+   
+   # Test individual components
+   cd scripts
+   node frontend-sync-processor.js studios
+   node frontend-sync-processor.js performance --count 10
+   ```
+
+#### Problem: "Data export/import functionality not working"
+
+**Symptoms:**
+- Export files not being created
+- Import functionality failing to load data
+- Exported data missing validation information
+- Cross-session data reuse not working
+
+**Solutions:**
+
+1. **Check export directory and permissions:**
+   ```bash
+   # Ensure export directory exists
+   mkdir -p scripts/data-exports
+   
+   # Check permissions
+   ls -la scripts/data-exports/
+   
+   # Test export functionality
+   npm run frontend-sync scenario minimal --export
+   ```
+
+2. **Validate export/import process:**
+   ```bash
+   # List available exports
+   npm run frontend-sync list-exports
+   
+   # Test import functionality
+   npm run frontend-sync import scripts/data-exports/latest-export.json
+   
+   # Validate imported data
+   npm run frontend-sync validate-consistency
    ```
 
 #### Problem: "Frontend can't connect to backend services"

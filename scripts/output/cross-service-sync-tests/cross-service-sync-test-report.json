@@ -1,0 +1,375 @@
+{
+  "timestamp": "2025-09-19T10:29:07.330Z",
+  "summary": {
+    "totalTests": 6,
+    "passedTests": 6,
+    "failedTests": 0,
+    "successRate": 100
+  },
+  "testResults": {
+    "imageToFrontendSync": {
+      "passed": true,
+      "details": {
+        "initialImageCount": 40,
+        "updatedImageCount": 40,
+        "processedImages": 21,
+        "uploadedImages": 0,
+        "syncedUrls": 6,
+        "sampleSyncedUrls": [
+          "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_25.png",
+          "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_38.png",
+          "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_26.png"
+        ]
+      },
+      "error": null
+    },
+    "databaseToFrontendSync": {
+      "passed": true,
+      "details": {
+        "initialArtistCount": 8,
+        "updatedArtistCount": 8,
+        "seededArtists": 2,
+        "seededStudios": 1,
+        "matchingArtistIds": 2,
+        "sampleMatchingIds": [
+          "artist-001",
+          "artist-002"
+        ]
+      },
+      "error": null
+    },
+    "s3ToFrontendSync": {
+      "passed": true,
+      "details": {
+        "s3ImageCount": 141,
+        "frontendImageCount": 40,
+        "synchronizedUrls": 38,
+        "sampleS3Urls": [
+          "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+          "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
+          "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_42.png"
+        ],
+        "sampleSynchronizedUrls": [
+          "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_14.png",
+          "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_5.png",
+          "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_55.png"
+        ]
+      },
+      "error": null
+    },
+    "corsConfigSync": {
+      "passed": true,
+      "details": {
+        "totalImageUrls": 40,
+        "corsAccessibleUrls": 40,
+        "sampleCorsUrls": [
+          "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_70.png",
+          "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_30.png",
+          "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_76.png"
+        ],
+        "s3Endpoint": "http://localhost:4566",
+        "bucketName": "tattoo-directory-images"
+      },
+      "error": null
+    },
+    "scenarioBasedSync": {
+      "passed": true,
+      "details": {
+        "testedScenarios": [
+          "minimal",
+          "london-artists",
+          "high-rated"
+        ],
+        "scenarioResults": {
+          "minimal": {
+            "seeded": true,
+            "frontendUpdated": true,
+            "artistCount": 3,
+            "validation": {
+              "passed": true,
+              "details": {
+                "expectedRange": "1-3",
+                "actual": 3
+              }
+            }
+          },
+          "london-artists": {
+            "seeded": true,
+            "frontendUpdated": true,
+            "artistCount": 5,
+            "validation": {
+              "passed": true,
+              "details": {
+                "londonArtists": 1,
+                "total": 5
+              }
+            }
+          },
+          "high-rated": {
+            "seeded": true,
+            "frontendUpdated": true,
+            "artistCount": 3,
+            "validation": {
+              "passed": true,
+              "details": {
+                "highRatedArtists": 1,
+                "total": 3
+              }
+            }
+          }
+        },
+        "allPassed": true
+      },
+      "error": null
+    },
+    "overallSync": {
+      "passed": true,
+      "details": {
+        "setupResult": {
+          "images": {
+            "processed": 25,
+            "uploaded": 0,
+            "failed": 0
+          },
+          "database": {
+            "artists": 10,
+            "studios": 3,
+            "styles": 17
+          },
+          "opensearch": {
+            "documents": 10,
+            "indexed": 10
+          },
+          "frontend": {
+            "updated": true,
+            "artistCount": 8,
+            "studioCount": 3,
+            "generationTime": 1,
+            "memoryUsage": 16149096,
+            "validationErrors": 0,
+            "scenarios": {
+              "normal": {
+                "artistCount": 8,
+                "timestamp": "2025-09-19T10:29:04.403Z"
+              }
+            },
+            "enhancedCapabilities": true
+          }
+        },
+        "validations": {
+          "images": {
+            "passed": true,
+            "details": {
+              "imageUrlsCount": 25,
+              "frontendImageCount": 40,
+              "syncedCount": 11
+            }
+          },
+          "database": {
+            "passed": true,
+            "details": {
+              "artistCount": 8,
+              "hasRequiredFields": true,
+              "sampleArtist": {
+                "pk": "ARTIST#1",
+                "sk": "PROFILE",
+                "artistId": "artist-001",
+                "artistName": "Marcus Chen",
+                "bio": "Sacred geometry and mandala expert creating precise patterns",
+                "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+                "instagramHandle": "tattoomarcuschen_studio",
+                "locationDisplay": "Manchester, UK",
+                "tattooStudio": {
+                  "studioId": "studio-001",
+                  "studioName": "Rebel Ink Studio",
+                  "address": {
+                    "street": "67 Deansgate",
+                    "city": "Manchester",
+                    "postcode": "M2 3BB",
+                    "latitude": 53.48312691614093,
+                    "longitude": -2.242141046238823
+                  }
+                },
+                "styles": [
+                  "geometric",
+                  "realism",
+                  "traditional"
+                ],
+                "portfolioImages": [
+                  {
+                    "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_64.png",
+                    "description": "Abstract geometric shapes",
+                    "style": "geometric"
+                  },
+                  {
+                    "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_64.png",
+                    "description": "Sacred geometry pattern",
+                    "style": "geometric"
+                  },
+                  {
+                    "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_25.png",
+                    "description": "Realistic portrait piece",
+                    "style": "realism"
+                  },
+                  {
+                    "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_129.png",
+                    "description": "Photorealistic animal",
+                    "style": "realism"
+                  },
+                  {
+                    "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_65.png",
+                    "description": "Nautical anchor piece",
+                    "style": "traditional"
+                  }
+                ],
+                "geohash": "3q57u3",
+                "opted_out": false,
+                "rating": 4.3,
+                "reviewCount": 197,
+                "pricing": {
+                  "hourlyRate": 99,
+                  "minimumCharge": 58,
+                  "currency": "GBP",
+                  "description": "£"
+                },
+                "availability": {
+                  "status": "Booking 1-2 months",
+                  "bookingOpen": true,
+                  "nextAvailable": "2024-04-01",
+                  "waitingList": false
+                },
+                "experience": {
+                  "yearsActive": 16,
+                  "apprenticeshipCompleted": true,
+                  "certifications": [
+                    "First Aid",
+                    "Bloodborne Pathogens",
+                    "Color Theory",
+                    "Guest Artist",
+                    "Convention Judge",
+                    "Master Artist"
+                  ]
+                },
+                "contactInfo": {
+                  "instagram": "@tattoomarcuschen_studio",
+                  "email": "marcus.chen@electricneedlestudio.com",
+                  "phone": "+44 117 8052 645",
+                  "website": "https://marcuschen.tattoo.com"
+                },
+                "specialties": [
+                  "Sacred geometry",
+                  "Wildlife",
+                  "Custom designs",
+                  "Large pieces"
+                ],
+                "styleMetadata": [
+                  {
+                    "styleName": "geometric",
+                    "characteristics": [
+                      "precise-lines",
+                      "mathematical",
+                      "symmetrical",
+                      "modern"
+                    ],
+                    "popularMotifs": [
+                      "mandalas",
+                      "sacred-geometry",
+                      "patterns",
+                      "shapes"
+                    ],
+                    "colorPalette": [
+                      "black",
+                      "minimal-color",
+                      "monochrome"
+                    ],
+                    "difficulty": "intermediate",
+                    "timeOrigin": "2000s",
+                    "aliases": [
+                      "sacred-geometry",
+                      "mathematical"
+                    ]
+                  },
+                  {
+                    "styleName": "realism",
+                    "characteristics": [
+                      "photorealistic",
+                      "detailed-shading",
+                      "lifelike",
+                      "precise"
+                    ],
+                    "popularMotifs": [
+                      "portraits",
+                      "animals",
+                      "nature",
+                      "objects"
+                    ],
+                    "colorPalette": [
+                      "black-and-grey",
+                      "full-color",
+                      "skin-tones"
+                    ],
+                    "difficulty": "advanced",
+                    "timeOrigin": "1970s",
+                    "aliases": [
+                      "photo-realism",
+                      "hyperrealism"
+                    ]
+                  },
+                  {
+                    "styleName": "traditional",
+                    "characteristics": [
+                      "bold-lines",
+                      "solid-colors",
+                      "iconic-imagery",
+                      "vintage"
+                    ],
+                    "popularMotifs": [
+                      "roses",
+                      "eagles",
+                      "anchors",
+                      "swallows",
+                      "hearts"
+                    ],
+                    "colorPalette": [
+                      "red",
+                      "blue",
+                      "yellow",
+                      "green",
+                      "black"
+                    ],
+                    "difficulty": "intermediate",
+                    "timeOrigin": "1900s",
+                    "aliases": [
+                      "old-school",
+                      "american-traditional"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "frontend": {
+            "passed": true,
+            "details": {
+              "artistCount": 8,
+              "hasBusinessData": true,
+              "hasContactInfo": true,
+              "enhancedCapabilities": true
+            }
+          },
+          "crossService": {
+            "passed": true,
+            "details": {
+              "imageSync": true,
+              "databaseSync": true,
+              "frontendSync": true,
+              "allConsistent": true
+            }
+          }
+        },
+        "allPassed": true
+      },
+      "error": null
+    }
+  }
+}

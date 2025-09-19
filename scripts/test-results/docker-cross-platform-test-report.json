@@ -1,0 +1,169 @@
+{
+  "testSuite": "Docker and Cross-Platform Compatibility",
+  "timestamp": "2025-09-19T11:34:06.000Z",
+  "platform": {
+    "os": "win32",
+    "isWindows": true,
+    "isLinux": false,
+    "isMacOS": false,
+    "shell": "C:\\WINDOWS\\system32\\cmd.exe",
+    "pathSeparator": "\\"
+  },
+  "environment": {
+    "nodeVersion": "v21.7.1",
+    "dockerAvailable": true,
+    "dockerComposeCommand": "docker compose",
+    "workingDirectory": "C:\\dev\\Tattoo_MVP"
+  },
+  "summary": {
+    "totalTests": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "errors": []
+  },
+  "testResults": {
+    "docker": {
+      "containerEnvironment": [
+        {
+          "name": "Container Startup and Health",
+          "passed": true,
+          "details": "Container started and health check passed",
+          "timestamp": "2025-09-19T11:33:59.364Z",
+          "platform": "win32"
+        }
+      ],
+      "networking": [
+        {
+          "name": "Docker Network Connectivity",
+          "passed": true,
+          "details": "Docker networking functional",
+          "timestamp": "2025-09-19T11:34:02.512Z",
+          "platform": "win32"
+        }
+      ],
+      "volumeMounts": [
+        {
+          "name": "Volume Mount Functionality",
+          "passed": true,
+          "details": "Volume mounts working correctly",
+          "timestamp": "2025-09-19T11:33:59.569Z",
+          "platform": "win32"
+        }
+      ],
+      "serviceIntegration": [
+        {
+          "name": "Service Integration",
+          "passed": true,
+          "details": "AWS services accessible in container",
+          "timestamp": "2025-09-19T11:34:04.294Z",
+          "platform": "win32"
+        },
+        {
+          "name": "Frontend Sync Processor in Container",
+          "passed": true,
+          "details": "Frontend sync processor works in container",
+          "timestamp": "2025-09-19T11:34:05.477Z",
+          "platform": "win32"
+        }
+      ]
+    },
+    "crossPlatform": {
+      "pathHandling": [
+        {
+          "name": "Cross-Platform Path Handling",
+          "passed": true,
+          "details": "Path handling tested for 4 paths on win32",
+          "timestamp": "2025-09-19T11:34:05.493Z",
+          "platform": "win32"
+        }
+      ],
+      "cliCompatibility": [
+        {
+          "name": "CLI Compatibility",
+          "passed": true,
+          "details": "4/4 CLI tests passed on win32",
+          "timestamp": "2025-09-19T11:34:05.905Z",
+          "platform": "win32"
+        }
+      ],
+      "fileOperations": [
+        {
+          "name": "File Operations",
+          "passed": true,
+          "details": "File operations working correctly across platforms",
+          "timestamp": "2025-09-19T11:34:05.918Z",
+          "platform": "win32"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "Environment Variables",
+          "passed": true,
+          "details": "Environment variable handling working correctly",
+          "timestamp": "2025-09-19T11:34:05.920Z",
+          "platform": "win32"
+        }
+      ],
+      "platformConfigs": [
+        {
+          "name": "Platform-Specific Docker Configs",
+          "passed": true,
+          "details": "Platform-specific Docker config validated for win32",
+          "timestamp": "2025-09-19T11:34:05.921Z",
+          "platform": "win32"
+        }
+      ]
+    },
+    "cicd": {
+      "githubActions": [
+        {
+          "name": "GitHub Actions Compatibility",
+          "passed": true,
+          "details": "Not running in GitHub Actions (test skipped)",
+          "timestamp": "2025-09-19T11:34:05.922Z",
+          "platform": "win32"
+        }
+      ],
+      "containerRegistry": [
+        {
+          "name": "Container Registry Compatibility",
+          "passed": true,
+          "details": "Container registry compatibility validated",
+          "timestamp": "2025-09-19T11:34:05.997Z",
+          "platform": "win32"
+        }
+      ],
+      "deployment": [
+        {
+          "name": "Deployment Environment Compatibility",
+          "passed": true,
+          "details": "Deployment environment compatibility validated",
+          "timestamp": "2025-09-19T11:34:05.999Z",
+          "platform": "win32"
+        }
+      ]
+    },
+    "summary": {
+      "totalTests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "errors": []
+    }
+  },
+  "recommendations": [
+    {
+      "category": "Windows Optimization",
+      "priority": "medium",
+      "description": "Consider using WSL 2 for better Docker performance on Windows",
+      "action": "Enable WSL 2 backend in Docker Desktop settings"
+    },
+    {
+      "category": "Performance",
+      "priority": "low",
+      "description": "Monitor Docker resource usage during development",
+      "action": "Use docker stats to monitor container resource consumption"
+    }
+  ]
+}

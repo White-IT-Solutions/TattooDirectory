@@ -18,9 +18,34 @@ The new unified system consolidates all data management operations into a single
 - [x] **Run final validation tests**
 - [x] **Archive or remove legacy scripts**
 
+## Enhanced Features in New System
+
+### 🆕 Frontend-Sync-Processor Enhancements
+
+The unified system now includes a significantly enhanced frontend-sync-processor with:
+
+- **Comprehensive Business Data**: Realistic ratings, pricing, availability, experience levels
+- **Studio Relationships**: Bidirectional artist-studio linking with complete studio information  
+- **Enhanced Contact Information**: Email, phone, website, Instagram with privacy controls
+- **Style Metadata**: Characteristics, difficulty levels, popular motifs, color palettes
+- **Data Structure Alignment**: Proper field alignment with backend API expectations
+- **RFC 9457 Error Responses**: Compliant error response generation for testing
+- **Data Export/Import**: Save and reuse generated datasets across sessions
+- **Performance Testing**: Large datasets for performance and stress testing
+- **Enhanced CLI Interface**: Comprehensive command-line options and help system
+- **Data Validation**: Built-in validation and consistency checking
+
+### 🔄 Data Structure Improvements
+
+- Added required `bio` field for all artists (was missing in legacy system)
+- Moved `latitude`/`longitude` to `tattooStudio.address` structure for consistency
+- Renamed `studioInfo` to `tattooStudio` for API alignment
+- Standardized `artistName` vs `artistsName` naming across all data
+- Added system fields (`pk`, `sk`, `opted_out`) for database consistency
+
 ## Command Migration Map
 
-### Legacy → New System Commands
+### Legacy → Enhanced System Commands
 
 | Legacy Command                                            | New Command                        | Notes                                  |
 | --------------------------------------------------------- | ---------------------------------- | -------------------------------------- |
@@ -38,17 +63,23 @@ The new unified system consolidates all data management operations into a single
 #### Setup Data
 
 ```bash
-# Basic setup (replaces legacy seed.js)
+# Enhanced setup with comprehensive business data (replaces legacy seed.js)
 npm run setup-data
 
-# Frontend-only setup
+# Enhanced frontend-only setup with business data, ratings, pricing
 npm run setup-data:frontend-only
+
+# Enhanced frontend setup with data export and validation
+npm run setup-data:frontend-only --export --validate
 
 # Images-only setup
 npm run setup-data:images-only
 
-# Force refresh all data
+# Force refresh all data with enhanced capabilities
 npm run setup-data:force
+
+# Scenario-based setup with enhanced data
+npm run setup-data --scenario london-focused --validate
 ```
 
 #### Reset Data
@@ -67,32 +98,50 @@ npm run reset-data:performance-test
 npm run reset-data:frontend-ready
 ```
 
-#### Seed Scenarios
+#### Enhanced Seed Scenarios
 
 ```bash
-# Available scenarios (replaces selective-seeder.js)
-npm run seed-scenario:minimal
-npm run seed-scenario:search-basic
-npm run seed-scenario:london-artists
-npm run seed-scenario:high-rated
-npm run seed-scenario:new-artists
-npm run seed-scenario:booking-available
-npm run seed-scenario:portfolio-rich
-npm run seed-scenario:multi-style
-npm run seed-scenario:pricing-range
-npm run seed-scenario:full-dataset
+# Enhanced scenarios with comprehensive business data (replaces selective-seeder.js)
+npm run seed-scenario:minimal          # 3 artists with business data
+npm run seed-scenario:search-basic     # 5 artists with ratings/pricing
+npm run seed-scenario:london-artists   # 5 London artists with studio relationships
+npm run seed-scenario:london-focused   # 10 London artists with comprehensive studio data
+npm run seed-scenario:high-rated       # 3 artists with 4.5+ ratings
+npm run seed-scenario:new-artists      # 4 artists with experience data
+npm run seed-scenario:booking-available # 6 artists with availability data
+npm run seed-scenario:portfolio-rich   # 4 artists with style metadata
+npm run seed-scenario:multi-style      # 3 artists with style characteristics
+npm run seed-scenario:style-diverse    # 12 artists with all styles and metadata
+npm run seed-scenario:pricing-range    # 5 artists with detailed pricing
+npm run seed-scenario:full-dataset     # 10 artists with all enhanced features
+npm run seed-scenario:performance-test # 50+ artists for performance testing
 ```
 
-#### Validation
+#### Enhanced Validation
 
 ```bash
-# Comprehensive validation
+# Comprehensive validation with enhanced data structure checking
 npm run validate-data
 
-# Specific validation types
-npm run validate-data:consistency
-npm run validate-data:images
-npm run validate-data:scenarios
+# Enhanced validation types
+npm run validate-data:consistency        # Cross-service consistency + frontend-sync alignment
+npm run validate-data:images            # Image URL accessibility
+npm run validate-data:scenarios         # Enhanced scenario data with business data validation
+npm run validate-data:frontend          # Frontend mock data structure validation
+npm run validate-data:business-data     # Business data validation (ratings, pricing, availability)
+npm run validate-data:studio-relationships # Artist-studio relationship validation
+```
+
+#### Enhanced Frontend-Sync-Processor
+
+```bash
+# Direct access to enhanced frontend-sync-processor
+npm run frontend-sync generate --count 10 --scenario normal
+npm run frontend-sync scenario london-focused --export
+npm run frontend-sync validate
+npm run frontend-sync error validation --instance /v1/search
+npm run frontend-sync performance --count 50
+npm run frontend-sync studios
 ```
 
 ## Migration Process
@@ -362,6 +411,20 @@ node docker-compatibility.js validate-docker
    - Search codebase for direct script calls
    - Update Docker configurations
 
+4. **Enhanced frontend-sync-processor issues**
+
+   - Missing business data in generated mock data
+   - Studio relationship data not linking properly
+   - Data structure misalignment (bio field, tattooStudio format)
+   - Export/import functionality not working
+
+5. **Data validation failures**
+
+   - Enhanced data structure validation errors
+   - Business data consistency issues
+   - Studio relationship validation failures
+   - RFC 9457 error response format issues
+
 ### Getting Help
 
 1. **Run migration analysis**
@@ -378,9 +441,37 @@ node docker-compatibility.js validate-docker
    node migration-utility.js full
    ```
 
-3. **Check system health**
+3. **Check system health with enhanced validation**
    ```bash
    npm run health-check
+   npm run validate-data:business-data
+   npm run validate-data:studio-relationships
+   ```
+
+4. **Test enhanced frontend-sync-processor**
+
+   ```bash
+   # Test enhanced data generation
+   npm run frontend-sync generate --count 3 --scenario normal --validate
+   
+   # Test specific business data features
+   npm run frontend-sync scenario high-rated --export
+   
+   # Validate enhanced data structure
+   npm run frontend-sync validate
+   ```
+
+5. **Debug enhanced features**
+
+   ```bash
+   # Enable debug mode for enhanced processor
+   DEBUG=frontend-sync npm run setup-data:frontend-only
+   
+   # Test CLI interface
+   npm run frontend-sync --help
+   
+   # Validate data export functionality
+   npm run frontend-sync list-exports
    ```
 
 ## Advanced Features
@@ -423,35 +514,107 @@ class CustomValidator extends ComparisonValidator {
 }
 ```
 
+## Enhanced Workflow Examples
+
+### Enhanced Feature Development
+
+```bash
+# 1. Reset to clean state for your feature
+npm run reset-data:clean
+
+# 2. Seed appropriate enhanced test scenario with business data
+npm run seed-scenario:search-basic     # for search features with ratings/pricing
+npm run seed-scenario:london-focused   # for location features with studio data
+npm run seed-scenario:style-diverse    # for style filtering with metadata
+npm run seed-scenario:booking-available # for booking features with availability
+
+# 3. Use enhanced frontend-only development
+npm run setup-data:frontend-only --scenario high-rated --export
+
+# 4. Develop your feature with realistic business data...
+
+# 5. Validate enhanced data integrity
+npm run validate-data:business-data
+npm run validate-data:studio-relationships
+
+# 6. Test with different enhanced scenarios as needed
+npm run seed-scenario:performance-test  # for performance testing
+npm run frontend-sync scenario style-diverse --export  # for comprehensive testing
+```
+
+### Enhanced Testing Workflows
+
+```bash
+# Unit testing with business data
+npm run seed-scenario:minimal
+npm run test --workspace=backend
+
+# Integration testing with comprehensive data
+npm run seed-scenario:full-dataset
+npm run test:integration
+
+# Performance testing with large datasets
+npm run seed-scenario:performance-test
+npm run test:performance
+
+# Frontend testing with enhanced mock data
+npm run setup-data:frontend-only --scenario style-diverse --validate
+npm run test --workspace=frontend
+```
+
+### Enhanced Data Export/Reuse Workflow
+
+```bash
+# Generate and export data for team sharing
+npm run frontend-sync scenario london-focused --export --validate
+
+# List available exported datasets
+npm run frontend-sync list-exports
+
+# Import shared dataset
+npm run frontend-sync import scripts/data-exports/london-focused-20240115.json
+
+# Validate imported data
+npm run frontend-sync validate-consistency
+```
+
 ## Benefits of Migration
 
 ### Improved Reliability
 
-- Unified error handling
+- Unified error handling with RFC 9457 compliant responses
 - Better service connectivity management
-- Comprehensive health monitoring
-- Automatic retry mechanisms
+- Comprehensive health monitoring with business data validation
+- Automatic retry mechanisms with enhanced error recovery
 
 ### Enhanced Developer Experience
 
-- Single command interface
-- Clear command structure
-- Comprehensive help system
-- Better logging and debugging
+- Single command interface with comprehensive CLI options
+- Clear command structure with enhanced help system
+- Comprehensive business data for realistic development
+- Better logging and debugging with performance metrics
 
 ### Better Maintainability
 
-- Centralized configuration
-- Modular architecture
-- Comprehensive testing
-- Clear documentation
+- Centralized configuration with enhanced options
+- Modular architecture with business data separation
+- Comprehensive testing with enhanced validation
+- Clear documentation with migration guides
 
 ### Performance Improvements
 
-- Incremental processing
-- Better caching
-- Optimized service calls
-- Reduced redundancy
+- Incremental processing with enhanced change detection
+- Better caching with data export/import functionality
+- Optimized service calls with batch processing
+- Reduced redundancy with smart data generation
+
+### Enhanced Data Quality
+
+- **Realistic Business Data**: Ratings, pricing, availability, experience levels
+- **Complete Studio Information**: Bidirectional relationships, contact details, opening hours
+- **Enhanced Style Metadata**: Characteristics, difficulty levels, popular motifs
+- **Data Structure Alignment**: Proper field alignment with backend API expectations
+- **Comprehensive Validation**: Built-in data consistency and structure checking
 
 ## Post-Migration
 

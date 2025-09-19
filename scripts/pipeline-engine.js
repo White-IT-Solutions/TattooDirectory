@@ -122,6 +122,7 @@ class DataPipeline extends EventEmitter {
     this.currentExecution = null;
     this.executionHistory = [];
     this.isRunning = false;
+    this.currentScenario = null;
     
     // Progress tracking
     this.totalStages = 0;
@@ -135,6 +136,9 @@ class DataPipeline extends EventEmitter {
    */
   buildPipeline(operationType, options = {}) {
     const { forceAll = false, scenario = null, resetState = null } = options;
+    
+    // Store current scenario for use in stages
+    this.currentScenario = scenario;
     
     // Always include prerequisite validation and change detection
     const requiredStages = [
@@ -527,15 +531,62 @@ class DataPipeline extends EventEmitter {
   }
 
   /**
-   * Stage implementation: Sync frontend
+   * Stage implementation: Enhanced sync frontend with comprehensive capabilities
    */
   async _syncFrontend(progressCallback) {
     // Report progress to callback if provided
     if (progressCallback) {
-      progressCallback(1, 1, 'Synchronizing frontend data');
+      progressCallback(0, 3, 'Starting enhanced frontend synchronization');
     }
     
-    return await this.frontendSyncProcessor.syncWithBackend();
+    try {
+      // Use enhanced sync capabilities
+      const syncResult = await this.frontendSyncProcessor.syncWithBackend({
+        includeBusinessData: true,
+        validateData: true,
+        scenario: this.currentScenario || null
+      });
+      
+      if (progressCallback) {
+        progressCallback(1, 3, 'Frontend data synchronized');
+      }
+      
+      // If sync was successful and we have studios, log additional info
+      if (syncResult.success && this.frontendSyncProcessor.generatedStudios) {
+        const studioCount = this.frontendSyncProcessor.generatedStudios.length;
+        console.log(`🏢 Generated ${studioCount} studios with bidirectional relationships`);
+        
+        if (progressCallback) {
+          progressCallback(2, 3, `Generated ${studioCount} studios`);
+        }
+      }
+      
+      // Add enhanced statistics to result
+      const enhancedResult = {
+        ...syncResult,
+        studioCount: this.frontendSyncProcessor.generatedStudios?.length || 0,
+        enhancedCapabilities: true
+      };
+      
+      if (progressCallback) {
+        progressCallback(3, 3, 'Enhanced frontend synchronization complete');
+      }
+      
+      return enhancedResult;
+      
+    } catch (error) {
+      console.error('❌ Enhanced frontend sync failed:', error.message);
+      
+      if (progressCallback) {
+        progressCallback(3, 3, `Frontend sync failed: ${error.message}`);
+      }
+      
+      return {
+        success: false,
+        error: error.message,
+        enhancedCapabilities: true
+      };
+    }
   }
 
   /**
