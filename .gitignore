@@ -23,6 +23,7 @@ yarn-error.log*
 *.swp
 *.swo
 *~
+.kiro
 
 # OS generated files
 .DS_Store
@@ -58,3 +59,4 @@ temp/
 
 # Kiro settings (keep steering rules but ignore other settings)
 .kiro/settings/
+docs/AI_Assisted_Documentation/*

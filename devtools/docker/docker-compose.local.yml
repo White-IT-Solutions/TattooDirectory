@@ -18,6 +18,7 @@ services:
       - LAMBDA_REMOTE_DOCKER=false
       - LOCALSTACK_VOLUME_DIR=/var/lib/localstack
       - SKIP_INFRA_DOWNLOADS=1
+      - LOCALSTACK_WEB_UI=1
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "localstack-data:/var/lib/localstack"

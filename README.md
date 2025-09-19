@@ -31,6 +31,14 @@ The system employs a serverless-first, event-driven architecture with two main c
 
 ## 📚 Documentation
 
+### Development Documentation
+
+- **[Data Management Guide](docs/DATA_MANAGEMENT_GUIDE.md)**: Complete guide to the unified data management system
+- **[Migration Guide](docs/MIGRATION_GUIDE.md)**: Migrating from legacy scripts to the new system
+- **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)**: Common issues and solutions
+
+### Project Documentation
+
 Comprehensive project documentation is available in the `/docs` folder:
 
 - **[PRD](docs/PRD%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Product Requirements Document
@@ -48,23 +56,20 @@ Comprehensive project documentation is available in the `/docs` folder:
 
 ### Local Development Environment
 
-Set up the complete local development environment with LocalStack:
+Set up the complete local development environment with the unified data management system:
 
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Set up test data with realistic images
-cd scripts
-npm install
-npm run setup
-cd ..
+# 2. Start LocalStack services
+docker-compose up -d localstack
 
-# 3. Start the local environment
-npm run local:start
+# 3. Set up complete development environment
+npm run setup-data
 
 # 4. Verify everything is running
-npm run local:health
+npm run health-check
 ```
 
 **Access Points:**
@@ -74,13 +79,41 @@ npm run local:health
 
 ### Frontend Development Only
 
-For frontend-only development:
+For frontend-only development (no AWS services required):
 
 ```bash
+# Generate mock data without LocalStack
+npm run setup-data:frontend-only
+
+# Start frontend development
 cd frontend
 npm install
 npm run dev
 ```
+
+### Data Management Commands
+
+The project includes a unified data management system for easy development:
+
+```bash
+# Complete setup (images, databases, frontend)
+npm run setup-data
+
+# Reset to clean state for testing
+npm run reset-data:clean
+
+# Seed specific test scenarios
+npm run seed-scenario:minimal          # Quick testing (3 artists)
+npm run seed-scenario:london-artists   # Location testing (5 London artists)
+npm run seed-scenario:full-dataset     # Complete testing (10 artists)
+
+# System health and validation
+npm run health-check                   # Check service connectivity
+npm run validate-data                  # Validate data consistency
+npm run data-status                    # Get current system status
+```
+
+For complete documentation, see the [Data Management Guide](docs/DATA_MANAGEMENT_GUIDE.md).
 
 ### Project Structure
 
@@ -97,16 +130,26 @@ npm run dev
 
 ### Development Scripts
 
-See [Development Workflow](scripts/README-Development-Workflow.md) for complete script documentation.
+The project uses a unified data management system. See the [Data Management Guide](docs/DATA_MANAGEMENT_GUIDE.md) for complete documentation.
 
-**Quick Commands:**
+**Essential Commands:**
 ```bash
-npm run local:start         # Start complete environment
+# Data Management (New Unified System)
+npm run setup-data          # Complete environment setup
+npm run reset-data          # Reset to clean state
+npm run seed-scenario       # Load test scenarios
+npm run health-check        # Verify system health
+npm run validate-data       # Check data consistency
+npm run data-status         # Get system status
+
+# Legacy Commands (Still Available)
+npm run local:start         # Start LocalStack services
 npm run local:stop          # Stop all services
-npm run local:health        # Check service health
-npm run local:logs          # View all logs
-npm run seed               # Seed test data
+npm run local:health        # Basic health check
+npm run local:logs          # View service logs
 ```
+
+**Migration Note:** The new unified system consolidates 40+ scattered scripts into simple commands. See the [Migration Guide](docs/MIGRATION_GUIDE.md) for transitioning from legacy scripts.
 
 ## 📊 Success Metrics
 

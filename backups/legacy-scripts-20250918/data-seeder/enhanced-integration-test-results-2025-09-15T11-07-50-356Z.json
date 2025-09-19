@@ -1,0 +1,222 @@
+{
+  "timestamp": "2025-09-15T11:07:50.356Z",
+  "testSuite": "enhanced-integration-test",
+  "stats": {
+    "passed": 47,
+    "failed": 10,
+    "skipped": 0
+  },
+  "results": [
+    {
+      "command": "node data-manager.js",
+      "description": "Data Manager help",
+      "status": "FAIL",
+      "error": "Command failed: node data-manager.js",
+      "output": "📋 Data Manager Usage:\n  node data-manager.js export [path]\n  node data-manager.js import <path>\n  node data-manager.js backup [name]\n  node data-manager.js restore <backup-key>\n  node data-manager.js list-backups"
+    },
+    {
+      "command": "node selective-seeder.js",
+      "description": "Selective Seeder help",
+      "status": "FAIL",
+      "error": "Command failed: node selective-seeder.js",
+      "output": "🎯 Selective Seeder Usage:\n  node selective-seeder.js list\n  node selective-seeder.js seed <scenario-name>\n\nExample:\n  node selective-seeder.js seed search-basic"
+    },
+    {
+      "command": "node data-validator.js",
+      "description": "Data Validator help",
+      "status": "FAIL",
+      "error": "Command failed: node data-validator.js",
+      "output": "🔍 Data Validator Usage:\n  node data-validator.js files       - Validate test data files\n  node data-validator.js database     - Validate DynamoDB data\n  node data-validator.js opensearch   - Validate OpenSearch data\n  node data-validator.js consistency  - Check data consistency\n  node data-validator.js all          - Run all validations"
+    },
+    {
+      "command": "node data-reset.js",
+      "description": "Data Reset help",
+      "status": "FAIL",
+      "error": "Command failed: node data-reset.js",
+      "output": "🔄 Data Reset Usage:\n  node data-reset.js list                    - List available reset states\n  node data-reset.js reset <state>          - Reset to specific state\n  node data-reset.js snapshot <name>        - Create data snapshot\n  node data-reset.js restore <snapshot>     - Restore from snapshot\n  node data-reset.js validate               - Validate current state\n  node data-reset.js clear [type]           - Clear data (all/dynamodb/opensearch/s3)\n\nExample:\n  node data-reset.js reset fresh\n  node data-reset.js reset search-ready"
+    },
+    {
+      "command": "node test-utilities.js",
+      "description": "Test Utilities help",
+      "status": "FAIL",
+      "error": "Command failed: node test-utilities.js",
+      "output": "🧪 Test Utilities Usage:\n  node test-utilities.js connectivity  - Test service connections\n  node test-utilities.js data          - Test data integrity\n  node test-utilities.js search        - Test search functionality\n  node test-utilities.js performance   - Test performance metrics\n  node test-utilities.js all           - Run all tests\n  node test-utilities.js cleanup       - Clean up test data"
+    },
+    {
+      "command": "node data-migration-utility.js",
+      "description": "Data Migration Utility help",
+      "status": "FAIL",
+      "error": "Command failed: node data-migration-utility.js",
+      "output": "🔄 Data Migration Utility Usage:\n  node data-migration-utility.js list                    - List available migrations\n  node data-migration-utility.js run <migration>         - Run specific migration\n  node data-migration-utility.js run-all                 - Run all migrations\n  node data-migration-utility.js validate                - Validate migration results\n  node data-migration-utility.js rollback <migration>    - Rollback specific migration\n\nExample:\n  node data-migration-utility.js run add-missing-fields"
+    },
+    {
+      "command": "node data-monitoring-utility.js",
+      "description": "Data Monitoring Utility help",
+      "status": "FAIL",
+      "error": "Command failed: node data-monitoring-utility.js",
+      "output": "📊 Data Monitoring Utility Usage:\n  node data-monitoring-utility.js check                    - Run single health check\n  node data-monitoring-utility.js monitor [interval]       - Start continuous monitoring\n  node data-monitoring-utility.js report                   - Generate monitoring report\n  node data-monitoring-utility.js alerts [severity]        - List alerts\n  node data-monitoring-utility.js clear-alerts             - Clear all alerts\n  node data-monitoring-utility.js test-alerts              - Test alert system\n\nExample:\n  node data-monitoring-utility.js monitor 10000  # Monitor every 10 seconds\n  node data-monitoring-utility.js alerts high    # Show only high severity alerts"
+    },
+    {
+      "command": "node data-sync-utility.js",
+      "description": "Data Sync Utility help",
+      "status": "FAIL",
+      "error": "Command failed: node data-sync-utility.js",
+      "output": "🔄 Data Sync Utility Usage:\n  node data-sync-utility.js dynamo-to-os                    - Sync DynamoDB to OpenSearch\n  node data-sync-utility.js os-to-dynamo                    - Sync OpenSearch to DynamoDB\n  node data-sync-utility.js detect-conflicts                - Detect data conflicts\n  node data-sync-utility.js resolve-conflicts [strategy]    - Resolve conflicts\n  node data-sync-utility.js sync-point <name>               - Create sync point\n  node data-sync-utility.js validate-sync-point <file>      - Validate sync point\n\nConflict Resolution Strategies:\n  • latest (default) - Use most recently updated data\n  • dynamo_wins      - DynamoDB data takes precedence\n  • opensearch_wins  - OpenSearch data takes precedence\n\nExample:\n  node data-sync-utility.js resolve-conflicts latest"
+    },
+    {
+      "command": "node selective-seeder.js list",
+      "description": "List test scenarios",
+      "status": "PASS",
+      "output": "🎯 Available Test Scenarios:\n┌─────────────────────┬─────────────────────────────────────────────────┐\n│ Scenario            │ Description                                     │\n├─────────────────────┼─────────────────────────────────────────────────┤\n│ search-basic        │ Basic search functionality testing              │\n│ location-london     │ London-based artists for location testing       │\n│ style-traditional   │ Traditional style artists for style filtering   │\n│ high-rating         │ High-rated artists for rating tests             │\n│ new-artists         │ Recently joined artists for timeline tests      │\n│ booking-available   │ Artists with open booking for availability t... │\n│ portfolio-rich      │ Artists with extensive portfolios for image ... │\n│ multi-style         │ Artists with multiple styles for complex fil... │\n│ pricing-range       │ Artists with various pricing for price filte... │\n│ minimal             │ Minimal dataset for quick testing               │\n└─────────────────────┴─────────────────────────────────────────────────┘"
+    },
+    {
+      "command": "node data-reset.js list",
+      "description": "List reset states",
+      "status": "PASS",
+      "output": "🔄 Available Reset States:\n┌─────────────────┬─────────────────────────────────────────────────┐\n│ State           │ Description                                     │\n├─────────────────┼─────────────────────────────────────────────────┤\n│ clean           │ Complete clean state - no data                  │\n│ fresh           │ Fresh start with full test dataset              │\n│ minimal         │ Minimal dataset for quick testing               │\n│ search-ready    │ Dataset optimized for search testing            │\n│ location-test   │ London-focused dataset for location testing     │\n│ style-test      │ Traditional style focused dataset               │\n│ performance-test │ Large dataset for performance testing           │\n│ backup-restore  │ Reset to last backup state                      │\n└─────────────────┴─────────────────────────────────────────────────┘\n\n📈 Reset Statistics:\n┌─────────────┬─────────┐\n│ Operation   │ Count   │\n├─────────────┼─────────┤\n│ Cleared     │       0 │\n│ Seeded      │       0 │\n│ Restored    │       0 │\n│ Failed      │       0 │\n└─────────────┴─────────┘"
+    },
+    {
+      "command": "node data-migration-utility.js list",
+      "description": "List migrations",
+      "status": "PASS",
+      "output": "🔄 Available Migrations:\n┌─────────────────────────┬─────────┬─────────────────────────────────────────────────┐\n│ Migration               │ Version │ Description                                     │\n├─────────────────────────┼─────────┼─────────────────────────────────────────────────┤\n│ add-missing-fields      │ 1.1.0   │ Add missing fields to existing artist records   │\n│ normalize-locations     │ 1.2.0   │ Normalize location display formats              │\n│ update-portfolio-structure │ 1.3.0   │ Update portfolio image structure with metadata  │\n│ add-social-media        │ 1.4.0   │ Add social media links structure                │\n└─────────────────────────┴─────────┴─────────────────────────────────────────────────┘\n\n📈 Migration Statistics:\n┌─────────────┬─────────┐\n│ Operation   │ Count   │\n├─────────────┼─────────┤\n│ Migrated    │       0 │\n│ Transformed │       0 │\n│ Skipped     │       0 │\n│ Failed      │       0 │\n└─────────────┴─────────┘"
+    },
+    {
+      "command": "node -e \"const DataManager = require('./data-manager'); console.log('DataManager loaded successfully')\"",
+      "description": "Data Manager module loading",
+      "status": "PASS",
+      "output": "DataManager loaded successfully"
+    },
+    {
+      "command": "node -e \"const { SelectiveSeeder } = require('./selective-seeder'); console.log('SelectiveSeeder loaded successfully')\"",
+      "description": "Selective Seeder module loading",
+      "status": "PASS",
+      "output": "SelectiveSeeder loaded successfully"
+    },
+    {
+      "command": "node -e \"const DataValidator = require('./data-validator'); console.log('DataValidator loaded successfully')\"",
+      "description": "Data Validator module loading",
+      "status": "PASS",
+      "output": "DataValidator loaded successfully"
+    },
+    {
+      "command": "node -e \"const DataReset = require('./data-reset'); console.log('DataReset loaded successfully')\"",
+      "description": "Data Reset module loading",
+      "status": "PASS",
+      "output": "DataReset loaded successfully"
+    },
+    {
+      "command": "node -e \"const DataMigrationUtility = require('./data-migration-utility'); console.log('DataMigrationUtility loaded successfully')\"",
+      "description": "Data Migration Utility module loading",
+      "status": "PASS",
+      "output": "DataMigrationUtility loaded successfully"
+    },
+    {
+      "command": "node -e \"const DataMonitoringUtility = require('./data-monitoring-utility'); console.log('DataMonitoringUtility loaded successfully')\"",
+      "description": "Data Monitoring Utility module loading",
+      "status": "PASS",
+      "output": "DataMonitoringUtility loaded successfully"
+    },
+    {
+      "command": "node -e \"const DataSyncUtility = require('./data-sync-utility'); console.log('DataSyncUtility loaded successfully')\"",
+      "description": "Data Sync Utility module loading",
+      "status": "PASS",
+      "output": "DataSyncUtility loaded successfully"
+    },
+    {
+      "command": "node data-migration-utility.js list",
+      "description": "List available migrations",
+      "status": "PASS",
+      "output": "🔄 Available Migrations:\n┌─────────────────────────┬─────────┬─────────────────────────────────────────────────┐\n│ Migration               │ Version │ Description                                     │\n├─────────────────────────┼─────────┼─────────────────────────────────────────────────┤\n│ add-missing-fields      │ 1.1.0   │ Add missing fields to existing artist records   │\n│ normalize-locations     │ 1.2.0   │ Normalize location display formats              │\n│ update-portfolio-structure │ 1.3.0   │ Update portfolio image structure with metadata  │\n│ add-social-media        │ 1.4.0   │ Add social media links structure                │\n└─────────────────────────┴─────────┴─────────────────────────────────────────────────┘\n\n📈 Migration Statistics:\n┌─────────────┬─────────┐\n│ Operation   │ Count   │\n├─────────────┼─────────┤\n│ Migrated    │       0 │\n│ Transformed │       0 │\n│ Skipped     │       0 │\n│ Failed      │       0 │\n└─────────────┴─────────┘"
+    },
+    {
+      "command": "node data-migration-utility.js validate",
+      "description": "Validate migration results",
+      "status": "FAIL",
+      "error": "Command failed: node data-migration-utility.js validate\n(node:10252) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.\n SDK releases are limited to address critical bug fixes and security issues only.\n\nPlease migrate your code to use AWS SDK for JavaScript (v3).\nFor more information, check the blog post at https://a.co/cUPnyil\n(Use `node --trace-warnings ...` to show where the warning was created)\n❌ Migration validation failed: null\n❌ Migration failed: null\n",
+      "output": "🔍 Validating migration results...\n\n📈 Migration Statistics:\n┌─────────────┬─────────┐\n│ Operation   │ Count   │\n├─────────────┼─────────┤\n│ Migrated    │       0 │\n│ Transformed │       0 │\n│ Skipped     │       0 │\n│ Failed      │       0 │\n└─────────────┴─────────┘"
+    },
+    {
+      "command": "node data-monitoring-utility.js test-alerts",
+      "description": "Test alert system",
+      "status": "PASS",
+      "output": "🧪 Testing alert system...\n🔴 ALERT: [Test Service] Test error alert\n🟡 ALERT: [Test Service] Test performance alert\n🟢 ALERT: [Test Service] Test warning alert\n✅ Test alerts created\n\n🚨 Alert History:\n┌─────────────────────┬──────────────┬─────────────┬─────────────────────────────────────┐\n│ Timestamp           │ Service      │ Severity    │ Message                             │\n├─────────────────────┼──────────────┼─────────────┼─────────────────────────────────────┤\n│ 2025-09-15 11:07:23 │ Test Service │ high        │ Test error alert                    │\n│ 2025-09-15 11:07:23 │ Test Service │ medium      │ Test performance alert              │\n│ 2025-09-15 11:07:23 │ Test Service │ low         │ Test warning alert                  │\n└─────────────────────┴──────────────┴─────────────┴─────────────────────────────────────┘"
+    },
+    {
+      "command": "node data-monitoring-utility.js alerts",
+      "description": "List alerts",
+      "status": "PASS",
+      "output": "🚨 Alert History:\n  No alerts found"
+    },
+    {
+      "command": "node data-monitoring-utility.js clear-alerts",
+      "description": "Clear alerts",
+      "status": "PASS",
+      "output": "✅ Cleared 0 alerts"
+    },
+    {
+      "command": "node data-sync-utility.js detect-conflicts",
+      "description": "Detect data conflicts",
+      "status": "FAIL",
+      "error": "Command failed: node data-sync-utility.js detect-conflicts\n(node:11308) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.\n SDK releases are limited to address critical bug fixes and security issues only.\n\nPlease migrate your code to use AWS SDK for JavaScript (v3).\nFor more information, check the blog post at https://a.co/cUPnyil\n(Use `node --trace-warnings ...` to show where the warning was created)\n❌ Conflict detection failed: null\n❌ Sync operation failed: null\n",
+      "output": "🔍 Detecting data conflicts...\n\n📈 Sync Statistics:\n┌─────────────┬─────────┐\n│ Operation   │ Count   │\n├─────────────┼─────────┤\n│ Synced      │       0 │\n│ Conflicts   │       0 │\n│ Skipped     │       0 │\n│ Failed      │       0 │\n└─────────────┴─────────┘"
+    },
+    {
+      "command": "node -e \"const DataManager = require('./data-manager'); const DataValidator = require('./data-validator'); console.log('Integration test passed')\"",
+      "description": "Data Manager and Validator integration",
+      "status": "PASS",
+      "output": "Integration test passed"
+    },
+    {
+      "command": "node -e \"const { SelectiveSeeder } = require('./selective-seeder'); const DataReset = require('./data-reset'); console.log('Integration test passed')\"",
+      "description": "Selective Seeder and Reset integration",
+      "status": "PASS",
+      "output": "Integration test passed"
+    },
+    {
+      "command": "node -e \"const DataMigrationUtility = require('./data-migration-utility'); const DataMonitoringUtility = require('./data-monitoring-utility'); console.log('Integration test passed')\"",
+      "description": "Migration and Monitoring utility integration",
+      "status": "PASS",
+      "output": "Integration test passed"
+    },
+    {
+      "command": "node data-manager.js invalid-command",
+      "description": "Data Manager invalid command handling",
+      "status": "PASS",
+      "output": "Command failed as expected"
+    },
+    {
+      "command": "node selective-seeder.js seed invalid-scenario",
+      "description": "Selective Seeder invalid scenario handling",
+      "status": "PASS",
+      "output": "Command failed as expected"
+    },
+    {
+      "command": "node data-reset.js reset invalid-state",
+      "description": "Data Reset invalid state handling",
+      "status": "PASS",
+      "output": "Command failed as expected"
+    },
+    {
+      "command": "node data-migration-utility.js run invalid-migration",
+      "description": "Migration Utility invalid migration handling",
+      "status": "PASS",
+      "output": "Command failed as expected"
+    },
+    {
+      "command": "node data-sync-utility.js invalid-operation",
+      "description": "Sync Utility invalid operation handling",
+      "status": "PASS",
+      "output": "Command failed as expected"
+    }
+  ],
+  "summary": {
+    "totalTests": 57,
+    "successRate": 82.45614035087719,
+    "newUtilitiesTested": [
+      "data-migration-utility",
+      "data-monitoring-utility",
+      "data-sync-utility"
+    ]
+  }
+}

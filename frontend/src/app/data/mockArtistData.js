@@ -1,223 +1,414 @@
 // mockArtistData.js
+// Generated automatically by FrontendSyncProcessor
+// Last updated: 2025-09-19T00:53:53.625Z
 
 export const mockArtistData = [
   {
-    pk: "ARTIST#1",
-    sk: "PROFILE",
-    artistId: "artist-001",
-    artistsName: "Sarah Mitchell",
-    instagramHandle: "sarahtattoos",
-    bio: "Traditional and neo-traditional tattoo artist specializing in roses, eagles, and nautical themes",
-    avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
-    profileLink: "https://instagram.com/sarahtattoos",
-    tattooStudio: {
-      studioName: "Ink & Steel Studio",
-      address: { city: "London", latitude: 51.5225, longitude: -0.0786 },
+    "pk": "ARTIST#artist-001",
+    "sk": "PROFILE",
+    "artistId": "artist-001",
+    "artistsName": "Sarah Mitchell",
+    "instagramHandle": "sarahtattoos",
+    "bio": "Classic American traditional style with bold lines and vibrant colors",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-34.jpg",
+    "profileLink": "https://instagram.com/sarahtattoos",
+    "tattooStudio": {
+      "studioName": "Botanical Tattoo Collective",
+      "streetAddress": "89 Southside",
+      "address": {
+        "city": "Shoreditch, London, UK",
+        "latitude": 51.5225,
+        "longitude": -0.0786
+      }
     },
-    styles: ["traditional", "neo_traditional"],
-    portfolioImages: [
+    "styles": [
+      "traditional",
+      "neo_traditional"
+    ],
+    "portfolioImages": [
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_107.png",
-        description: "Traditional rose with thorns",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
+        "description": "Traditional rose with thorns",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_103.png",
-        description: "Neo-traditional eagle with geometric elements",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
+        "description": "Neo-traditional eagle with geometric elements",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
-        description: "Traditional anchor",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_87.png",
+        "description": "Traditional anchor",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
-        description: "Traditional swallow pair",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_109.png",
+        "description": "Traditional swallow pair",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_109.png",
-        description: "Neo-traditional wolf portrait",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_104.png",
+        "description": "Neo-traditional wolf portrait",
+        "style": "traditional"
       }
     ],
-    opted_out: false,
+    "opted_out": false
   },
   {
-    pk: "ARTIST#3030",
-    sk: "PROFILE",
-    artistId: "3030",
-    avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
-    bio: "Geometric and blackwork specialist with modern aesthetic",
-    artistsName: "Luna Rodriguez",
-    instagramHandle: "LunaRodriguez_tattoo",
-    profileLink: "https://instagram.com/LunaRodriguez_tattoo",
-    tattooStudio: {
-      studioName: "Modern Ink Studio",
-      streetAddress: "45 Camden High Street",
-      address: { city: "London", latitude: 51.5392, longitude: -0.1426 },
+    "pk": "ARTIST#artist-002",
+    "sk": "PROFILE",
+    "artistId": "artist-002",
+    "artistsName": "Marcus Chen",
+    "instagramHandle": "marcusink",
+    "bio": "Realism specialist focusing on detailed black and grey work",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+    "profileLink": "https://instagram.com/marcusink",
+    "tattooStudio": {
+      "studioName": "Modern Ink Studio",
+      "streetAddress": "90 Briggate",
+      "address": {
+        "city": "Northern Quarter, Manchester, UK",
+        "latitude": 53.4839,
+        "longitude": -2.2374
+      }
     },
-    styles: ["geometric", "blackwork", "minimalism"],
-    portfolioImages: [
+    "styles": [
+      "realism",
+      "blackwork"
+    ],
+    "portfolioImages": [
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_1.png",
-        description: "Geometric mandala design",
-        style: "geometric"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_21.png",
+        "description": "Hyperrealistic portrait tattoo",
+        "style": "realism"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
-        description: "Blackwork tribal pattern",
-        style: "blackwork"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_23.png",
+        "description": "Blackwork geometric sleeve",
+        "style": "realism"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_11.png",
-        description: "Abstract geometric shapes",
-        style: "geometric"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_38.png",
+        "description": "Realistic animal portrait",
+        "style": "realism"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_10.png",
-        description: "Minimalist line art",
-        style: "minimalism"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_26.png",
+        "description": "Blackwork mandala design",
+        "style": "realism"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
-        description: "Bold blackwork design",
-        style: "blackwork"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_84.png",
+        "description": "Celebrity portrait realism",
+        "style": "realism"
       }
     ],
-    opted_out: false,
+    "opted_out": false
   },
   {
-    pk: "ARTIST#602",
-    sk: "PROFILE",
-    artistId: "602",
-    avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-25.jpg",
-    bio: "Watercolor and realism specialist creating vibrant, lifelike tattoos",
-    artistsName: "Marcus Chen",
-    instagramHandle: "MarcusChen_tattoo",
-    profileLink: "https://instagram.com/MarcusChen_tattoo",
-    tattooStudio: {
-      studioName: "Vibrant Ink Studio",
-      streetAddress: "78 Shoreditch High Street",
-      address: { city: "London", latitude: 51.5074, longitude: -0.1278 },
+    "pk": "ARTIST#artist-003",
+    "sk": "PROFILE",
+    "artistId": "artist-003",
+    "artistsName": "Emma Rodriguez",
+    "instagramHandle": "emmawatercolor",
+    "bio": "Watercolor and realism specialist creating vibrant, lifelike tattoos",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-25.jpg",
+    "profileLink": "https://instagram.com/emmawatercolor",
+    "tattooStudio": {
+      "studioName": "Artisan Tattoo Co.",
+      "streetAddress": "67 Mathew Street",
+      "address": {
+        "city": "Jewellery Quarter, Birmingham, UK",
+        "latitude": 52.4862,
+        "longitude": -1.9015
+      }
     },
-    styles: ["watercolour", "realism", "neo_traditional"],
-    portfolioImages: [
+    "styles": [
+      "watercolour",
+      "geometric"
+    ],
+    "portfolioImages": [
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_125.png",
-        description: "Watercolor butterfly design",
-        style: "watercolour"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_28.png",
+        "description": "Watercolour butterfly with splash effects",
+        "style": "watercolour"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_21.png",
-        description: "Realistic portrait piece",
-        style: "realism"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_73.png",
+        "description": "Sacred geometry mandala",
+        "style": "watercolour"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_126.png",
-        description: "Watercolor floral arrangement",
-        style: "watercolour"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_126.png",
+        "description": "Watercolour landscape",
+        "style": "watercolour"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_23.png",
-        description: "Photorealistic animal portrait",
-        style: "realism"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_75.png",
+        "description": "Geometric animal silhouette",
+        "style": "watercolour"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_29.png",
-        description: "Neo-traditional rose with color",
-        style: "neo_traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_76.png",
+        "description": "Watercolour floral arrangement",
+        "style": "watercolour"
       }
     ],
-    opted_out: false,
+    "opted_out": false
   },
   {
-    pk: "ARTIST#338",
-    sk: "PROFILE",
-    artistId: "338",
-    avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-45.jpg",
-    bio: "Dotwork and floral specialist with intricate detail work",
-    artistsName: "Isabella Foster",
-    instagramHandle: "IsabellaFoster_ink",
-    profileLink: "https://instagram.com/IsabellaFoster_ink",
-    tattooStudio: {
-      studioName: "Botanical Tattoo Collective",
-      streetAddress: "92 Brick Lane",
-      address: { city: "London", latitude: 51.5225, longitude: -0.0714 },
+    "pk": "ARTIST#artist-004",
+    "sk": "PROFILE",
+    "artistId": "artist-004",
+    "artistsName": "James Thompson",
+    "instagramHandle": "jamestradtattoo",
+    "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-67.jpg",
+    "profileLink": "https://instagram.com/jamestradtattoo",
+    "tattooStudio": {
+      "studioName": "Sacred Art Tattoos",
+      "streetAddress": "89 Hope Street",
+      "address": {
+        "city": "City Centre, Leeds, UK",
+        "latitude": 53.796,
+        "longitude": -1.5446
+      }
     },
-    styles: ["dotwork", "floral", "fineline"],
-    portfolioImages: [
+    "styles": [
+      "traditional",
+      "tribal"
+    ],
+    "portfolioImages": [
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_60.png",
-        description: "Intricate dotwork mandala",
-        style: "dotwork"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_87.png",
+        "description": "Traditional anchor with rope",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_124.png",
-        description: "Delicate floral arrangement",
-        style: "floral"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
+        "description": "Tribal koi fish design",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_4.png",
-        description: "Fine line botanical design",
-        style: "fineline"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_106.png",
+        "description": "Tribal dragon sleeve",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_61.png",
-        description: "Geometric dotwork pattern",
-        style: "dotwork"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_107.png",
+        "description": "Traditional pin-up girl",
+        "style": "traditional"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_127.png",
-        description: "Realistic flower composition",
-        style: "floral"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_108.png",
+        "description": "Traditional cherry blossom branch",
+        "style": "traditional"
       }
     ],
-    opted_out: false,
+    "opted_out": false
   },
   {
-    pk: "ARTIST#789",
-    sk: "PROFILE",
-    artistId: "789",
-    avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-67.jpg",
-    bio: "Old school and new school tattoo artist with bold, vibrant style",
-    artistsName: "Jake Thompson",
-    instagramHandle: "JakeThompson_tattoos",
-    profileLink: "https://instagram.com/JakeThompson_tattoos",
-    tattooStudio: {
-      studioName: "Classic Ink Parlour",
-      streetAddress: "156 Camden Market",
-      address: { city: "London", latitude: 51.5448, longitude: -0.1461 },
+    "pk": "ARTIST#artist-005",
+    "sk": "PROFILE",
+    "artistId": "artist-005",
+    "artistsName": "Zoe Campbell",
+    "instagramHandle": "zoefineline",
+    "bio": "Intricate fine line work specialist in botanical designs",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+    "profileLink": "https://instagram.com/zoefineline",
+    "tattooStudio": {
+      "studioName": "Sacred Art Tattoos",
+      "streetAddress": "23 Northern Quarter",
+      "address": {
+        "city": "West End, Glasgow, UK",
+        "latitude": 55.8642,
+        "longitude": -4.2518
+      }
     },
-    styles: ["old_school", "new_school", "traditional"],
-    portfolioImages: [
+    "styles": [
+      "fineline",
+      "minimalism",
+      "floral"
+    ],
+    "portfolioImages": [
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_100.png",
-        description: "Classic old school anchor",
-        style: "old_school"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_47.png",
+        "description": "Fine line floral wreath",
+        "style": "fineline"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_12.png",
-        description: "Vibrant new school character",
-        style: "new_school"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_5.png",
+        "description": "Minimalist mountain range",
+        "style": "fineline"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_101.png",
-        description: "Traditional sailor jerry style",
-        style: "old_school"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_48.png",
+        "description": "Floral leaf collection",
+        "style": "fineline"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
-        description: "Cartoon-style new school design",
-        style: "new_school"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_46.png",
+        "description": "Fine line constellation map",
+        "style": "fineline"
       },
       {
-        url: "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_102.png",
-        description: "Bold traditional eagle",
-        style: "traditional"
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_4.png",
+        "description": "Minimalist geometric shapes",
+        "style": "fineline"
       }
     ],
-    opted_out: false,
+    "opted_out": false
+  },
+  {
+    "pk": "ARTIST#artist-006",
+    "sk": "PROFILE",
+    "artistId": "artist-006",
+    "artistsName": "David Wilson",
+    "instagramHandle": "davidblackout",
+    "bio": "Bold blackwork and tribal specialist with striking designs",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
+    "profileLink": "https://instagram.com/davidblackout",
+    "tattooStudio": {
+      "studioName": "Modern Ink Studio",
+      "streetAddress": "67 West End",
+      "address": {
+        "city": "Camden, London, UK",
+        "latitude": 51.5392,
+        "longitude": -0.1426
+      }
+    },
+    "styles": [
+      "blackwork",
+      "tribal"
+    ],
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+        "description": "Full blackwork sleeve",
+        "style": "blackwork"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
+        "description": "Blackwork rose design",
+        "style": "blackwork"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_42.png",
+        "description": "Modern tribal design",
+        "style": "blackwork"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+        "description": "Blackwork geometric patterns",
+        "style": "blackwork"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
+        "description": "Large scale blackwork project",
+        "style": "blackwork"
+      }
+    ],
+    "opted_out": false
+  },
+  {
+    "pk": "ARTIST#artist-007",
+    "sk": "PROFILE",
+    "artistId": "artist-007",
+    "artistsName": "Lisa Park",
+    "instagramHandle": "lisacolorpop",
+    "bio": "Classic American traditional style with bold lines and vibrant colors",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+    "profileLink": "https://instagram.com/lisacolorpop",
+    "tattooStudio": {
+      "studioName": "Ink & Steel Studio",
+      "streetAddress": "89 Southside",
+      "address": {
+        "city": "Digbeth, Birmingham, UK",
+        "latitude": 52.4751,
+        "longitude": -1.8909
+      }
+    },
+    "styles": [
+      "new_school"
+    ],
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_20.png",
+        "description": "New school cartoon character",
+        "style": "new_school"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_18.png",
+        "description": "New school comic book style",
+        "style": "new_school"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_14.png",
+        "description": "New school animal design",
+        "style": "new_school"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_15.png",
+        "description": "New school graffiti style",
+        "style": "new_school"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
+        "description": "New school portrait design",
+        "style": "new_school"
+      }
+    ],
+    "opted_out": false
+  },
+  {
+    "pk": "ARTIST#artist-008",
+    "sk": "PROFILE",
+    "artistId": "artist-008",
+    "artistsName": "Robert MacLeod",
+    "instagramHandle": "robbiescottish",
+    "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
+    "profileLink": "https://instagram.com/robbiescottish",
+    "tattooStudio": {
+      "studioName": "Urban Canvas Studio",
+      "streetAddress": "90 Briggate",
+      "address": {
+        "city": "Old Town, Edinburgh, UK",
+        "latitude": 55.9533,
+        "longitude": -3.1883
+      }
+    },
+    "styles": [
+      "tribal",
+      "traditional"
+    ],
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_116.png",
+        "description": "Tribal knot armband",
+        "style": "tribal"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_111.png",
+        "description": "Traditional thistle design",
+        "style": "tribal"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_112.png",
+        "description": "Tribal cross with intricate details",
+        "style": "tribal"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_115.png",
+        "description": "Traditional warrior portrait",
+        "style": "tribal"
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_114.png",
+        "description": "Tribal fusion design",
+        "style": "tribal"
+      }
+    ],
+    "opted_out": false
   }
 ];
