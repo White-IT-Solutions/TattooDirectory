@@ -1,0 +1,100 @@
+[
+  {
+    "studioId": "studio-new-001",
+    "studioName": "Fresh Ink Studio",
+    "address": "34 Shoreditch High Street, Shoreditch, London E1 6JJ",
+    "postcode": "E1 6JJ",
+    "geohash": "gcpvj1m",
+    "latitude": 51.5235,
+    "longitude": -0.0755,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7739 2024",
+      "email": "hello@freshinkstudio.com",
+      "website": "https://freshinkstudio.com",
+      "instagram": "@freshinkstudio"
+    },
+    "openingHours": {
+      "monday": "11:00-19:00",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.3,
+    "reviewCount": 23,
+    "established": 2023,
+    "specialties": ["fineline", "minimalism"],
+    "isNew": true,
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-new-001/exterior-1.jpg",
+        "description": "New studio entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-new-001/interior-1.jpg",
+        "description": "Modern fresh workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-new-002",
+    "studioName": "Next Gen Tattoo",
+    "address": "67 Camden High Street, Camden, London NW1 7JL",
+    "postcode": "NW1 7JL",
+    "geohash": "gcpvn0m",
+    "latitude": 53.5395,
+    "longitude": -0.1429,
+    "locationDisplay": "Camden, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7485 2024",
+      "email": "studio@nextgentattoo.co.uk",
+      "website": "https://nextgentattoo.co.uk",
+      "instagram": "@nextgentattoo"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "12:00-20:00",
+      "wednesday": "12:00-20:00",
+      "thursday": "12:00-20:00",
+      "friday": "12:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003", "artist-004"],
+    "artistCount": 2,
+    "rating": 4.5,
+    "reviewCount": 34,
+    "established": 2024,
+    "specialties": ["fineline", "minimalism"],
+    "isNew": true,
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-new-002/exterior-1.jpg",
+        "description": "Next generation studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-new-002/interior-1.jpg",
+        "description": "Contemporary workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-new-002/gallery-1.jpg",
+        "description": "Modern minimalist art",
+        "isPrimary": false
+      }
+    ]
+  }
+]

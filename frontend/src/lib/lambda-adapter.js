@@ -22,7 +22,7 @@ function createLambdaEvent(method, path, searchParams = null, body = null) {
 
   // Extract path parameters (e.g., artistId from /v1/artists/{artistId})
   const pathParameters = {};
-  const pathMatch = path.match(/\/v1\/artists\/([^\/]+)$/);
+  const pathMatch = path.match(/\/v1\/artists\/([^/]+)$/);
   if (pathMatch) {
     pathParameters.artistId = pathMatch[1];
   }

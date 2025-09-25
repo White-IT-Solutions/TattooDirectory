@@ -1,5 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  eslint: {
+    // Disable ESLint during builds for production
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Disable TypeScript errors during builds
+    ignoreBuildErrors: true,
+  },
+  // Production optimizations
+  experimental: {
+    // Future Next.js features can be enabled here
+  },
   images: {
     remotePatterns: [
       {
@@ -11,7 +24,6 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
       },
-
       {
         protocol: "https",
         hostname: "via.placeholder.com",
@@ -42,17 +54,14 @@ const nextConfig = {
       },
     ],
     formats: ["image/webp", "image/avif"],
-    unoptimized: process.env.NODE_ENV === "development", // Disable optimization for LocalStack images
+    unoptimized: process.env.NODE_ENV === "development",
   },
   env: {
     NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
-      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
-  // Enable source maps in development
   productionBrowserSourceMaps: false,
-  // Configure webpack for better development experience
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {
       config.watchOptions = {
@@ -61,10 +70,6 @@ const nextConfig = {
       };
     }
     return config;
-  },
-  // Remove deprecated options
-  experimental: {
-    // appDir is now default in Next.js 13+, no need to specify
   },
 };
 

@@ -1,0 +1,161 @@
+[
+  {
+    "studioId": "studio-pricing-001",
+    "studioName": "Mid Range Tattoo Studio",
+    "address": "56 Camden High Street, Camden, London NW1 7JH",
+    "postcode": "NW1 7JH",
+    "geohash": "gcpvn0l",
+    "latitude": 51.5394,
+    "longitude": -0.1428,
+    "locationDisplay": "Camden, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7485 7777",
+      "email": "bookings@midrangetattoo.co.uk",
+      "website": "https://midrangetattoo.co.uk",
+      "instagram": "@midrangetattoo"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.5,
+    "reviewCount": 134,
+    "established": 2017,
+    "specialties": ["traditional", "realism"],
+    "priceRange": "mid",
+    "hourlyRate": {
+      "min": 120,
+      "max": 180,
+      "currency": "GBP"
+    },
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-001/exterior-1.jpg",
+        "description": "Affordable quality studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-001/interior-1.jpg",
+        "description": "Professional mid-range setup",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-001/gallery-1.jpg",
+        "description": "Quality work showcase",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-pricing-002",
+    "studioName": "Fair Price Ink Manchester",
+    "address": "78 Oldham Street, Northern Quarter, Manchester M1 1LR",
+    "postcode": "M1 1LR",
+    "geohash": "gcw2j1p",
+    "latitude": 53.4847,
+    "longitude": -2.2376,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 834 8888",
+      "email": "studio@fairpriceink.co.uk",
+      "website": "https://fairpriceink.co.uk",
+      "instagram": "@fairpriceink"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003", "artist-004"],
+    "artistCount": 2,
+    "rating": 4.6,
+    "reviewCount": 167,
+    "established": 2016,
+    "specialties": ["traditional", "realism"],
+    "priceRange": "mid",
+    "hourlyRate": {
+      "min": 110,
+      "max": 170,
+      "currency": "GBP"
+    },
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-002/exterior-1.jpg",
+        "description": "Fair pricing studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-002/interior-1.jpg",
+        "description": "Value-focused workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-pricing-003",
+    "studioName": "Reasonable Rates Birmingham",
+    "address": "34 New Street, Birmingham B2 4QA",
+    "postcode": "B2 4QA",
+    "geohash": "gcqcr3n",
+    "latitude": 52.4798,
+    "longitude": -1.8986,
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 9999",
+      "email": "info@reasonablerates.co.uk",
+      "website": "https://reasonablerates.co.uk",
+      "instagram": "@reasonableratesbirmingham"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-005"],
+    "artistCount": 1,
+    "rating": 4.4,
+    "reviewCount": 89,
+    "established": 2018,
+    "specialties": ["realism"],
+    "priceRange": "mid",
+    "hourlyRate": {
+      "min": 100,
+      "max": 160,
+      "currency": "GBP"
+    },
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-003/exterior-1.jpg",
+        "description": "Birmingham city centre studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-pricing-003/interior-1.jpg",
+        "description": "Cost-effective workspace",
+        "isPrimary": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge Visual Tests renders all badge sizes correctly: badge-sizes 1`] = `
+<div
+  class="flex items-center gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-5 px-2 text-xs rounded-[var(--radius)] gap-1"
+  >
+    sm
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    md
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-7 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+  >
+    lg
+  </span>
+</div>
+`;
+
+exports[`Badge Visual Tests renders all badge variants correctly: badge-variants 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    primary
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--text-primary)] bg-[var(--interactive-secondary)] border-[var(--border-primary)] hover:bg-[var(--interactive-secondary-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    secondary
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-accent)] border-[var(--interactive-accent)] hover:bg-[var(--interactive-accent-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    accent
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-success)] border-[var(--feedback-success)] hover:bg-[var(--color-success-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    success
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-warning)] border-[var(--feedback-warning)] hover:bg-[var(--color-warning-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    warning
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-error)] border-[var(--feedback-error)] hover:bg-[var(--color-error-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    error
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--interactive-primary)] bg-transparent border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary)] hover:text-white h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    outline
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--text-primary)] bg-[var(--background-secondary)] border-transparent hover:bg-[var(--interactive-secondary)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    ghost
+  </span>
+</div>
+`;
+
+exports[`Badge Visual Tests renders badge combinations correctly: badge-combinations 1`] = `
+<div
+  class="space-y-4 p-4"
+>
+  <div
+    class="flex flex-wrap gap-2"
+  >
+    <span
+      class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-5 px-2 text-xs rounded-[var(--radius)] gap-1"
+    >
+      Small Primary
+    </span>
+    <span
+      class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--text-primary)] bg-[var(--interactive-secondary)] border-[var(--border-primary)] hover:bg-[var(--interactive-secondary-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+    >
+      Medium Secondary
+    </span>
+    <span
+      class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-accent)] border-[var(--interactive-accent)] hover:bg-[var(--interactive-accent-hover)] h-7 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+    >
+      Large Accent
+    </span>
+  </div>
+  <div
+    class="flex flex-wrap gap-2"
+  >
+    <span
+      class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--interactive-primary)] bg-transparent border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary)] hover:text-white h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+    >
+      <span
+        aria-hidden="true"
+        class="h-4 w-4  inline-flex items-center justify-center"
+        style="line-height: 1;"
+      >
+        <span>
+          ★
+        </span>
+      </span>
+      Outline with Icon
+    </span>
+    <span
+      class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--text-primary)] bg-[var(--background-secondary)] border-transparent hover:bg-[var(--interactive-secondary)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+    >
+      <span
+        aria-hidden="true"
+        class="h-4 w-4  inline-flex items-center justify-center"
+        style="line-height: 1;"
+      >
+        <span>
+          ★
+        </span>
+      </span>
+      Ghost with Icon
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Badge Visual Tests renders badges with icons correctly: badge-with-icons 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-primary)] border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        ★
+      </span>
+    </span>
+    With Icon
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--interactive-accent)] border-[var(--interactive-accent)] hover:bg-[var(--interactive-accent-hover)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        ★
+      </span>
+    </span>
+    Accent Icon
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-[var(--interactive-primary)] bg-transparent border-[var(--interactive-primary)] hover:bg-[var(--interactive-primary)] hover:text-white h-7 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        ★
+      </span>
+    </span>
+    Large Outline
+  </span>
+</div>
+`;
+
+exports[`Badge Visual Tests renders semantic color badges correctly: badge-semantic-colors 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-success)] border-[var(--feedback-success)] hover:bg-[var(--color-success-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    Success
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-warning)] border-[var(--feedback-warning)] hover:bg-[var(--color-warning-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    Warning
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-semibold transition-all duration-200 ease-out border select-none whitespace-nowrap text-white bg-[var(--feedback-error)] border-[var(--feedback-error)] hover:bg-[var(--color-error-600)] h-6 px-2.5 text-sm rounded-[var(--radius)] gap-1.5"
+  >
+    Error
+  </span>
+</div>
+`;

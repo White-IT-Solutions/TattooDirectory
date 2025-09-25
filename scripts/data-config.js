@@ -49,7 +49,11 @@ function detectEnvironment() {
  * Get cross-platform paths with proper path separators
  */
 function getPlatformPaths(environment) {
-  const projectRoot = process.cwd();
+  // Ensure we get the project root, not the scripts directory
+  let projectRoot = process.cwd();
+  if (projectRoot.endsWith('scripts')) {
+    projectRoot = path.dirname(projectRoot);
+  }
   
   return {
     // Core directories
@@ -62,9 +66,12 @@ function getPlatformPaths(environment) {
     // Data directories
     testDataDir: path.join(projectRoot, 'scripts', 'test-data'),
     imageSourceDir: path.join(projectRoot, 'tests', 'Test_Data', 'ImageSet'),
+    studioTestDataDir: path.join(projectRoot, 'scripts', 'test-data', 'studios'),
+    studioImageSourceDir: path.join(projectRoot, 'tests', 'Test_Data', 'StudioImages'),
     
     // Frontend mock data
     frontendMockData: path.join(projectRoot, 'frontend', 'src', 'app', 'data', 'mockArtistData.js'),
+    frontendStudioMockData: path.join(projectRoot, 'frontend', 'src', 'app', 'data', 'mockStudioData.js'),
     
     // State tracking directory
     stateTrackingDir: path.join(projectRoot, '.kiro', 'data-management-state'),
@@ -132,144 +139,306 @@ function getServiceEndpoints(environment) {
 }
 
 /**
- * Scenario definitions preserving all existing scenarios
+ * Studio-specific configuration
  */
-const SCENARIOS = {
-  minimal: {
-    artistCount: 3,
-    description: 'Quick testing with minimal data',
-    styles: ['traditional', 'realism'],
-    locations: ['London']
+const STUDIO_CONFIG = {
+  generation: {
+    minStudios: 3,
+    maxStudios: 10,
+    minArtistsPerStudio: 1,
+    maxArtistsPerStudio: 5,
+    imageTypes: ['exterior', 'interior', 'gallery'],
+    imagesPerStudio: 3,
+    defaultSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'geometric', 'watercolour', 'dotwork', 'new_school']
   },
-  'search-basic': {
-    artistCount: 5,
-    description: 'Basic search functionality testing',
-    styles: ['traditional', 'realism'],
-    locations: ['London', 'Manchester']
+  
+  validation: {
+    requiredFields: ['studioId', 'studioName', 'address', 'contactInfo', 'specialties'],
+    addressValidation: true,
+    postcodeValidation: true,
+    coordinateValidation: true,
+    contactInfoValidation: true,
+    openingHoursValidation: true
   },
-  'london-artists': {
-    artistCount: 5,
-    description: 'London-focused artist testing',
-    location: 'London',
-    styles: ['traditional', 'realism', 'blackwork']
+  
+  relationships: {
+    bidirectional: true,
+    validateConsistency: true,
+    autoUpdateReferences: true,
+    allowOrphanedArtists: false
   },
-  'high-rated': {
-    artistCount: 3,
-    description: 'High-rated artists for quality testing',
-    minRating: 4.5,
-    styles: ['realism', 'traditional']
-  },
-  'new-artists': {
-    artistCount: 4,
-    description: 'Recently added artists',
-    recentlyAdded: true,
-    styles: ['fineline', 'minimalism']
-  },
-  'booking-available': {
-    artistCount: 6,
-    description: 'Artists with open booking slots',
-    bookingOpen: true,
-    styles: ['traditional', 'realism', 'blackwork']
-  },
-  'portfolio-rich': {
-    artistCount: 4,
-    description: 'Artists with extensive portfolios',
-    minPortfolioImages: 8,
-    styles: ['realism', 'traditional', 'neo_traditional']
-  },
-  'multi-style': {
-    artistCount: 3,
-    description: 'Artists with multiple style specializations',
-    minStyles: 3,
-    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional']
-  },
-  'pricing-range': {
-    artistCount: 5,
-    description: 'Mid-range pricing testing',
-    priceRange: 'mid',
-    styles: ['traditional', 'realism']
-  },
-  'full-dataset': {
-    artistCount: 10,
-    description: 'Complete test dataset with all styles',
-    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour']
+  
+  dataGeneration: {
+    ukCities: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Bristol', 'Liverpool', 'Newcastle', 'Sheffield', 'Cardiff', 'Belfast', 'Brighton', 'Oxford', 'Cambridge'],
+    ratingRange: { min: 3.5, max: 5.0 },
+    reviewCountRange: { min: 15, max: 200 },
+    establishedYearRange: { min: 2010, max: 2024 },
+    openingHourPatterns: ['standard', 'extended', 'weekend_only', 'appointment_only']
   }
 };
 
 /**
- * Reset state definitions preserving all existing states
+ * Scenario definitions with studio support
+ */
+const SCENARIOS = {
+  minimal: {
+    artistCount: 3,
+    studioCount: 2,
+    description: 'Quick testing with minimal data including studios',
+    styles: ['traditional', 'realism'],
+    studioSpecialties: ['traditional', 'realism'],
+    locations: ['London']
+  },
+  'search-basic': {
+    artistCount: 5,
+    studioCount: 3,
+    description: 'Basic search functionality testing with studios',
+    styles: ['traditional', 'realism'],
+    studioSpecialties: ['traditional', 'realism'],
+    locations: ['London', 'Manchester']
+  },
+  'london-artists': {
+    artistCount: 5,
+    studioCount: 3,
+    description: 'London-focused artist and studio testing',
+    location: 'London',
+    studioLocation: 'London',
+    styles: ['traditional', 'realism', 'blackwork'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork']
+  },
+  'high-rated': {
+    artistCount: 3,
+    studioCount: 2,
+    description: 'High-rated artists and studios for quality testing',
+    minRating: 4.5,
+    minStudioRating: 4.5,
+    styles: ['realism', 'traditional'],
+    studioSpecialties: ['realism', 'traditional']
+  },
+  'new-artists': {
+    artistCount: 4,
+    studioCount: 2,
+    description: 'Recently added artists and new studios',
+    recentlyAdded: true,
+    newStudios: true,
+    styles: ['fineline', 'minimalism'],
+    studioSpecialties: ['fineline', 'minimalism']
+  },
+  'booking-available': {
+    artistCount: 6,
+    studioCount: 4,
+    description: 'Artists and studios with open booking slots',
+    bookingOpen: true,
+    studioBookingOpen: true,
+    styles: ['traditional', 'realism', 'blackwork'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork']
+  },
+  'portfolio-rich': {
+    artistCount: 4,
+    studioCount: 3,
+    description: 'Artists with extensive portfolios and well-documented studios',
+    minPortfolioImages: 8,
+    minStudioImages: 5,
+    styles: ['realism', 'traditional', 'neo_traditional'],
+    studioSpecialties: ['realism', 'traditional', 'neo_traditional']
+  },
+  'multi-style': {
+    artistCount: 3,
+    studioCount: 2,
+    description: 'Artists and studios with multiple style specializations',
+    minStyles: 3,
+    minStudioSpecialties: 3,
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional']
+  },
+  'pricing-range': {
+    artistCount: 5,
+    studioCount: 3,
+    description: 'Mid-range pricing testing for artists and studios',
+    priceRange: 'mid',
+    studioPriceRange: 'mid',
+    styles: ['traditional', 'realism'],
+    studioSpecialties: ['traditional', 'realism']
+  },
+  'full-dataset': {
+    artistCount: 10,
+    studioCount: 6,
+    description: 'Complete test dataset with all styles and comprehensive studio data',
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour']
+  },
+  'performance-test': {
+    artistCount: 100,
+    studioCount: 40,
+    description: 'Large dataset for performance testing (100+ artists, 40+ studios)',
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral'],
+    locations: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Bristol', 'Liverpool', 'Newcastle', 'Sheffield'],
+    ensureStudioDiversity: true
+  },
+  'mega-dataset': {
+    artistCount: 250,
+    studioCount: 100,
+    description: 'Extra large dataset for stress testing (250+ artists, 100+ studios)',
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral', 'surrealism', 'psychedelic', 'sketch', 'old_school', 'new_school'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral', 'surrealism', 'psychedelic', 'sketch', 'old_school', 'new_school'],
+    locations: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Bristol', 'Liverpool', 'Newcastle', 'Sheffield', 'Cardiff', 'Belfast', 'Brighton', 'Oxford', 'Cambridge'],
+    ensureStudioDiversity: true,
+    maxArtistsPerStudio: 8
+  },
+  'studio-diverse': {
+    artistCount: 8,
+    studioCount: 5,
+    description: 'Diverse studio types and specializations with varied artist assignments',
+    ensureStudioDiversity: true,
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'geometric', 'watercolour', 'dotwork'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'geometric', 'watercolour', 'dotwork'],
+    locations: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow'],
+    minStudioSpecialties: 2,
+    maxArtistsPerStudio: 3
+  },
+  'london-studios': {
+    artistCount: 5,
+    studioCount: 3,
+    description: 'London-focused studios and artists with proper postcodes',
+    location: 'London',
+    studioLocation: 'London',
+    styles: ['traditional', 'realism', 'blackwork'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork'],
+    validatePostcodes: true
+  },
+  'high-rated-studios': {
+    artistCount: 3,
+    studioCount: 2,
+    description: 'High-rated studios and artists (4.5+ stars)',
+    minRating: 4.5,
+    minStudioRating: 4.5,
+    styles: ['realism', 'traditional'],
+    studioSpecialties: ['realism', 'traditional']
+  }
+};
+
+/**
+ * Reset state definitions with studio support
  */
 const RESET_STATES = {
   clean: {
     description: 'Empty all databases but keep services running',
     clearAll: true,
-    preserveServices: true
+    preserveServices: true,
+    clearStudios: true
   },
   fresh: {
-    description: 'Clean databases and seed with full dataset',
+    description: 'Clean databases and seed with full dataset including studios',
     clearAll: true,
     seedFull: true,
-    scenario: 'full-dataset'
+    scenario: 'full-dataset',
+    includeStudios: true
   },
   minimal: {
-    description: 'Minimal data for quick testing',
+    description: 'Minimal data for quick testing including studios',
     clearAll: true,
-    scenario: 'minimal'
+    scenario: 'minimal',
+    includeStudios: true
   },
   'search-ready': {
-    description: 'Optimized for search testing',
+    description: 'Optimized for search testing with studio data',
     clearAll: true,
-    scenario: 'search-basic'
+    scenario: 'search-basic',
+    includeStudios: true
   },
   'location-test': {
-    description: 'Location-based testing data',
+    description: 'Location-based testing data with London studios',
     clearAll: true,
-    scenario: 'london-artists'
+    scenario: 'london-artists',
+    includeStudios: true
   },
   'style-test': {
-    description: 'Style filtering testing data',
+    description: 'Style filtering testing data with diverse studios',
     clearAll: true,
-    scenario: 'multi-style'
+    scenario: 'multi-style',
+    includeStudios: true
+  },
+  'studio-test': {
+    description: 'Studio-focused testing with diverse studio types',
+    clearAll: true,
+    scenario: 'studio-diverse',
+    includeStudios: true
   },
   'performance-test': {
-    description: 'Performance testing dataset',
+    description: 'Performance testing dataset (100+ artists, 40+ studios)',
     clearAll: true,
-    scenario: 'full-dataset'
+    scenario: 'performance-test',
+    includeStudios: true
+  },
+  'mega-test': {
+    description: 'Stress testing dataset (250+ artists, 100+ studios)',
+    clearAll: true,
+    scenario: 'mega-dataset',
+    includeStudios: true
   },
   'frontend-ready': {
-    description: 'Minimal data optimized for frontend development',
+    description: 'Minimal data optimized for frontend development with studios',
     clearAll: true,
     frontendOnly: true,
-    scenario: 'minimal'
+    scenario: 'minimal',
+    includeStudios: true
+  },
+  'studios-only': {
+    description: 'Reset only studio data while preserving artist data',
+    clearStudios: true,
+    preserveArtists: true,
+    scenario: 'studio-diverse'
   }
 };
 
 /**
- * Validation configuration
+ * Validation configuration with studio support
  */
 const VALIDATION_CONFIG = {
   timeouts: {
     serviceConnection: 10000,    // 10 seconds
     imageUpload: 30000,         // 30 seconds
     databaseOperation: 15000,   // 15 seconds
-    healthCheck: 5000           // 5 seconds
+    healthCheck: 5000,          // 5 seconds
+    studioValidation: 8000      // 8 seconds for studio data validation
   },
   retries: {
     serviceConnection: 3,
     imageUpload: 2,
     databaseOperation: 2,
-    healthCheck: 1
+    healthCheck: 1,
+    studioProcessing: 2
   },
   thresholds: {
     maxImageSize: 5 * 1024 * 1024,  // 5MB
-    maxArtistCount: 50,
+    maxArtistCount: 500,             // Increased for large datasets
     maxPortfolioImages: 20,
-    minPortfolioImages: 5
+    minPortfolioImages: 5,
+    maxStudioCount: 150,             // Maximum studios for large datasets
+    minStudioImages: 3,              // Minimum images per studio
+    maxStudioImages: 8,              // Maximum images per studio
+    maxArtistsPerStudio: 8,          // Maximum artists per studio
+    minArtistsPerStudio: 1           // Minimum artists per studio
+  },
+  studio: {
+    requiredFields: ['studioId', 'studioName', 'address', 'postcode', 'latitude', 'longitude', 'contactInfo', 'specialties'],
+    postcodePattern: /^[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}$/i,
+    coordinateRanges: {
+      latitude: { min: 49.9, max: 60.9 },   // UK latitude range
+      longitude: { min: -8.2, max: 1.8 }    // UK longitude range
+    },
+    contactValidation: {
+      phonePattern: /^(\+44\s?|0)[1-9]\d{8,9}$/,
+      emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      websitePattern: /^https?:\/\/.+/,
+      instagramPattern: /^@[a-zA-Z0-9._]+$/
+    }
   }
 };
 
 /**
- * Main configuration class
+ * Main configuration class with studio support
  */
 class DataConfiguration {
   constructor() {
@@ -279,20 +448,23 @@ class DataConfiguration {
     this.scenarios = SCENARIOS;
     this.resetStates = RESET_STATES;
     this.validation = VALIDATION_CONFIG;
+    this.studio = STUDIO_CONFIG;
     
     // Ensure required directories exist
     this.ensureDirectories();
   }
 
   /**
-   * Ensure required directories exist
+   * Ensure required directories exist including studio directories
    */
   ensureDirectories() {
     const requiredDirs = [
       this.paths.stateTrackingDir,
       this.paths.outputDir,
       this.paths.logsDir,
-      this.paths.backupDir
+      this.paths.backupDir,
+      this.paths.studioTestDataDir,
+      this.paths.studioImageSourceDir
     ];
 
     requiredDirs.forEach(dir => {
@@ -303,7 +475,7 @@ class DataConfiguration {
   }
 
   /**
-   * Validate configuration
+   * Validate configuration including studio settings
    */
   validate() {
     const errors = [];
@@ -312,12 +484,33 @@ class DataConfiguration {
     // Check required directories
     const requiredPaths = [
       { path: this.paths.testDataDir, name: 'Test data directory' },
-      { path: this.paths.imageSourceDir, name: 'Image source directory' }
+      { path: this.paths.imageSourceDir, name: 'Image source directory' },
+      { path: this.paths.studioTestDataDir, name: 'Studio test data directory' },
+      { path: this.paths.studioImageSourceDir, name: 'Studio image source directory' }
     ];
 
     requiredPaths.forEach(({ path: dirPath, name }) => {
       if (!fs.existsSync(dirPath)) {
         errors.push(`${name} not found: ${dirPath}`);
+      }
+    });
+
+    // Validate studio configuration
+    if (this.studio.generation.minStudios > this.studio.generation.maxStudios) {
+      errors.push('Studio configuration: minStudios cannot be greater than maxStudios');
+    }
+
+    if (this.studio.generation.minArtistsPerStudio > this.studio.generation.maxArtistsPerStudio) {
+      errors.push('Studio configuration: minArtistsPerStudio cannot be greater than maxArtistsPerStudio');
+    }
+
+    // Validate scenario studio counts
+    Object.entries(this.scenarios).forEach(([scenarioName, scenario]) => {
+      if (scenario.studioCount && scenario.artistCount) {
+        const maxPossibleArtists = scenario.studioCount * this.studio.generation.maxArtistsPerStudio;
+        if (scenario.artistCount > maxPossibleArtists) {
+          warnings.push(`Scenario '${scenarioName}': Artist count (${scenario.artistCount}) may exceed studio capacity (${maxPossibleArtists})`);
+        }
       }
     });
 
@@ -368,13 +561,14 @@ class DataConfiguration {
   }
 
   /**
-   * Get available scenarios
+   * Get available scenarios with studio information
    */
   getAvailableScenarios() {
     return Object.keys(this.scenarios).map(name => ({
       name,
       description: this.scenarios[name].description,
-      artistCount: this.scenarios[name].artistCount
+      artistCount: this.scenarios[name].artistCount,
+      studioCount: this.scenarios[name].studioCount || 0
     }));
   }
 
@@ -389,7 +583,7 @@ class DataConfiguration {
   }
 
   /**
-   * Export configuration as JSON
+   * Export configuration as JSON including studio configuration
    */
   toJSON() {
     return {
@@ -398,7 +592,41 @@ class DataConfiguration {
       services: this.services,
       scenarios: this.scenarios,
       resetStates: this.resetStates,
-      validation: this.validation
+      validation: this.validation,
+      studio: this.studio
+    };
+  }
+
+  /**
+   * Calculate studio count for a given scenario and artist count
+   */
+  calculateStudioCount(artistCount, scenarioName = null) {
+    if (scenarioName && this.scenarios[scenarioName]?.studioCount) {
+      return this.scenarios[scenarioName].studioCount;
+    }
+    
+    // Default calculation: 1 studio per 2-3 artists, with min/max bounds
+    const calculatedCount = Math.ceil(artistCount / 2.5);
+    return Math.max(
+      this.studio.generation.minStudios,
+      Math.min(this.studio.generation.maxStudios, calculatedCount)
+    );
+  }
+
+  /**
+   * Get studio configuration for a specific scenario
+   */
+  getStudioConfigForScenario(scenarioName) {
+    const scenario = this.getScenarioConfig(scenarioName);
+    return {
+      studioCount: scenario.studioCount || this.calculateStudioCount(scenario.artistCount, scenarioName),
+      studioSpecialties: scenario.studioSpecialties || scenario.styles || this.studio.generation.defaultSpecialties,
+      studioLocation: scenario.studioLocation || scenario.location,
+      minStudioRating: scenario.minStudioRating || scenario.minRating,
+      ensureStudioDiversity: scenario.ensureStudioDiversity || false,
+      maxArtistsPerStudio: scenario.maxArtistsPerStudio || this.studio.generation.maxArtistsPerStudio,
+      minStudioSpecialties: scenario.minStudioSpecialties || 1,
+      validatePostcodes: scenario.validatePostcodes || false
     };
   }
 }
@@ -411,7 +639,8 @@ module.exports = {
   DataConfiguration,
   SCENARIOS,
   RESET_STATES,
-  VALIDATION_CONFIG
+  VALIDATION_CONFIG,
+  STUDIO_CONFIG
 };
 
 // CLI usage when run directly
@@ -438,17 +667,30 @@ if (require.main === module) {
   console.log(`  Project Root: ${config.paths.projectRoot}`);
   console.log(`  Test Data: ${config.paths.testDataDir}`);
   console.log(`  Image Source: ${config.paths.imageSourceDir}`);
+  console.log(`  Studio Test Data: ${config.paths.studioTestDataDir}`);
+  console.log(`  Studio Images: ${config.paths.studioImageSourceDir}`);
+  console.log(`  Frontend Mock Data: ${config.paths.frontendMockData}`);
+  console.log(`  Frontend Studio Mock: ${config.paths.frontendStudioMockData}`);
   console.log(`  State Tracking: ${config.paths.stateTrackingDir}`);
   
   console.log('\n🎯 Available Scenarios:');
   config.getAvailableScenarios().forEach(scenario => {
-    console.log(`  ${scenario.name}: ${scenario.description} (${scenario.artistCount} artists)`);
+    const studioInfo = scenario.studioCount > 0 ? `, ${scenario.studioCount} studios` : '';
+    console.log(`  ${scenario.name}: ${scenario.description} (${scenario.artistCount} artists${studioInfo})`);
   });
   
   console.log('\n🔄 Available Reset States:');
   config.getAvailableResetStates().forEach(state => {
     console.log(`  ${state.name}: ${state.description}`);
   });
+  
+  console.log('\n🏢 Studio Configuration:');
+  console.log(`  Studio Range: ${config.studio.generation.minStudios}-${config.studio.generation.maxStudios} studios`);
+  console.log(`  Artists per Studio: ${config.studio.generation.minArtistsPerStudio}-${config.studio.generation.maxArtistsPerStudio} artists`);
+  console.log(`  Image Types: ${config.studio.generation.imageTypes.join(', ')}`);
+  console.log(`  Images per Studio: ${config.studio.generation.imagesPerStudio}`);
+  console.log(`  Validation: ${config.studio.validation.requiredFields.length} required fields`);
+  console.log(`  Relationships: ${config.studio.relationships.bidirectional ? 'Bidirectional' : 'Unidirectional'}`);
   
   console.log('\n✅ Configuration Validation:');
   if (validation.isValid) {

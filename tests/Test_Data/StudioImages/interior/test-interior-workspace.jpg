@@ -1,0 +1,7 @@
+# This is a placeholder for a test interior image
+# In a real implementation, this would be a JPEG image file
+# Filename: test-interior-workspace.jpg
+# Dimensions: 1200x800
+# Format: JPEG
+# Description: Main tattoo workspace with multiple stations
+# Test scenarios: basic_upload, format_conversion, quality_optimization

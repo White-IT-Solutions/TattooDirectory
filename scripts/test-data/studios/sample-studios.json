@@ -1,0 +1,64 @@
+{
+  "studios": [
+    {
+      "studioId": "studio-001",
+      "studioName": "Ink & Steel Studio",
+      "address": "123 Brick Lane, Shoreditch, London E1 6SB",
+      "postcode": "E1 6SB",
+      "locationDisplay": "Shoreditch, London, UK",
+      "latitude": 51.5225,
+      "longitude": -0.0786,
+      "contactInfo": {
+        "phone": "+44 20 7946 0958",
+        "email": "info@inkandsteel.com",
+        "website": "https://inkandsteel.com",
+        "instagram": "@inkandsteelstudio"
+      },
+      "openingHours": {
+        "monday": "10:00-18:00",
+        "tuesday": "10:00-18:00",
+        "wednesday": "10:00-18:00",
+        "thursday": "10:00-18:00",
+        "friday": "10:00-18:00",
+        "saturday": "10:00-16:00",
+        "sunday": "closed"
+      },
+      "specialties": ["traditional", "neo_traditional", "blackwork"],
+      "rating": 4.7,
+      "reviewCount": 89,
+      "established": 2015,
+      "artists": ["artist-001", "artist-002"],
+      "artistCount": 2
+    },
+    {
+      "studioId": "studio-002",
+      "studioName": "Sacred Geometry Tattoo",
+      "address": "45 Camden High Street, Camden, London NW1 7JH",
+      "postcode": "NW1 7JH",
+      "locationDisplay": "Camden, London, UK",
+      "latitude": 51.5392,
+      "longitude": -0.1426,
+      "contactInfo": {
+        "phone": "+44 20 7485 2847",
+        "email": "hello@sacredgeometry.co.uk",
+        "website": "https://sacredgeometry.co.uk",
+        "instagram": "@sacredgeometrytattoo"
+      },
+      "openingHours": {
+        "monday": "closed",
+        "tuesday": "11:00-19:00",
+        "wednesday": "11:00-19:00",
+        "thursday": "11:00-19:00",
+        "friday": "11:00-19:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-17:00"
+      },
+      "specialties": ["geometric", "fineline", "dotwork"],
+      "rating": 4.9,
+      "reviewCount": 156,
+      "established": 2018,
+      "artists": ["artist-003"],
+      "artistCount": 1
+    }
+  ]
+}

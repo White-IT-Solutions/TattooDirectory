@@ -1,0 +1,404 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card Visual Regression Tests Complete Card Compositions basic card with header and content should match snapshot: card-basic-composition 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-80"
+>
+  <div
+    class="flex flex-col space-y-1.5 "
+  >
+    <h3
+      class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+    >
+      Card Title
+    </h3>
+    <p
+      class="text-sm text-[var(--text-secondary)] "
+    >
+      This is a card description that explains the content.
+    </p>
+  </div>
+  <div
+    class=""
+  >
+    <p>
+      This is the main content of the card. It can contain any type of content.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Complete Card Compositions card with different elevation and padding combinations should match snapshot: card-elevation-padding-combinations 1`] = `
+<div>
+  <div
+    class="space-y-4"
+  >
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-none border-[var(--border-primary)] p-4 rounded-[var(--radius-lg)] w-64"
+    >
+      <div
+        class=""
+      >
+        Flat + Small Padding
+      </div>
+    </div>
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)] border-transparent p-8 rounded-[var(--radius-lg)] w-64"
+    >
+      <div
+        class=""
+      >
+        High + Large Padding
+      </div>
+    </div>
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-xl)] hover:shadow-[var(--shadow-2xl)] border-transparent hover:-translate-y-1 p-6 rounded-[var(--radius-lg)] w-64"
+    >
+      <div
+        class=""
+      >
+        Floating + Medium Padding
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Complete Card Compositions complete card with all components should match snapshot: card-complete-composition 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-80"
+>
+  <div
+    class="flex flex-col space-y-1.5 "
+  >
+    <h3
+      class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+    >
+      Complete Card
+    </h3>
+    <p
+      class="text-sm text-[var(--text-secondary)] "
+    >
+      A card with all composition components.
+    </p>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="space-y-2"
+    >
+      <p>
+        Main content area with multiple elements.
+      </p>
+      <div
+        class="bg-gray-100 p-2 rounded"
+      >
+        <span
+          class="text-sm"
+        >
+          Nested content
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex items-center pt-4 "
+  >
+    <button
+      class="px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      Action Button
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Complete Card Compositions responsive card layout should match snapshot: card-responsive-layout 1`] = `
+<div>
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+  >
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)]"
+    >
+      <div
+        class="flex flex-col space-y-1.5 "
+      >
+        <h3
+          class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+        >
+          Card 1
+        </h3>
+      </div>
+      <div
+        class=""
+      >
+        Responsive grid layout
+      </div>
+    </div>
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)]"
+    >
+      <div
+        class="flex flex-col space-y-1.5 "
+      >
+        <h3
+          class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+        >
+          Card 2
+        </h3>
+      </div>
+      <div
+        class=""
+      >
+        Responsive grid layout
+      </div>
+    </div>
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)]"
+    >
+      <div
+        class="flex flex-col space-y-1.5 "
+      >
+        <h3
+          class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+        >
+          Card 3
+        </h3>
+      </div>
+      <div
+        class=""
+      >
+        Responsive grid layout
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Dark Mode Compatibility card in dark mode should match snapshot: card-dark-mode 1`] = `
+<div>
+  <div
+    class="dark"
+  >
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-80"
+    >
+      <div
+        class="flex flex-col space-y-1.5 "
+      >
+        <h3
+          class="text-lg font-semibold leading-none tracking-tight text-[var(--text-primary)] "
+        >
+          Dark Mode Card
+        </h3>
+        <p
+          class="text-sm text-[var(--text-secondary)] "
+        >
+          This card should work in dark mode.
+        </p>
+      </div>
+      <div
+        class=""
+      >
+        <p>
+          Content that adapts to dark mode colors.
+        </p>
+      </div>
+      <div
+        class="flex items-center pt-4 "
+      >
+        <button
+          class="px-4 py-2 bg-primary-500 text-white rounded"
+        >
+          Dark Mode Button
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Elevation Variants flat elevation should match snapshot: card-flat-elevation 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-none border-[var(--border-primary)] p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Flat elevation card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Elevation Variants floating elevation should match snapshot: card-floating-elevation 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-xl)] hover:shadow-[var(--shadow-2xl)] border-transparent hover:-translate-y-1 p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Floating elevation card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Elevation Variants high elevation should match snapshot: card-high-elevation 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)] border-transparent p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    High elevation card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Elevation Variants low elevation should match snapshot: card-low-elevation 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow)] border-[var(--border-secondary)] p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Low elevation card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Elevation Variants medium elevation should match snapshot: card-medium-elevation 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Medium elevation card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Interactive States card with hover effects should match snapshot: card-hover-states 1`] = `
+<div>
+  <div
+    class="space-y-4"
+  >
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow)] border-[var(--border-secondary)] p-6 rounded-[var(--radius-lg)] w-64 hover:shadow-md"
+    >
+      <div
+        class=""
+      >
+        Hover for shadow change
+      </div>
+    </div>
+    <div
+      class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow-xl)] hover:shadow-[var(--shadow-2xl)] border-transparent hover:-translate-y-1 p-6 rounded-[var(--radius-lg)] w-64"
+    >
+      <div
+        class=""
+      >
+        Hover for lift effect
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Padding Variants large padding should match snapshot: card-large-padding 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-8 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Large padding card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Padding Variants medium padding should match snapshot: card-medium-padding 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Medium padding card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Padding Variants no padding should match snapshot: card-no-padding 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-0 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    No padding card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Padding Variants small padding should match snapshot: card-small-padding 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-4 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Small padding card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Radius Variants extra large radius should match snapshot: card-xl-radius 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-xl)] w-64"
+>
+  <div
+    class=""
+  >
+    Extra large radius card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Radius Variants large radius should match snapshot: card-large-radius 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius-lg)] w-64"
+>
+  <div
+    class=""
+  >
+    Large radius card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Radius Variants no radius should match snapshot: card-no-radius 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-none w-64"
+>
+  <div
+    class=""
+  >
+    No radius card
+  </div>
+</div>
+`;
+
+exports[`Card Visual Regression Tests Radius Variants small radius should match snapshot: card-small-radius 1`] = `
+<div
+  class="bg-[var(--background-primary)] border border-[var(--border-subtle)] transition-all duration-200 ease-out overflow-hidden shadow-[var(--shadow)] hover:shadow-[var(--shadow-md)] border-[var(--border-subtle)] p-6 rounded-[var(--radius)] w-64"
+>
+  <div
+    class=""
+  >
+    Small radius card
+  </div>
+</div>
+`;

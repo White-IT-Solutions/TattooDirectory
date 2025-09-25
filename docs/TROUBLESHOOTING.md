@@ -20,6 +20,285 @@ docker-compose ps
 
 ## Common Issues
 
+### 🏢 Studio Data Issues
+
+#### Problem: "Studio data not generating" or "Missing studio information"
+
+**Symptoms:**
+```
+❌ Error: Studio generation failed
+⚠️  Warning: No studios found in database
+❌ Error: Artist-studio relationships missing
+```
+
+**Diagnosis:**
+```bash
+# Check studio data status
+npm run studio-status
+
+# Validate studio data
+npm run validate-studios all
+
+# Check studio generation logs
+DEBUG=studio-processor npm run setup-data
+```
+
+**Solutions:**
+
+1. **Regenerate studio data:**
+   ```bash
+   # Reset and regenerate studios
+   npm run reset-studios
+   npm run seed-studios --scenario studio-diverse --validate
+   ```
+
+2. **Check studio configuration:**
+   ```bash
+   # Verify studio configuration
+   node -e "
+   const config = require('./scripts/data-config.js');
+   console.log('Studio config:', config.studio);
+   console.log('Studio scenarios:', Object.keys(config.scenarios).filter(s => s.includes('studio')));
+   "
+   ```
+
+3. **Manual studio validation:**
+   ```bash
+   # Check DynamoDB studio records
+   awslocal dynamodb scan \
+     --table-name tattoo-directory-local \
+     --filter-expression "begins_with(PK, :pk)" \
+     --expression-attribute-values '{":pk":{"S":"STUDIO#"}}' \
+     --endpoint-url http://localhost:4566
+   
+   # Check OpenSearch studio indices
+   curl "http://localhost:4566/studios-local/_search?pretty"
+   ```
+
+#### Problem: "Artist-studio relationship inconsistencies"
+
+**Symptoms:**
+```
+❌ Error: Artist references non-existent studio
+❌ Error: Studio doesn't list artist in artists array
+⚠️  Warning: Bidirectional relationship validation failed
+```
+
+**Diagnosis:**
+```bash
+# Validate relationships specifically
+npm run validate-studios relationships
+
+# Check relationship consistency
+npm run manage-studio-relationships validate
+
+# Debug relationship creation
+DEBUG=relationship-manager npm run setup-data
+```
+
+**Solutions:**
+
+1. **Repair relationships:**
+   ```bash
+   # Repair inconsistent relationships
+   npm run manage-studio-relationships repair
+   
+   # Rebuild relationships from scratch
+   npm run manage-studio-relationships rebuild
+   
+   # Validate after repair
+   npm run validate-studios relationships
+   ```
+
+2. **Check relationship data:**
+   ```bash
+   # Examine artist-studio references
+   node -e "
+   const fs = require('fs');
+   const mockData = fs.readFileSync('frontend/src/app/data/mockArtistData.js', 'utf8');
+   const artistMatch = mockData.match(/export const mockArtistData = (\[[\s\S]*?\]);/);
+   if (artistMatch) {
+     const artists = JSON.parse(artistMatch[1]);
+     const withStudios = artists.filter(a => a.tattooStudio);
+     console.log('Artists with studios:', withStudios.length, '/', artists.length);
+     if (withStudios.length > 0) {
+       console.log('Sample studio ref:', withStudios[0].tattooStudio);
+     }
+   }
+   "
+   ```
+
+3. **Reset and regenerate relationships:**
+   ```bash
+   # Clear existing relationships
+   npm run reset-studios --preserve-relationships
+   
+   # Regenerate with fresh relationships
+   npm run seed-studios --scenario studio-diverse
+   
+   # Validate consistency
+   npm run validate-studios all
+   ```
+
+#### Problem: "Studio images not processing" or "Studio image URLs not accessible"
+
+**Symptoms:**
+```
+❌ Error: Studio image processing failed
+⚠️  Warning: Studio image URLs not accessible
+❌ Error: S3 upload failed for studio images
+```
+
+**Diagnosis:**
+```bash
+# Check studio image processing
+npm run validate-studios images
+
+# Test studio image processing directly
+npm run process-studio-images --studio-id studio-001 --validate
+
+# Check S3 studio image structure
+awslocal s3 ls s3://tattoo-images/studios/ --recursive --endpoint-url http://localhost:4566
+```
+
+**Solutions:**
+
+1. **Reprocess studio images:**
+   ```bash
+   # Force reprocess all studio images
+   npm run process-studio-images --force --validate
+   
+   # Process specific studio
+   npm run process-studio-images --studio-id studio-001
+   ```
+
+2. **Check studio image structure:**
+   ```bash
+   # Verify studio image directories
+   ls -la tests/Test_Data/StudioImages/
+   
+   # Check studio image manifest
+   cat tests/Test_Data/StudioImages/image-test-manifest.json
+   ```
+
+3. **Manual studio image upload:**
+   ```bash
+   # Test manual studio image upload
+   awslocal s3 cp tests/Test_Data/StudioImages/exterior-1.jpg \
+     s3://tattoo-images/studios/studio-001/exterior-1.webp \
+     --endpoint-url http://localhost:4566
+   
+   # Test image accessibility
+   curl -I http://localhost:4566/tattoo-images/studios/studio-001/exterior-1.webp
+   ```
+
+#### Problem: "Studio mock data not generating for frontend"
+
+**Symptoms:**
+```
+❌ Error: mockStudioData.js not found
+⚠️  Warning: Frontend studio mock data missing
+❌ Error: Studio data not available in frontend
+```
+
+**Diagnosis:**
+```bash
+# Check if studio mock data file exists
+ls -la frontend/src/app/data/mockStudioData.js
+
+# Validate studio mock data content
+head -20 frontend/src/app/data/mockStudioData.js
+
+# Check frontend sync for studios
+DEBUG=frontend-sync npm run setup-data:frontend-only
+```
+
+**Solutions:**
+
+1. **Regenerate studio mock data:**
+   ```bash
+   # Force regenerate frontend studio data
+   npm run setup-data:frontend-only --validate
+   
+   # Check studio mock data generation
+   npm run validate-studios frontend
+   ```
+
+2. **Manual studio mock data generation:**
+   ```bash
+   # Generate studio mock data directly
+   cd scripts
+   node frontend-sync-processor.js generate-studios --count 5
+   
+   # Validate generated studio data
+   node frontend-sync-processor.js validate-studios
+   ```
+
+3. **Check studio mock data structure:**
+   ```bash
+   # Verify studio mock data format
+   node -e "
+   try {
+     const studioData = require('./frontend/src/app/data/mockStudioData.js');
+     console.log('Studio count:', studioData.mockStudios?.length || 0);
+     console.log('Sample studio:', studioData.mockStudios?.[0] || 'None');
+   } catch(e) {
+     console.log('Studio mock data error:', e.message);
+   }
+   "
+   ```
+
+#### Problem: "Studio CLI commands not working"
+
+**Symptoms:**
+```
+❌ Error: Unknown command: seed-studios
+❌ Error: Studio validation failed
+⚠️  Warning: Studio commands not available
+```
+
+**Diagnosis:**
+```bash
+# Check available studio commands
+npm run data-cli help | grep studio
+
+# Test studio CLI directly
+node scripts/data-cli.js studio-status
+
+# Check studio command implementation
+grep -r "seed-studios" package.json scripts/
+```
+
+**Solutions:**
+
+1. **Verify studio CLI installation:**
+   ```bash
+   # Check package.json scripts
+   grep -A 5 -B 5 "studio" package.json
+   
+   # Test data CLI directly
+   node scripts/data-cli.js --help
+   ```
+
+2. **Update CLI commands:**
+   ```bash
+   # Reinstall dependencies
+   npm install
+   
+   # Test studio commands
+   npm run seed-studios --help
+   npm run validate-studios --help
+   ```
+
+3. **Manual studio CLI testing:**
+   ```bash
+   # Test individual studio operations
+   cd scripts
+   node data-cli.js seed-studios --scenario minimal
+   node data-cli.js validate-studios data
+   node data-cli.js studio-status
+   ```
+
 ### 🚨 LocalStack Connection Issues
 
 #### Problem: "LocalStack services not available"
@@ -774,6 +1053,81 @@ sudo chmod 666 /var/run/docker.sock
 # Use VirtioFS for file sharing
 # Increase Docker Desktop resources
 # Consider using Colima as Docker Desktop alternative
+```
+
+### Studio-Specific Diagnostics
+
+#### Studio Data Health Check
+
+Run comprehensive studio data diagnostics:
+
+```bash
+# Complete studio health check
+npm run validate-studios all
+
+# Check studio data consistency across services
+npm run validate-studios consistency
+
+# Validate studio-artist relationships
+npm run manage-studio-relationships validate
+
+# Get detailed studio status
+npm run studio-status
+```
+
+#### Studio Debug Commands
+
+Enable studio-specific debugging:
+
+```bash
+# Debug studio data generation
+DEBUG=studio-processor npm run seed-studios
+
+# Debug studio image processing
+DEBUG=studio-images npm run process-studio-images
+
+# Debug studio relationships
+DEBUG=relationship-manager npm run manage-studio-relationships rebuild
+
+# Debug studio frontend sync
+DEBUG=studio-sync npm run setup-data:frontend-only
+```
+
+#### Studio Data Validation
+
+Validate specific aspects of studio data:
+
+```bash
+# Validate studio data structure
+npm run validate-studios data
+
+# Validate studio addresses and postcodes
+npm run validate-studios addresses
+
+# Validate studio images accessibility
+npm run validate-studios images
+
+# Validate studio-artist relationships
+npm run validate-studios relationships
+```
+
+#### Studio Recovery Procedures
+
+Emergency studio data recovery:
+
+```bash
+# Complete studio reset and regeneration
+npm run reset-studios
+npm run seed-studios --scenario studio-diverse --validate
+npm run validate-studios all
+
+# Preserve artists, reset only studios
+npm run reset-studios --preserve-relationships
+npm run seed-studios --scenario minimal
+
+# Repair broken relationships
+npm run manage-studio-relationships repair
+npm run validate-studios relationships
 ```
 
 ## Advanced Diagnostics

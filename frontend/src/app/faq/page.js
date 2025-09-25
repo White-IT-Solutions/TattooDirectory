@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Breadcrumb, BreadcrumbItem, HomeBreadcrumb } from '../../design-system/components/ui/Breadcrumb';
+import { SearchInput } from '../../design-system/components/ui/Input';
+import Button from '../../design-system/components/ui/Button/Button';
+import { FAQ } from '../../design-system/components/ui/FAQ';
+import { FAQContact } from '../../design-system/components/ui/Contact';
 
 const faqData = [
   {
@@ -85,102 +90,82 @@ const faqData = [
   },
 ];
 
+export const dynamic = 'force-dynamic';
+
 export default function FAQPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [openQuestion, setOpenQuestion] = useState(null); // Track which question is open
 
-  const handleToggle = (questionId) => {
-    setOpenQuestion((prev) => (prev === questionId ? null : questionId));
+  const handleClearSearch = () => {
+    setSearchTerm("");
   };
-
-  // Filter questions based on search
-  const filteredData = faqData.map((category) => {
-    const filteredQuestions = category.questions.filter(
-      (q) =>
-        q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        q.answer.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    return { ...category, questions: filteredQuestions };
-  });
 
   const isFiltered = searchTerm.trim() !== "";
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-12">
+    <div className="min-h-screen bg-[var(--background-secondary)] px-6 py-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Frequently Asked Questions
-        </h1>
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6">
+          <Breadcrumb>
+            <HomeBreadcrumb />
+            <BreadcrumbItem current>FAQ</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
 
-        {/* Search input */}
-        <div className="flex items-center gap-2 mb-8">
-          <input
-            type="text"
-            placeholder="Search FAQs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
-          />
+        {/* Page Header */}
+        <header className="text-center mb-8">
+          <h1 className="text-[var(--typography-heading-1-size)] font-weight-[var(--typography-heading-1-weight)] line-height-[var(--typography-heading-1-line-height)] text-[var(--text-primary)] mb-4">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-[var(--typography-body-large-size)] text-[var(--text-secondary)] max-w-2xl mx-auto">
+            Find answers to common questions about using TattooFinder, searching for artists, and managing your privacy.
+          </p>
+        </header>
+
+        {/* Search Section */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <SearchInput
+                placeholder="Search FAQs..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                size="lg"
+                aria-label="Search frequently asked questions"
+              />
+            </div>
+            {isFiltered && (
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleClearSearch}
+                aria-label="Clear search"
+              >
+                Clear
+              </Button>
+            )}
+          </div>
           {isFiltered && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
-            >
-              Clear
-            </button>
+            <p className="text-[var(--typography-body-small-size)] text-[var(--text-secondary)] mt-2">
+              Showing results for &quot;{searchTerm}&quot;
+            </p>
           )}
         </div>
 
-        {/* FAQ List */}
-        {filteredData.map((category) => (
-          <div key={category.category} className="mb-8">
-            {category.questions.length > 0 && (
-              <>
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  {category.category}
-                </h2>
-                <div className="space-y-4">
-                  {category.questions.map((q, index) => {
-                    const questionId = `${category.category}-${index}`;
-                    const isOpen = openQuestion === questionId;
+        {/* FAQ Content */}
+        <div className="mb-12">
+          <FAQ 
+            categories={faqData}
+            searchTerm={searchTerm}
+            iconType="chevron"
+            allowMultipleOpen={true}
+          />
+        </div>
 
-                    return (
-                      <div
-                        key={index}
-                        className="bg-white shadow-md rounded-lg p-4"
-                      >
-                        {/* Question toggle button */}
-                        <button
-                          onClick={() => handleToggle(questionId)}
-                          className="w-full text-left flex justify-between items-center"
-                        >
-                          <span className="font-medium text-gray-900">
-                            {q.question}
-                          </span>
-                          <span className="text-gray-600">
-                            {isOpen ? "−" : "+"}
-                          </span>
-                        </button>
-
-                        {/* Answer */}
-                        {isOpen && (
-                          <p className="text-gray-600 mt-3">{q.answer}</p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-
-        {/* No results message */}
-        {isFiltered && filteredData.every((c) => c.questions.length === 0) && (
-          <p className="text-center text-gray-600">
-            No FAQs match your search.
-          </p>
-        )}
+        {/* Contact Information */}
+        <div className="max-w-md mx-auto">
+          <FAQContact />
+        </div>
       </div>
     </div>
   );

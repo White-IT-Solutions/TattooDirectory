@@ -1,0 +1,245 @@
+[
+  {
+    "studioId": "studio-diverse-001",
+    "studioName": "London Ink Collective",
+    "address": "45 Brick Lane, Spitalfields, London E1 6PU",
+    "postcode": "E1 6PU",
+    "geohash": "gcpvj0w",
+    "latitude": 51.5205,
+    "longitude": -0.0719,
+    "locationDisplay": "Spitalfields, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7247 1111",
+      "email": "collective@londonink.co.uk",
+      "website": "https://londonink.co.uk",
+      "instagram": "@londoninkcollective"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.8,
+    "reviewCount": 189,
+    "established": 2015,
+    "specialties": ["traditional", "realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-001/exterior-1.jpg",
+        "description": "Historic Brick Lane location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-001/interior-1.jpg",
+        "description": "Diverse artist workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-001/gallery-1.jpg",
+        "description": "Mixed style portfolio",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-diverse-002",
+    "studioName": "Manchester Art Studio",
+    "address": "67 Tib Street, Northern Quarter, Manchester M4 1LW",
+    "postcode": "M4 1LW",
+    "geohash": "gcw2j2m",
+    "latitude": 53.4848,
+    "longitude": -2.2368,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 834 2222",
+      "email": "studio@manchesterart.co.uk",
+      "website": "https://manchesterart.co.uk",
+      "instagram": "@manchesterartstudio"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003"],
+    "artistCount": 1,
+    "rating": 4.7,
+    "reviewCount": 145,
+    "established": 2017,
+    "specialties": ["blackwork", "geometric"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-002/exterior-1.jpg",
+        "description": "Northern Quarter art studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-002/interior-1.jpg",
+        "description": "Geometric art workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-diverse-003",
+    "studioName": "Birmingham Creative Hub",
+    "address": "23 Corporation Street, Birmingham B2 4LP",
+    "postcode": "B2 4LP",
+    "geohash": "gcqcr3j",
+    "latitude": 52.4812,
+    "longitude": -1.8995,
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 3333",
+      "email": "hub@birminghamcreative.co.uk",
+      "website": "https://birminghamcreative.co.uk",
+      "instagram": "@birminghamcreativehub"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-004", "artist-005"],
+    "artistCount": 2,
+    "rating": 4.6,
+    "reviewCount": 123,
+    "established": 2018,
+    "specialties": ["neo_traditional", "watercolour"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-003/exterior-1.jpg",
+        "description": "Birmingham creative space",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-003/interior-1.jpg",
+        "description": "Creative hub workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-003/gallery-1.jpg",
+        "description": "Watercolour art showcase",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-diverse-004",
+    "studioName": "Leeds Fineline Studio",
+    "address": "56 Briggate, Leeds LS1 6HD",
+    "postcode": "LS1 6HD",
+    "geohash": "gcw7u2k",
+    "latitude": 53.7984,
+    "longitude": -1.5436,
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 113 245 4444",
+      "email": "studio@leedsfineline.co.uk",
+      "website": "https://leedsfineline.co.uk",
+      "instagram": "@leedsfinelinestudio"
+    },
+    "openingHours": {
+      "monday": "11:00-18:00",
+      "tuesday": "11:00-18:00",
+      "wednesday": "11:00-18:00",
+      "thursday": "11:00-18:00",
+      "friday": "11:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-006"],
+    "artistCount": 1,
+    "rating": 4.9,
+    "reviewCount": 87,
+    "established": 2019,
+    "specialties": ["fineline", "dotwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-004/exterior-1.jpg",
+        "description": "Leeds city centre studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-004/interior-1.jpg",
+        "description": "Precision fineline workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-diverse-005",
+    "studioName": "Glasgow Geometric Arts",
+    "address": "78 Buchanan Street, Glasgow G1 3BA",
+    "postcode": "G1 3BA",
+    "geohash": "gcyej2k",
+    "latitude": 55.8642,
+    "longitude": -4.2518,
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 141 221 5555",
+      "email": "arts@glasgowgeometric.co.uk",
+      "website": "https://glasgowgeometric.co.uk",
+      "instagram": "@glasgowgeometricarts"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "12:00-19:00",
+      "wednesday": "12:00-19:00",
+      "thursday": "12:00-19:00",
+      "friday": "12:00-19:00",
+      "saturday": "11:00-18:00",
+      "sunday": "13:00-17:00"
+    },
+    "artists": ["artist-007", "artist-008"],
+    "artistCount": 2,
+    "rating": 4.8,
+    "reviewCount": 167,
+    "established": 2016,
+    "specialties": ["geometric", "dotwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-005/exterior-1.jpg",
+        "description": "Glasgow city centre location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-005/interior-1.jpg",
+        "description": "Geometric art workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-diverse-005/gallery-1.jpg",
+        "description": "Sacred geometry collection",
+        "isPrimary": false
+      }
+    ]
+  }
+]

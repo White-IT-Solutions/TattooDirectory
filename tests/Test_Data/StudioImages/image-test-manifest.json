@@ -1,0 +1,222 @@
+{
+  "imageTestManifest": {
+    "version": "1.0",
+    "description": "Test image manifest for studio image processing validation",
+    "lastUpdated": "2024-01-15",
+    "categories": {
+      "exterior": {
+        "description": "Studio exterior and entrance photos",
+        "requiredCount": 1,
+        "optionalCount": 2,
+        "testImages": [
+          {
+            "filename": "studio-exterior-1.png",
+            "description": "Modern studio front entrance",
+            "dimensions": "1200x800",
+            "format": "PNG",
+            "size": "~500KB",
+            "testScenarios": [
+              "basic_upload",
+              "format_conversion",
+              "resize_test"
+            ]
+          },
+          {
+            "filename": "studio-exterior-2.jpg",
+            "description": "Traditional studio storefront",
+            "dimensions": "1000x667",
+            "format": "JPEG",
+            "size": "~300KB",
+            "testScenarios": ["webp_conversion", "thumbnail_generation"]
+          },
+          {
+            "filename": "studio-exterior-3.webp",
+            "description": "Contemporary studio building",
+            "dimensions": "1400x933",
+            "format": "WebP",
+            "size": "~200KB",
+            "testScenarios": ["webp_native", "quality_test"]
+          }
+        ]
+      },
+      "interior": {
+        "description": "Studio interior workspace photos",
+        "requiredCount": 1,
+        "optionalCount": 3,
+        "testImages": [
+          {
+            "filename": "studio-interior-1.png",
+            "description": "Main tattoo workspace",
+            "dimensions": "1200x800",
+            "format": "PNG",
+            "size": "~600KB",
+            "testScenarios": ["basic_upload", "format_conversion"]
+          },
+          {
+            "filename": "studio-interior-2.jpg",
+            "description": "Reception and waiting area",
+            "dimensions": "1100x733",
+            "format": "JPEG",
+            "size": "~400KB",
+            "testScenarios": ["compression_test", "thumbnail_generation"]
+          },
+          {
+            "filename": "studio-interior-3.jpg",
+            "description": "Private tattoo room",
+            "dimensions": "1000x750",
+            "format": "JPEG",
+            "size": "~350KB",
+            "testScenarios": ["quality_optimization"]
+          },
+          {
+            "filename": "studio-interior-4.png",
+            "description": "Equipment and sterilization area",
+            "dimensions": "1300x867",
+            "format": "PNG",
+            "size": "~700KB",
+            "testScenarios": ["large_file_handling"]
+          }
+        ]
+      },
+      "gallery": {
+        "description": "Studio gallery and portfolio display photos",
+        "requiredCount": 1,
+        "optionalCount": 2,
+        "testImages": [
+          {
+            "filename": "studio-gallery-1.png",
+            "description": "Portfolio wall display",
+            "dimensions": "1200x800",
+            "format": "PNG",
+            "size": "~550KB",
+            "testScenarios": ["basic_upload", "format_conversion"]
+          },
+          {
+            "filename": "studio-gallery-2.jpg",
+            "description": "Flash art collection",
+            "dimensions": "1150x767",
+            "format": "JPEG",
+            "size": "~380KB",
+            "testScenarios": ["detail_preservation"]
+          },
+          {
+            "filename": "studio-gallery-3.jpg",
+            "description": "Artist work showcase",
+            "dimensions": "1000x667",
+            "format": "JPEG",
+            "size": "~320KB",
+            "testScenarios": ["color_accuracy"]
+          }
+        ]
+      }
+    },
+    "testScenarios": {
+      "basic_upload": {
+        "description": "Test basic S3 upload functionality",
+        "expectedResult": "Image uploaded successfully with correct naming convention",
+        "validation": [
+          "s3_object_exists",
+          "correct_path_structure",
+          "metadata_preserved"
+        ]
+      },
+      "format_conversion": {
+        "description": "Test automatic WebP conversion",
+        "expectedResult": "Original format preserved, WebP version created",
+        "validation": [
+          "webp_version_exists",
+          "quality_maintained",
+          "file_size_reduced"
+        ]
+      },
+      "resize_test": {
+        "description": "Test image resizing for thumbnails",
+        "expectedResult": "Multiple sizes generated (thumbnail, medium, full)",
+        "validation": [
+          "thumbnail_created",
+          "aspect_ratio_maintained",
+          "quality_acceptable"
+        ]
+      },
+      "webp_conversion": {
+        "description": "Test WebP format optimization",
+        "expectedResult": "WebP version with reduced file size",
+        "validation": [
+          "webp_smaller_than_original",
+          "visual_quality_maintained"
+        ]
+      },
+      "thumbnail_generation": {
+        "description": "Test thumbnail creation",
+        "expectedResult": "Thumbnail version created with correct dimensions",
+        "validation": ["thumbnail_dimensions_correct", "aspect_ratio_preserved"]
+      },
+      "webp_native": {
+        "description": "Test native WebP file handling",
+        "expectedResult": "WebP file processed without conversion",
+        "validation": ["original_format_preserved", "no_unnecessary_conversion"]
+      },
+      "quality_test": {
+        "description": "Test image quality optimization",
+        "expectedResult": "Optimized quality without visible degradation",
+        "validation": ["file_size_optimized", "visual_quality_maintained"]
+      },
+      "compression_test": {
+        "description": "Test image compression algorithms",
+        "expectedResult": "Compressed image with acceptable quality",
+        "validation": ["compression_ratio_acceptable", "quality_threshold_met"]
+      },
+      "quality_optimization": {
+        "description": "Test quality vs file size optimization",
+        "expectedResult": "Optimal balance between quality and file size",
+        "validation": [
+          "quality_score_above_threshold",
+          "file_size_within_limits"
+        ]
+      },
+      "large_file_handling": {
+        "description": "Test handling of large image files",
+        "expectedResult": "Large files processed without errors",
+        "validation": [
+          "processing_completed",
+          "memory_usage_acceptable",
+          "timeout_not_exceeded"
+        ]
+      },
+      "detail_preservation": {
+        "description": "Test preservation of fine details in images",
+        "expectedResult": "Fine details preserved after processing",
+        "validation": ["detail_sharpness_maintained", "no_artifacts_introduced"]
+      },
+      "color_accuracy": {
+        "description": "Test color accuracy preservation",
+        "expectedResult": "Colors remain accurate after processing",
+        "validation": [
+          "color_profile_preserved",
+          "color_accuracy_within_tolerance"
+        ]
+      }
+    },
+    "validationRules": {
+      "minWidth": 800,
+      "maxFileSize": 5242880,
+      "supportedFormats": ["jpg", "jpeg", "png", "webp"],
+      "requiredMetadata": ["width", "height", "format", "size"],
+      "namingConvention": "studios/{studioId}/{type}-{index}.{ext}",
+      "corsConfiguration": {
+        "required": true,
+        "allowedOrigins": [
+          "http://localhost:3000",
+          "https://*.tattoodirectory.co.uk"
+        ],
+        "allowedMethods": ["GET", "HEAD"]
+      }
+    },
+    "performanceTargets": {
+      "uploadTime": "< 5 seconds per image",
+      "conversionTime": "< 10 seconds per image",
+      "thumbnailGeneration": "< 3 seconds per image",
+      "s3AccessTime": "< 1 second per image"
+    }
+  }
+}

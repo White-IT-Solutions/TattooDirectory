@@ -1,0 +1,547 @@
+/**
+ * Design System Integration CSS
+ * Ensures consistent application of design system tokens across all components
+ */
+
+/* ===== DESIGN SYSTEM COMPONENT BASE CLASSES ===== */
+
+.design-system-component {
+  /* Ensure all components use design tokens */
+  --component-transition: all var(--duration-200) var(--ease-out);
+  
+  /* Base component styling */
+  transition: var(--component-transition);
+  
+  /* Ensure proper box-sizing */
+  box-sizing: border-box;
+}
+
+.design-system-component *,
+.design-system-component *::before,
+.design-system-component *::after {
+  box-sizing: inherit;
+}
+
+/* ===== SIZE VARIANTS ===== */
+
+.size-xs {
+  --component-size: var(--spacing-6);
+  --component-padding: var(--spacing-1) var(--spacing-2);
+  --component-font-size: var(--font-size-xs);
+  --component-border-radius: var(--radius-sm);
+}
+
+.size-sm {
+  --component-size: var(--spacing-8);
+  --component-padding: var(--spacing-2) var(--spacing-3);
+  --component-font-size: var(--font-size-sm);
+  --component-border-radius: var(--radius);
+}
+
+.size-md {
+  --component-size: var(--spacing-10);
+  --component-padding: var(--spacing-3) var(--spacing-4);
+  --component-font-size: var(--font-size-base);
+  --component-border-radius: var(--radius-md);
+}
+
+.size-lg {
+  --component-size: var(--spacing-12);
+  --component-padding: var(--spacing-4) var(--spacing-6);
+  --component-font-size: var(--font-size-lg);
+  --component-border-radius: var(--radius-lg);
+}
+
+.size-xl {
+  --component-size: var(--spacing-16);
+  --component-padding: var(--spacing-6) var(--spacing-8);
+  --component-font-size: var(--font-size-xl);
+  --component-border-radius: var(--radius-xl);
+}
+
+/* ===== VARIANT STYLES ===== */
+
+.variant-primary {
+  --component-bg: var(--interactive-primary);
+  --component-bg-hover: var(--interactive-primary-hover);
+  --component-bg-active: var(--interactive-primary-active);
+  --component-text: var(--text-inverse);
+  --component-border: var(--interactive-primary);
+}
+
+.variant-secondary {
+  --component-bg: var(--interactive-secondary);
+  --component-bg-hover: var(--interactive-secondary-hover);
+  --component-bg-active: var(--interactive-secondary-active);
+  --component-text: var(--text-primary);
+  --component-border: var(--border-primary);
+}
+
+.variant-accent {
+  --component-bg: var(--interactive-accent);
+  --component-bg-hover: var(--interactive-accent-hover);
+  --component-bg-active: var(--interactive-accent-active);
+  --component-text: var(--text-inverse);
+  --component-border: var(--interactive-accent);
+}
+
+.variant-outline {
+  --component-bg: transparent;
+  --component-bg-hover: var(--interactive-primary);
+  --component-bg-active: var(--interactive-primary-active);
+  --component-text: var(--interactive-primary);
+  --component-text-hover: var(--text-inverse);
+  --component-border: var(--interactive-primary);
+}
+
+.variant-ghost {
+  --component-bg: transparent;
+  --component-bg-hover: var(--interactive-secondary);
+  --component-bg-active: var(--interactive-secondary-active);
+  --component-text: var(--interactive-primary);
+  --component-border: transparent;
+}
+
+.variant-destructive {
+  --component-bg: var(--feedback-error);
+  --component-bg-hover: var(--color-error-600);
+  --component-bg-active: var(--color-error-700);
+  --component-text: var(--text-inverse);
+  --component-border: var(--feedback-error);
+}
+
+/* ===== SHADOW ELEVATION SYSTEM ===== */
+
+.shadow-elevation-flat {
+  box-shadow: none;
+}
+
+.shadow-elevation-surface {
+  box-shadow: var(--shadow-elevation-surface);
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+
+.shadow-elevation-surface:hover {
+  box-shadow: var(--shadow-elevation-surface-hover);
+}
+
+.shadow-elevation-raised {
+  box-shadow: var(--shadow-elevation-raised);
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+
+.shadow-elevation-raised:hover {
+  box-shadow: var(--shadow-elevation-raised-hover);
+}
+
+.shadow-elevation-floating {
+  box-shadow: var(--shadow-elevation-floating);
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+
+.shadow-elevation-floating:hover {
+  box-shadow: var(--shadow-elevation-floating-hover);
+}
+
+.shadow-elevation-premium {
+  box-shadow: var(--shadow-elevation-premium);
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+
+.shadow-elevation-premium:hover {
+  box-shadow: var(--shadow-elevation-premium-hover);
+}
+
+/* ===== VISUAL EFFECTS LEVELS ===== */
+
+.visual-effects-none {
+  /* No additional visual effects */
+}
+
+.visual-effects-subtle {
+  /* Subtle visual enhancements */
+  position: relative;
+}
+
+.visual-effects-subtle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary-subtle);
+  opacity: 0.5;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.visual-effects-medium {
+  /* Medium visual enhancements */
+  position: relative;
+}
+
+.visual-effects-medium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary-medium);
+  opacity: 0.7;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.visual-effects-strong {
+  /* Strong visual enhancements */
+  position: relative;
+}
+
+.visual-effects-strong::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary-overlay);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.visual-effects-premium {
+  /* Premium visual enhancements with multiple layers */
+  position: relative;
+}
+
+.visual-effects-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-hero-primary);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.visual-effects-premium::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--texture-noise-subtle);
+  background-size: 256px 256px;
+  opacity: 0.3;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* ===== ANIMATION LEVELS ===== */
+
+.animation-none {
+  transition: none !important;
+  animation: none !important;
+}
+
+.animation-minimal {
+  transition: opacity var(--duration-150) var(--ease-out),
+              transform var(--duration-150) var(--ease-out);
+}
+
+.animation-standard {
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.animation-enhanced {
+  transition: all var(--duration-300) var(--ease-out);
+}
+
+/* ===== MICRO-INTERACTIONS ===== */
+
+.micro-interactions {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.micro-interactions:active {
+  transform: scale(0.98);
+  transition: transform var(--duration-75) var(--ease-in);
+}
+
+/* ===== HOVER ANIMATIONS ===== */
+
+.hover-animations:hover {
+  transform: translateY(-1px);
+}
+
+.hover-animations:hover.shadow-elevation-surface {
+  box-shadow: var(--shadow-elevation-raised);
+}
+
+.hover-animations:hover.shadow-elevation-raised {
+  box-shadow: var(--shadow-elevation-floating);
+}
+
+/* ===== FOCUS ANIMATIONS ===== */
+
+.focus-animations:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  transform: scale(1.02);
+}
+
+.focus-animations:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ===== STATE CLASSES ===== */
+
+.disabled {
+  opacity: var(--opacity-50);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--background-overlay);
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-inner-medium);
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+.respect-reduced-motion {
+  /* Will be overridden by media query */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .respect-reduced-motion,
+  .respect-reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .respect-reduced-motion .hover-animations:hover {
+    transform: none;
+  }
+  
+  .respect-reduced-motion .focus-animations:focus {
+    transform: none;
+  }
+  
+  .respect-reduced-motion .micro-interactions:active {
+    transform: none;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE SUPPORT ===== */
+
+@media (prefers-contrast: high) {
+  .design-system-component {
+    --component-border-width: 2px;
+  }
+  
+  .variant-outline {
+    --component-border-width: 3px;
+  }
+  
+  .visual-effects-subtle::before,
+  .visual-effects-medium::before,
+  .visual-effects-strong::before,
+  .visual-effects-premium::before,
+  .visual-effects-premium::after {
+    display: none;
+  }
+}
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+
+@media (max-width: 768px) {
+  .design-system-component {
+    /* Reduce visual effects on mobile for performance */
+  }
+  
+  .visual-effects-premium::before,
+  .visual-effects-premium::after {
+    display: none;
+  }
+  
+  .animation-enhanced {
+    transition-duration: var(--duration-150);
+  }
+  
+  /* Ensure touch targets are at least 44px */
+  .micro-interactions {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===== COMPONENT-SPECIFIC INTEGRATIONS ===== */
+
+/* Button Integration */
+.design-system-component.btn-base {
+  background-color: var(--component-bg);
+  color: var(--component-text);
+  border: 1px solid var(--component-border);
+  border-radius: var(--component-border-radius);
+  padding: var(--component-padding);
+  font-size: var(--component-font-size);
+  height: var(--component-size);
+}
+
+.design-system-component.btn-base:hover {
+  background-color: var(--component-bg-hover);
+  color: var(--component-text-hover, var(--component-text));
+}
+
+.design-system-component.btn-base:active {
+  background-color: var(--component-bg-active);
+}
+
+/* Card Integration */
+.design-system-component.card-base {
+  background-color: var(--background-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--component-border-radius);
+  padding: var(--component-padding);
+}
+
+/* Input Integration */
+.design-system-component.input-base {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--component-border-radius);
+  padding: var(--component-padding);
+  font-size: var(--component-font-size);
+  height: var(--component-size);
+}
+
+.design-system-component.input-base:focus {
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 3px rgb(92 71 92 / 0.1);
+}
+
+/* ===== COMPONENT COMPOSITION UTILITIES ===== */
+
+.component-group {
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+}
+
+.component-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.component-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ===== UTILITY CLASSES FOR DESIGN SYSTEM INTEGRATION ===== */
+
+.use-design-tokens {
+  /* Marker class for components using design tokens */
+}
+
+.design-system-typography {
+  font-family: var(--font-family-body);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.design-system-heading {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.design-system-brand {
+  font-family: var(--font-family-brand);
+}
+
+/* ===== CONSISTENCY ENFORCEMENT ===== */
+
+/* Ensure all interactive elements have consistent focus styles */
+.design-system-component:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Ensure all disabled elements have consistent styling */
+.design-system-component:disabled,
+.design-system-component[aria-disabled="true"] {
+  opacity: var(--opacity-50);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Ensure all loading elements have consistent styling */
+.design-system-component[aria-busy="true"] {
+  position: relative;
+  pointer-events: none;
+}
+
+/* ===== DARK MODE ADJUSTMENTS ===== */
+
+.dark .design-system-component {
+  /* Dark mode specific adjustments */
+}
+
+.dark .visual-effects-subtle::before {
+  background: var(--gradient-primary-subtle);
+  opacity: 0.3;
+}
+
+.dark .visual-effects-medium::before {
+  background: var(--gradient-primary-medium);
+  opacity: 0.5;
+}
+
+.dark .visual-effects-strong::before {
+  background: var(--gradient-primary-overlay);
+  opacity: 0.7;
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  .design-system-component {
+    /* Remove shadows and effects for print */
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+  
+  .visual-effects-subtle::before,
+  .visual-effects-medium::before,
+  .visual-effects-strong::before,
+  .visual-effects-premium::before,
+  .visual-effects-premium::after {
+    display: none !important;
+  }
+  
+  .design-system-component {
+    /* Ensure good contrast for print */
+    color: black !important;
+    background: white !important;
+  }
+}

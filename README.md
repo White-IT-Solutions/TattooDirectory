@@ -11,6 +11,7 @@ The Tattoo Artist Directory creates the most comprehensive directory of UK tatto
 - **Automated Data Aggregation**: Multi-source scraping engine (Google Maps → Studio Websites → Instagram)
 - **Advanced Search & Filtering**: Search by style, location, and keywords with grid and map views
 - **Artist Profile Pages**: Comprehensive profiles with portfolios, styles, and contact information
+- **Studio Integration**: Full studio data pipeline with artist-studio relationships and studio profiles
 - **Serverless Architecture**: Built on AWS using Lambda, DynamoDB, OpenSearch, Step Functions, and Fargate
 - **Infrastructure as Code**: 100% Terraform-managed infrastructure with automated CI/CD
 
@@ -33,8 +34,12 @@ The system employs a serverless-first, event-driven architecture with two main c
 
 ### Development Documentation
 
-- **[Data Management Guide](docs/DATA_MANAGEMENT_GUIDE.md)**: Complete guide to the unified data management system
-- **[Migration Guide](docs/MIGRATION_GUIDE.md)**: Migrating from legacy scripts to the new system
+- **[Data Management Guide](docs/data_management/DATA_MANAGEMENT_GUIDE.md)**: Complete guide to the unified data management system
+- **[Studio Data Schema](docs/data_management/STUDIO_DATA_SCHEMA.md)**: Studio data models and relationships
+- **[Studio CLI Commands](docs/STUDIO_CLI_COMMANDS.md)**: Studio-specific command reference
+- **[Studio Image Processing](docs/data_management/STUDIO_IMAGE_PROCESSING.md)**: Studio image workflow documentation
+- **[Studio Health Monitoring](docs/STUDIO_HEALTH_MONITORING.md)**: Studio data validation and health checks
+- **[Migration Guide](docs/data_management/MIGRATION_GUIDE.md)**: Migrating from legacy scripts to the new system
 - **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)**: Common issues and solutions
 
 ### Project Documentation
@@ -42,7 +47,7 @@ The system employs a serverless-first, event-driven architecture with two main c
 Comprehensive project documentation is available in the `/docs` folder:
 
 - **[PRD](docs/PRD%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Product Requirements Document
-- **[SRS](docs/SRS%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Software Requirements Specification  
+- **[SRS](docs/SRS%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Software Requirements Specification
 - **[HLD](docs/HLD%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: High-Level Design
 - **[LLD](docs/LLD%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Low-Level Design
 - **[DPP](docs/DPP%20Doc%20Tattoo%20Artist%20Directory%20MVP.md)**: Data Protection Policy
@@ -73,9 +78,10 @@ npm run health-check
 ```
 
 **Access Points:**
+
 - Frontend: http://localhost:3000
-- API Documentation: http://localhost:8080  
-- LocalStack UI: http://localhost:4566/_localstack/cockpit
+- API Documentation: http://localhost:8080
+- LocalStack UI: http://localhost:4566/\_localstack/cockpit
 
 ### Frontend Development Only
 
@@ -103,13 +109,18 @@ npm run setup-data
 npm run reset-data:clean
 
 # Seed specific test scenarios
-npm run seed-scenario:minimal          # Quick testing (3 artists)
-npm run seed-scenario:london-artists   # Location testing (5 London artists)
-npm run seed-scenario:full-dataset     # Complete testing (10 artists)
+npm run seed-scenario:minimal          # Quick testing (3 artists, 2 studios)
+npm run seed-scenario:london-artists   # Location testing (5 London artists, 3 studios)
+npm run seed-scenario:full-dataset     # Complete testing (10 artists, 6 studios)
+
+# Studio-specific operations
+npm run seed-studios                   # Seed only studio data
+npm run validate-studios               # Validate studio data consistency
+npm run reset-studios                  # Reset studio data while preserving artists
 
 # System health and validation
 npm run health-check                   # Check service connectivity
-npm run validate-data                  # Validate data consistency
+npm run validate-data                  # Validate data consistency (artists + studios)
 npm run data-status                    # Get current system status
 ```
 
@@ -133,6 +144,7 @@ For complete documentation, see the [Data Management Guide](docs/DATA_MANAGEMENT
 The project uses a unified data management system. See the [Data Management Guide](docs/DATA_MANAGEMENT_GUIDE.md) for complete documentation.
 
 **Essential Commands:**
+
 ```bash
 # Data Management (New Unified System)
 npm run setup-data          # Complete environment setup
@@ -163,7 +175,7 @@ This project follows strict data protection principles, processing only publicly
 
 ## 📄 License
 
-*License information to be added*
+_License information to be added_
 
 ---
 

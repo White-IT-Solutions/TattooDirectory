@@ -1,18 +1,24 @@
-export default function TermsPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6 py-12">
-      <div className="max-w-2xl text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Status</h1>
-        <p className="text-gray-600 mb-6">
-          This is a placeholder page for the status of our server.
-        </p>
-        <a
-          href="/home"
-          className="inline-block px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition"
-        >
-          Go Back Home
-        </a>
-      </div>
-    </div>
-  );
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+    <span className="ml-2 text-neutral-600">Redirecting to Home page...</span>
+  </div>
+);
+
+export default function StatusPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to the home page instead of loading complex status page
+    router.replace("/");
+  }, [router]);
+
+  return <LoadingSpinner />;
 }

@@ -1,0 +1,104 @@
+[
+  {
+    "studioId": "studio-mega-001",
+    "studioName": "Mega Studios London Central",
+    "address": "500 Oxford Street, Marylebone, London W1C 1LN",
+    "postcode": "W1C 1LN",
+    "geohash": "gcpvn4m",
+    "latitude": 51.5154,
+    "longitude": -0.1447,
+    "locationDisplay": "Marylebone, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7629 0001",
+      "email": "mega@megastudios.com",
+      "website": "https://megastudios.com",
+      "instagram": "@megastudioslondon"
+    },
+    "openingHours": {
+      "monday": "07:00-23:00",
+      "tuesday": "07:00-23:00",
+      "wednesday": "07:00-23:00",
+      "thursday": "07:00-23:00",
+      "friday": "07:00-23:00",
+      "saturday": "07:00-23:00",
+      "sunday": "08:00-22:00"
+    },
+    "artists": [
+      "artist-001",
+      "artist-002",
+      "artist-003",
+      "artist-004",
+      "artist-005"
+    ],
+    "artistCount": 5,
+    "rating": 4.8,
+    "reviewCount": 1200,
+    "established": 2005,
+    "specialties": [
+      "traditional",
+      "realism",
+      "blackwork",
+      "neo_traditional",
+      "geometric"
+    ],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-mega-001/exterior-1.jpg",
+        "description": "Flagship mega studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-mega-001/interior-1.jpg",
+        "description": "Massive workspace capacity",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-mega-002",
+    "studioName": "Ultra Ink Birmingham",
+    "address": "300 Corporation Street, Birmingham B2 4RQ",
+    "postcode": "B2 4RQ",
+    "geohash": "gcqcr3k",
+    "latitude": 52.4814,
+    "longitude": -1.8998,
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 0002",
+      "email": "ultra@ultraink.co.uk",
+      "website": "https://ultraink.co.uk",
+      "instagram": "@ultrainkbirmingham"
+    },
+    "openingHours": {
+      "monday": "06:00-24:00",
+      "tuesday": "06:00-24:00",
+      "wednesday": "06:00-24:00",
+      "thursday": "06:00-24:00",
+      "friday": "06:00-24:00",
+      "saturday": "06:00-24:00",
+      "sunday": "08:00-22:00"
+    },
+    "artists": ["artist-006", "artist-007", "artist-008"],
+    "artistCount": 3,
+    "rating": 4.9,
+    "reviewCount": 2000,
+    "established": 2008,
+    "specialties": ["watercolour", "fineline", "dotwork", "minimalism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-mega-002/exterior-1.jpg",
+        "description": "Ultra-modern facility",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-mega-002/interior-1.jpg",
+        "description": "State-of-the-art equipment",
+        "isPrimary": false
+      }
+    ]
+  }
+]

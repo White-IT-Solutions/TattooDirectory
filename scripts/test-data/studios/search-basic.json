@@ -1,0 +1,149 @@
+[
+  {
+    "studioId": "studio-search-001",
+    "studioName": "Traditional Ink London",
+    "address": "12 Camden High Street, Camden, London NW1 7JE",
+    "postcode": "NW1 7JE",
+    "geohash": "gcpvn0k",
+    "latitude": 51.5392,
+    "longitude": -0.1426,
+    "locationDisplay": "Camden, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7485 1111",
+      "email": "info@traditionalinklondon.com",
+      "website": "https://traditionalinklondon.com",
+      "instagram": "@traditionalinklondon"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-16:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.5,
+    "reviewCount": 78,
+    "established": 2018,
+    "specialties": ["traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-001/exterior-1.jpg",
+        "description": "Traditional studio entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-001/interior-1.jpg",
+        "description": "Classic tattoo workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-001/gallery-1.jpg",
+        "description": "Traditional flash collection",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-search-002",
+    "studioName": "Realism Studio Manchester",
+    "address": "34 Oldham Street, Northern Quarter, Manchester M1 1JG",
+    "postcode": "M1 1JG",
+    "geohash": "gcw2j1k",
+    "latitude": 53.4839,
+    "longitude": -2.2374,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 234 2222",
+      "email": "hello@realismstudio.co.uk",
+      "website": "https://realismstudio.co.uk",
+      "instagram": "@realismstudiomanchester"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003"],
+    "artistCount": 1,
+    "rating": 4.7,
+    "reviewCount": 134,
+    "established": 2016,
+    "specialties": ["realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-002/exterior-1.jpg",
+        "description": "Manchester studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-002/interior-1.jpg",
+        "description": "Realism focused workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-002/gallery-1.jpg",
+        "description": "Photorealistic portfolio",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-search-003",
+    "studioName": "Mixed Styles Collective",
+    "address": "89 Shoreditch High Street, Shoreditch, London E1 6JN",
+    "postcode": "E1 6JN",
+    "geohash": "gcpvj1m",
+    "latitude": 51.5235,
+    "longitude": -0.0755,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7739 3333",
+      "email": "collective@mixedstyles.co.uk",
+      "website": "https://mixedstyles.co.uk",
+      "instagram": "@mixedstylescollective"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-004", "artist-005"],
+    "artistCount": 2,
+    "rating": 4.6,
+    "reviewCount": 156,
+    "established": 2017,
+    "specialties": ["traditional", "realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-003/exterior-1.jpg",
+        "description": "Shoreditch collective entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-search-003/interior-1.jpg",
+        "description": "Collaborative workspace",
+        "isPrimary": false
+      }
+    ]
+  }
+]

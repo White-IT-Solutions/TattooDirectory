@@ -375,6 +375,30 @@ class FrontendSyncProcessor {
   }
 
   /**
+   * Load scenario-specific studio data from studios directory
+   */
+  loadScenarioStudioData(scenarioName) {
+    if (!scenarioName) return null;
+    
+    const studioFilename = `${scenarioName}.json`;
+    const studioDataPath = path.join(this.config.paths.studioTestDataDir, studioFilename);
+    
+    if (!fs.existsSync(studioDataPath)) {
+      console.log(`ℹ️  No scenario-specific studio data found for '${scenarioName}'`);
+      return null;
+    }
+    
+    try {
+      const studioData = JSON.parse(fs.readFileSync(studioDataPath, 'utf8'));
+      console.log(`🏢 Loaded ${studioData.length} scenario-specific studios for '${scenarioName}'`);
+      return studioData;
+    } catch (error) {
+      console.error(`❌ Failed to parse scenario studio data ${studioFilename}: ${error.message}`);
+      return null;
+    }
+  }
+
+  /**
    * Enhanced mock data generation with comprehensive business data and scenarios
    */
   async generateMockData(options = {}) {
@@ -401,6 +425,14 @@ class FrontendSyncProcessor {
       // Apply scenario-specific configuration
       const scenarioConfig = this.getScenarioConfig(scenario, artistCount);
       const finalArtistCount = scenarioConfig.artistCount;
+      
+      // Load scenario-specific studio data if available
+      const scenarioStudioData = this.loadScenarioStudioData(scenario);
+      if (scenarioStudioData) {
+        // Replace default studio data with scenario-specific data
+        this.testData.studios = scenarioStudioData;
+        console.log(`🏢 Using scenario-specific studio data for '${scenario}'`);
+      }
       
       if (useRealData && this.hasRealData() && !includeBusinessData) {
         // Use real seeded data if available (only when business data is not needed)
@@ -922,18 +954,19 @@ export const mockArtistData = ${JSON.stringify(mockData, null, 2)};
    * Synchronize frontend with backend data
    */
   async syncWithBackend(options = {}) {
-    const { imageUrls = null, scenario = null } = options;
+    const { imageUrls = null, scenario = null, count = null } = options;
     
     console.log('🔄 Synchronizing frontend with backend data...');
     
     try {
       // Generate mock data using real data if available
       const scenarioConfig = this.getScenarioConfig(scenario, 8);
+      const artistCount = count || scenarioConfig.artistCount;
       const mockResult = await this.generateMockData({
         useRealData: true,
         imageUrls,
         scenario,
-        artistCount: scenarioConfig.artistCount,
+        artistCount: artistCount,
         includeBusinessData: true, // Add business data
         validateData: true
       });

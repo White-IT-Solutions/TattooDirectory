@@ -1,0 +1,245 @@
+{
+  "pipelineIntegration": {
+    "testScenarios": [
+      {
+        "name": "end-to-end-minimal",
+        "description": "Complete pipeline with minimal data",
+        "config": {
+          "scenario": "minimal",
+          "artistCount": 3,
+          "studioCount": 2
+        },
+        "expectedOutputs": {
+          "dynamodbRecords": 2,
+          "opensearchDocuments": 2,
+          "s3Images": 6,
+          "frontendMockFile": true,
+          "artistStudioRelationships": 3
+        },
+        "validationChecks": [
+          "all_studios_have_artists",
+          "all_artists_have_studios",
+          "images_accessible_via_s3",
+          "opensearch_documents_searchable",
+          "frontend_mock_data_valid"
+        ]
+      },
+      {
+        "name": "end-to-end-full",
+        "description": "Complete pipeline with full dataset",
+        "config": {
+          "scenario": "full-dataset",
+          "artistCount": 10,
+          "studioCount": 6
+        },
+        "expectedOutputs": {
+          "dynamodbRecords": 6,
+          "opensearchDocuments": 6,
+          "s3Images": 18,
+          "frontendMockFile": true,
+          "artistStudioRelationships": 10
+        },
+        "validationChecks": [
+          "all_studios_have_artists",
+          "all_artists_have_studios",
+          "images_accessible_via_s3",
+          "opensearch_documents_searchable",
+          "frontend_mock_data_valid",
+          "geographic_distribution_correct",
+          "specialty_distribution_correct"
+        ]
+      }
+    ],
+    "serviceEndpoints": {
+      "dynamodb": "http://localhost:4566",
+      "opensearch": "http://localhost:4566",
+      "s3": "http://localhost:4566"
+    },
+    "testData": {
+      "tableName": "TattooDirectory",
+      "indexName": "studios-index",
+      "bucketName": "tattoo-directory-images",
+      "opensearchIndex": "studios"
+    }
+  },
+  "databaseSeeding": {
+    "dynamodbTests": [
+      {
+        "name": "studio-record-creation",
+        "description": "Verify studio records are created with correct structure",
+        "testStudio": {
+          "studioId": "studio-integration-001",
+          "studioName": "Integration Test Studio",
+          "address": "123 Test Street, London E1 6AA",
+          "postcode": "E1 6AA",
+          "latitude": 51.5074,
+          "longitude": -0.1278
+        },
+        "expectedDynamoRecord": {
+          "pk": "STUDIO#studio-integration-001",
+          "sk": "PROFILE",
+          "studioId": "studio-integration-001",
+          "studioName": "Integration Test Studio"
+        }
+      },
+      {
+        "name": "artist-studio-references",
+        "description": "Verify artist records are updated with studio information",
+        "testArtist": {
+          "artistId": "artist-integration-001",
+          "artistName": "Integration Test Artist"
+        },
+        "testStudio": {
+          "studioId": "studio-integration-001",
+          "artists": ["artist-integration-001"]
+        },
+        "expectedArtistUpdate": {
+          "tattooStudio": {
+            "studioId": "studio-integration-001",
+            "studioName": "Integration Test Studio"
+          }
+        }
+      }
+    ],
+    "opensearchTests": [
+      {
+        "name": "studio-indexing",
+        "description": "Verify studios are indexed for search",
+        "testStudio": {
+          "studioId": "studio-search-001",
+          "studioName": "Search Test Studio",
+          "specialties": ["traditional", "realism"],
+          "location": {
+            "lat": 51.5074,
+            "lon": -0.1278
+          }
+        },
+        "searchQueries": [
+          {
+            "query": "traditional",
+            "expectedResults": 1
+          },
+          {
+            "query": "London",
+            "expectedResults": 1
+          },
+          {
+            "geo_distance": {
+              "distance": "10km",
+              "location": {
+                "lat": 51.5074,
+                "lon": -0.1278
+              }
+            },
+            "expectedResults": 1
+          }
+        ]
+      }
+    ]
+  },
+  "imageProcessing": {
+    "s3Tests": [
+      {
+        "name": "studio-image-upload",
+        "description": "Verify studio images are uploaded to S3",
+        "testStudio": {
+          "studioId": "studio-image-001"
+        },
+        "expectedS3Objects": [
+          "studios/studio-image-001/exterior-1.jpg",
+          "studios/studio-image-001/interior-1.jpg",
+          "studios/studio-image-001/gallery-1.jpg"
+        ],
+        "imageValidation": {
+          "formats": ["jpg", "webp"],
+          "minWidth": 800,
+          "corsEnabled": true
+        }
+      }
+    ]
+  },
+  "frontendSync": {
+    "mockDataTests": [
+      {
+        "name": "mock-file-generation",
+        "description": "Verify frontend mock data file is generated",
+        "inputStudios": 3,
+        "expectedFile": "frontend/src/app/data/mockStudioData.js",
+        "expectedContent": {
+          "exportedVariables": [
+            "mockStudios",
+            "studioCount",
+            "availableLocations",
+            "availableSpecialties"
+          ],
+          "studioCount": 3,
+          "minFileSize": 1000
+        }
+      },
+      {
+        "name": "mock-data-structure",
+        "description": "Verify mock data matches frontend component requirements",
+        "requiredFields": [
+          "studioId",
+          "studioName",
+          "locationDisplay",
+          "address",
+          "contactInfo",
+          "openingHours",
+          "artists",
+          "artistCount",
+          "rating",
+          "reviewCount",
+          "established",
+          "specialties",
+          "geohash"
+        ],
+        "validation": {
+          "addressStructure": [
+            "street",
+            "city",
+            "postcode",
+            "latitude",
+            "longitude"
+          ],
+          "contactInfoStructure": ["phone", "email", "website", "instagram"],
+          "openingHoursStructure": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
+        }
+      }
+    ]
+  },
+  "healthMonitoring": {
+    "validationTests": [
+      {
+        "name": "studio-data-consistency",
+        "description": "Verify studio data consistency across services",
+        "checks": [
+          {
+            "name": "dynamodb-opensearch-sync",
+            "description": "All DynamoDB studios exist in OpenSearch",
+            "query": "SELECT COUNT(*) FROM studios WHERE pk LIKE 'STUDIO#%'",
+            "opensearchQuery": "GET /studios/_count"
+          },
+          {
+            "name": "artist-studio-references",
+            "description": "All artist-studio relationships are bidirectional",
+            "validation": "bidirectional_relationship_check"
+          },
+          {
+            "name": "image-accessibility",
+            "description": "All studio images are accessible via S3",
+            "validation": "s3_image_accessibility_check"
+          }
+        ]
+      }
+    ]
+  }
+}

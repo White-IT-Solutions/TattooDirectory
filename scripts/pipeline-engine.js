@@ -135,10 +135,11 @@ class DataPipeline extends EventEmitter {
    * Build pipeline stages based on operation type and detected changes
    */
   buildPipeline(operationType, options = {}) {
-    const { forceAll = false, scenario = null, resetState = null } = options;
+    const { forceAll = false, scenario = null, resetState = null, count = null } = options;
     
-    // Store current scenario for use in stages
+    // Store current scenario and count for use in stages
     this.currentScenario = scenario;
+    this.currentCount = count;
     
     // Always include prerequisite validation and change detection
     const requiredStages = [
@@ -544,7 +545,8 @@ class DataPipeline extends EventEmitter {
       const syncResult = await this.frontendSyncProcessor.syncWithBackend({
         includeBusinessData: true,
         validateData: true,
-        scenario: this.currentScenario || null
+        scenario: this.currentScenario || null,
+        count: this.currentCount || null
       });
       
       if (progressCallback) {

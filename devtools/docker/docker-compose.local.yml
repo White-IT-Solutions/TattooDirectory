@@ -7,12 +7,14 @@ services:
     ports:
       - "${LOCALSTACK_PORT:-4566}:4566"
       - "${LOCALSTACK_EXTERNAL_PORT_START:-4510}-${LOCALSTACK_EXTERNAL_PORT_END:-4559}:4510-4559"
+    env_file:
+      - ../.env.local
     environment:
       - SERVICES=dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager
-      - DEBUG=1
+      - DEBUG=${LOCALSTACK_DEBUG:-1}
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_HOST=localstack
-      - PERSISTENCE=1
+      - PERSISTENCE=${LOCALSTACK_PERSISTENCE:-1}
       - DATA_DIR=/var/lib/localstack/data
       - LAMBDA_EXECUTOR=docker
       - LAMBDA_REMOTE_DOCKER=false
@@ -48,13 +50,15 @@ services:
     ports:
       - "${BACKEND_PORT:-9000}:8080"
       - "${BACKEND_DEBUG_PORT:-9229}:9229"
+    env_file:
+      - ../.env.local
     environment:
       - AWS_ENDPOINT_URL=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=eu-west-2
-      - DYNAMODB_TABLE_NAME=tattoo-directory-local
-      - OPENSEARCH_ENDPOINT=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - DYNAMODB_TABLE_NAME=${DYNAMODB_TABLE_NAME}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_ENDPOINT}
       - NODE_ENV=development
       - LAMBDA_TASK_ROOT=/var/task
       - ENABLE_DEBUG=${ENABLE_BACKEND_DEBUG:-false}
@@ -168,13 +172,15 @@ services:
       context: ../../scripts
       dockerfile: data-seeder/Dockerfile.seeder
     container_name: tattoo-directory-seeder
+    env_file:
+      - ../.env.local
     environment:
       - AWS_ENDPOINT_URL=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=eu-west-2
-      - DYNAMODB_TABLE_NAME=tattoo-directory-local
-      - OPENSEARCH_ENDPOINT=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - DYNAMODB_TABLE_NAME=${DYNAMODB_TABLE_NAME}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_ENDPOINT}
     depends_on:
       localstack:
         condition: service_healthy

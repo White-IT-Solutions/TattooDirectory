@@ -47,13 +47,14 @@ const SYMBOLS = {
  */
 const COMMANDS = {
   'setup-data': {
-    description: 'Set up all data and services for development with enhanced frontend-sync-processor',
+    description: 'Set up all data and services for development with enhanced mock data generation',
     usage: 'setup-data [options]',
     options: [
       { flag: '--frontend-only', description: 'Generate enhanced mock data without AWS services (includes business data, ratings, pricing)' },
       { flag: '--images-only', description: 'Process and upload images only' },
       { flag: '--force', description: 'Force full processing, ignore incremental changes' },
       { flag: '--scenario <name>', description: 'Use specific scenario for setup (supports enhanced scenarios with business data)' },
+      { flag: '--count <number>', description: 'Override artist count for data generation (e.g., --count 100 for large datasets)' },
       { flag: '--export', description: 'Export generated data to file for reuse' },
       { flag: '--validate', description: 'Validate data consistency and structure during generation' }
     ],
@@ -61,7 +62,9 @@ const COMMANDS = {
       'setup-data',
       'setup-data --frontend-only --export',
       'setup-data --force --scenario london-focused --validate',
-      'setup-data --frontend-only --scenario high-rated'
+      'setup-data --frontend-only --scenario high-rated',
+      'setup-data --scenario performance-test --count 100',
+      'setup-data --frontend-only --count 250 --export'
     ],
     requirements: ['1.1', '2.1', '8.1', '8.2', '13.1', '13.2', '13.3', '13.4']
   },
@@ -114,11 +117,11 @@ const COMMANDS = {
     requirements: ['3.1', '3.2', '3.3', '13.3', '13.4', '13.5']
   },
   'validate-data': {
-    description: 'Validate data consistency, integrity, and enhanced frontend-sync-processor data structures',
+    description: 'Validate data consistency, integrity, and enhanced mock data structures',
     usage: 'validate-data [type]',
     options: [
       { flag: 'all', description: 'Comprehensive validation including enhanced data structures (default)' },
-      { flag: 'consistency', description: 'Cross-service data consistency and frontend-sync alignment' },
+      { flag: 'consistency', description: 'Cross-service data consistency and mock data alignment' },
       { flag: 'images', description: 'Image accessibility and integrity' },
       { flag: 'scenarios', description: 'Enhanced scenario data integrity with business data validation' },
       { flag: 'frontend', description: 'Frontend mock data structure and content validation' },
@@ -161,31 +164,117 @@ const COMMANDS = {
     examples: ['reset-states'],
     requirements: []
   },
-  'frontend-sync': {
-    description: 'Enhanced frontend sync processor with advanced mock data generation',
-    usage: 'frontend-sync <command> [options]',
+
+  'seed-studios': {
+    description: 'Seed only studio data without affecting artist data',
+    usage: 'seed-studios [options]',
     options: [
-      { flag: 'generate [count]', description: 'Generate mock artists with business data' },
-      { flag: 'scenario <name>', description: 'Generate specific enhanced scenario' },
-      { flag: 'validate', description: 'Validate existing mock data structure' },
-      { flag: 'export <scenario>', description: 'Export data to file with validation' },
-      { flag: 'error <type>', description: 'Generate RFC 9457 compliant error response' },
-      { flag: 'performance', description: 'Generate performance test data' },
-      { flag: 'studios', description: 'Generate and display studio data' }
+      { flag: '--scenario <name>', description: 'Use specific scenario for studio generation' },
+      { flag: '--count <number>', description: 'Override studio count for generation' },
+      { flag: '--force', description: 'Force regeneration of existing studio data' },
+      { flag: '--validate', description: 'Validate studio data after seeding' }
     ],
     examples: [
-      'frontend-sync generate --count 10 --scenario normal',
-      'frontend-sync scenario london-focused --export',
-      'frontend-sync error validation --instance /v1/search',
-      'frontend-sync performance --count 50'
+      'seed-studios',
+      'seed-studios --scenario london-studios',
+      'seed-studios --count 5 --validate',
+      'seed-studios --force --scenario studio-diverse'
     ],
-    requirements: ['13.1', '13.2', '13.3', '13.4', '13.5', '13.6', '13.7', '13.8', '13.9', '13.10']
+    requirements: ['6.1', '6.4', '6.5']
+  },
+  'validate-studios': {
+    description: 'Validate only studio-related data and relationships',
+    usage: 'validate-studios [type]',
+    options: [
+      { flag: 'all', description: 'Comprehensive studio validation (default)' },
+      { flag: 'data', description: 'Studio data structure and required fields' },
+      { flag: 'relationships', description: 'Artist-studio relationship consistency' },
+      { flag: 'images', description: 'Studio image accessibility and format' },
+      { flag: 'addresses', description: 'Studio address and postcode validation' },
+      { flag: 'consistency', description: 'Cross-service studio data consistency' }
+    ],
+    examples: [
+      'validate-studios',
+      'validate-studios relationships',
+      'validate-studios images',
+      'validate-studios addresses'
+    ],
+    requirements: ['6.2', '6.4', '6.5']
+  },
+  'reset-studios': {
+    description: 'Reset studio data while preserving artist data',
+    usage: 'reset-studios [options]',
+    options: [
+      { flag: '--preserve-relationships', description: 'Clear studio data but keep artist-studio references' },
+      { flag: '--scenario <name>', description: 'Reseed with specific scenario after reset' },
+      { flag: '--validate', description: 'Validate data consistency after reset' }
+    ],
+    examples: [
+      'reset-studios',
+      'reset-studios --scenario studio-diverse',
+      'reset-studios --preserve-relationships --validate'
+    ],
+    requirements: ['6.3', '6.4', '6.5']
+  },
+  'studio-status': {
+    description: 'Display studio data counts and status information',
+    usage: 'studio-status',
+    options: [],
+    examples: ['studio-status'],
+    requirements: ['6.4', '6.5', '6.6']
+  },
+  'process-studio-images': {
+    description: 'Process and upload studio images to S3',
+    usage: 'process-studio-images [options]',
+    options: [
+      { flag: '--studio-id <id>', description: 'Process images for specific studio only' },
+      { flag: '--force', description: 'Reprocess existing images' },
+      { flag: '--validate', description: 'Validate image accessibility after processing' }
+    ],
+    examples: [
+      'process-studio-images',
+      'process-studio-images --studio-id studio-001',
+      'process-studio-images --force --validate'
+    ],
+    requirements: ['6.6']
+  },
+  'manage-studio-relationships': {
+    description: 'Manage artist-studio relationship assignments',
+    usage: 'manage-studio-relationships [action]',
+    options: [
+      { flag: 'validate', description: 'Validate all artist-studio relationships' },
+      { flag: 'rebuild', description: 'Rebuild relationships based on location and style compatibility' },
+      { flag: 'repair', description: 'Repair inconsistent or broken relationships' },
+      { flag: 'report', description: 'Generate relationship status report' }
+    ],
+    examples: [
+      'manage-studio-relationships validate',
+      'manage-studio-relationships rebuild',
+      'manage-studio-relationships repair',
+      'manage-studio-relationships report'
+    ],
+    requirements: ['6.5', '6.6']
+  },
+  'validate-studio-data-e2e': {
+    description: 'Comprehensive end-to-end studio data validation across all services',
+    usage: 'validate-studio-data-e2e [options]',
+    options: [
+      { flag: '--save-report', description: 'Save detailed validation report to file' },
+      { flag: '--verbose', description: 'Show detailed validation progress and results' },
+      { flag: '--fail-fast', description: 'Stop validation on first critical error' }
+    ],
+    examples: [
+      'validate-studio-data-e2e',
+      'validate-studio-data-e2e --save-report --verbose',
+      'validate-studio-data-e2e --fail-fast'
+    ],
+    requirements: ['5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7']
   },
   'help': {
     description: 'Show help information',
     usage: 'help [command]',
     options: [],
-    examples: ['help', 'help setup-data', 'help frontend-sync'],
+    examples: ['help', 'help setup-data', 'help seed-scenario', 'help seed-studios'],
     requirements: []
   }
 };
@@ -331,6 +420,82 @@ class DataCLI {
             warnings.push(`Available scenarios: ${Object.keys(this.config.scenarios).join(', ')}`);
           }
         }
+        
+        // Validate count if provided
+        if (options.count) {
+          const count = parseInt(options.count);
+          if (isNaN(count) || count < 1) {
+            errors.push('Count must be a positive number');
+          } else if (count > this.config.validation.thresholds.maxArtistCount) {
+            warnings.push(`Count ${count} exceeds recommended maximum of ${this.config.validation.thresholds.maxArtistCount}`);
+          }
+        }
+        break;
+
+      case 'seed-studios':
+        // Validate scenario if provided
+        if (options.scenario) {
+          try {
+            this.config.getScenarioConfig(options.scenario);
+          } catch (error) {
+            errors.push(`Invalid scenario: ${options.scenario}`);
+            warnings.push(`Available scenarios: ${Object.keys(this.config.scenarios).join(', ')}`);
+          }
+        }
+        
+        // Validate count if provided
+        if (options.count) {
+          const count = parseInt(options.count);
+          if (isNaN(count) || count < 1) {
+            errors.push('Studio count must be a positive number');
+          } else if (count > 50) {
+            warnings.push(`Studio count ${count} is quite large and may take time to process`);
+          }
+        }
+        break;
+
+      case 'validate-studios':
+        if (args.length > 0) {
+          const validationType = args[0];
+          const validTypes = ['all', 'data', 'relationships', 'images', 'addresses', 'consistency'];
+          if (!validTypes.includes(validationType)) {
+            errors.push(`Invalid studio validation type: ${validationType}`);
+            warnings.push(`Available types: ${validTypes.join(', ')}`);
+          }
+        }
+        break;
+
+      case 'reset-studios':
+        // Validate scenario if provided
+        if (options.scenario) {
+          try {
+            this.config.getScenarioConfig(options.scenario);
+          } catch (error) {
+            errors.push(`Invalid scenario: ${options.scenario}`);
+            warnings.push(`Available scenarios: ${Object.keys(this.config.scenarios).join(', ')}`);
+          }
+        }
+        break;
+
+      case 'process-studio-images':
+        // Validate studio ID format if provided
+        if (options['studio-id']) {
+          const studioId = options['studio-id'];
+          if (!studioId.match(/^studio-\d+$/)) {
+            warnings.push(`Studio ID format should be 'studio-XXX' (e.g., studio-001)`);
+          }
+        }
+        break;
+
+      case 'manage-studio-relationships':
+        if (args.length > 0) {
+          const action = args[0];
+          const validActions = ['validate', 'rebuild', 'repair', 'report'];
+          if (!validActions.includes(action)) {
+            errors.push(`Invalid relationship action: ${action}`);
+            warnings.push(`Available actions: ${validActions.join(', ')}`);
+          }
+        }
         break;
     }
 
@@ -359,6 +524,20 @@ class DataCLI {
           return await this.handleHealthCheck(args, options);
         case 'data-status':
           return await this.handleDataStatus(args, options);
+        case 'seed-studios':
+          return await this.handleSeedStudios(args, options);
+        case 'validate-studios':
+          return await this.handleValidateStudios(args, options);
+        case 'reset-studios':
+          return await this.handleResetStudios(args, options);
+        case 'studio-status':
+          return await this.handleStudioStatus(args, options);
+        case 'process-studio-images':
+          return await this.handleProcessStudioImages(args, options);
+        case 'manage-studio-relationships':
+          return await this.handleManageStudioRelationships(args, options);
+        case 'validate-studio-data-e2e':
+          return await this.handleValidateStudioDataE2E(args, options);
         case 'help':
           this.showHelp(args[0]);
           return true;
@@ -388,7 +567,8 @@ class DataCLI {
       frontendOnly: options['frontend-only'] || false,
       imagesOnly: options['images-only'] || false,
       force: options.force || false,
-      scenario: options.scenario || null
+      scenario: options.scenario || null,
+      count: options.count ? parseInt(options.count) : null
     };
 
     this.printInfo('Starting data setup...');
@@ -406,6 +586,10 @@ class DataCLI {
 
     if (setupOptions.scenario) {
       this.printInfo(`🎯 Using scenario: ${setupOptions.scenario}`);
+    }
+
+    if (setupOptions.count) {
+      this.printInfo(`🔢 Artist count override: ${setupOptions.count} artists`);
     }
 
     // Start progress tracking
@@ -608,6 +792,535 @@ class DataCLI {
   }
 
   /**
+   * Handle seed-studios command
+   */
+  async handleSeedStudios(args, options) {
+    const startTime = Date.now();
+    const seedOptions = {
+      scenario: options.scenario || null,
+      count: options.count ? parseInt(options.count) : null,
+      force: options.force || false,
+      validate: options.validate || false
+    };
+
+    this.printInfo('🏢 Starting studio-only seeding...');
+    
+    if (seedOptions.scenario) {
+      this.printInfo(`🎯 Using scenario: ${seedOptions.scenario}`);
+    }
+
+    if (seedOptions.count) {
+      this.printInfo(`🔢 Studio count override: ${seedOptions.count} studios`);
+    }
+
+    if (seedOptions.force) {
+      this.printInfo('🔄 Force mode: Regenerating existing studio data');
+    }
+
+    this.startProgressBar('Seeding studios', 4);
+
+    try {
+      this.showStepProgress(1, 4, 'Preparing studio data');
+      this.updateProgress(1, 'Initializing studio seeding');
+
+      const result = await this.manager.seedStudios(seedOptions);
+      
+      this.stopProgressBar();
+
+      if (result.success) {
+        this.displayStudioSeedResults(result, seedOptions);
+        this.displayOperationSummary('seed-studios', result, startTime);
+        return true;
+      } else {
+        this.printError(`Studio seeding failed: ${result.error}`);
+        this.provideTroubleshootingGuidance('seed-studios', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopProgressBar();
+      throw error;
+    }
+  }
+
+  /**
+   * Handle validate-studios command
+   */
+  async handleValidateStudios(args, options) {
+    const validationType = args[0] || 'all';
+    
+    this.printInfo(`🔍 Validating studio data (type: ${validationType})...`);
+    this.startSpinner(`Running ${validationType} studio validation`);
+
+    try {
+      const result = await this.manager.validateStudios(validationType);
+      this.stopSpinner();
+
+      if (result.success) {
+        this.displayStudioValidationResults(result, validationType);
+        return true;
+      } else {
+        this.printError(`Studio validation failed: ${result.error}`);
+        this.provideTroubleshootingGuidance('validate-studios', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopSpinner();
+      throw error;
+    }
+  }
+
+  /**
+   * Handle reset-studios command
+   */
+  async handleResetStudios(args, options) {
+    const startTime = Date.now();
+    const resetOptions = {
+      preserveRelationships: options['preserve-relationships'] || false,
+      scenario: options.scenario || null,
+      validate: options.validate || false
+    };
+
+    this.printInfo('🔄 Resetting studio data...');
+    
+    if (resetOptions.preserveRelationships) {
+      this.printInfo('🔗 Preserving artist-studio relationships');
+    } else {
+      this.printWarning('⚠️  This will clear all studio data and relationships');
+    }
+
+    if (resetOptions.scenario) {
+      this.printInfo(`🎯 Will reseed with scenario: ${resetOptions.scenario}`);
+    }
+
+    this.startProgressBar('Resetting studios', 3);
+
+    try {
+      this.showStepProgress(1, 3, 'Clearing studio data');
+      this.updateProgress(1, 'Removing existing studio data');
+
+      const result = await this.manager.resetStudios(resetOptions);
+      
+      this.stopProgressBar();
+
+      if (result.success) {
+        this.displayStudioResetResults(result, resetOptions);
+        this.displayOperationSummary('reset-studios', result, startTime);
+        return true;
+      } else {
+        this.printError(`Studio reset failed: ${result.error}`);
+        this.provideTroubleshootingGuidance('reset-studios', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopProgressBar();
+      throw error;
+    }
+  }
+
+  /**
+   * Handle studio-status command
+   */
+  async handleStudioStatus(args, options) {
+    this.printInfo('📊 Getting studio status...');
+    this.startSpinner('Retrieving studio information');
+
+    try {
+      const result = await this.manager.getStudioStatus();
+      this.stopSpinner();
+
+      if (result.success) {
+        this.displayStudioStatusResults(result);
+        return true;
+      } else {
+        this.printError(`Failed to get studio status: ${result.error}`);
+        this.provideTroubleshootingGuidance('studio-status', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopSpinner();
+      throw error;
+    }
+  }
+
+  /**
+   * Handle process-studio-images command
+   */
+  async handleProcessStudioImages(args, options) {
+    const startTime = Date.now();
+    const imageOptions = {
+      studioId: options['studio-id'] || null,
+      force: options.force || false,
+      validate: options.validate || false
+    };
+
+    this.printInfo('🖼️ Processing studio images...');
+    
+    if (imageOptions.studioId) {
+      this.printInfo(`🎯 Processing images for studio: ${imageOptions.studioId}`);
+    } else {
+      this.printInfo('🏢 Processing images for all studios');
+    }
+
+    if (imageOptions.force) {
+      this.printInfo('🔄 Force mode: Reprocessing existing images');
+    }
+
+    this.startProgressBar('Processing images', 3);
+
+    try {
+      this.showStepProgress(1, 3, 'Loading studio data');
+      this.updateProgress(1, 'Preparing image processing');
+
+      const result = await this.manager.processStudioImages(imageOptions);
+      
+      this.stopProgressBar();
+
+      if (result.success) {
+        this.displayStudioImageResults(result, imageOptions);
+        this.displayOperationSummary('process-studio-images', result, startTime);
+        return true;
+      } else {
+        this.printError(`Studio image processing failed: ${result.error}`);
+        this.provideTroubleshootingGuidance('process-studio-images', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopProgressBar();
+      throw error;
+    }
+  }
+
+  /**
+   * Handle manage-studio-relationships command
+   */
+  async handleManageStudioRelationships(args, options) {
+    const action = args[0] || 'validate';
+    const startTime = Date.now();
+
+    this.printInfo(`🔗 Managing studio relationships (action: ${action})...`);
+    
+    const actionDescriptions = {
+      validate: 'Validating all artist-studio relationships',
+      rebuild: 'Rebuilding relationships based on compatibility',
+      repair: 'Repairing inconsistent relationships',
+      report: 'Generating relationship status report'
+    };
+
+    this.printInfo(`📋 ${actionDescriptions[action] || 'Processing relationships'}`);
+    this.startSpinner(`${action} relationships`);
+
+    try {
+      const result = await this.manager.manageStudioRelationships(action);
+      this.stopSpinner();
+
+      if (result.success) {
+        this.displayStudioRelationshipResults(result, action);
+        this.displayOperationSummary('manage-studio-relationships', result, startTime);
+        return true;
+      } else {
+        this.printError(`Studio relationship management failed: ${result.error}`);
+        this.provideTroubleshootingGuidance('manage-studio-relationships', result.error);
+        return false;
+      }
+    } catch (error) {
+      this.stopSpinner();
+      throw error;
+    }
+  }
+
+  /**
+   * Display studio seed results
+   */
+  displayStudioSeedResults(result, options) {
+    this.printSuccess('Studio seeding completed successfully!');
+    console.log('');
+
+    if (result.results) {
+      this.printSection('Studio seeding summary:');
+      if (result.results.studios) {
+        this.printBullet(`Seeded ${result.results.studios.created || 0} studios`);
+        this.printBullet(`Updated ${result.results.studios.updated || 0} existing studios`);
+        if (result.results.studios.failed > 0) {
+          this.printWarning(`${result.results.studios.failed} studios failed to seed`);
+        }
+      }
+      if (result.results.relationships) {
+        this.printBullet(`Created ${result.results.relationships.created || 0} artist-studio relationships`);
+        this.printBullet(`Updated ${result.results.relationships.updated || 0} existing relationships`);
+      }
+      if (result.results.images) {
+        this.printBullet(`Processed ${result.results.images.processed || 0} studio images`);
+      }
+      if (result.results.frontend) {
+        this.printBullet('Updated frontend studio mock data');
+      }
+    }
+
+    if (options.validate && result.validation) {
+      console.log('');
+      this.printSection('Validation results:');
+      if (result.validation.passed) {
+        this.printBullet('All studio validations passed');
+      } else {
+        this.printWarning(`${result.validation.errors.length} validation issues found`);
+        result.validation.errors.forEach(error => {
+          this.printBullet(`${SYMBOLS.cross} ${error}`, COLORS.yellow);
+        });
+      }
+    }
+
+    this.printNextSteps();
+  }
+
+  /**
+   * Display studio validation results
+   */
+  displayStudioValidationResults(result, validationType) {
+    this.printSuccess(`Studio validation (${validationType}) completed successfully!`);
+    console.log('');
+
+    if (result.results) {
+      this.printSection('Studio validation summary:');
+      
+      if (result.results.totalStudios !== undefined) {
+        this.printBullet(`Validated ${result.results.totalStudios} studios`);
+      }
+      
+      if (result.results.errors && result.results.errors.length > 0) {
+        this.printWarning(`Found ${result.results.errors.length} validation issues`);
+        result.results.errors.forEach(error => {
+          this.printBullet(`${SYMBOLS.cross} ${error}`, COLORS.yellow);
+        });
+      } else {
+        this.printBullet('All studio validations passed');
+      }
+
+      if (result.results.warnings && result.results.warnings.length > 0) {
+        console.log('');
+        this.printSection('Warnings:');
+        result.results.warnings.forEach(warning => {
+          this.printBullet(`${SYMBOLS.warning} ${warning}`, COLORS.yellow);
+        });
+      }
+
+      // Type-specific results
+      if (validationType === 'relationships' && result.results.relationships) {
+        console.log('');
+        this.printSection('Relationship validation:');
+        this.printBullet(`Checked ${result.results.relationships.checked || 0} relationships`);
+        this.printBullet(`Valid relationships: ${result.results.relationships.valid || 0}`);
+        if (result.results.relationships.invalid > 0) {
+          this.printBullet(`Invalid relationships: ${result.results.relationships.invalid}`, COLORS.red);
+        }
+      }
+
+      if (validationType === 'images' && result.results.images) {
+        console.log('');
+        this.printSection('Image validation:');
+        this.printBullet(`Checked ${result.results.images.checked || 0} studio images`);
+        this.printBullet(`Accessible images: ${result.results.images.accessible || 0}`);
+        if (result.results.images.inaccessible > 0) {
+          this.printBullet(`Inaccessible images: ${result.results.images.inaccessible}`, COLORS.red);
+        }
+      }
+    }
+  }
+
+  /**
+   * Display studio reset results
+   */
+  displayStudioResetResults(result, options) {
+    this.printSuccess('Studio reset completed successfully!');
+    console.log('');
+
+    if (result.results) {
+      this.printSection('Studio reset summary:');
+      if (result.results.cleared) {
+        this.printBullet('Cleared existing studio data');
+        if (result.results.studiosRemoved) {
+          this.printBullet(`  ${SYMBOLS.arrow} Removed ${result.results.studiosRemoved} studios`);
+        }
+        if (options.preserveRelationships) {
+          this.printBullet('  ${SYMBOLS.arrow} Preserved artist-studio relationships');
+        } else {
+          this.printBullet(`  ${SYMBOLS.arrow} Cleared ${result.results.relationshipsRemoved || 0} relationships`);
+        }
+      }
+      if (result.results.reseeded && options.scenario) {
+        this.printBullet(`Reseeded with scenario: ${options.scenario}`);
+        if (result.results.seedStats) {
+          const stats = result.results.seedStats;
+          if (stats.studios) this.printBullet(`  ${SYMBOLS.arrow} ${stats.studios.created || 0} new studios`);
+          if (stats.relationships) this.printBullet(`  ${SYMBOLS.arrow} ${stats.relationships.created || 0} new relationships`);
+        }
+      }
+    }
+
+    this.printNextSteps();
+  }
+
+  /**
+   * Display studio status results
+   */
+  displayStudioStatusResults(result) {
+    this.printSuccess('Studio status retrieved successfully!');
+    console.log('');
+
+    const status = result.status;
+    
+    this.printSection('Studio Status Report');
+    console.log('='.repeat(50));
+    
+    // Studio counts
+    this.printSection('Studio Data:');
+    if (status.studios) {
+      this.printBullet(`Total studios: ${status.studios.total || 0}`);
+      this.printBullet(`Active studios: ${status.studios.active || 0}`);
+      this.printBullet(`Studios with images: ${status.studios.withImages || 0}`);
+      this.printBullet(`Studios with artists: ${status.studios.withArtists || 0}`);
+    }
+
+    // Relationship status
+    console.log('');
+    this.printSection('Artist-Studio Relationships:');
+    if (status.relationships) {
+      this.printBullet(`Total relationships: ${status.relationships.total || 0}`);
+      this.printBullet(`Valid relationships: ${status.relationships.valid || 0}`);
+      if (status.relationships.invalid > 0) {
+        this.printBullet(`Invalid relationships: ${status.relationships.invalid}`, COLORS.red);
+      }
+      this.printBullet(`Orphaned artists: ${status.relationships.orphanedArtists || 0}`);
+    }
+
+    // Image status
+    console.log('');
+    this.printSection('Studio Images:');
+    if (status.images) {
+      this.printBullet(`Total studio images: ${status.images.total || 0}`);
+      this.printBullet(`Accessible images: ${status.images.accessible || 0}`);
+      if (status.images.inaccessible > 0) {
+        this.printBullet(`Inaccessible images: ${status.images.inaccessible}`, COLORS.red);
+      }
+    }
+
+    // Data consistency
+    console.log('');
+    this.printSection('Data Consistency:');
+    if (status.consistency) {
+      const consistencyIcon = status.consistency.consistent ? SYMBOLS.success : SYMBOLS.warning;
+      const consistencyColor = status.consistency.consistent ? COLORS.green : COLORS.yellow;
+      this.printBullet(`${consistencyIcon} Overall consistency: ${status.consistency.consistent ? 'Consistent' : 'Issues found'}`, consistencyColor);
+      
+      if (status.consistency.issues && status.consistency.issues.length > 0) {
+        console.log('');
+        this.printSubSection('Consistency Issues:');
+        status.consistency.issues.forEach(issue => {
+          this.printBullet(`${SYMBOLS.cross} ${issue}`, COLORS.yellow);
+        });
+      }
+    }
+  }
+
+  /**
+   * Display studio image processing results
+   */
+  displayStudioImageResults(result, options) {
+    this.printSuccess('Studio image processing completed successfully!');
+    console.log('');
+
+    if (result.results) {
+      this.printSection('Image processing summary:');
+      if (result.results.images) {
+        this.printBullet(`Processed ${result.results.images.processed || 0} studio images`);
+        this.printBullet(`Uploaded ${result.results.images.uploaded || 0} images to S3`);
+        this.printBullet(`Optimized ${result.results.images.optimized || 0} images`);
+        if (result.results.images.failed > 0) {
+          this.printWarning(`${result.results.images.failed} images failed to process`);
+        }
+      }
+      
+      if (options.studioId) {
+        this.printBullet(`Processed images for studio: ${options.studioId}`);
+      } else {
+        this.printBullet(`Processed images for ${result.results.studiosProcessed || 0} studios`);
+      }
+    }
+
+    if (options.validate && result.validation) {
+      console.log('');
+      this.printSection('Image validation results:');
+      if (result.validation.passed) {
+        this.printBullet('All processed images are accessible');
+      } else {
+        this.printWarning(`${result.validation.errors.length} image accessibility issues found`);
+        result.validation.errors.forEach(error => {
+          this.printBullet(`${SYMBOLS.cross} ${error}`, COLORS.yellow);
+        });
+      }
+    }
+
+    this.printNextSteps();
+  }
+
+  /**
+   * Display studio relationship management results
+   */
+  displayStudioRelationshipResults(result, action) {
+    this.printSuccess(`Studio relationship ${action} completed successfully!`);
+    console.log('');
+
+    if (result.results) {
+      this.printSection(`Relationship ${action} summary:`);
+      
+      switch (action) {
+        case 'validate':
+          this.printBullet(`Validated ${result.results.totalRelationships || 0} relationships`);
+          this.printBullet(`Valid relationships: ${result.results.validRelationships || 0}`);
+          if (result.results.invalidRelationships > 0) {
+            this.printBullet(`Invalid relationships: ${result.results.invalidRelationships}`, COLORS.red);
+          }
+          if (result.results.orphanedArtists > 0) {
+            this.printBullet(`Orphaned artists: ${result.results.orphanedArtists}`, COLORS.yellow);
+          }
+          break;
+
+        case 'rebuild':
+          this.printBullet(`Rebuilt ${result.results.relationshipsCreated || 0} relationships`);
+          this.printBullet(`Removed ${result.results.relationshipsRemoved || 0} old relationships`);
+          this.printBullet(`Updated ${result.results.artistsUpdated || 0} artist records`);
+          this.printBullet(`Updated ${result.results.studiosUpdated || 0} studio records`);
+          break;
+
+        case 'repair':
+          this.printBullet(`Repaired ${result.results.relationshipsRepaired || 0} relationships`);
+          this.printBullet(`Fixed ${result.results.inconsistenciesFixed || 0} inconsistencies`);
+          if (result.results.unrepairable > 0) {
+            this.printWarning(`${result.results.unrepairable} relationships could not be repaired`);
+          }
+          break;
+
+        case 'report':
+          this.printBullet(`Generated report for ${result.results.totalStudios || 0} studios`);
+          this.printBullet(`Analyzed ${result.results.totalArtists || 0} artists`);
+          if (result.results.reportPath) {
+            this.printBullet(`Report saved to: ${result.results.reportPath}`);
+          }
+          break;
+      }
+
+      if (result.results.errors && result.results.errors.length > 0) {
+        console.log('');
+        this.printSection('Issues found:');
+        result.results.errors.forEach(error => {
+          this.printBullet(`${SYMBOLS.cross} ${error}`, COLORS.yellow);
+        });
+      }
+    }
+
+    this.printNextSteps();
+  }
+
+  /**
    * Display setup results
    */
   displaySetupResults(result, options) {
@@ -735,7 +1448,9 @@ class DataCLI {
     this.printSection(`Overall status: ${result.overall}`);
     
     if (result.services) {
-      Object.entries(result.services).forEach(([service, status]) => {
+      Object.entries(result.services).forEach(([service, serviceData]) => {
+        // Handle both string status and object with status property
+        const status = typeof serviceData === 'string' ? serviceData : serviceData.status || 'unknown';
         const icon = status === 'healthy' ? SYMBOLS.success : SYMBOLS.error;
         const color = status === 'healthy' ? COLORS.green : COLORS.red;
         this.printBullet(`${icon} ${service}: ${status}`, color);
@@ -745,7 +1460,31 @@ class DataCLI {
     if (result.summary) {
       console.log('');
       this.printSection('Summary:');
-      this.printBullet(result.summary);
+      
+      // Handle both string summary and object summary
+      if (typeof result.summary === 'string') {
+        this.printBullet(result.summary);
+      } else if (typeof result.summary === 'object') {
+        // Display detailed service information from summary object
+        Object.entries(result.summary).forEach(([serviceName, serviceInfo]) => {
+          if (serviceInfo && typeof serviceInfo === 'object') {
+            const status = serviceInfo.status || 'unknown';
+            const lastCheck = serviceInfo.lastCheck ? new Date(serviceInfo.lastCheck).toLocaleTimeString() : 'unknown';
+            let details = [];
+            
+            // Add service-specific details
+            if (serviceInfo.tableCount) details.push(`${serviceInfo.tableCount} tables`);
+            if (serviceInfo.totalItems) details.push(`${serviceInfo.totalItems} items`);
+            if (serviceInfo.bucketCount) details.push(`${serviceInfo.bucketCount} buckets`);
+            if (serviceInfo.totalObjects) details.push(`${serviceInfo.totalObjects} objects`);
+            if (serviceInfo.indexCount !== undefined) details.push(`${serviceInfo.indexCount} indices`);
+            if (serviceInfo.totalDocuments !== undefined) details.push(`${serviceInfo.totalDocuments} documents`);
+            
+            const detailsText = details.length > 0 ? ` (${details.join(', ')})` : '';
+            this.printBullet(`${serviceName}: ${status} - last checked ${lastCheck}${detailsText}`);
+          }
+        });
+      }
     }
   }
 
@@ -829,8 +1568,8 @@ class DataCLI {
     console.log('='.repeat(50));
     console.log('');
     console.log('Unified command-line interface for all data management operations.');
-    console.log('Now includes enhanced frontend-sync-processor with comprehensive mock data generation,');
-    console.log('realistic business data, multiple testing scenarios, and RFC 9457 error responses.');
+    console.log('Includes comprehensive mock data generation with realistic business data,');
+    console.log('multiple testing scenarios, and performance testing capabilities.');
     console.log('');
 
     console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
@@ -857,11 +1596,15 @@ class DataCLI {
     console.log(`  ${COLORS.dim}# Seed enhanced scenario with comprehensive data${COLORS.reset}`);
     console.log(`  npm run seed-scenario london-focused`);
     console.log('');
-    console.log(`  ${COLORS.dim}# Use enhanced frontend-sync-processor directly${COLORS.reset}`);
-    console.log(`  npm run frontend-sync scenario style-diverse --export`);
+    console.log(`  ${COLORS.dim}# Studio-specific operations${COLORS.reset}`);
+    console.log(`  npm run seed-studios --scenario studio-diverse`);
+    console.log(`  npm run validate-studios relationships`);
+    console.log(`  npm run reset-studios --preserve-relationships`);
+    console.log(`  npm run studio-status`);
     console.log('');
-    console.log(`  ${COLORS.dim}# Generate performance test data${COLORS.reset}`);
-    console.log(`  npm run frontend-sync performance --count 100`);
+    console.log(`  ${COLORS.dim}# Generate large datasets for performance testing${COLORS.reset}`);
+    console.log(`  npm run setup-data --scenario performance-test --count 100`);
+    console.log(`  npm run setup-data --frontend-only --count 250 --export`);
     console.log('');
 
     console.log(`${COLORS.bright}ENHANCED FEATURES:${COLORS.reset}`);
@@ -874,7 +1617,7 @@ class DataCLI {
     console.log('');
     console.log(`${COLORS.bright}GET HELP:${COLORS.reset}`);
     console.log(`  npm run help <command>     Show help for specific command`);
-    console.log(`  npm run help frontend-sync Show enhanced frontend-sync-processor help`);
+    console.log(`  npm run help setup-data    Show setup-data command help`);
     console.log(`  npm run scenarios          List available enhanced scenarios`);
     console.log(`  npm run reset-states       List available reset states`);
     console.log('');
@@ -1674,6 +2417,198 @@ class DataCLI {
     } catch (error) {
       this.handleError(error, 'unknown');
       process.exit(1);
+    }
+  }
+  /**
+   * Handle validate-studio-data-e2e command
+   */
+  async handleValidateStudioDataE2E(args, options) {
+    const startTime = Date.now();
+
+    this.printInfo('🔍 Starting comprehensive end-to-end studio data validation...');
+    
+    if (options['save-report']) {
+      this.printInfo('📄 Detailed report will be saved to file');
+    }
+    
+    if (options.verbose) {
+      this.printInfo('📋 Verbose mode: Showing detailed validation progress');
+    }
+
+    if (options['fail-fast']) {
+      this.printInfo('⚡ Fail-fast mode: Stopping on first critical error');
+    }
+
+    this.startSpinner('Running end-to-end validation');
+
+    try {
+      // Import the validator
+      const StudioEndToEndValidator = require('./data-management/studio-end-to-end-validator');
+      const validator = new StudioEndToEndValidator(this.config);
+
+      // Run comprehensive validation
+      const report = await validator.validateStudioDataEndToEnd();
+      this.stopSpinner();
+
+      // Display results
+      this.displayStudioE2EValidationResults(report, options);
+      this.displayOperationSummary('validate-studio-data-e2e', { success: report.summary.success }, startTime);
+
+      return report.summary.success;
+    } catch (error) {
+      this.stopSpinner();
+      throw error;
+    }
+  }
+
+  /**
+   * Display end-to-end studio validation results
+   */
+  displayStudioE2EValidationResults(report, options) {
+    const success = report.summary.success;
+    
+    if (success) {
+      this.printSuccess('End-to-end studio validation completed successfully!');
+    } else {
+      this.printError('End-to-end studio validation found issues!');
+    }
+    
+    console.log('');
+
+    // Summary section
+    this.printSection('Validation Summary:');
+    this.printBullet(`Total checks: ${report.summary.totalChecks}`);
+    this.printBullet(`Passed: ${report.summary.passed}`, COLORS.green);
+    if (report.summary.failed > 0) {
+      this.printBullet(`Failed: ${report.summary.failed}`, COLORS.red);
+    }
+    if (report.summary.warnings > 0) {
+      this.printBullet(`Warnings: ${report.summary.warnings}`, COLORS.yellow);
+    }
+
+    // Detailed results
+    if (report.details) {
+      console.log('');
+      this.printSection('Detailed Results:');
+
+      // DynamoDB-OpenSearch consistency
+      if (report.details.dynamoOpenSearchConsistency) {
+        const consistency = report.details.dynamoOpenSearchConsistency;
+        console.log('');
+        this.printBullet(`🔄 DynamoDB-OpenSearch Consistency:`);
+        this.printBullet(`   DynamoDB Studios: ${consistency.dynamoCount}`, COLORS.dim);
+        this.printBullet(`   OpenSearch Studios: ${consistency.opensearchCount}`, COLORS.dim);
+        this.printBullet(`   Consistent: ${consistency.consistent ? '✅' : '❌'}`, 
+          consistency.consistent ? COLORS.green : COLORS.red);
+      }
+
+      // Image accessibility
+      if (report.details.imageAccessibility) {
+        const images = report.details.imageAccessibility;
+        console.log('');
+        this.printBullet(`🖼️  Image Accessibility:`);
+        this.printBullet(`   Studios with Images: ${images.studiosWithImages}`, COLORS.dim);
+        this.printBullet(`   Total Images Checked: ${images.totalImagesChecked}`, COLORS.dim);
+        this.printBullet(`   Accessible: ${images.accessibleImages}`, COLORS.green);
+        if (images.inaccessibleImages > 0) {
+          this.printBullet(`   Inaccessible: ${images.inaccessibleImages}`, COLORS.red);
+        }
+      }
+
+      // Artist-studio relationships
+      if (report.details.artistStudioRelationships) {
+        const relationships = report.details.artistStudioRelationships;
+        console.log('');
+        this.printBullet(`🔗 Artist-Studio Relationships:`);
+        this.printBullet(`   Valid Relationships: ${relationships.validRelationships}`, COLORS.green);
+        if (relationships.invalidRelationships > 0) {
+          this.printBullet(`   Invalid Relationships: ${relationships.invalidRelationships}`, COLORS.red);
+        }
+        this.printBullet(`   Studios with Artists: ${relationships.studiosWithArtists}/${relationships.totalStudios}`, COLORS.dim);
+        this.printBullet(`   Artists with Studios: ${relationships.artistsWithStudios}/${relationships.totalArtists}`, COLORS.dim);
+      }
+
+      // Frontend mock data consistency
+      if (report.details.frontendMockConsistency) {
+        const frontend = report.details.frontendMockConsistency;
+        console.log('');
+        this.printBullet(`🎭 Frontend Mock Data Consistency:`);
+        this.printBullet(`   Backend Studios: ${frontend.backendStudios}`, COLORS.dim);
+        this.printBullet(`   Frontend Studios: ${frontend.frontendStudios}`, COLORS.dim);
+        this.printBullet(`   Consistent Studios: ${frontend.consistentStudios}`, COLORS.green);
+        if (frontend.inconsistentStudios > 0) {
+          this.printBullet(`   Inconsistent Studios: ${frontend.inconsistentStudios}`, COLORS.red);
+        }
+      }
+
+      // Address validation
+      if (report.details.addressValidation) {
+        const addresses = report.details.addressValidation;
+        console.log('');
+        this.printBullet(`📍 Address Validation:`);
+        this.printBullet(`   Total Studios: ${addresses.totalStudios}`, COLORS.dim);
+        this.printBullet(`   Valid Addresses: ${addresses.validAddresses}`, COLORS.green);
+        if (addresses.invalidAddresses > 0) {
+          this.printBullet(`   Invalid Addresses: ${addresses.invalidAddresses}`, COLORS.red);
+        }
+      }
+
+      // Specialty alignment
+      if (report.details.specialtyAlignment) {
+        const specialties = report.details.specialtyAlignment;
+        console.log('');
+        this.printBullet(`🎨 Specialty Alignment:`);
+        this.printBullet(`   Total Studios: ${specialties.totalStudios}`, COLORS.dim);
+        this.printBullet(`   Aligned Studios: ${specialties.alignedStudios}`, COLORS.green);
+        if (specialties.misalignedStudios > 0) {
+          this.printBullet(`   Misaligned Studios: ${specialties.misalignedStudios}`, COLORS.yellow);
+        }
+      }
+    }
+
+    // Show errors if any
+    if (report.errors && report.errors.length > 0) {
+      console.log('');
+      this.printSection('Errors Found:');
+      const maxErrors = options.verbose ? report.errors.length : Math.min(10, report.errors.length);
+      for (let i = 0; i < maxErrors; i++) {
+        const error = report.errors[i];
+        this.printBullet(`${SYMBOLS.cross} [${error.type}] ${error.message}`, COLORS.red);
+      }
+      if (report.errors.length > maxErrors) {
+        this.printBullet(`... and ${report.errors.length - maxErrors} more errors`, COLORS.dim);
+      }
+    }
+
+    // Show warnings if any
+    if (report.warnings && report.warnings.length > 0) {
+      console.log('');
+      this.printSection('Warnings:');
+      const maxWarnings = options.verbose ? report.warnings.length : Math.min(5, report.warnings.length);
+      for (let i = 0; i < maxWarnings; i++) {
+        const warning = report.warnings[i];
+        this.printBullet(`${SYMBOLS.warning} [${warning.type}] ${warning.message}`, COLORS.yellow);
+      }
+      if (report.warnings.length > maxWarnings) {
+        this.printBullet(`... and ${report.warnings.length - maxWarnings} more warnings`, COLORS.dim);
+      }
+    }
+
+    // Next steps
+    console.log('');
+    if (success) {
+      this.printHighlight('All studio data validation checks passed! 🎉');
+    } else {
+      this.printSection('Recommended Actions:');
+      this.printBullet('Review the errors above and fix data inconsistencies');
+      this.printBullet('Run specific validation commands to focus on problem areas');
+      this.printBullet('Use `npm run validate-studios` for studio-specific validation');
+      this.printBullet('Use `npm run health-check` for service connectivity issues');
+    }
+
+    if (options['save-report']) {
+      console.log('');
+      this.printInfo(`📄 Detailed validation report saved with timestamp`);
     }
   }
 }

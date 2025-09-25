@@ -1,0 +1,25 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <rect x="50" y="50" width="300" height="200" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  
+  <!-- Grid lines -->
+  <g stroke="#d1d5db" stroke-width="1" opacity="0.5">
+    <line x1="50" y1="100" x2="350" y2="100"/>
+    <line x1="50" y1="150" x2="350" y2="150"/>
+    <line x1="50" y1="200" x2="350" y2="200"/>
+    <line x1="100" y1="50" x2="100" y2="250"/>
+    <line x1="150" y1="50" x2="150" y2="250"/>
+    <line x1="200" y1="50" x2="200" y2="250"/>
+    <line x1="250" y1="50" x2="250" y2="250"/>
+    <line x1="300" y1="50" x2="300" y2="250"/>
+  </g>
+  
+  <!-- Location pin -->
+  <circle cx="200" cy="150" r="8" fill="#5c475c"/>
+  <circle cx="200" cy="150" r="4" fill="white"/>
+  
+  <!-- Map label -->
+  <text x="200" y="280" text-anchor="middle" fill="#6b7280" font-family="system-ui" font-size="14">
+    Interactive Map
+  </text>
+</svg>

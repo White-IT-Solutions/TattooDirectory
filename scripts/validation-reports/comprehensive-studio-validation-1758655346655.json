@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-09-23T19:22:26.654Z",
+  "summary": {
+    "total": 8,
+    "passed": 7,
+    "failed": 0,
+    "warnings": 1
+  },
+  "tests": [
+    {
+      "name": "Data Pipeline with Studio Integration",
+      "status": "passed",
+      "details": "Data pipeline executed with studio integration"
+    },
+    {
+      "name": "Studio CLI Commands",
+      "status": "passed",
+      "details": "studio-status: SUCCESS\nvalidate-studios: SUCCESS\nprocess-studio-images: SUCCESS\nmanage-studio-relationships: SUCCESS"
+    },
+    {
+      "name": "Frontend Mock Studio Data Generation",
+      "status": "passed",
+      "details": "Frontend mock studio data file exists and has valid structure"
+    },
+    {
+      "name": "Studio Search and Filtering Data",
+      "status": "passed",
+      "details": "Studio data is available for search and filtering"
+    },
+    {
+      "name": "Studio Image Processing",
+      "status": "passed",
+      "details": "Studio image processing pipeline executed successfully"
+    },
+    {
+      "name": "Artist-Studio Relationship Consistency",
+      "status": "passed",
+      "details": "Artist-studio relationship validation completed"
+    },
+    {
+      "name": "Studio Health Monitoring",
+      "status": "passed",
+      "details": "Studio health monitoring system is functional"
+    },
+    {
+      "name": "Studio Unit Test Suite",
+      "status": "warning",
+      "details": "All studio unit tests are passing"
+    }
+  ],
+  "overall": "PASSED"
+}

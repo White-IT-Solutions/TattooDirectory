@@ -1,0 +1,98 @@
+[
+  {
+    "studioId": "studio-minimal-001",
+    "studioName": "Classic Ink Studio",
+    "address": "15 Camden High Street, Camden, London NW1 7JE",
+    "postcode": "NW1 7JE",
+    "geohash": "gcpvn0k",
+    "latitude": 51.5392,
+    "longitude": -0.1426,
+    "locationDisplay": "Camden, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7485 1234",
+      "email": "info@classicink.co.uk",
+      "website": "https://classicink.co.uk",
+      "instagram": "@classicinkstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-16:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-001"],
+    "artistCount": 1,
+    "rating": 4.5,
+    "reviewCount": 45,
+    "established": 2020,
+    "specialties": ["traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-minimal-001/exterior-1.jpg",
+        "description": "Studio front entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-minimal-001/interior-1.jpg",
+        "description": "Main tattoo station",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-minimal-002",
+    "studioName": "Modern Tattoo Co",
+    "address": "42 Shoreditch High Street, Shoreditch, London E1 6JJ",
+    "postcode": "E1 6JJ",
+    "geohash": "gcpvj1m",
+    "latitude": 51.5235,
+    "longitude": -0.0755,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7739 5678",
+      "email": "hello@moderntattoo.co.uk",
+      "website": "https://moderntattoo.co.uk",
+      "instagram": "@moderntattoocompany"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-002", "artist-003"],
+    "artistCount": 2,
+    "rating": 4.7,
+    "reviewCount": 78,
+    "established": 2018,
+    "specialties": ["realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-minimal-002/exterior-1.jpg",
+        "description": "Modern studio frontage",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-minimal-002/interior-1.jpg",
+        "description": "Clean modern workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-minimal-002/gallery-1.jpg",
+        "description": "Portfolio wall display",
+        "isPrimary": false
+      }
+    ]
+  }
+]

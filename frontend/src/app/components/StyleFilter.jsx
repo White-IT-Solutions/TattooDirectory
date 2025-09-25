@@ -33,7 +33,7 @@ export default function TattooStyleFilter() {
 
   //improve readability
   const toggleStyle = (style) => {
-    let newSelected = selected.includes(style)
+    const newSelected = selected.includes(style)
       ? selected.filter((s) => s !== style)
       : [...selected, style];
     setSelected(newSelected);

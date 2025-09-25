@@ -55,10 +55,21 @@
     "data-status": "node data-cli.js data-status",
     "scenarios": "node data-cli.js help scenarios",
     "reset-states": "node data-cli.js help reset-states",
-    "help": "node data-cli.js help"
+    "help": "node data-cli.js help",
+    "seed-studios": "node data-cli.js seed-studios",
+    "validate-studios": "node data-cli.js validate-studios",
+    "reset-studios": "node data-cli.js reset-studios",
+    "studio-health": "node health-monitor.js health",
+    "process-studio-images": "node data-cli.js process-studio-images",
+    "studio-status": "node data-cli.js studio-status",
+    "manage-studio-relationships": "node data-cli.js manage-studio-relationships",
+    "test:studio": "npm test -- --testPathPattern=studio",
+    "test:studio:unit": "npm test -- --testPathPattern=studio.*test.js",
+    "test:studio:coverage": "npm test -- --testPathPattern=studio --coverage"
   },
   "dependencies": {
-    "aws-sdk": "^2.1691.0"
+    "aws-sdk": "^2.1691.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "jest": "^29.7.0"

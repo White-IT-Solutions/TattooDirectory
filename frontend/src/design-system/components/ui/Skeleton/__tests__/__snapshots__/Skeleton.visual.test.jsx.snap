@@ -1,0 +1,767 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Skeleton Visual Tests Base Skeleton renders basic skeleton correctly 1`] = `
+<div
+  class="p-4 space-y-4"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-3/4"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-1/2"
+  />
+</div>
+`;
+
+exports[`Skeleton Visual Tests Base Skeleton renders skeleton with shimmer animation 1`] = `
+<div
+  class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-20 w-full"
+/>
+`;
+
+exports[`Skeleton Visual Tests Card Skeletons renders ArtistCardSkeleton correctly 1`] = `
+<div
+  class="max-w-sm p-4"
+>
+  <div
+    class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between"
+  >
+    <div
+      class="text-center"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20 mx-auto"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-24 mx-auto mt-3"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32 mx-auto mt-2"
+      />
+      <div
+        class="mt-2 flex flex-wrap justify-center gap-2"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+      </div>
+      <div
+        class="mt-2 flex justify-center"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full w-20"
+        />
+      </div>
+    </div>
+    <div
+      class="mt-4 grid grid-cols-3 gap-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="mt-4 flex flex-col gap-2"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32 mx-auto"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-12 w-32 w-full"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Card Skeletons renders StudioCardSkeleton correctly 1`] = `
+<div
+  class="max-w-md p-4"
+>
+  <div
+    class="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between"
+  >
+    <div
+      class="flex items-start gap-3"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-24 w-24"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-40 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32 mb-1"
+        />
+        <div
+          class="flex items-center gap-2"
+        >
+          <div
+            class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-20"
+          />
+          <div
+            class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-16"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-20 mb-2"
+      />
+      <div
+        class="flex flex-wrap gap-2"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+        />
+      </div>
+    </div>
+    <div
+      class="mt-4 space-y-2"
+    >
+      <div
+        class="flex items-center gap-2"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-4"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+      <div
+        class="flex items-center gap-2"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-4"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+        />
+      </div>
+      <div
+        class="flex items-center gap-2"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-4"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-28"
+        />
+      </div>
+    </div>
+    <div
+      class="mt-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-16 mb-2"
+      />
+      <div
+        class="grid grid-cols-4 gap-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+        />
+      </div>
+    </div>
+    <div
+      class="mt-4 flex gap-2"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 flex-1"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 flex-1"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Complex Layouts renders skeleton grid layout 1`] = `
+<div
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6"
+>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+  <div
+    class="bg-white rounded-lg shadow p-4"
+  >
+    <div
+      class="flex items-center gap-3 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+      />
+      <div
+        class="flex-1"
+      >
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-32 mb-2"
+        />
+        <div
+          class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-24"
+        />
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-3 gap-2 mb-4"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24 w-full"
+    />
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Complex Layouts renders skeleton list layout 1`] = `
+<div
+  class="space-y-4 p-4"
+>
+  <div
+    class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+    />
+    <div
+      class="flex-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-40 mb-2"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+    />
+  </div>
+  <div
+    class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+    />
+    <div
+      class="flex-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-40 mb-2"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+    />
+  </div>
+  <div
+    class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+    />
+    <div
+      class="flex-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-40 mb-2"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+    />
+  </div>
+  <div
+    class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+    />
+    <div
+      class="flex-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-40 mb-2"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+    />
+  </div>
+  <div
+    class="flex items-center gap-4 p-4 bg-white rounded-lg shadow"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+    />
+    <div
+      class="flex-1"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-5 w-40 mb-2"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-32"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+    />
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Dark Mode Compatibility renders skeleton in dark mode 1`] = `
+<div
+  class="dark bg-gray-900 p-4"
+>
+  <div
+    class="space-y-4"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-24 w-24"
+    />
+    <div
+      class="space-y-2"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-3/4"
+      />
+    </div>
+    <div
+      class="flex gap-2"
+    >
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+      />
+      <div
+        class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+      />
+    </div>
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24"
+    />
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Progressive Loading renders ProgressiveImage loading state 1`] = `
+<div
+  class="p-4"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent absolute inset-0 w-48 h-32"
+    />
+    <img
+      alt="Test image"
+      class="transition-opacity duration-300 opacity-0 w-48 h-32 object-cover rounded"
+      data-nimg="1"
+      decoding="async"
+      height="200"
+      loading="lazy"
+      src="http://localhost/_next/image?url=https%3A%2F%2Fexample.com%2Ftest.jpg&w=640&q=75"
+      srcset="/_next/image?url=https%3A%2F%2Fexample.com%2Ftest.jpg&w=384&q=75 1x, /_next/image?url=https%3A%2F%2Fexample.com%2Ftest.jpg&w=640&q=75 2x"
+      style="color: transparent;"
+      width="300"
+    />
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Progressive Loading renders StaggeredLoader correctly 1`] = `
+<div
+  class="p-4"
+>
+  <div
+    class="space-y-2"
+  >
+    <div
+      class="transition-all duration-300 opacity-0 translate-y-4"
+    >
+      <div
+        class="p-2 bg-gray-100 rounded"
+      >
+        Item 1
+      </div>
+    </div>
+    <div
+      class="transition-all duration-300 opacity-0 translate-y-4"
+    >
+      <div
+        class="p-2 bg-gray-100 rounded"
+      >
+        Item 2
+      </div>
+    </div>
+    <div
+      class="transition-all duration-300 opacity-0 translate-y-4"
+    >
+      <div
+        class="p-2 bg-gray-100 rounded"
+      >
+        Item 3
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Skeleton Visual Tests Skeleton Variants renders avatar variants correctly 1`] = `
+<div
+  class="flex items-center gap-4 p-4"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-8 w-8"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-20 w-20"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-24 w-24"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-full h-32 w-32"
+  />
+</div>
+`;
+
+exports[`Skeleton Visual Tests Skeleton Variants renders badge variants correctly 1`] = `
+<div
+  class="flex gap-2 p-4"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-6 w-16 rounded-full"
+  />
+</div>
+`;
+
+exports[`Skeleton Visual Tests Skeleton Variants renders button variants correctly 1`] = `
+<div
+  class="flex items-center gap-4 p-4"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-8 w-20"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-10 w-24"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent rounded-lg h-12 w-32"
+  />
+</div>
+`;
+
+exports[`Skeleton Visual Tests Skeleton Variants renders image variants correctly 1`] = `
+<div
+  class="grid grid-cols-2 gap-4 p-4 max-w-md"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-square"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-video"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-[3/4]"
+  />
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent w-full rounded-md aspect-[4/3]"
+  />
+</div>
+`;
+
+exports[`Skeleton Visual Tests Skeleton Variants renders text variants correctly 1`] = `
+<div
+  class="p-4 space-y-4"
+>
+  <div
+    class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+  />
+  <div
+    class="space-y-2"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-3/4"
+    />
+  </div>
+  <div
+    class="space-y-2"
+  >
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-full"
+    />
+    <div
+      class="animate-pulse rounded-md bg-neutral-200 relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-100 before:to-transparent h-4 w-3/4"
+    />
+  </div>
+</div>
+`;

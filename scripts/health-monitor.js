@@ -410,6 +410,9 @@ class HealthMonitor {
       // Check image URL accessibility
       await this.validateImageAccessibility();
 
+      // Check studio data validation
+      await this.validateStudioData();
+
       // Check data integrity for test scenarios
       await this.validateTestScenarioIntegrity();
     } catch (error) {
@@ -441,18 +444,43 @@ class HealthMonitor {
         })
         .promise();
 
+      // Get studio count from DynamoDB
+      const dynamoStudios = await this.dynamodbDoc
+        .scan({
+          TableName: this.config.services.dynamodb.tableName,
+          FilterExpression: "begins_with(PK, :studioPrefix)",
+          ExpressionAttributeValues: {
+            ":studioPrefix": "STUDIO#",
+          },
+          Select: "COUNT",
+        })
+        .promise();
+
       // Get artist count from OpenSearch
       let opensearchArtists = 0;
+      let opensearchStudios = 0;
       try {
-        const searchResult = await this.searchOpenSearch(this.config.services.opensearch.indexName, {
+        const artistSearchResult = await this.searchOpenSearch(this.config.services.opensearch.indexName, {
           query: { match_all: {} },
           size: 0,
         });
         opensearchArtists =
-          searchResult.hits.total.value || searchResult.hits.total || 0;
+          artistSearchResult.hits.total.value || artistSearchResult.hits.total || 0;
+
+        // Check if studio index exists and get studio count
+        try {
+          const studioSearchResult = await this.searchOpenSearch('studios', {
+            query: { match_all: {} },
+            size: 0,
+          });
+          opensearchStudios =
+            studioSearchResult.hits.total.value || studioSearchResult.hits.total || 0;
+        } catch (studioError) {
+          console.warn("    ⚠️  Studio index not found in OpenSearch");
+        }
       } catch (error) {
         console.warn(
-          "    ⚠️  OpenSearch artist count unavailable:",
+          "    ⚠️  OpenSearch count unavailable:",
           error.message
         );
       }
@@ -460,7 +488,10 @@ class HealthMonitor {
       this.healthStatus.data.crossServiceConsistency = {
         dynamoArtistCount: dynamoArtists.Count,
         opensearchArtistCount: opensearchArtists,
-        consistent: dynamoArtists.Count === opensearchArtists,
+        dynamoStudioCount: dynamoStudios.Count,
+        opensearchStudioCount: opensearchStudios,
+        artistsConsistent: dynamoArtists.Count === opensearchArtists,
+        studiosConsistent: dynamoStudios.Count === opensearchStudios,
         lastCheck: new Date().toISOString(),
       };
 
@@ -470,6 +501,14 @@ class HealthMonitor {
         );
       } else {
         console.log(`    ✅ Artist counts consistent: ${dynamoArtists.Count}`);
+      }
+
+      if (dynamoStudios.Count !== opensearchStudios) {
+        console.warn(
+          `    ⚠️  Studio count mismatch: DynamoDB=${dynamoStudios.Count}, OpenSearch=${opensearchStudios}`
+        );
+      } else {
+        console.log(`    ✅ Studio counts consistent: ${dynamoStudios.Count}`);
       }
     } catch (error) {
       throw new Error(`Cross-service validation failed: ${error.message}`);
@@ -546,7 +585,7 @@ class HealthMonitor {
     console.log("    🖼️  Validating image accessibility...");
 
     try {
-      // Get sample of image URLs from DynamoDB
+      // Get sample of image URLs from DynamoDB (artists)
       const artistsResult = await this.dynamodbDoc
         .scan({
           TableName: this.config.services.dynamodb.tableName,
@@ -558,10 +597,23 @@ class HealthMonitor {
         })
         .promise();
 
+      // Get sample of studio image URLs from DynamoDB
+      const studiosResult = await this.dynamodbDoc
+        .scan({
+          TableName: this.config.services.dynamodb.tableName,
+          FilterExpression: "begins_with(PK, :studioPrefix)",
+          ExpressionAttributeValues: {
+            ":studioPrefix": "STUDIO#",
+          },
+          Limit: 10,
+        })
+        .promise();
+
       let totalImages = 0;
       let accessibleImages = 0;
       const imageErrors = [];
 
+      // Check artist images
       for (const artist of artistsResult.Items) {
         if (artist.portfolioImages && Array.isArray(artist.portfolioImages)) {
           for (const imageUrl of artist.portfolioImages.slice(0, 3)) {
@@ -573,15 +625,48 @@ class HealthMonitor {
                 accessibleImages++;
               } else {
                 imageErrors.push({
-                  artistId: artist.PK,
+                  entityId: artist.PK,
+                  entityType: 'artist',
                   imageUrl: imageUrl,
                   error: "Not accessible",
                 });
               }
             } catch (error) {
               imageErrors.push({
-                artistId: artist.PK,
+                entityId: artist.PK,
+                entityType: 'artist',
                 imageUrl: imageUrl,
+                error: error.message,
+              });
+            }
+          }
+        }
+      }
+
+      // Check studio images
+      for (const studio of studiosResult.Items) {
+        if (studio.images && Array.isArray(studio.images)) {
+          for (const image of studio.images.slice(0, 3)) {
+            // Check first 3 images per studio
+            totalImages++;
+            try {
+              const imageUrl = typeof image === 'string' ? image : image.url;
+              const accessible = await this.checkImageAccessibility(imageUrl);
+              if (accessible) {
+                accessibleImages++;
+              } else {
+                imageErrors.push({
+                  entityId: studio.PK,
+                  entityType: 'studio',
+                  imageUrl: imageUrl,
+                  error: "Not accessible",
+                });
+              }
+            } catch (error) {
+              imageErrors.push({
+                entityId: studio.PK,
+                entityType: 'studio',
+                imageUrl: typeof image === 'string' ? image : image.url,
                 error: error.message,
               });
             }
@@ -596,7 +681,7 @@ class HealthMonitor {
           totalImages > 0
             ? ((accessibleImages / totalImages) * 100).toFixed(1)
             : 0,
-        errors: imageErrors.slice(0, 5), // Keep only first 5 errors
+        errors: imageErrors.slice(0, 10), // Keep first 10 errors
         lastCheck: new Date().toISOString(),
       };
 
@@ -643,6 +728,454 @@ class HealthMonitor {
         resolve(false);
       }
     });
+  }
+
+  /**
+   * Comprehensive studio data validation
+   */
+  async validateStudioData() {
+    console.log("    🏢 Validating studio data...");
+
+    try {
+      // Get all studios from DynamoDB
+      const studiosResult = await this.dynamodbDoc
+        .scan({
+          TableName: this.config.services.dynamodb.tableName,
+          FilterExpression: "begins_with(PK, :studioPrefix)",
+          ExpressionAttributeValues: {
+            ":studioPrefix": "STUDIO#",
+          },
+        })
+        .promise();
+
+      const studios = studiosResult.Items;
+      const validationResults = {
+        totalStudios: studios.length,
+        validStudios: 0,
+        validationErrors: [],
+        relationshipErrors: [],
+        addressErrors: [],
+        imageErrors: [],
+        dataConsistencyErrors: [],
+        lastCheck: new Date().toISOString(),
+      };
+
+      // Validate each studio
+      for (const studio of studios) {
+        const studioValidation = await this.validateSingleStudio(studio);
+        
+        if (studioValidation.isValid) {
+          validationResults.validStudios++;
+        }
+
+        // Collect errors by type
+        validationResults.validationErrors.push(...studioValidation.validationErrors);
+        validationResults.relationshipErrors.push(...studioValidation.relationshipErrors);
+        validationResults.addressErrors.push(...studioValidation.addressErrors);
+        validationResults.imageErrors.push(...studioValidation.imageErrors);
+      }
+
+      // Validate artist-studio relationships
+      await this.validateArtistStudioRelationships(validationResults);
+
+      // Check frontend mock data consistency
+      await this.validateFrontendStudioMockData(validationResults);
+
+      // Calculate validation rates
+      validationResults.validationRate = studios.length > 0 
+        ? ((validationResults.validStudios / studios.length) * 100).toFixed(1)
+        : 0;
+
+      this.healthStatus.data.studioValidation = validationResults;
+
+      console.log(
+        `    📊 Studio validation: ${validationResults.validStudios}/${validationResults.totalStudios} valid (${validationResults.validationRate}%)`
+      );
+
+      if (validationResults.validationErrors.length > 0) {
+        console.warn(`    ⚠️  Found ${validationResults.validationErrors.length} validation errors`);
+      }
+
+      if (validationResults.relationshipErrors.length > 0) {
+        console.warn(`    ⚠️  Found ${validationResults.relationshipErrors.length} relationship errors`);
+      }
+
+    } catch (error) {
+      throw new Error(`Studio data validation failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Validate a single studio record
+   */
+  async validateSingleStudio(studio) {
+    const validation = {
+      studioId: studio.PK,
+      isValid: true,
+      validationErrors: [],
+      relationshipErrors: [],
+      addressErrors: [],
+      imageErrors: [],
+    };
+
+    // Required field validation
+    const requiredFields = ['studioId', 'studioName', 'address', 'postcode', 'latitude', 'longitude'];
+    for (const field of requiredFields) {
+      if (!studio[field]) {
+        validation.validationErrors.push({
+          studioId: studio.PK,
+          field: field,
+          error: `Missing required field: ${field}`,
+          severity: 'error'
+        });
+        validation.isValid = false;
+      }
+    }
+
+    // UK postcode validation
+    if (studio.postcode) {
+      const postcodeRegex = /^[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}$/i;
+      if (!postcodeRegex.test(studio.postcode)) {
+        validation.addressErrors.push({
+          studioId: studio.PK,
+          field: 'postcode',
+          value: studio.postcode,
+          error: 'Invalid UK postcode format',
+          severity: 'error'
+        });
+        validation.isValid = false;
+      }
+    }
+
+    // Coordinate validation
+    if (studio.latitude !== undefined && studio.longitude !== undefined) {
+      // UK coordinate bounds: roughly 49.9-60.9 latitude, -8.2-1.8 longitude
+      if (studio.latitude < 49.9 || studio.latitude > 60.9) {
+        validation.addressErrors.push({
+          studioId: studio.PK,
+          field: 'latitude',
+          value: studio.latitude,
+          error: 'Latitude outside UK bounds',
+          severity: 'warning'
+        });
+      }
+
+      if (studio.longitude < -8.2 || studio.longitude > 1.8) {
+        validation.addressErrors.push({
+          studioId: studio.PK,
+          field: 'longitude',
+          value: studio.longitude,
+          error: 'Longitude outside UK bounds',
+          severity: 'warning'
+        });
+      }
+    }
+
+    // Contact information validation
+    if (studio.contactInfo) {
+      if (studio.contactInfo.email && !this.isValidEmail(studio.contactInfo.email)) {
+        validation.validationErrors.push({
+          studioId: studio.PK,
+          field: 'email',
+          value: studio.contactInfo.email,
+          error: 'Invalid email format',
+          severity: 'warning'
+        });
+      }
+
+      if (studio.contactInfo.phone && !this.isValidUKPhone(studio.contactInfo.phone)) {
+        validation.validationErrors.push({
+          studioId: studio.PK,
+          field: 'phone',
+          value: studio.contactInfo.phone,
+          error: 'Invalid UK phone format',
+          severity: 'warning'
+        });
+      }
+
+      if (studio.contactInfo.instagram && !studio.contactInfo.instagram.startsWith('@')) {
+        validation.validationErrors.push({
+          studioId: studio.PK,
+          field: 'instagram',
+          value: studio.contactInfo.instagram,
+          error: 'Instagram handle should start with @',
+          severity: 'warning'
+        });
+      }
+    }
+
+    // Opening hours validation
+    if (studio.openingHours) {
+      const validDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      const timeRegex = /^(\d{2}:\d{2}-\d{2}:\d{2}|closed)$/i;
+      
+      for (const day of validDays) {
+        if (studio.openingHours[day] && !timeRegex.test(studio.openingHours[day])) {
+          validation.validationErrors.push({
+            studioId: studio.PK,
+            field: `openingHours.${day}`,
+            value: studio.openingHours[day],
+            error: 'Invalid opening hours format (should be HH:MM-HH:MM or closed)',
+            severity: 'warning'
+          });
+        }
+      }
+    }
+
+    // Specialties validation
+    if (studio.specialties && Array.isArray(studio.specialties)) {
+      const validSpecialties = ['traditional', 'realism', 'geometric', 'watercolour', 'blackwork', 'fineline', 'dotwork', 'neo_traditional', 'japanese', 'tribal'];
+      for (const specialty of studio.specialties) {
+        if (!validSpecialties.includes(specialty)) {
+          validation.validationErrors.push({
+            studioId: studio.PK,
+            field: 'specialties',
+            value: specialty,
+            error: `Invalid specialty: ${specialty}`,
+            severity: 'warning'
+          });
+        }
+      }
+    }
+
+    // Rating validation
+    if (studio.rating !== undefined) {
+      if (studio.rating < 1.0 || studio.rating > 5.0) {
+        validation.validationErrors.push({
+          studioId: studio.PK,
+          field: 'rating',
+          value: studio.rating,
+          error: 'Rating should be between 1.0 and 5.0',
+          severity: 'warning'
+        });
+      }
+    }
+
+    // Image validation
+    if (studio.images && Array.isArray(studio.images)) {
+      for (const image of studio.images) {
+        const imageUrl = typeof image === 'string' ? image : image.url;
+        if (imageUrl && !imageUrl.startsWith('http')) {
+          validation.imageErrors.push({
+            studioId: studio.PK,
+            imageUrl: imageUrl,
+            error: 'Image URL should be a valid HTTP/HTTPS URL',
+            severity: 'error'
+          });
+        }
+
+        // Check S3 naming convention for studio images
+        if (imageUrl && imageUrl.includes('studios/') && !imageUrl.includes(`studios/${studio.studioId}/`)) {
+          validation.imageErrors.push({
+            studioId: studio.PK,
+            imageUrl: imageUrl,
+            error: `Studio image should follow naming convention: studios/${studio.studioId}/...`,
+            severity: 'warning'
+          });
+        }
+      }
+    }
+
+    return validation;
+  }
+
+  /**
+   * Validate artist-studio relationships for consistency
+   */
+  async validateArtistStudioRelationships(validationResults) {
+    console.log("      🔗 Validating artist-studio relationships...");
+
+    try {
+      // Get all artists
+      const artistsResult = await this.dynamodbDoc
+        .scan({
+          TableName: this.config.services.dynamodb.tableName,
+          FilterExpression: "begins_with(PK, :artistPrefix)",
+          ExpressionAttributeValues: {
+            ":artistPrefix": "ARTIST#",
+          },
+        })
+        .promise();
+
+      // Get all studios
+      const studiosResult = await this.dynamodbDoc
+        .scan({
+          TableName: this.config.services.dynamodb.tableName,
+          FilterExpression: "begins_with(PK, :studioPrefix)",
+          ExpressionAttributeValues: {
+            ":studioPrefix": "STUDIO#",
+          },
+        })
+        .promise();
+
+      const artists = artistsResult.Items;
+      const studios = studiosResult.Items;
+
+      // Check artist -> studio references
+      for (const artist of artists) {
+        if (artist.tattooStudio && artist.tattooStudio.studioId) {
+          const referencedStudio = studios.find(s => s.studioId === artist.tattooStudio.studioId);
+          if (!referencedStudio) {
+            validationResults.relationshipErrors.push({
+              type: 'orphaned_artist_reference',
+              artistId: artist.PK,
+              studioId: artist.tattooStudio.studioId,
+              error: `Artist references non-existent studio: ${artist.tattooStudio.studioId}`,
+              severity: 'error'
+            });
+          } else {
+            // Check if studio lists this artist
+            if (!referencedStudio.artists || !referencedStudio.artists.includes(artist.artistId)) {
+              validationResults.relationshipErrors.push({
+                type: 'missing_reverse_reference',
+                artistId: artist.PK,
+                studioId: artist.tattooStudio.studioId,
+                error: `Studio ${artist.tattooStudio.studioId} doesn't list artist ${artist.artistId}`,
+                severity: 'error'
+              });
+            }
+          }
+        }
+      }
+
+      // Check studio -> artist references
+      for (const studio of studios) {
+        if (studio.artists && Array.isArray(studio.artists)) {
+          for (const artistId of studio.artists) {
+            const referencedArtist = artists.find(a => a.artistId === artistId);
+            if (!referencedArtist) {
+              validationResults.relationshipErrors.push({
+                type: 'orphaned_studio_reference',
+                studioId: studio.PK,
+                artistId: artistId,
+                error: `Studio references non-existent artist: ${artistId}`,
+                severity: 'error'
+              });
+            } else {
+              // Check if artist references this studio
+              if (!referencedArtist.tattooStudio || referencedArtist.tattooStudio.studioId !== studio.studioId) {
+                validationResults.relationshipErrors.push({
+                  type: 'missing_reverse_reference',
+                  studioId: studio.PK,
+                  artistId: artistId,
+                  error: `Artist ${artistId} doesn't reference studio ${studio.studioId}`,
+                  severity: 'error'
+                });
+              }
+            }
+          }
+
+          // Validate artist count consistency
+          if (studio.artistCount !== studio.artists.length) {
+            validationResults.relationshipErrors.push({
+              type: 'artist_count_mismatch',
+              studioId: studio.PK,
+              expectedCount: studio.artists.length,
+              actualCount: studio.artistCount,
+              error: `Studio artist count mismatch: expected ${studio.artists.length}, got ${studio.artistCount}`,
+              severity: 'warning'
+            });
+          }
+        }
+      }
+
+      console.log(`      ✅ Relationship validation completed`);
+    } catch (error) {
+      validationResults.relationshipErrors.push({
+        type: 'validation_error',
+        error: `Relationship validation failed: ${error.message}`,
+        severity: 'error'
+      });
+    }
+  }
+
+  /**
+   * Validate frontend studio mock data consistency
+   */
+  async validateFrontendStudioMockData(validationResults) {
+    console.log("      📱 Validating frontend studio mock data...");
+
+    try {
+      const fs = require('fs').promises;
+      const path = require('path');
+      
+      const mockDataPath = path.join(process.cwd(), 'frontend', 'src', 'app', 'data', 'mockStudioData.js');
+      
+      try {
+        const mockDataContent = await fs.readFile(mockDataPath, 'utf8');
+        
+        // Extract studio data from the mock file
+        const mockStudiosMatch = mockDataContent.match(/export const mockStudios = (\[[\s\S]*?\]);/);
+        if (mockStudiosMatch) {
+          const mockStudiosStr = mockStudiosMatch[1];
+          const mockStudios = JSON.parse(mockStudiosStr);
+          
+          // Get backend studio count
+          const backendStudioCount = validationResults.totalStudios;
+          
+          if (mockStudios.length !== backendStudioCount) {
+            validationResults.dataConsistencyErrors.push({
+              type: 'mock_data_count_mismatch',
+              error: `Frontend mock studio count (${mockStudios.length}) doesn't match backend count (${backendStudioCount})`,
+              severity: 'warning'
+            });
+          }
+
+          // Validate mock data structure
+          for (const mockStudio of mockStudios.slice(0, 3)) { // Check first 3 studios
+            const requiredFields = ['studioId', 'studioName', 'address', 'contactInfo', 'specialties'];
+            for (const field of requiredFields) {
+              if (!mockStudio[field]) {
+                validationResults.dataConsistencyErrors.push({
+                  type: 'mock_data_structure_error',
+                  studioId: mockStudio.studioId || 'unknown',
+                  field: field,
+                  error: `Missing required field in mock data: ${field}`,
+                  severity: 'error'
+                });
+              }
+            }
+          }
+
+          console.log(`      ✅ Frontend mock data validated: ${mockStudios.length} studios`);
+        } else {
+          validationResults.dataConsistencyErrors.push({
+            type: 'mock_data_parse_error',
+            error: 'Could not parse mockStudios from frontend mock data file',
+            severity: 'error'
+          });
+        }
+      } catch (fileError) {
+        validationResults.dataConsistencyErrors.push({
+          type: 'mock_data_file_error',
+          error: `Frontend mock data file not accessible: ${fileError.message}`,
+          severity: 'warning'
+        });
+      }
+    } catch (error) {
+      validationResults.dataConsistencyErrors.push({
+        type: 'mock_data_validation_error',
+        error: `Frontend mock data validation failed: ${error.message}`,
+        severity: 'error'
+      });
+    }
+  }
+
+  /**
+   * Validate email format
+   */
+  isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  /**
+   * Validate UK phone number format
+   */
+  isValidUKPhone(phone) {
+    // UK phone number patterns: +44, 0, or direct numbers
+    const ukPhoneRegex = /^(\+44\s?|0)(\d{2,4}\s?\d{3,4}\s?\d{3,4}|\d{10,11})$/;
+    return ukPhoneRegex.test(phone.replace(/\s/g, ''));
   }
 
   /**
@@ -764,17 +1297,30 @@ class HealthMonitor {
 
     const errorCount = this.healthStatus.errors.length;
 
-    return {
+    const summary = {
       servicesHealthy: `${healthyServices}/${serviceCount}`,
       errorsFound: errorCount,
       dataConsistency: this.healthStatus.data.crossServiceConsistency
-        ?.consistent
+        ?.artistsConsistent && this.healthStatus.data.crossServiceConsistency?.studiosConsistent
         ? "consistent"
         : "inconsistent",
       imageAccessibility:
         this.healthStatus.data.imageAccessibility?.accessibilityRate ||
         "unknown",
     };
+
+    // Add studio-specific summary data
+    if (this.healthStatus.data.crossServiceConsistency) {
+      summary.artistCount = this.healthStatus.data.crossServiceConsistency.dynamoArtistCount || 0;
+      summary.studioCount = this.healthStatus.data.crossServiceConsistency.dynamoStudioCount || 0;
+    }
+
+    if (this.healthStatus.data.studioValidation) {
+      summary.studioValidationRate = this.healthStatus.data.studioValidation.validationRate || "unknown";
+      summary.studioRelationshipErrors = this.healthStatus.data.studioValidation.relationshipErrors?.length || 0;
+    }
+
+    return summary;
   }
 
   /**
@@ -835,6 +1381,12 @@ class HealthMonitor {
             this.healthStatus.data.imageAccessibility;
           break;
 
+        case "studios":
+          await this.validateStudioData();
+          validationResults.results.studios =
+            this.healthStatus.data.studioValidation;
+          break;
+
         case "scenarios":
           await this.validateTestScenarioIntegrity();
           validationResults.results.scenarios =
@@ -845,10 +1397,12 @@ class HealthMonitor {
         default:
           await this.validateCrossServiceConsistency();
           await this.validateImageAccessibility();
+          await this.validateStudioData();
           await this.validateTestScenarioIntegrity();
           validationResults.results = {
             consistency: this.healthStatus.data.crossServiceConsistency,
             images: this.healthStatus.data.imageAccessibility,
+            studios: this.healthStatus.data.studioValidation,
             scenarios: this.healthStatus.data.scenarioIntegrity,
           };
           break;
@@ -1014,6 +1568,304 @@ class HealthMonitor {
 
     return summary;
   }
+
+  /**
+   * Generate studio-specific troubleshooting guidance
+   */
+  generateStudioTroubleshootingGuidance() {
+    const guidance = {
+      timestamp: new Date().toISOString(),
+      issues: [],
+      recommendations: [],
+    };
+
+    // Check for common studio data issues
+    if (this.healthStatus.data.studioValidation) {
+      const studioValidation = this.healthStatus.data.studioValidation;
+
+      // Low validation rate
+      if (parseFloat(studioValidation.validationRate) < 80) {
+        guidance.issues.push({
+          type: 'low_validation_rate',
+          severity: 'warning',
+          description: `Studio validation rate is ${studioValidation.validationRate}% (below 80%)`,
+          troubleshooting: [
+            'Check studio data generation parameters in data-config.js',
+            'Verify studio data seeding completed successfully',
+            'Run: npm run validate-studios for detailed error report',
+            'Consider regenerating studio data: npm run seed-studios'
+          ]
+        });
+      }
+
+      // Relationship errors
+      if (studioValidation.relationshipErrors && studioValidation.relationshipErrors.length > 0) {
+        guidance.issues.push({
+          type: 'relationship_errors',
+          severity: 'error',
+          description: `Found ${studioValidation.relationshipErrors.length} artist-studio relationship errors`,
+          troubleshooting: [
+            'Check artist-studio relationship consistency',
+            'Verify bidirectional references are maintained',
+            'Run: npm run validate-studios --type=relationships',
+            'Consider running relationship repair: npm run repair-relationships'
+          ]
+        });
+      }
+
+      // Address validation errors
+      if (studioValidation.addressErrors && studioValidation.addressErrors.length > 0) {
+        guidance.issues.push({
+          type: 'address_errors',
+          severity: 'warning',
+          description: `Found ${studioValidation.addressErrors.length} studio address validation errors`,
+          troubleshooting: [
+            'Check UK postcode format validation',
+            'Verify coordinate accuracy for UK locations',
+            'Review address data generation in studio data generator',
+            'Consider updating address validation rules'
+          ]
+        });
+      }
+
+      // Image accessibility issues
+      if (studioValidation.imageErrors && studioValidation.imageErrors.length > 0) {
+        guidance.issues.push({
+          type: 'image_errors',
+          severity: 'warning',
+          description: `Found ${studioValidation.imageErrors.length} studio image errors`,
+          troubleshooting: [
+            'Check S3 bucket accessibility and CORS configuration',
+            'Verify studio image naming conventions: studios/{studioId}/...',
+            'Run: npm run process-studio-images to regenerate images',
+            'Check LocalStack S3 service status'
+          ]
+        });
+      }
+    }
+
+    // Check cross-service consistency
+    if (this.healthStatus.data.crossServiceConsistency) {
+      const consistency = this.healthStatus.data.crossServiceConsistency;
+      
+      if (!consistency.studiosConsistent) {
+        guidance.issues.push({
+          type: 'studio_count_mismatch',
+          severity: 'error',
+          description: `Studio count mismatch: DynamoDB=${consistency.dynamoStudioCount}, OpenSearch=${consistency.opensearchStudioCount}`,
+          troubleshooting: [
+            'Check OpenSearch studio index exists and is populated',
+            'Verify studio data seeding completed for both services',
+            'Run: npm run seed-studios to reseed studio data',
+            'Check OpenSearch service connectivity'
+          ]
+        });
+      }
+    }
+
+    // Generate recommendations based on issues found
+    if (guidance.issues.length === 0) {
+      guidance.recommendations.push({
+        type: 'healthy_system',
+        description: 'Studio data validation passed all checks',
+        actions: [
+          'Continue regular health monitoring',
+          'Consider running periodic validation: npm run validate-studios',
+          'Monitor studio data growth and performance'
+        ]
+      });
+    } else {
+      guidance.recommendations.push({
+        type: 'issue_resolution',
+        description: 'Address identified studio data issues',
+        actions: [
+          'Review and fix validation errors in order of severity',
+          'Run targeted validation: npm run validate-studios --type=studios',
+          'Consider full studio data regeneration if issues persist',
+          'Update monitoring alerts for studio data quality'
+        ]
+      });
+    }
+
+    return guidance;
+  }
+
+  /**
+   * Get studio data health report
+   */
+  async getStudioHealthReport() {
+    console.log("🏢 Generating studio health report...");
+
+    try {
+      // Ensure studio validation has been run
+      if (!this.healthStatus.data.studioValidation) {
+        await this.validateStudioData();
+      }
+
+      const report = {
+        timestamp: new Date().toISOString(),
+        summary: {
+          totalStudios: this.healthStatus.data.studioValidation?.totalStudios || 0,
+          validStudios: this.healthStatus.data.studioValidation?.validStudios || 0,
+          validationRate: this.healthStatus.data.studioValidation?.validationRate || "0",
+          relationshipErrors: this.healthStatus.data.studioValidation?.relationshipErrors?.length || 0,
+          addressErrors: this.healthStatus.data.studioValidation?.addressErrors?.length || 0,
+          imageErrors: this.healthStatus.data.studioValidation?.imageErrors?.length || 0,
+        },
+        validation: this.healthStatus.data.studioValidation,
+        troubleshooting: this.generateStudioTroubleshootingGuidance(),
+        recommendations: this.generateStudioRecommendations(),
+      };
+
+      console.log("✅ Studio health report generated");
+      return report;
+    } catch (error) {
+      console.error("❌ Studio health report generation failed:", error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate studio-specific recommendations
+   */
+  generateStudioRecommendations() {
+    const recommendations = [];
+
+    if (this.healthStatus.data.studioValidation) {
+      const validation = this.healthStatus.data.studioValidation;
+      const validationRate = parseFloat(validation.validationRate);
+
+      if (validationRate >= 95) {
+        recommendations.push({
+          priority: 'low',
+          category: 'maintenance',
+          title: 'Excellent Studio Data Quality',
+          description: 'Studio data validation rate is excellent (95%+)',
+          actions: ['Continue current data management practices', 'Monitor for any degradation']
+        });
+      } else if (validationRate >= 80) {
+        recommendations.push({
+          priority: 'medium',
+          category: 'improvement',
+          title: 'Good Studio Data Quality',
+          description: 'Studio data validation rate is good but could be improved',
+          actions: ['Review and fix remaining validation errors', 'Consider data quality improvements']
+        });
+      } else {
+        recommendations.push({
+          priority: 'high',
+          category: 'critical',
+          title: 'Poor Studio Data Quality',
+          description: 'Studio data validation rate is below acceptable threshold',
+          actions: ['Immediate review of studio data generation', 'Consider full data regeneration']
+        });
+      }
+
+      // Relationship-specific recommendations
+      if (validation.relationshipErrors && validation.relationshipErrors.length > 0) {
+        recommendations.push({
+          priority: 'high',
+          category: 'relationships',
+          title: 'Artist-Studio Relationship Issues',
+          description: `${validation.relationshipErrors.length} relationship errors detected`,
+          actions: [
+            'Run relationship consistency repair',
+            'Review artist-studio assignment logic',
+            'Implement stronger relationship validation'
+          ]
+        });
+      }
+
+      // Image-specific recommendations
+      if (validation.imageErrors && validation.imageErrors.length > 0) {
+        recommendations.push({
+          priority: 'medium',
+          category: 'images',
+          title: 'Studio Image Issues',
+          description: `${validation.imageErrors.length} image errors detected`,
+          actions: [
+            'Check S3 bucket configuration and accessibility',
+            'Verify image processing pipeline',
+            'Review image naming conventions'
+          ]
+        });
+      }
+    }
+
+    return recommendations;
+  }
+}
+
+// CLI interface for studio health monitoring
+async function runStudioHealthCheck() {
+  const args = process.argv.slice(2);
+  const command = args[0] || 'health';
+  const type = args.find(arg => arg.startsWith('--type='))?.split('=')[1] || 'all';
+
+  const monitor = new HealthMonitor();
+
+  try {
+    switch (command) {
+      case 'health':
+        console.log('🏢 Running studio health check...');
+        const healthReport = await monitor.getStudioHealthReport();
+        console.log('\n📊 Studio Health Summary:');
+        console.log(`  Total Studios: ${healthReport.summary.totalStudios}`);
+        console.log(`  Valid Studios: ${healthReport.summary.validStudios}`);
+        console.log(`  Validation Rate: ${healthReport.summary.validationRate}%`);
+        console.log(`  Relationship Errors: ${healthReport.summary.relationshipErrors}`);
+        console.log(`  Address Errors: ${healthReport.summary.addressErrors}`);
+        console.log(`  Image Errors: ${healthReport.summary.imageErrors}`);
+        
+        if (healthReport.troubleshooting.issues.length > 0) {
+          console.log('\n⚠️  Issues Found:');
+          healthReport.troubleshooting.issues.forEach(issue => {
+            console.log(`  - ${issue.description}`);
+            console.log(`    Severity: ${issue.severity}`);
+            console.log(`    Troubleshooting:`);
+            issue.troubleshooting.forEach(step => console.log(`      • ${step}`));
+          });
+        }
+        break;
+
+      case 'validate':
+        console.log(`🔍 Running studio validation (type: ${type})...`);
+        const validationResult = await monitor.validateData(type);
+        console.log('\n✅ Validation completed');
+        console.log(JSON.stringify(validationResult, null, 2));
+        break;
+
+      case 'status':
+        console.log('📊 Getting system status...');
+        const status = monitor.getSystemStatus();
+        console.log(JSON.stringify(status, null, 2));
+        break;
+
+      case 'troubleshoot':
+        console.log('🔧 Generating troubleshooting guidance...');
+        await monitor.performHealthCheck();
+        const guidance = monitor.generateStudioTroubleshootingGuidance();
+        console.log(JSON.stringify(guidance, null, 2));
+        break;
+
+      default:
+        console.log('Usage: node health-monitor.js [command] [options]');
+        console.log('Commands:');
+        console.log('  health       - Run comprehensive studio health check');
+        console.log('  validate     - Run data validation (--type=all|studios|consistency|images)');
+        console.log('  status       - Get current system status');
+        console.log('  troubleshoot - Generate troubleshooting guidance');
+        break;
+    }
+  } catch (error) {
+    console.error('❌ Health monitor failed:', error.message);
+    process.exit(1);
+  }
+}
+
+// Run CLI if this file is executed directly
+if (require.main === module) {
+  runStudioHealthCheck();
 }
 
 module.exports = { HealthMonitor };

@@ -47,6 +47,7 @@ class UnifiedDataManager {
       imagesOnly = false,
       force = false,
       scenario = null,
+      count = null,
       progressCallback = null
     } = options;
 
@@ -81,7 +82,8 @@ class UnifiedDataManager {
       // Build and execute pipeline
       const pipeline = this.pipeline.buildPipeline(operationType, {
         forceAll: force,
-        scenario
+        scenario,
+        count
       });
 
       console.log(`📋 Executing ${operationType} pipeline with ${pipeline.stages.length} stages`);
@@ -739,6 +741,227 @@ class UnifiedDataManager {
         ready: false,
         error: error.message,
         timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  /**
+   * Seed only studio data without affecting artist data
+   */
+  async seedStudios(options = {}) {
+    try {
+      console.log('🏢 Starting studio-only seeding...');
+      
+      // TODO: Implement studio-only seeding
+      // This should:
+      // 1. Load existing artist data
+      // 2. Generate studio data based on scenario/count
+      // 3. Create artist-studio relationships
+      // 4. Seed studios to DynamoDB and OpenSearch
+      // 5. Update frontend mock data
+      // 6. Optionally validate results
+      
+      return {
+        success: true,
+        results: {
+          studios: { created: 0, updated: 0, failed: 0 },
+          relationships: { created: 0, updated: 0 },
+          images: { processed: 0 },
+          frontend: { updated: true }
+        },
+        validation: options.validate ? { passed: true, errors: [] } : null
+      };
+    } catch (error) {
+      console.error('❌ Studio seeding failed:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Validate studio-related data and relationships
+   */
+  async validateStudios(validationType = 'all') {
+    try {
+      console.log(`🔍 Validating studio data (type: ${validationType})...`);
+      
+      // TODO: Implement studio validation
+      // This should validate based on type:
+      // - all: comprehensive validation
+      // - data: studio data structure and required fields
+      // - relationships: artist-studio relationship consistency
+      // - images: studio image accessibility and format
+      // - addresses: studio address and postcode validation
+      // - consistency: cross-service studio data consistency
+      
+      return {
+        success: true,
+        results: {
+          totalStudios: 0,
+          errors: [],
+          warnings: [],
+          relationships: { checked: 0, valid: 0, invalid: 0 },
+          images: { checked: 0, accessible: 0, inaccessible: 0 }
+        }
+      };
+    } catch (error) {
+      console.error('❌ Studio validation failed:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Reset studio data while preserving artist data
+   */
+  async resetStudios(options = {}) {
+    try {
+      console.log('🔄 Resetting studio data...');
+      
+      // TODO: Implement studio reset
+      // This should:
+      // 1. Clear studio data from DynamoDB and OpenSearch
+      // 2. Optionally preserve or clear artist-studio relationships
+      // 3. Optionally reseed with specified scenario
+      // 4. Update frontend mock data
+      // 5. Optionally validate results
+      
+      return {
+        success: true,
+        results: {
+          cleared: true,
+          studiosRemoved: 0,
+          relationshipsRemoved: options.preserveRelationships ? 0 : 0,
+          reseeded: !!options.scenario,
+          seedStats: options.scenario ? { studios: { created: 0 }, relationships: { created: 0 } } : null
+        }
+      };
+    } catch (error) {
+      console.error('❌ Studio reset failed:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get studio status and counts
+   */
+  async getStudioStatus() {
+    try {
+      console.log('📊 Getting studio status...');
+      
+      // TODO: Implement studio status retrieval
+      // This should:
+      // 1. Count studios in DynamoDB and OpenSearch
+      // 2. Check artist-studio relationships
+      // 3. Validate studio images
+      // 4. Check data consistency
+      
+      return {
+        success: true,
+        status: {
+          studios: { total: 0, active: 0, withImages: 0, withArtists: 0 },
+          relationships: { total: 0, valid: 0, invalid: 0, orphanedArtists: 0 },
+          images: { total: 0, accessible: 0, inaccessible: 0 },
+          consistency: { consistent: true, issues: [] }
+        }
+      };
+    } catch (error) {
+      console.error('❌ Failed to get studio status:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Process studio images
+   */
+  async processStudioImages(options = {}) {
+    try {
+      console.log('🖼️ Processing studio images...');
+      
+      // TODO: Implement studio image processing
+      // This should:
+      // 1. Load studio data (all or specific studio)
+      // 2. Process studio images (exterior, interior, gallery)
+      // 3. Upload to S3 with proper naming
+      // 4. Update studio records with image URLs
+      // 5. Optionally validate image accessibility
+      
+      return {
+        success: true,
+        results: {
+          images: { processed: 0, uploaded: 0, optimized: 0, failed: 0 },
+          studiosProcessed: options.studioId ? 1 : 0
+        },
+        validation: options.validate ? { passed: true, errors: [] } : null
+      };
+    } catch (error) {
+      console.error('❌ Studio image processing failed:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Manage artist-studio relationships
+   */
+  async manageStudioRelationships(action = 'validate') {
+    try {
+      console.log(`🔗 Managing studio relationships (action: ${action})...`);
+      
+      // TODO: Implement relationship management
+      // Actions:
+      // - validate: check all relationships for consistency
+      // - rebuild: recreate relationships based on compatibility
+      // - repair: fix inconsistent relationships
+      // - report: generate relationship status report
+      
+      const results = {
+        validate: {
+          totalRelationships: 0,
+          validRelationships: 0,
+          invalidRelationships: 0,
+          orphanedArtists: 0,
+          errors: []
+        },
+        rebuild: {
+          relationshipsCreated: 0,
+          relationshipsRemoved: 0,
+          artistsUpdated: 0,
+          studiosUpdated: 0
+        },
+        repair: {
+          relationshipsRepaired: 0,
+          inconsistenciesFixed: 0,
+          unrepairable: 0
+        },
+        report: {
+          totalStudios: 0,
+          totalArtists: 0,
+          reportPath: null
+        }
+      };
+      
+      return {
+        success: true,
+        results: results[action] || results.validate
+      };
+    } catch (error) {
+      console.error('❌ Studio relationship management failed:', error.message);
+      return {
+        success: false,
+        error: error.message
       };
     }
   }

@@ -67,6 +67,7 @@ npm run setup-data --scenario london-focused --validate
 ```
 
 **What it does:**
+
 - Detects and starts required LocalStack services
 - Processes images from `tests/Test_Data/ImageSet/`
 - Uploads images to S3 with CORS configuration
@@ -84,6 +85,7 @@ npm run setup-data --scenario london-focused --validate
 - Validates data consistency across services
 
 **Smart Features:**
+
 - **Incremental Processing**: Only processes changed files on subsequent runs
 - **Service Detection**: Automatically detects running services
 - **Error Recovery**: Provides clear error messages with troubleshooting steps
@@ -109,6 +111,7 @@ npm run reset-data:frontend-ready  # Minimal data for frontend development
 ```
 
 **Use Cases:**
+
 - **clean**: Start with empty databases for custom data setup
 - **fresh**: Standard development state with complete test dataset
 - **minimal**: Quick testing with just 3 artists
@@ -143,6 +146,7 @@ npm run frontend-sync studios
 ```
 
 **Enhanced Features:**
+
 - **Business Data Generation**: Realistic ratings (1.0-5.0), pricing (£80-£250/hour), availability status, experience levels
 - **Comprehensive Contact Info**: Email, phone, website, Instagram with privacy controls
 - **Studio Relationships**: Bidirectional artist-studio linking with complete studio information
@@ -177,23 +181,23 @@ npm run seed-scenario:performance-test # 50+ artists for performance testing
 
 **Scenario Details:**
 
-| Scenario | Artists | Focus | Best For | Enhanced Features |
-|----------|---------|-------|----------|-------------------|
-| minimal | 3 | Quick testing | Unit tests, basic functionality | Business data, ratings, pricing |
-| search-basic | 5 | Search functionality | Search feature development | Ratings, pricing, style metadata |
-| london-artists | 5 | Location filtering | Location-based features | Studio relationships, geohash |
-| london-focused | 10 | Enhanced London testing | Comprehensive location features | Full studio data, artist rosters |
-| high-rated | 3 | Rating systems | Rating and review features | 4.5+ ratings, premium pricing |
-| new-artists | 4 | Recent additions | New artist workflows | Experience data, certifications |
-| booking-available | 6 | Booking systems | Booking functionality | Availability status, booking slots |
-| portfolio-rich | 4 | Image galleries | Portfolio display features | 8+ images, style metadata |
-| multi-style | 3 | Style diversity | Style filtering and categorization | 3+ styles, characteristics |
-| style-diverse | 12 | Enhanced style testing | Style filtering with metadata | All styles, characteristics, difficulty |
-| pricing-range | 5 | Pricing data | Pricing and cost features | Detailed pricing, currency, ranges |
-| full-dataset | 10 | Complete testing | Integration tests, full workflows | All enhanced features enabled |
-| empty | 0 | No-data states | Empty state testing | Error responses, fallback UI |
-| single | 1 | Minimal display | Single result testing | Complete business data profile |
-| performance-test | 50+ | Performance testing | Load testing, pagination | Optimized for size, performance data |
+| Scenario          | Artists | Focus                   | Best For                           | Enhanced Features                       |
+| ----------------- | ------- | ----------------------- | ---------------------------------- | --------------------------------------- |
+| minimal           | 3       | Quick testing           | Unit tests, basic functionality    | Business data, ratings, pricing         |
+| search-basic      | 5       | Search functionality    | Search feature development         | Ratings, pricing, style metadata        |
+| london-artists    | 5       | Location filtering      | Location-based features            | Studio relationships, geohash           |
+| london-focused    | 10      | Enhanced London testing | Comprehensive location features    | Full studio data, artist rosters        |
+| high-rated        | 3       | Rating systems          | Rating and review features         | 4.5+ ratings, premium pricing           |
+| new-artists       | 4       | Recent additions        | New artist workflows               | Experience data, certifications         |
+| booking-available | 6       | Booking systems         | Booking functionality              | Availability status, booking slots      |
+| portfolio-rich    | 4       | Image galleries         | Portfolio display features         | 8+ images, style metadata               |
+| multi-style       | 3       | Style diversity         | Style filtering and categorization | 3+ styles, characteristics              |
+| style-diverse     | 12      | Enhanced style testing  | Style filtering with metadata      | All styles, characteristics, difficulty |
+| pricing-range     | 5       | Pricing data            | Pricing and cost features          | Detailed pricing, currency, ranges      |
+| full-dataset      | 10      | Complete testing        | Integration tests, full workflows  | All enhanced features enabled           |
+| empty             | 0       | No-data states          | Empty state testing                | Error responses, fallback UI            |
+| single            | 1       | Minimal display         | Single result testing              | Complete business data profile          |
+| performance-test  | 50+     | Performance testing     | Load testing, pagination           | Optimized for size, performance data    |
 
 ### Health & Validation
 
@@ -219,13 +223,14 @@ npm run validate-data:studio-relationships # Artist-studio relationship validati
 ```
 
 **Health Check Output:**
+
 ```
 🏥 System Health Check
 ═══════════════════════
 
 ✅ LocalStack Services
   • DynamoDB: Connected (localhost:4566)
-  • OpenSearch: Connected (localhost:4566)  
+  • OpenSearch: Connected (localhost:4566)
   • S3: Connected (localhost:4566)
 
 ✅ Data Status
@@ -255,7 +260,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
   artistName: "Sarah Mitchell",
   bio: "Traditional and neo-traditional tattoo artist specializing in roses, eagles, and nautical themes",
   avatar: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
-  
+
   // Enhanced Business Data
   rating: 4.7,
   reviewCount: 156,
@@ -275,7 +280,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
     apprenticeshipCompleted: true,
     certifications: ["First Aid", "Bloodborne Pathogens", "Color Theory"]
   },
-  
+
   // Enhanced Contact Information
   contactInfo: {
     instagram: "sarahmitchell_tattoos",
@@ -283,7 +288,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
     phone: "+44 20 7123 4567",
     website: "https://sarahmitchell.tattoo"
   },
-  
+
   // Enhanced Studio Relationship
   tattooStudio: {
     studioId: "studio_001",
@@ -296,7 +301,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
       longitude: -0.1278
     }
   },
-  
+
   // Enhanced Style Metadata
   styles: ["traditional", "neo_traditional"],
   styleMetadata: {
@@ -307,7 +312,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
       colorPalette: ["red", "blue", "yellow", "green"]
     }
   },
-  
+
   // System Fields
   geohash: "gcpvj0du",
   pk: "ARTIST#artist_001",
@@ -327,14 +332,14 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
   latitude: 51.5074,
   longitude: -0.1278,
   geohash: "gcpvj0du",
-  
+
   contactInfo: {
     phone: "+44 20 7123 4567",
     email: "info@inksteel.studio",
     website: "https://inksteel.studio",
     instagram: "inksteelstudio"
   },
-  
+
   openingHours: {
     monday: "10:00-18:00",
     tuesday: "10:00-18:00",
@@ -344,7 +349,7 @@ The enhanced frontend-sync-processor now generates comprehensive business data:
     saturday: "09:00-17:00",
     sunday: "Closed"
   },
-  
+
   artists: ["artist_001", "artist_002", "artist_003"],
   rating: 4.6,
   reviewCount: 89,
@@ -406,20 +411,20 @@ frontendSync: {
   includePricingData: true,
   includeAvailabilityData: true,
   includeExperienceData: true,
-  
+
   // Studio relationship settings
   includeStudioData: true,
   generateBidirectionalLinks: true,
-  
+
   // Style metadata settings
   includeStyleMetadata: true,
   includeStyleCharacteristics: true,
   includeDifficultyLevels: true,
-  
+
   // Data export settings
   enableDataExport: true,
   validateOnExport: true,
-  
+
   // Performance settings
   batchSize: 10,
   maxArtistCount: 1000,
@@ -445,7 +450,7 @@ npm run setup-data
 # ✅ Processed 45 images, seeded 10 artists, updated frontend
 
 # Second run - only processes changes
-npm run setup-data  
+npm run setup-data
 # ✅ No changes detected, skipping processing (completed in 2s)
 
 # Force full reprocessing
@@ -475,6 +480,7 @@ npm run frontend-sync validate-consistency
 ```
 
 **Export Features:**
+
 - **Automatic Validation**: All exported data is validated for consistency
 - **Timestamped Files**: Exports include generation timestamp and metadata
 - **Scenario Templates**: Reusable scenario configurations
@@ -482,6 +488,7 @@ npm run frontend-sync validate-consistency
 - **Cross-Session Reuse**: Share datasets between development sessions
 
 **Export File Structure:**
+
 ```javascript
 {
   metadata: {
@@ -521,6 +528,7 @@ npm run frontend-sync scenario style-diverse --export
 ```
 
 This generates comprehensive mock data in `frontend/src/app/data/mockArtistData.js` with:
+
 - **Enhanced Business Data**: Realistic ratings, pricing, availability, experience
 - **Comprehensive Contact Info**: Email, phone, website, Instagram
 - **Studio Relationships**: Bidirectional artist-studio linking
@@ -589,7 +597,7 @@ npm run frontend-sync scenario style-diverse --export  # for comprehensive testi
 npm run reset-data:minimal
 npm run test --workspace=backend
 
-# Integration testing setup  
+# Integration testing setup
 npm run reset-data:fresh
 npm run test:integration
 
@@ -624,6 +632,7 @@ docker-compose logs localstack
 #### "LocalStack services not available"
 
 **Symptoms:**
+
 ```
 ❌ Error: LocalStack services not available
    DynamoDB: Connection refused (localhost:4566)
@@ -631,6 +640,7 @@ docker-compose logs localstack
 ```
 
 **Solutions:**
+
 ```bash
 # Check if LocalStack is running
 docker-compose ps localstack
@@ -645,10 +655,12 @@ npm run health-check
 #### "No changes detected, but data seems wrong"
 
 **Symptoms:**
+
 - System reports no changes but data appears incorrect
 - Incremental processing skipping necessary updates
 
 **Solutions:**
+
 ```bash
 # Force full reprocessing
 npm run setup-data:force
@@ -661,10 +673,12 @@ npm run setup-data
 #### "Frontend mock data not updating"
 
 **Symptoms:**
+
 - Frontend shows old or incorrect data
 - Mock data file not being updated
 
 **Solutions:**
+
 ```bash
 # Force frontend data update
 npm run setup-data:frontend-only
@@ -679,10 +693,12 @@ npm run validate-data:frontend
 #### "Image URLs not accessible"
 
 **Symptoms:**
+
 - Images not loading in frontend
 - S3 URL validation failures
 
 **Solutions:**
+
 ```bash
 # Reprocess images
 npm run setup-data:images-only
@@ -697,10 +713,12 @@ curl http://localhost:4566/tattoo-directory-images
 #### "Database seeding fails"
 
 **Symptoms:**
+
 - DynamoDB or OpenSearch seeding errors
 - Partial data in databases
 
 **Solutions:**
+
 ```bash
 # Reset databases and retry
 npm run reset-data:clean
@@ -718,6 +736,7 @@ npm run health-check
 #### "Setup taking too long"
 
 **Optimization strategies:**
+
 ```bash
 # Use incremental processing (default)
 npm run setup-data
@@ -732,6 +751,7 @@ npm run setup-data:frontend-only
 #### "Docker resource constraints"
 
 **Resource optimization:**
+
 ```bash
 # Check Docker resource usage
 docker stats
@@ -773,6 +793,7 @@ npm run test --workspace=scripts
 #### Migration Support
 
 If migrating from legacy scripts:
+
 ```bash
 # Run migration analysis
 cd scripts
@@ -830,10 +851,10 @@ Automatic Docker environment detection:
 
 ```javascript
 // Detects Docker environment
-const isDocker = process.env.DOCKER_CONTAINER || fs.existsSync('/.dockerenv');
+const isDocker = process.env.DOCKER_CONTAINER || fs.existsSync("/.dockerenv");
 
 // Adjusts endpoints accordingly
-const endpoint = isDocker ? 'http://localstack:4566' : 'http://localhost:4566';
+const endpoint = isDocker ? "http://localstack:4566" : "http://localhost:4566";
 ```
 
 ### CI/CD Integration

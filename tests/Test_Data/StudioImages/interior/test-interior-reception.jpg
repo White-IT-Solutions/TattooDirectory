@@ -1,0 +1,7 @@
+# This is a placeholder for a test interior image
+# In a real implementation, this would be a JPEG image file
+# Filename: test-interior-reception.jpg
+# Dimensions: 1100x733
+# Format: JPEG
+# Description: Reception and waiting area with comfortable seating
+# Test scenarios: compression_test, thumbnail_generation

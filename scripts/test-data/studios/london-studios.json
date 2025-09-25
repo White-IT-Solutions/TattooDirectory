@@ -1,0 +1,137 @@
+[
+  {
+    "studioId": "studio-london-focus-001",
+    "studioName": "Central London Tattoo Hub",
+    "address": "25 Tottenham Court Road, Fitzrovia, London W1T 1BZ",
+    "postcode": "W1T 1BZ",
+    "geohash": "gcpvn3k",
+    "latitude": 51.5198,
+    "longitude": -0.1357,
+    "locationDisplay": "Fitzrovia, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7636 1111",
+      "email": "hub@centrallondontattoo.com",
+      "website": "https://centrallondontattoo.com",
+      "instagram": "@centrallondontattoo"
+    },
+    "openingHours": {
+      "monday": "10:00-19:00",
+      "tuesday": "10:00-19:00",
+      "wednesday": "10:00-19:00",
+      "thursday": "10:00-19:00",
+      "friday": "10:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.7,
+    "reviewCount": 234,
+    "established": 2015,
+    "specialties": ["traditional", "realism", "blackwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-001/exterior-1.jpg",
+        "description": "Central London location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-001/interior-1.jpg",
+        "description": "Professional London workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-london-focus-002",
+    "studioName": "South London Ink",
+    "address": "67 Bermondsey Street, Bermondsey, London SE1 3XF",
+    "postcode": "SE1 3XF",
+    "geohash": "gcpvh8k",
+    "latitude": 51.4998,
+    "longitude": -0.0789,
+    "locationDisplay": "Bermondsey, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7407 2222",
+      "email": "south@southlondonink.co.uk",
+      "website": "https://southlondonink.co.uk",
+      "instagram": "@southlondonink"
+    },
+    "openingHours": {
+      "monday": "11:00-19:00",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003"],
+    "artistCount": 1,
+    "rating": 4.6,
+    "reviewCount": 156,
+    "established": 2017,
+    "specialties": ["blackwork", "traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-002/exterior-1.jpg",
+        "description": "South London studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-002/interior-1.jpg",
+        "description": "Bermondsey workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-london-focus-003",
+    "studioName": "West London Collective",
+    "address": "89 Portobello Road, Notting Hill, London W11 2QB",
+    "postcode": "W11 2QB",
+    "geohash": "gcpvn1k",
+    "latitude": 51.5156,
+    "longitude": -0.2058,
+    "locationDisplay": "Notting Hill, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7727 3333",
+      "email": "west@westlondoncollective.com",
+      "website": "https://westlondoncollective.com",
+      "instagram": "@westlondoncollective"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "12:00-20:00",
+      "wednesday": "12:00-20:00",
+      "thursday": "12:00-20:00",
+      "friday": "12:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-004", "artist-005"],
+    "artistCount": 2,
+    "rating": 4.8,
+    "reviewCount": 189,
+    "established": 2014,
+    "specialties": ["realism", "blackwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-003/exterior-1.jpg",
+        "description": "Notting Hill collective",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-london-focus-003/interior-1.jpg",
+        "description": "West London workspace",
+        "isPrimary": false
+      }
+    ]
+  }
+]
