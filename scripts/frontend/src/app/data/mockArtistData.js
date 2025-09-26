@@ -5,7 +5,7 @@
 export const mockArtistData = [
   {
     "pk": "ARTIST#1",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-001",
     "artistName": "William Moore",
     "bio": "Japanese style expert with cultural respect and authenticity",
@@ -159,7 +159,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#2",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-002",
     "artistName": "Marcus Chen",
     "bio": "Tebori and machine specialist in traditional Japanese designs",
@@ -266,7 +266,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#3",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-003",
     "artistName": "Henry White",
     "bio": "Traditional tattoo artist with 8+ years experience in bold, timeless designs",
@@ -383,7 +383,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#4",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-004",
     "artistName": "James Miller",
     "bio": "Bold blackwork and tribal specialist with striking designs",
@@ -547,7 +547,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#5",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-005",
     "artistName": "Benjamin Wilson",
     "bio": "Classic American traditional style with bold lines and vibrant colors",
@@ -652,7 +652,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#6",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-006",
     "artistName": "Ava Davis",
     "bio": "Tribal and blackwork expert preserving traditional techniques",
@@ -788,7 +788,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#7",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-007",
     "artistName": "Henry White",
     "bio": "Sci-fi and biomech specialist with technical precision",
@@ -929,7 +929,7 @@ export const mockArtistData = [
   },
   {
     "pk": "ARTIST#8",
-    "sk": "PROFILE",
+    "sk": "METADATA",
     "artistId": "artist-008",
     "artistName": "William Moore",
     "bio": "Delicate line work expert creating subtle, elegant tattoos",

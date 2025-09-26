@@ -284,7 +284,7 @@ describe('DatabaseSeeder', () => {
         TableName: 'test-table',
         Item: expect.objectContaining({
           PK: 'ARTIST#artist-001',
-          SK: 'PROFILE',
+          SK: 'METADATA',
           artistId: 'artist-001'
         })
       });
@@ -350,7 +350,7 @@ describe('DatabaseSeeder', () => {
         TableName: 'test-table',
         Item: expect.objectContaining({
           PK: 'STUDIO#studio-001',
-          SK: 'PROFILE',
+          SK: 'METADATA',
           studioId: 'studio-001'
         })
       });
@@ -420,8 +420,8 @@ describe('DatabaseSeeder', () => {
       mockDynamoDB.scan.mockReturnValue({
         promise: () => Promise.resolve({
           Items: [
-            { PK: 'ARTIST#001', SK: 'PROFILE' },
-            { PK: 'STUDIO#001', SK: 'PROFILE' }
+            { PK: 'ARTIST#001', SK: 'METADATA' },
+            { PK: 'STUDIO#001', SK: 'METADATA' }
           ]
         })
       });

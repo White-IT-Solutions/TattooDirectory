@@ -589,7 +589,7 @@ class FrontendSyncProcessor {
     const artist = {
       // System fields
       pk: `ARTIST#${index}`,
-      sk: 'PROFILE',
+      sk: 'METADATA',
       artistId: artistId,
       
       // Core identity (standardized naming)
@@ -704,7 +704,7 @@ class FrontendSyncProcessor {
   convertRealArtistToMockFormat(realArtist, imageUrls) {
     return {
       pk: `ARTIST#${realArtist.artistId}`,
-      sk: 'PROFILE',
+      sk: 'METADATA',
       artistId: realArtist.artistId,
       artistName: realArtist.artistName, // Fixed: was artistsName
       instagramHandle: realArtist.instagramHandle,

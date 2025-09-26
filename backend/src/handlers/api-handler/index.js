@@ -150,9 +150,10 @@ async function searchArtistsInDynamoDB(query, style, location, limit = 20, from 
     // Use scan operation to get all artists (not ideal for production, but works for fallback)
     const scanParams = {
       TableName: tableName,
-      FilterExpression: "begins_with(PK, :artistPrefix) AND (SK = :profileSK OR begins_with(SK, :artistPrefix))",
+      FilterExpression: "begins_with(PK, :artistPrefix) AND (SK = :metadataSK OR SK = :profileSK OR begins_with(SK, :artistPrefix))",
       ExpressionAttributeValues: marshall({
         ":artistPrefix": "ARTIST#",
+        ":metadataSK": "METADATA",
         ":profileSK": "PROFILE"
       }),
       Limit: limit + from // Get more items to handle pagination
@@ -205,12 +206,12 @@ async function getArtistFromDynamoDB(artistId) {
   const tableName = getTableName();
   
   try {
-    // Try with PROFILE SK first (test data format)
+    // Try with METADATA SK first (LLD specification)
     let getParams = {
       TableName: tableName,
       Key: marshall({
         PK: `ARTIST#${artistId}`,
-        SK: "PROFILE"
+        SK: "METADATA"
       })
     };
 
@@ -220,7 +221,22 @@ async function getArtistFromDynamoDB(artistId) {
       return unmarshall(result.Item);
     }
 
-    // Try with ARTIST# SK format (production format)
+    // Try with PROFILE SK (legacy test data format)
+    getParams = {
+      TableName: tableName,
+      Key: marshall({
+        PK: `ARTIST#${artistId}`,
+        SK: "PROFILE"
+      })
+    };
+
+    result = await client.send(new GetItemCommand(getParams));
+    
+    if (result.Item) {
+      return unmarshall(result.Item);
+    }
+
+    // Try with ARTIST# SK format (alternative format)
     getParams = {
       TableName: tableName,
       Key: marshall({
@@ -249,9 +265,10 @@ async function getStylesFromDynamoDB() {
     // Scan all artists to aggregate styles
     const scanParams = {
       TableName: tableName,
-      FilterExpression: "begins_with(PK, :artistPrefix) AND (SK = :profileSK OR begins_with(SK, :artistPrefix))",
+      FilterExpression: "begins_with(PK, :artistPrefix) AND (SK = :metadataSK OR SK = :profileSK OR begins_with(SK, :artistPrefix))",
       ExpressionAttributeValues: marshall({
         ":artistPrefix": "ARTIST#",
+        ":metadataSK": "METADATA",
         ":profileSK": "PROFILE"
       }),
       ProjectionExpression: "styles"

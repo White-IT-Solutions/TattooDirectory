@@ -23,7 +23,7 @@ describe('Studio Health Monitor', () => {
     // Mock valid studio data
     mockStudioData = {
       PK: 'STUDIO#studio-001',
-      SK: 'PROFILE',
+      SK: 'METADATA',
       studioId: 'studio-001',
       studioName: 'Ink & Steel Studio',
       address: '123 Brick Lane, Shoreditch, London E1 6SB',
@@ -56,7 +56,7 @@ describe('Studio Health Monitor', () => {
     // Mock invalid studio data
     invalidStudioData = {
       PK: 'STUDIO#studio-002',
-      SK: 'PROFILE',
+      SK: 'METADATA',
       studioId: 'studio-002',
       studioName: '', // Missing required field
       address: '456 Invalid Street',

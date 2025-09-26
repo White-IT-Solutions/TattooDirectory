@@ -52,7 +52,7 @@ describe('DynamoDB Integration Tests', function() {
         it('should successfully put an item', async function() {
             const testItem = {
                 PK: `ARTIST#test-${uuidv4()}`,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId: `test-${uuidv4()}`,
                 artistName: 'Test Artist',
                 instagramHandle: 'testartist',
@@ -83,7 +83,7 @@ describe('DynamoDB Integration Tests', function() {
             // First put an item
             const testItem = {
                 PK: `ARTIST#test-${uuidv4()}`,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId: `test-${uuidv4()}`,
                 artistName: 'Get Test Artist',
                 instagramHandle: 'gettestartist',
@@ -140,7 +140,7 @@ describe('DynamoDB Integration Tests', function() {
             // First put an item
             const testItem = {
                 PK: `ARTIST#test-${uuidv4()}`,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId: `test-${uuidv4()}`,
                 artistName: 'Delete Test Artist'
             };
@@ -182,8 +182,8 @@ describe('DynamoDB Integration Tests', function() {
 
             // Put multiple items with same PK
             const items = [
-                { PK: pk, SK: 'PROFILE', artistId, type: 'profile' },
-                { PK: pk, SK: 'METADATA', artistId, type: 'metadata' }
+                { PK: pk, SK: 'METADATA', artistId, type: 'profile' },
+                { PK: pk, SK: 'IMAGE#001', artistId, type: 'image' }
             ];
 
             for (const item of items) {
@@ -220,7 +220,7 @@ describe('DynamoDB Integration Tests', function() {
             // Put item
             const testItem = {
                 PK: pk,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId,
                 artistName: 'Sort Key Test Artist'
             };
@@ -238,7 +238,7 @@ describe('DynamoDB Integration Tests', function() {
                 KeyConditionExpression: 'PK = :pk AND SK = :sk',
                 ExpressionAttributeValues: {
                     ':pk': pk,
-                    ':sk': 'PROFILE'
+                    ':sk': 'METADATA'
                 }
             });
 
@@ -253,7 +253,7 @@ describe('DynamoDB Integration Tests', function() {
         it('should handle complex nested objects', async function() {
             const testItem = {
                 PK: `ARTIST#test-${uuidv4()}`,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId: `test-${uuidv4()}`,
                 artistName: 'Complex Data Artist',
                 portfolioImages: [
@@ -310,7 +310,7 @@ describe('DynamoDB Integration Tests', function() {
         it('should handle arrays and sets correctly', async function() {
             const testItem = {
                 PK: `ARTIST#test-${uuidv4()}`,
-                SK: 'PROFILE',
+                SK: 'METADATA',
                 artistId: `test-${uuidv4()}`,
                 styles: ['traditional', 'neo-traditional', 'realism'],
                 tags: ['experienced', 'award-winning', 'custom-work'],
@@ -371,7 +371,7 @@ describe('DynamoDB Integration Tests', function() {
             for (let i = 0; i < batchSize; i++) {
                 const testItem = {
                     PK: `ARTIST#test-batch-${i}`,
-                    SK: 'PROFILE',
+                    SK: 'METADATA',
                     artistId: `test-batch-${i}`,
                     artistName: `Batch Test Artist ${i}`,
                     batchIndex: i

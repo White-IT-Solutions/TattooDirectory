@@ -95,7 +95,7 @@ describe('FrontendSyncProcessor', () => {
       
       expect(artist).toMatchObject({
         pk: expect.stringMatching(/^ARTIST#\d+$/),
-        sk: 'PROFILE',
+        sk: 'METADATA',
         artistId: expect.stringMatching(/^artist-\d{3}$/),
         artistsName: expect.any(String),
         instagramHandle: expect.any(String),
@@ -313,7 +313,7 @@ describe('FrontendSyncProcessor', () => {
       
       expect(mockArtist).toMatchObject({
         pk: 'ARTIST#real-001',
-        sk: 'PROFILE',
+        sk: 'METADATA',
         artistId: 'real-001',
         artistsName: 'Real Artist',
         instagramHandle: 'real_artist',

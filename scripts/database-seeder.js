@@ -527,15 +527,19 @@ class DatabaseSeeder {
           continue;
         }
 
-        // Create DynamoDB item
+        // Create DynamoDB item using LLD specification
+        const primaryStyle = artist.styles[0];
+        const shard = Math.floor(Math.random() * 10); // Random shard 0-9
+        const normalizedName = artist.artistName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        
         const item = {
           PK: `ARTIST#${artist.artistId}`,
-          SK: `PROFILE`,
-          gsi1pk: `STYLE#${artist.styles[0]}`,
-          gsi1sk: `${artist.geohash}#${artist.artistId}`,
-          gsi2pk: `LOCATION#${artist.geohash}`,
-          gsi2sk: `${artist.artistName}`,
-          gsi3pk: `INSTAGRAM#${artist.instagramHandle}`,
+          SK: `METADATA`,
+          gsi1pk: `STYLE#${primaryStyle.toLowerCase()}#SHARD#${shard}`,
+          gsi1sk: `GEOHASH#${artist.geohash}#ARTIST#${artist.artistId}`,
+          gsi2pk: `ARTISTNAME#${normalizedName}`,
+          gsi2sk: `ARTIST#${artist.artistId}`,
+          gsi3pk: `INSTAGRAM#${artist.instagramHandle.toLowerCase()}`,
           ...artist,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
