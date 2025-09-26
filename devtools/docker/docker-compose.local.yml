@@ -1,5 +1,8 @@
-# Main service definitions
+# Enhanced LocalStack Infrastructure Configuration
+# Phase 1: Core Platform Services with Production-like Fidelity
+
 services:
+  # Phase 1 LocalStack: Core Platform Services
   localstack:
     image: localstack/localstack:3.0
     container_name: tattoo-directory-localstack
@@ -10,7 +13,8 @@ services:
     env_file:
       - ../.env.local
     environment:
-      - SERVICES=dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager
+      # Phase 1 Core Services: DynamoDB, OpenSearch, S3, API Gateway, Lambda, CloudWatch Logs, SNS
+      - SERVICES=${LOCALSTACK_PHASE1_SERVICES:-dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager,logs,sns}
       - DEBUG=${LOCALSTACK_DEBUG:-1}
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_HOST=localstack
@@ -21,10 +25,65 @@ services:
       - LOCALSTACK_VOLUME_DIR=/var/lib/localstack
       - SKIP_INFRA_DOWNLOADS=1
       - LOCALSTACK_WEB_UI=1
+      
+      # Enhanced DynamoDB Configuration with Streams
+      - DYNAMODB_SHARE_DB=1
+      - DYNAMODB_IN_MEMORY=0
+      - DYNAMODB_OPTIMIZE_DB_BEFORE_STARTUP=1
+      - DYNAMODB_HEAP_SIZE=256m
+      
+      # Enhanced OpenSearch Configuration
+      - OPENSEARCH_CUSTOM_BACKEND=http://localhost:4571
+      - OPENSEARCH_ENDPOINT_STRATEGY=domain
+      - OPENSEARCH_MULTI_CLUSTER=0
+      
+      # Enhanced Lambda Configuration
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_STAY_OPEN_MODE=1
+      - LAMBDA_IGNORE_ARCHITECTURE=1
+      - LAMBDA_DOCKER_NETWORK=tattoo-directory-local
+      - LAMBDA_REMOVE_CONTAINERS=true
+      - LAMBDA_FORWARD_URL=http://localstack:4566
+      
+      # Enhanced CloudWatch Logs Configuration
+      - CLOUDWATCH_LOGS_RETENTION_DAYS=${CLOUDWATCH_LOGS_RETENTION_DAYS:-7}
+      - LOGS_DELAY_TIME=500
+      
+      # Enhanced SNS Configuration
+      - SNS_DELAY_TIME=0
+      - SNS_SKIP_SIGNATURE_VALIDATION=1
+      
+      # Enhanced API Gateway Configuration
+      - GATEWAY_LISTEN=0.0.0.0:4566
+      - EDGE_PORT=4566
+      - EDGE_PORT_HTTP=4566
+      
+      # Service Endpoint Configuration
+      - AWS_ENDPOINT_URL=http://localhost:4566
+      - DYNAMODB_ENDPOINT=http://localhost:4566
+      - OPENSEARCH_ENDPOINT=http://localhost:4566
+      - S3_ENDPOINT=http://localhost:4566
+      - LAMBDA_ENDPOINT=http://localhost:4566
+      - LOGS_ENDPOINT=http://localhost:4566
+      - SNS_ENDPOINT=http://localhost:4566
+      - APIGATEWAY_ENDPOINT=http://localhost:4566
+      
     volumes:
+      # Docker socket for Lambda execution
       - "/var/run/docker.sock:/var/run/docker.sock"
+      
+      # Persistent data volumes
       - "localstack-data:/var/lib/localstack"
+      - "localstack-logs:/var/log/localstack"
+      - "localstack-tmp:/tmp/localstack"
+      
+      # Configuration and initialization scripts
       - "../../localstack-init:/etc/localstack/init/ready.d"
+      - "../../devtools/localstack-config:/etc/localstack/conf.d"
+      
+      # Lambda code volumes for development
+      - "../../backend/src:/opt/code/localstack/lambda-code:ro"
+      
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
       interval: 10s
@@ -34,13 +93,15 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1536M
+          memory: ${LOCALSTACK_MEMORY_LIMIT:-1536M}
           cpus: "1.0"
         reservations:
           memory: 768M
           cpus: "0.5"
     networks:
       - tattoo-directory-local
+    profiles:
+      - phase1
 
   backend:
     build:
@@ -53,12 +114,26 @@ services:
     env_file:
       - ../.env.local
     environment:
-      - AWS_ENDPOINT_URL=http://localstack:4566
+      # Enhanced AWS Service Configuration
+      - AWS_ENDPOINT_URL=${LOCALSTACK_INTERNAL_ENDPOINT:-http://localstack:4566}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      
+      # Enhanced Service Endpoints (internal container communication)
+      - DYNAMODB_ENDPOINT=${DYNAMODB_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - S3_ENDPOINT=${S3_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - LAMBDA_ENDPOINT=${LAMBDA_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - LOGS_ENDPOINT=${LOGS_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - SNS_ENDPOINT=${SNS_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - SQS_ENDPOINT=${SQS_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - EVENTS_ENDPOINT=${EVENTS_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - CLOUDWATCH_ENDPOINT=${CLOUDWATCH_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - APIGATEWAY_ENDPOINT=${APIGATEWAY_INTERNAL_ENDPOINT:-http://localstack:4566}
+      
+      # Application Configuration
       - DYNAMODB_TABLE_NAME=${DYNAMODB_TABLE_NAME}
-      - OPENSEARCH_ENDPOINT=${OPENSEARCH_ENDPOINT}
       - NODE_ENV=development
       - LAMBDA_TASK_ROOT=/var/task
       - ENABLE_DEBUG=${ENABLE_BACKEND_DEBUG:-false}
@@ -167,6 +242,119 @@ services:
     networks:
       - tattoo-directory-local
 
+  # Phase 2 LocalStack: Async Data Aggregation Services
+  localstack-phase2:
+    image: localstack/localstack:3.0
+    container_name: tattoo-directory-localstack-phase2
+    command: "/usr/bin/tini -s -- /usr/local/bin/docker-entrypoint.sh"
+    ports:
+      - "${LOCALSTACK_PORT:-4566}:4566"
+      - "${LOCALSTACK_EXTERNAL_PORT_START:-4510}-${LOCALSTACK_EXTERNAL_PORT_END:-4559}:4510-4559"
+    env_file:
+      - ../.env.local
+    environment:
+      # Phase 2 Services: All Phase 1 + SQS, EventBridge, CloudWatch Metrics
+      - SERVICES=${LOCALSTACK_PHASE2_SERVICES:-dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager,logs,sns,sqs,events,cloudwatch}
+      - DEBUG=${LOCALSTACK_DEBUG:-1}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_HOST=localstack
+      - PERSISTENCE=${LOCALSTACK_PERSISTENCE:-1}
+      - DATA_DIR=/var/lib/localstack/data
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_REMOTE_DOCKER=false
+      - LOCALSTACK_VOLUME_DIR=/var/lib/localstack
+      - SKIP_INFRA_DOWNLOADS=1
+      - LOCALSTACK_WEB_UI=1
+      
+      # Enhanced DynamoDB Configuration with Streams
+      - DYNAMODB_SHARE_DB=1
+      - DYNAMODB_IN_MEMORY=0
+      - DYNAMODB_OPTIMIZE_DB_BEFORE_STARTUP=1
+      - DYNAMODB_HEAP_SIZE=256m
+      
+      # Enhanced OpenSearch Configuration
+      - OPENSEARCH_CUSTOM_BACKEND=http://localhost:4571
+      - OPENSEARCH_ENDPOINT_STRATEGY=domain
+      - OPENSEARCH_MULTI_CLUSTER=0
+      
+      # Enhanced Lambda Configuration
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_STAY_OPEN_MODE=1
+      - LAMBDA_IGNORE_ARCHITECTURE=1
+      - LAMBDA_DOCKER_NETWORK=tattoo-directory-local
+      - LAMBDA_REMOVE_CONTAINERS=true
+      - LAMBDA_FORWARD_URL=http://localstack:4566
+      
+      # Enhanced CloudWatch Configuration (Logs + Metrics)
+      - CLOUDWATCH_LOGS_RETENTION_DAYS=${CLOUDWATCH_LOGS_RETENTION_DAYS:-7}
+      - LOGS_DELAY_TIME=500
+      - CLOUDWATCH_DELAY_TIME=500
+      
+      # Enhanced SNS Configuration
+      - SNS_DELAY_TIME=0
+      - SNS_SKIP_SIGNATURE_VALIDATION=1
+      
+      # Enhanced SQS Configuration
+      - SQS_DELAY_RECENTLY_DELETED=${SQS_DELAY_RECENTLY_DELETED:-0}
+      - SQS_ENDPOINT_STRATEGY=domain
+      
+      # Enhanced EventBridge Configuration
+      - EVENTBRIDGE_LAMBDA_FORWARD_URL=http://localstack:4566
+      - EVENTS_DELAY_TIME=500
+      
+      # Enhanced API Gateway Configuration
+      - GATEWAY_LISTEN=0.0.0.0:4566
+      - EDGE_PORT=4566
+      - EDGE_PORT_HTTP=4566
+      
+      # Service Endpoint Configuration
+      - AWS_ENDPOINT_URL=http://localhost:4566
+      - DYNAMODB_ENDPOINT=http://localhost:4566
+      - OPENSEARCH_ENDPOINT=http://localhost:4566
+      - S3_ENDPOINT=http://localhost:4566
+      - LAMBDA_ENDPOINT=http://localhost:4566
+      - LOGS_ENDPOINT=http://localhost:4566
+      - SNS_ENDPOINT=http://localhost:4566
+      - SQS_ENDPOINT=http://localhost:4566
+      - EVENTS_ENDPOINT=http://localhost:4566
+      - CLOUDWATCH_ENDPOINT=http://localhost:4566
+      - APIGATEWAY_ENDPOINT=http://localhost:4566
+      
+    volumes:
+      # Docker socket for Lambda execution
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      
+      # Persistent data volumes
+      - "localstack-data:/var/lib/localstack"
+      - "localstack-logs:/var/log/localstack"
+      - "localstack-tmp:/tmp/localstack"
+      
+      # Configuration and initialization scripts
+      - "../../localstack-init:/etc/localstack/init/ready.d"
+      - "../../devtools/localstack-config:/etc/localstack/conf.d"
+      
+      # Lambda code volumes for development
+      - "../../backend/src:/opt/code/localstack/lambda-code:ro"
+      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: ${LOCALSTACK_PHASE2_MEMORY_LIMIT:-2G}
+          cpus: "1.5"
+        reservations:
+          memory: 1G
+          cpus: "0.75"
+    networks:
+      - tattoo-directory-local
+    profiles:
+      - phase2
+
   data-seeder:
     build:
       context: ../../scripts
@@ -204,5 +392,26 @@ networks:
     driver: bridge
 
 volumes:
+  # Persistent LocalStack data volume for DynamoDB, OpenSearch, S3, etc.
   localstack-data:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/devtools/localstack-data
+  
+  # LocalStack logs volume for debugging and monitoring
+  localstack-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/devtools/localstack-logs
+  
+  # Temporary LocalStack files (Lambda execution, etc.)
+  localstack-tmp:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/devtools/localstack-tmp

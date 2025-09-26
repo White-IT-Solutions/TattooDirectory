@@ -1,0 +1,88 @@
+{
+  "phase1": {
+    "description": "Core Platform Services for Phase 1 Development",
+    "services": [
+      "dynamodb",
+      "opensearch",
+      "s3",
+      "apigateway",
+      "lambda",
+      "iam",
+      "secretsmanager",
+      "logs",
+      "sns"
+    ],
+    "features": {
+      "dynamodb_streams": true,
+      "cloudwatch_logs": true,
+      "sns_notifications": true,
+      "lambda_triggers": true
+    },
+    "endpoints": {
+      "dynamodb": "http://localhost:4566",
+      "opensearch": "http://localhost:4566",
+      "s3": "http://localhost:4566",
+      "apigateway": "http://localhost:4566",
+      "lambda": "http://localhost:4566",
+      "logs": "http://localhost:4566",
+      "sns": "http://localhost:4566"
+    }
+  },
+  "phase2": {
+    "description": "Async Data Aggregation Services for Phase 2 Development",
+    "services": [
+      "dynamodb",
+      "opensearch",
+      "s3",
+      "apigateway",
+      "lambda",
+      "iam",
+      "secretsmanager",
+      "logs",
+      "sns",
+      "sqs",
+      "events",
+      "cloudwatch"
+    ],
+    "features": {
+      "dynamodb_streams": true,
+      "cloudwatch_logs": true,
+      "cloudwatch_metrics": true,
+      "sns_notifications": true,
+      "sqs_queues": true,
+      "eventbridge_rules": true,
+      "lambda_triggers": true,
+      "dead_letter_queues": true
+    },
+    "endpoints": {
+      "dynamodb": "http://localhost:4566",
+      "opensearch": "http://localhost:4566",
+      "s3": "http://localhost:4566",
+      "apigateway": "http://localhost:4566",
+      "lambda": "http://localhost:4566",
+      "logs": "http://localhost:4566",
+      "sns": "http://localhost:4566",
+      "sqs": "http://localhost:4566",
+      "events": "http://localhost:4566",
+      "cloudwatch": "http://localhost:4566"
+    }
+  },
+  "resource_limits": {
+    "phase1": {
+      "memory": "1536M",
+      "cpu": "1.0"
+    },
+    "phase2": {
+      "memory": "2G",
+      "cpu": "1.5"
+    }
+  },
+  "data_persistence": {
+    "volumes": ["localstack-data", "localstack-logs", "localstack-tmp"],
+    "directories": [
+      "devtools/localstack-data",
+      "devtools/localstack-logs",
+      "devtools/localstack-tmp"
+    ]
+  }
+}
