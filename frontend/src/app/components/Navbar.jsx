@@ -1,41 +1,44 @@
 "use client";
-import Link from "next/link";
+import { 
+  EnhancedNavbar,
+  KeyboardNavigationProvider,
+  ContextualHelpProvider,
+  MobileNavigation
+} from '../../design-system/components/navigation';
+
+// Navigation items configuration
+const navItems = [
+  { href: '/artists', label: 'Artists' },
+  { href: '/studios', label: 'Studios' },
+  { href: '/styles', label: 'Styles' }
+];
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-10 bg-inhereit/30 backdrop-filter backdrop-blur-lg border-b border-gray-950">
-      <div className=" mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <span className="text-2xl text-white font-semibold">
-            <Link
-              href="/"
-              className="text-2xl font-bold tracking-tight text-grey hover:text-gray-400"
-            >
-              TD
-            </Link>
-          </span>
-          <div className="flex space-x-4 text-white">
-            <Link
-              href="/artists"
-              className="text-base text-gray-200 hover:text-gray-400 transition"
-            >
-              Artists
-            </Link>
-            <Link
-              href="/"
-              className="text-base text-gray-200 hover:text-gray-400 transition"
-            >
-              Home
-            </Link>
-            {/* <Link
-              href="/login"
-              className="text-base text-gray-200 hover:text-gray-400 transition"
-            >
-              Log In
-            </Link> */}
-          </div>{" "}
-        </div>
-      </div>
-    </nav>
+    <KeyboardNavigationProvider
+      showFocusIndicator={true}
+      showSkipLinks={true}
+    >
+      <ContextualHelpProvider
+        showHelpTrigger={true}
+        autoStartOnboarding={false}
+      >
+        {/* Enhanced Desktop/Tablet Navigation */}
+        <EnhancedNavbar
+          navItems={navItems}
+          showSearch={true}
+          showBreadcrumbs={true}
+          autoHide={false}
+          size="compact"
+        />
+
+        {/* Mobile Navigation */}
+        <MobileNavigation
+          navItems={navItems}
+          showSearch={true}
+          autoHide={true}
+        />
+      </ContextualHelpProvider>
+    </KeyboardNavigationProvider>
   );
 }

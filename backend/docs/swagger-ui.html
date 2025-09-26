@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tattoo Artist Directory API - Local Development</title>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+  <link rel="icon" type="image/png" href="https://unpkg.com/swagger-ui-dist@5.10.5/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://unpkg.com/swagger-ui-dist@5.10.5/favicon-16x16.png" sizes="16x16" />
+  <style>
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      margin:0;
+      background: #fafafa;
+    }
+    .swagger-ui .topbar {
+      background-color: #2c3e50;
+    }
+    .swagger-ui .topbar .download-url-wrapper {
+      display: none;
+    }
+    .info .title {
+      color: #2c3e50;
+    }
+    .lambda-info {
+      background: #e8f4fd;
+      border: 1px solid #bee5eb;
+      border-radius: 4px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .lambda-info h4 {
+      color: #0c5460;
+      margin-top: 0;
+    }
+    .lambda-info p {
+      margin-bottom: 0;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  
+  <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+  
+  <script>
+    window.onload = function() {
+      // Build a system
+      const ui = SwaggerUIBundle({
+        url: '/openapi/openapi.yaml',
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        tryItOutEnabled: true,
+        filter: true,
+        displayOperationId: true,
+        displayRequestDuration: true,
+        docExpansion: 'list',
+        defaultModelsExpandDepth: 1,
+        defaultModelExpandDepth: 1,
+        defaultModelRendering: 'example',
+        showExtensions: true,
+        showCommonExtensions: true,
+        onComplete: function() {
+          // Add custom info about Lambda RIE integration
+          const infoSection = document.querySelector('.info');
+          if (infoSection) {
+            const lambdaInfo = document.createElement('div');
+            lambdaInfo.className = 'lambda-info';
+            lambdaInfo.innerHTML = `
+              <h4>🚀 Local Development Environment</h4>
+              <p><strong>Backend:</strong> AWS Lambda Runtime Interface Emulator on port 9000</p>
+              <p><strong>Note:</strong> All API calls are automatically transformed to work with the Lambda RIE format.</p>
+              <p><strong>Services:</strong> LocalStack (DynamoDB, OpenSearch) on port 4566</p>
+            `;
+            infoSection.appendChild(lambdaInfo);
+          }
+        },
+        requestInterceptor: function(request) {
+          // Transform requests to work with Lambda RIE
+          if (request.url.includes('/v1/')) {
+            const originalUrl = request.url;
+            const urlParts = originalUrl.split('/v1/');
+            const path = urlParts[1] || '';
+            const method = request.method.toUpperCase();
+            
+            // Create Lambda event structure
+            const lambdaEvent = {
+              httpMethod: method,
+              rawPath: '/v1/' + path.split('?')[0],
+              requestContext: {
+                http: {
+                  method: method
+                },
+                requestId: 'swagger-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+              },
+              headers: request.headers || {},
+              queryStringParameters: null,
+              pathParameters: null,
+              body: request.body || null
+            };
+            
+            // Parse query parameters
+            if (originalUrl.includes('?')) {
+              const queryString = originalUrl.split('?')[1];
+              const params = new URLSearchParams(queryString);
+              const queryParams = {};
+              for (const [key, value] of params) {
+                queryParams[key] = value;
+              }
+              if (Object.keys(queryParams).length > 0) {
+                lambdaEvent.queryStringParameters = queryParams;
+              }
+            }
+            
+            // Parse path parameters for artist ID
+            const pathMatch = path.match(/^artists\/([^\/\?]+)/);
+            if (pathMatch) {
+              lambdaEvent.pathParameters = {
+                artistId: pathMatch[1]
+              };
+            }
+            
+            // Transform to Lambda RIE format
+            request.url = 'http://localhost:9000/2015-03-31/functions/function/invocations';
+            request.method = 'POST';
+            request.headers = {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            };
+            request.body = JSON.stringify(lambdaEvent);
+            
+            console.log('Transformed request:', {
+              originalUrl: originalUrl,
+              lambdaEvent: lambdaEvent,
+              newUrl: request.url
+            });
+          }
+          
+          return request;
+        },
+        responseInterceptor: function(response) {
+          // Handle Lambda RIE responses
+          if (response.url.includes('/2015-03-31/functions/function/invocations')) {
+            try {
+              const lambdaResponse = JSON.parse(response.text);
+              
+              console.log('Lambda response:', lambdaResponse);
+              
+              // Extract the actual response from Lambda format
+              if (lambdaResponse.statusCode !== undefined) {
+                response.status = lambdaResponse.statusCode;
+                response.text = lambdaResponse.body;
+                
+                // Update headers if present
+                if (lambdaResponse.headers) {
+                  response.headers = Object.assign(response.headers || {}, lambdaResponse.headers);
+                }
+                
+                // Ensure proper content type for JSON responses
+                if (lambdaResponse.headers && lambdaResponse.headers['Content-Type']) {
+                  response.headers['content-type'] = lambdaResponse.headers['Content-Type'];
+                }
+              }
+            } catch (e) {
+              console.warn('Failed to parse Lambda response:', e);
+              console.warn('Raw response:', response.text);
+            }
+          }
+          
+          return response;
+        }
+      });
+      
+      window.ui = ui;
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+/**
+ * Animation Utilities CSS
+ * Comprehensive animation system for micro-interactions and transitions
+ */
+
+/* ===== KEYFRAME DEFINITIONS ===== */
+
+/* Loading Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+  0%, 100% { 
+    transform: translateY(-25%); 
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1); 
+  }
+  50% { 
+    transform: none; 
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1); 
+  }
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+/* Page Transition Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideInFromLeft {
+  from { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* Micro-feedback Animations */
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); 
+  }
+  100% { transform: scale(1); }
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ripple {
+  0% { 
+    transform: scale(0); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: scale(4); 
+    opacity: 0; 
+  }
+}
+
+/* Tooltip Animations */
+@keyframes tooltipFadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes tooltipFadeOutDown {
+  from { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+}
+
+/* Modal Animations */
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalContentSlideIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.95) translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+@keyframes modalContentSlideOut {
+  from { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: scale(0.95) translateY(-10px); 
+  }
+}
+
+/* Toast Animations */
+@keyframes toastSlideInRight {
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes toastSlideOutRight {
+  from { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+  to { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Base Animation Classes */
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-bounce { animation: bounce 1s infinite; }
+.animate-skeleton { 
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200px 100%;
+}
+
+/* Page Transition Classes */
+.animate-fade-in { animation: fadeIn 300ms ease-out; }
+.animate-slide-in-right { animation: slideInFromRight 300ms ease-out; }
+.animate-slide-in-left { animation: slideInFromLeft 300ms ease-out; }
+.animate-slide-up { animation: slideUp 300ms ease-out; }
+
+/* Micro-feedback Classes */
+.animate-success-pulse { animation: successPulse 600ms ease-out; }
+.animate-error-shake { animation: errorShake 400ms ease-in-out; }
+.animate-button-press { animation: buttonPress 150ms ease-out; }
+.animate-ripple { animation: ripple 600ms ease-out; }
+
+/* Tooltip Classes */
+.animate-tooltip-in { animation: tooltipFadeInUp 200ms ease-out; }
+.animate-tooltip-out { animation: tooltipFadeOutDown 150ms ease-in; }
+
+/* Enhanced Tooltip Animations with 0.3s delay */
+.tooltip-delayed {
+  animation-delay: 300ms;
+  animation-fill-mode: both;
+}
+
+.tooltip-instant {
+  animation-delay: 0ms;
+}
+
+/* Modal Classes */
+.animate-backdrop-in { animation: backdropFadeIn 200ms ease-out; }
+.animate-modal-in { animation: modalContentSlideIn 300ms ease-out; }
+.animate-modal-out { animation: modalContentSlideOut 200ms ease-in; }
+
+/* Toast Classes */
+.animate-toast-in { animation: toastSlideInRight 300ms ease-out; }
+.animate-toast-out { animation: toastSlideOutRight 200ms ease-in; }
+
+/* ===== HOVER EFFECT UTILITIES ===== */
+
+/* Scale Effects */
+.hover-scale {
+  transition: transform var(--duration-200) var(--ease-out);
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-scale-subtle {
+  transition: transform var(--duration-200) var(--ease-out);
+}
+.hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
+.hover-scale-down {
+  transition: transform var(--duration-200) var(--ease-out);
+}
+.hover-scale-down:hover {
+  transform: scale(0.95);
+}
+
+/* Lift Effects */
+.hover-lift {
+  transition: all var(--duration-200) var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-lift-subtle {
+  transition: all var(--duration-200) var(--ease-out);
+}
+.hover-lift-subtle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Glow Effects */
+.hover-glow {
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(92, 71, 92, 0.3);
+}
+
+.hover-glow-accent {
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+.hover-glow-accent:hover {
+  box-shadow: 0 0 20px rgba(239, 131, 84, 0.3);
+}
+
+/* Color Transitions */
+.hover-color {
+  transition: color var(--duration-200) var(--ease-out);
+}
+
+.hover-bg {
+  transition: background-color var(--duration-200) var(--ease-out);
+}
+
+.hover-border {
+  transition: border-color var(--duration-200) var(--ease-out);
+}
+
+/* ===== FOCUS EFFECT UTILITIES ===== */
+
+.focus-ring {
+  transition: all var(--duration-150) var(--ease-out);
+}
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring-offset), 0 0 0 4px var(--focus-ring);
+}
+
+.focus-glow {
+  transition: box-shadow var(--duration-150) var(--ease-out);
+}
+.focus-glow:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(92, 71, 92, 0.3);
+}
+
+.focus-outline {
+  transition: outline var(--duration-150) var(--ease-out);
+}
+.focus-outline:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ===== ACTIVE/PRESS EFFECT UTILITIES ===== */
+
+.active-scale {
+  transition: transform var(--duration-75) var(--ease-in);
+}
+.active-scale:active {
+  transform: scale(0.95);
+}
+
+.active-scale-subtle {
+  transition: transform var(--duration-75) var(--ease-in);
+}
+.active-scale-subtle:active {
+  transform: scale(0.98);
+}
+
+.active-brightness {
+  transition: filter var(--duration-75) var(--ease-in);
+}
+.active-brightness:active {
+  filter: brightness(0.9);
+}
+
+/* ===== COMPONENT-SPECIFIC ANIMATION PATTERNS ===== */
+
+/* Button Animation Pattern */
+.btn-animated {
+  transition: all var(--duration-200) var(--ease-out);
+}
+.btn-animated:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn-animated:active {
+  transform: scale(0.95);
+}
+.btn-animated:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring-offset), 0 0 0 4px var(--focus-ring);
+}
+
+/* Card Animation Pattern */
+.card-animated {
+  transition: all var(--duration-200) var(--ease-out);
+}
+.card-animated:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.card-animated:focus-within {
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+/* Input Animation Pattern */
+.input-animated {
+  transition: all var(--duration-150) var(--ease-out);
+}
+.input-animated:focus {
+  outline: none;
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 3px rgba(92, 71, 92, 0.1);
+}
+.input-animated.error {
+  border-color: var(--feedback-error);
+}
+.input-animated.error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Link Animation Pattern */
+.link-animated {
+  transition: color var(--duration-200) var(--ease-out);
+  position: relative;
+}
+.link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width var(--duration-200) var(--ease-out);
+}
+.link-animated:hover::after {
+  width: 100%;
+}
+
+/* ===== LOADING STATE UTILITIES ===== */
+
+.loading-skeleton {
+  background: linear-gradient(90deg, 
+    var(--background-muted) 25%, 
+    var(--background-subtle) 50%, 
+    var(--background-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* ===== ACCESSIBILITY UTILITIES ===== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .focus-ring:focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize for animations */
+.animate-optimized {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

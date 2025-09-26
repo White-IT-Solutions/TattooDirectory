@@ -1,0 +1,7 @@
+# This is a placeholder for a test exterior image
+# In a real implementation, this would be a JPEG image file
+# Filename: test-exterior-traditional.jpg
+# Dimensions: 1000x667
+# Format: JPEG
+# Description: Traditional tattoo parlour storefront with vintage signage
+# Test scenarios: webp_conversion, thumbnail_generation

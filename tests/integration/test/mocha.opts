@@ -1,0 +1,5 @@
+--recursive
+--timeout 30000
+--reporter spec
+--require ./setup/test-setup.js
+--exit

@@ -1,0 +1,791 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input Visual Tests Basic Input Variants renders default input correctly: input-default 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-xmqs3x8pn"
+      placeholder="Default input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Basic Input Variants renders email input correctly: input-email 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-xw758pvcd"
+      placeholder="Email input"
+      type="email"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Basic Input Variants renders password input correctly: input-password 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)] pr-10"
+      id="input-2ptfxxga4"
+      placeholder="Password input"
+      type="password"
+    />
+    <button
+      aria-label="Show password"
+      class="absolute inset-y-0 right-0 pr-3 flex items-center"
+      tabindex="-1"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-5 w-5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+        <path
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Basic Input Variants renders search input correctly: input-search 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-5 w-5 text-[var(--text-muted)]"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)] pl-10"
+      id="input-nm297qxab"
+      placeholder="Search input"
+      type="search"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Basic Input Variants renders text input correctly: input-text 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-5uqkcfd5z"
+      placeholder="Text input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Complex Combinations renders error state with all elements correctly: input-error-complete 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--feedback-error)] mb-2"
+    for="input-gchsxfc76"
+  >
+    Email Address
+    <span
+      aria-label="required"
+      class="text-[var(--feedback-error)] ml-1"
+    >
+      *
+    </span>
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-gchsxfc76-error"
+      aria-invalid="true"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-error)] bg-[var(--feedback-error-bg)] hover:border-[var(--color-error-600)] focus:border-[var(--feedback-error)] focus:ring-[var(--feedback-error)] h-[var(--input-height-lg)] px-[var(--spacing-4)] text-[var(--font-size-lg)] rounded-[var(--radius-md)]"
+      id="input-gchsxfc76"
+      placeholder="Enter your email"
+      required=""
+      type="email"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-error)] mt-2"
+    id="input-gchsxfc76-error"
+    role="alert"
+  >
+    Please enter a valid email address
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Complex Combinations renders password input with all features correctly: input-password-complete 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-1bb5yh83x"
+  >
+    Password
+    <span
+      aria-label="required"
+      class="text-[var(--feedback-error)] ml-1"
+    >
+      *
+    </span>
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-1bb5yh83x-help"
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)] pr-10"
+      id="input-1bb5yh83x"
+      placeholder="Enter your password"
+      required=""
+      type="password"
+    />
+    <button
+      aria-label="Show password"
+      class="absolute inset-y-0 right-0 pr-3 flex items-center"
+      tabindex="-1"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-5 w-5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+        <path
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-1.5"
+    id="input-1bb5yh83x-help"
+  >
+    Must contain at least 8 characters
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Complex Combinations renders search input with label correctly: input-search-complete 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-2"
+    for="input-g9h0p3atz"
+  >
+    Search Artists
+  </label>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-6 w-6 text-[var(--text-muted)]"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
+    <input
+      aria-describedby="input-g9h0p3atz-help"
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-lg)] px-[var(--spacing-4)] text-[var(--font-size-lg)] rounded-[var(--radius-md)] pl-10"
+      id="input-g9h0p3atz"
+      placeholder="Search by name, style, or location"
+      type="search"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-2"
+    id="input-g9h0p3atz-help"
+  >
+    Use keywords to find tattoo artists
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Complex Combinations renders success state with all elements correctly: input-success-complete 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--feedback-success)] mb-1.5"
+    for="input-huusuqs9g"
+  >
+    Username
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-success)] bg-[var(--feedback-success-bg)] hover:border-[var(--color-success-600)] focus:border-[var(--feedback-success)] focus:ring-[var(--feedback-success)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-huusuqs9g"
+      placeholder="Enter your username"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-success)] mt-1.5"
+    id="input-huusuqs9g-help"
+  >
+    Username is available
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Disabled State renders disabled input correctly: input-disabled 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-twaid637n"
+  >
+    Disabled Input
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-twaid637n-help"
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      disabled=""
+      id="input-twaid637n"
+      placeholder="This input is disabled"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-1.5"
+    id="input-twaid637n-help"
+  >
+    This field is currently disabled
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Size Combinations renders all sizes with labels correctly: input-all-sizes 1`] = `
+<div
+  class="space-y-4"
+>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1"
+      for="input-59ap6bti1"
+    >
+      Small Input
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-sm)] px-[var(--input-padding-x)] text-[var(--font-size-sm)] rounded-[var(--radius)]"
+        id="input-59ap6bti1"
+        placeholder="Small size"
+        type="text"
+      />
+    </div>
+  </div>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+      for="input-vhj8pk8bw"
+    >
+      Medium Input
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+        id="input-vhj8pk8bw"
+        placeholder="Medium size"
+        type="text"
+      />
+    </div>
+  </div>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-2"
+      for="input-nehsyy6v8"
+    >
+      Large Input
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-lg)] px-[var(--spacing-4)] text-[var(--font-size-lg)] rounded-[var(--radius-md)]"
+        id="input-nehsyy6v8"
+        placeholder="Large size"
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Size Variants renders large input correctly: input-size-lg 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-lg)] px-[var(--spacing-4)] text-[var(--font-size-lg)] rounded-[var(--radius-md)]"
+      id="input-pi36viz6v"
+      placeholder="Large input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Size Variants renders medium input correctly: input-size-md 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-j76n7tu7y"
+      placeholder="Medium input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Size Variants renders small input correctly: input-size-sm 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-sm)] px-[var(--input-padding-x)] text-[var(--font-size-sm)] rounded-[var(--radius)]"
+      id="input-cdyx2l4lz"
+      placeholder="Small input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Validation State Combinations renders all validation states correctly: input-all-validation-states 1`] = `
+<div
+  class="space-y-4"
+>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+      for="input-f47jp96g8"
+    >
+      Default State
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-describedby="input-f47jp96g8-help"
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+        id="input-f47jp96g8"
+        placeholder="Default input"
+        type="text"
+      />
+    </div>
+    <div
+      class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-1.5"
+      id="input-f47jp96g8-help"
+    >
+      This is a default input
+    </div>
+  </div>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--feedback-error)] mb-1.5"
+      for="input-h3z5xjtt3"
+    >
+      Error State
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-describedby="input-h3z5xjtt3-error"
+        aria-invalid="true"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-error)] bg-[var(--feedback-error-bg)] hover:border-[var(--color-error-600)] focus:border-[var(--feedback-error)] focus:ring-[var(--feedback-error)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+        id="input-h3z5xjtt3"
+        placeholder="Error input"
+        type="text"
+      />
+    </div>
+    <div
+      class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-error)] mt-1.5"
+      id="input-h3z5xjtt3-error"
+      role="alert"
+    >
+      This field has an error
+    </div>
+  </div>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--feedback-success)] mb-1.5"
+      for="input-fb635oru3"
+    >
+      Success State
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-success)] bg-[var(--feedback-success-bg)] hover:border-[var(--color-success-600)] focus:border-[var(--feedback-success)] focus:ring-[var(--feedback-success)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+        id="input-fb635oru3"
+        placeholder="Success input"
+        type="text"
+      />
+    </div>
+    <div
+      class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-success)] mt-1.5"
+      id="input-fb635oru3-help"
+    >
+      This field is valid
+    </div>
+  </div>
+  <div
+    class="w-full"
+  >
+    <label
+      class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--feedback-warning)] mb-1.5"
+      for="input-rweij2bgc"
+    >
+      Warning State
+    </label>
+    <div
+      class="relative"
+    >
+      <input
+        aria-invalid="false"
+        class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-warning)] bg-[var(--feedback-warning-bg)] hover:border-[var(--color-warning-600)] focus:border-[var(--feedback-warning)] focus:ring-[var(--feedback-warning)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+        id="input-rweij2bgc"
+        placeholder="Warning input"
+        type="text"
+      />
+    </div>
+    <div
+      class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-warning)] mt-1.5"
+      id="input-rweij2bgc-help"
+    >
+      Please check this field
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Validation States renders error state correctly: input-error 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-9qjbomi36-error"
+      aria-invalid="true"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-error)] bg-[var(--feedback-error-bg)] hover:border-[var(--color-error-600)] focus:border-[var(--feedback-error)] focus:ring-[var(--feedback-error)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-9qjbomi36"
+      placeholder="Error input"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-error)] mt-1.5"
+    id="input-9qjbomi36-error"
+    role="alert"
+  >
+    This field is required
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Validation States renders success state correctly: input-success 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-success)] bg-[var(--feedback-success-bg)] hover:border-[var(--color-success-600)] focus:border-[var(--feedback-success)] focus:ring-[var(--feedback-success)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-ky0og6dnh"
+      placeholder="Success input"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-success)] mt-1.5"
+    id="input-ky0og6dnh-help"
+  >
+    Valid input
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests Validation States renders warning state correctly: input-warning 1`] = `
+<div
+  class="w-full"
+>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--feedback-warning)] bg-[var(--feedback-warning-bg)] hover:border-[var(--color-warning-600)] focus:border-[var(--feedback-warning)] focus:ring-[var(--feedback-warning)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-trk4bvlsn"
+      placeholder="Warning input"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--feedback-warning)] mt-1.5"
+    id="input-trk4bvlsn-help"
+  >
+    Please check this input
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests With Labels and Help Text renders complete input with all elements correctly: input-complete 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-635qcdean"
+  >
+    Full Name
+    <span
+      aria-label="required"
+      class="text-[var(--feedback-error)] ml-1"
+    >
+      *
+    </span>
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-635qcdean-help"
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-635qcdean"
+      placeholder="Enter your full name"
+      required=""
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-1.5"
+    id="input-635qcdean-help"
+  >
+    First and last name
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests With Labels and Help Text renders input with help text correctly: input-with-help-text 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-ejg7fig63"
+  >
+    Password
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-describedby="input-ejg7fig63-help"
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-ejg7fig63"
+      placeholder="Enter your password"
+      type="text"
+    />
+  </div>
+  <div
+    class="text-[var(--typography-caption-size)] font-weight-[var(--typography-caption-weight)] line-height-[var(--typography-caption-line-height)] text-[var(--text-secondary)] mt-1.5"
+    id="input-ejg7fig63-help"
+  >
+    Must be at least 8 characters long
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests With Labels and Help Text renders input with label correctly: input-with-label 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-oaqpti1b3"
+  >
+    Username
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-oaqpti1b3"
+      placeholder="Enter your username"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Visual Tests With Labels and Help Text renders input with required label correctly: input-with-required-label 1`] = `
+<div
+  class="w-full"
+>
+  <label
+    class="block font-semibold text-[var(--typography-label-size)] font-weight-[var(--typography-label-weight)] line-height-[var(--typography-label-line-height)] letter-spacing-[var(--typography-label-letter-spacing)] text-[var(--text-primary)] mb-1.5"
+    for="input-q7l07sujb"
+  >
+    Email Address
+    <span
+      aria-label="required"
+      class="text-[var(--feedback-error)] ml-1"
+    >
+      *
+    </span>
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      aria-invalid="false"
+      class="w-full transition-all duration-200 ease-out font-family-body text-[var(--typography-body-size)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--focus-ring-offset)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--background-muted)] border border-[var(--border-primary)] bg-[var(--background-primary)] text-[var(--text-primary)] border-[var(--border-primary)] hover:border-[var(--border-strong)] focus:border-[var(--interactive-primary)] h-[var(--input-height-md)] px-[var(--input-padding-x)] text-[var(--typography-body-size)] rounded-[var(--input-radius)]"
+      id="input-q7l07sujb"
+      placeholder="Enter your email"
+      required=""
+      type="text"
+    />
+  </div>
+</div>
+`;

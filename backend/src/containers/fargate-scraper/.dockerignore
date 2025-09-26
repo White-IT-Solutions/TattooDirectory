@@ -1,0 +1,44 @@
+# Node modules (will be installed in container)
+node_modules/
+
+# Test files
+__tests__/
+*.test.js
+jest.config.js
+
+# Development files
+.env
+.env.local
+.env.development
+.env.test
+
+# Documentation
+README.md
+
+# Git files
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage reports
+coverage/
+
+# Build artifacts
+dist/
+build/

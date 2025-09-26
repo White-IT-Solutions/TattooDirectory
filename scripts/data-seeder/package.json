@@ -1,0 +1,33 @@
+{
+  "name": "tattoo-directory-data-seeder",
+  "version": "1.0.0",
+  "description": "Data seeding container for Tattoo Directory local development",
+  "main": "seed.js",
+  "scripts": {
+    "start": "node seed.js",
+    "seed": "node seed.js",
+    "validate": "node validate-data.js",
+    "clean": "node clean-data.js",
+    "manage": "node data-manager.js",
+    "selective": "node selective-seeder.js",
+    "validate-enhanced": "node data-validator.js",
+    "reset": "node data-reset.js",
+    "test-utilities": "node test-utilities.js",
+    "integration-test": "node integration-test.js",
+    "final-validation": "node final-validation.js",
+    "migrate": "node data-migration-utility.js",
+    "monitor": "node data-monitoring-utility.js",
+    "sync": "node data-sync-utility.js",
+    "enhanced-integration-test": "node enhanced-integration-test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "joi": "^17.11.0",
+    "axios": "^1.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Tattoo Directory Team",
+  "license": "MIT"
+}

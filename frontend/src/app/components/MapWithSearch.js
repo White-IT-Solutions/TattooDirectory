@@ -9,6 +9,8 @@ import {
 import { api } from "../../lib/api";
 import { useSearchParams } from "next/navigation";
 import StyleFilter from "./StyleFilter";
+import { safeApiCall } from "../../lib/dev-utils";
+import { mockArtistData as mockArtists } from "../data/mockArtistData";
 
 const darkMapStyle = [
   {
@@ -207,15 +209,33 @@ export default function MapWithSearch() {
         let result;
 
         if (selectedStyles.length > 0) {
-          result = await api.getArtistsByStyles(selectedStyles);
+          result = await safeApiCall(
+            () => api.getArtistsByStyles(selectedStyles),
+            { items: mockArtists.filter((artist) =>
+              artist.styles.some((style) => selectedStyles.includes(style))
+            )}
+          );
         } else {
-          result = await api.getArtists();
+          result = await safeApiCall(
+            () => api.getArtists(),
+            { items: mockArtists }
+          );
         }
 
         setFilteredArtists(result.items || []);
       } catch (error) {
         console.error("Failed to fetch artists:", error);
-        setFilteredArtists([]);
+        // Fallback to mock data
+        const selectedStyles = searchParams.get("styles")?.split(",") || [];
+        if (selectedStyles.length > 0) {
+          setFilteredArtists(
+            mockArtists.filter((artist) =>
+              artist.styles.some((style) => selectedStyles.includes(style))
+            )
+          );
+        } else {
+          setFilteredArtists(mockArtists);
+        }
       }
     };
 

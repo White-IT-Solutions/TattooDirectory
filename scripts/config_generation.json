@@ -1,0 +1,49 @@
+{
+  "gcp_settings": {
+    "project_id": "your-gcp-project-id",
+    "location": "us-central1",
+    "model_name": "imagegeneration@006"
+  },
+  "generation_targets": {
+    "tattoo_images": 1000,
+    "studios": 100,
+    "images_per_studio": 6
+  },
+  "image_settings": {
+    "tattoo_portfolio": {
+      "aspect_ratio": "1:1",
+      "resolution": "1024x1024",
+      "safety_filter_level": "block_some",
+      "person_generation": "allow_adult"
+    },
+    "studio_images": {
+      "aspect_ratio": "16:9",
+      "resolution": "1024x576",
+      "safety_filter_level": "block_some",
+      "person_generation": "allow_adult"
+    }
+  },
+  "rate_limiting": {
+    "tattoo_delay_seconds": 1.5,
+    "studio_delay_seconds": 1.0,
+    "error_retry_delay": 5.0
+  },
+  "output_settings": {
+    "base_directory": "generated_content",
+    "organize_by_style": true,
+    "include_metadata": true,
+    "skip_existing": true
+  },
+  "social_media_optimization": {
+    "instagram_ready": true,
+    "facebook_ready": true,
+    "twitter_ready": true,
+    "linkedin_ready": true
+  },
+  "quality_settings": {
+    "professional_grade": true,
+    "portfolio_suitable": true,
+    "print_ready": false,
+    "web_optimized": true
+  }
+}

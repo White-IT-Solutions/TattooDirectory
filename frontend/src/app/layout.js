@@ -3,6 +3,9 @@ import "./globals.css";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { ThemeProvider } from "../design-system/components/ui/ThemeProvider";
+import { ToastProvider } from "../design-system/components/feedback/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,19 +29,29 @@ export default function RootLayout({ children }) {
         <link
           href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
           rel="stylesheet"
-        ></link>
-
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap"
           rel="stylesheet"
-        ></link>
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ThemeProvider defaultTheme="system" enableTransitions={true}>
+          <ToastProvider 
+            position="top-right" 
+            maxToasts={5} 
+            defaultDuration={5000}
+          >
+            <ErrorBoundary>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+            </ErrorBoundary>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

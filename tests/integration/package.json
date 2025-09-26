@@ -1,0 +1,30 @@
+{
+  "name": "@tattoo-directory/integration-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for Tattoo Directory API with LocalStack backend",
+  "type": "module",
+  "scripts": {
+    "test": "npx mocha",
+    "test:watch": "npx mocha --watch",
+    "test:coverage": "npx c8 mocha",
+    "test:api": "npx mocha api/**/*.test.js",
+    "test:data": "npx mocha data/**/*.test.js",
+    "test:setup": "node setup/verify-environment.js",
+    "test:cleanup": "node setup/cleanup-test-data.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/lib-dynamodb": "^3.864.0",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "c8": "^8.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

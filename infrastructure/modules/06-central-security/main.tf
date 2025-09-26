@@ -23,27 +23,27 @@ resource "aws_guardduty_detector" "main" {
 
 resource "aws_guardduty_organization_configuration" "main" {
   auto_enable_organization_members = "ALL"
-  
+
   detector_id = aws_guardduty_detector.main.id
 
   datasources {
     s3_logs {
-        auto_enable = true
+      auto_enable = true
+    }
+    kubernetes {
+      audit_logs {
+        enable = false # Not using EKS
       }
-      kubernetes {
-        audit_logs {
-          enable = false # Not using EKS
-        }
-      }
-      malware_protection {
-        scan_ec2_instance_with_findings {
-          ebs_volumes {
-            auto_enable = false # Not using EC2
-          }
+    }
+    malware_protection {
+      scan_ec2_instance_with_findings {
+        ebs_volumes {
+          auto_enable = false # Not using EC2
         }
       }
     }
   }
+}
 
 # =============================================================================
 # SECURITY HUB
@@ -99,37 +99,37 @@ resource "aws_accessanalyzer_analyzer" "main" {
 # This role should be created in the Audit account, which is what the `aws.audit_primary` provider alias is assumed to do.
 resource "aws_iam_role" "log_auditor" {
   name = "${var.context.name_prefix}-LogAuditorRole"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
       Principal = {
         # Restrict who can assume this role to a specific list of principals passed in as a variable.
         AWS = var.log_auditor_principal_arns
       }
     }]
   })
-  
+
   tags = merge(var.context.common_tags, {
-    Name                           = "${var.context.name_prefix}-LogAuditorRole",
+    Name                             = "${var.context.name_prefix}-LogAuditorRole",
     "iam.amazonaws.com/role-purpose" = "log-auditing"
   })
 }
 
 # This policy grants the necessary permissions to read from the log buckets in the Log Archive account and decrypt the objects using the correct KMS key.
 resource "aws_iam_policy" "log_reader" {
-  name   = "${var.context.name_prefix}-LogArchiveReadAccessPolicy"
+  name = "${var.context.name_prefix}-LogArchiveReadAccessPolicy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid      = "AllowReadFromLogArchiveBuckets"
-        Effect   = "Allow"
-        Action   = [
-            "s3:GetObject",
-            "s3:ListBucket"
+        Sid    = "AllowReadFromLogArchiveBuckets"
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
         ]
         # Grant access to the bucket and objects within it for all relevant log buckets.
         # The bucket ARNs are passed in as a variable from the log-storage module.

@@ -1,0 +1,7 @@
+# This is a placeholder for a test gallery image
+# In a real implementation, this would be a JPEG image file
+# Filename: test-gallery-portfolio.jpg
+# Dimensions: 1200x800
+# Format: JPEG
+# Description: Portfolio wall display with framed tattoo photographs
+# Test scenarios: basic_upload, format_conversion, detail_preservation

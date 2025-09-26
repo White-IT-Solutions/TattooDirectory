@@ -1,0 +1,122 @@
+[
+  {
+    "studioId": "studio-multistyle-001",
+    "studioName": "Diverse Arts Collective",
+    "address": "56 Brick Lane, Spitalfields, London E1 6RF",
+    "postcode": "E1 6RF",
+    "geohash": "gcpvj0v",
+    "latitude": 51.5208,
+    "longitude": -0.0722,
+    "locationDisplay": "Spitalfields, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7247 1234",
+      "email": "collective@diversearts.co.uk",
+      "website": "https://diversearts.co.uk",
+      "instagram": "@diverseartscollective"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001"],
+    "artistCount": 1,
+    "rating": 4.8,
+    "reviewCount": 167,
+    "established": 2016,
+    "specialties": ["traditional", "realism", "blackwork", "neo_traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/exterior-1.jpg",
+        "description": "Artistic collective entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/interior-1.jpg",
+        "description": "Multi-style workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/interior-2.jpg",
+        "description": "Diverse art stations",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/gallery-1.jpg",
+        "description": "Traditional art collection",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/gallery-2.jpg",
+        "description": "Realism portfolio wall",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-001/gallery-3.jpg",
+        "description": "Blackwork showcase",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-multistyle-002",
+    "studioName": "All Styles Studio Manchester",
+    "address": "78 Tib Street, Northern Quarter, Manchester M4 1LG",
+    "postcode": "M4 1LG",
+    "geohash": "gcw2j2k",
+    "latitude": 53.4845,
+    "longitude": -2.2365,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 834 5678",
+      "email": "info@allstylesstudio.co.uk",
+      "website": "https://allstylesstudio.co.uk",
+      "instagram": "@allstylesstudiomanchester"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-002", "artist-003"],
+    "artistCount": 2,
+    "rating": 4.7,
+    "reviewCount": 234,
+    "established": 2014,
+    "specialties": ["traditional", "realism", "blackwork", "neo_traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-002/exterior-1.jpg",
+        "description": "Northern Quarter studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-002/interior-1.jpg",
+        "description": "Versatile artist workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-multistyle-002/gallery-1.jpg",
+        "description": "Multi-style portfolio display",
+        "isPrimary": false
+      }
+    ]
+  }
+]

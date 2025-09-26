@@ -1,0 +1,122 @@
+[
+  {
+    "studioId": "studio-highrated-001",
+    "studioName": "Elite Ink London",
+    "address": "45 Marylebone High Street, Marylebone, London W1U 5HG",
+    "postcode": "W1U 5HG",
+    "geohash": "gcpvn4k",
+    "latitude": 51.5186,
+    "longitude": -0.1493,
+    "locationDisplay": "Marylebone, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7935 1234",
+      "email": "bookings@eliteinklondon.com",
+      "website": "https://eliteinklondon.com",
+      "instagram": "@eliteinklondon"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-001"],
+    "artistCount": 1,
+    "rating": 4.9,
+    "reviewCount": 156,
+    "established": 2010,
+    "specialties": ["realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-001/exterior-1.jpg",
+        "description": "Premium Marylebone location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-001/interior-1.jpg",
+        "description": "Luxury tattoo suite",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-001/interior-2.jpg",
+        "description": "Premium equipment setup",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-001/gallery-1.jpg",
+        "description": "Award-winning portfolio display",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-highrated-002",
+    "studioName": "Prestige Tattoo Studio",
+    "address": "78 King's Road, Chelsea, London SW3 4UD",
+    "postcode": "SW3 4UD",
+    "geohash": "gcpvh6j",
+    "latitude": 51.4925,
+    "longitude": -0.1687,
+    "locationDisplay": "Chelsea, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7352 5678",
+      "email": "studio@prestigetattoo.london",
+      "website": "https://prestigetattoo.london",
+      "instagram": "@prestigetattoolondon"
+    },
+    "openingHours": {
+      "monday": "11:00-19:00",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-002", "artist-003"],
+    "artistCount": 2,
+    "rating": 4.8,
+    "reviewCount": 234,
+    "established": 2008,
+    "specialties": ["traditional", "realism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-002/exterior-1.jpg",
+        "description": "Elegant Chelsea studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-002/interior-1.jpg",
+        "description": "Designer interior workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-002/interior-2.jpg",
+        "description": "Private consultation room",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-002/gallery-1.jpg",
+        "description": "Master artist portfolio",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-highrated-002/gallery-2.jpg",
+        "description": "Traditional art collection",
+        "isPrimary": false
+      }
+    ]
+  }
+]

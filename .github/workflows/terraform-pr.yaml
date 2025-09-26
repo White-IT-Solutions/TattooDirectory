@@ -1,0 +1,49 @@
+# .github/workflows/terraform-pr.yml
+
+name: 'Terraform PR Validation'
+
+# This workflow runs on pull requests targeting the release branches
+on:
+  pull_request:
+    branches:
+      - release-dev
+      - release-prod
+
+permissions:
+  id-token: write
+  contents: read
+  # Add this permission to allow the workflow to post comments on the PR
+  pull-requests: write
+
+jobs:
+  # This job runs if the PR is targeting the 'release-dev' branch
+  validate-dev:
+    name: 'Validate for Dev'
+    if: github.base_ref == 'refs/heads/release-dev'
+    uses: ./.github/workflows/terraform-reusable-deploy.yml
+    with:
+      environment: dev
+      tf_state_key: dev/terraform.tfstate
+      tf_var_file: environments/dev/main.tfvars
+      ssm_prefix: /tattoo-directory-dev
+      lambda_prefix: tattoo-directory-dev
+      kms_key_alias: alias/tattoo-directory-dev-main
+      apply_changes: false # This prevents the 'apply' step from running
+    secrets:
+      AWS_ROLE_TO_ASSUME_DEV: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+
+  # This job runs if the PR is targeting the 'release-prod' branch
+  validate-prod:
+    name: 'Validate for Prod'
+    if: github.base_ref == 'refs/heads/release-prod'
+    uses: ./.github/workflows/terraform-reusable-deploy.yml
+    with:
+      environment: prod
+      tf_state_key: prod/terraform.tfstate
+      tf_var_file: environments/prod/main.tfvars
+      ssm_prefix: /tattoo-directory-prod
+      lambda_prefix: tattoo-directory-prod
+      kms_key_alias: alias/tattoo-directory-prod-main
+      apply_changes: false # This prevents the 'apply' step from running
+    secrets:
+      AWS_ROLE_TO_ASSUME_PROD: ${{ secrets.AWS_ROLE_TO_ASSUME_PROD }}

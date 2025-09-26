@@ -1,0 +1,326 @@
+[
+  {
+    "styleId": "watercolour",
+    "styleName": "Watercolour",
+    "description": "Artistic style mimicking watercolor paintings with flowing colors and soft edges",
+    "characteristics": [
+      "flowing-colors",
+      "soft-edges",
+      "painterly",
+      "artistic"
+    ],
+    "popularMotifs": [
+      "flowers",
+      "butterflies",
+      "abstract-shapes",
+      "landscapes"
+    ],
+    "colorPalette": ["pastels", "bright-colors", "flowing-gradients"],
+    "difficulty": "advanced",
+    "timeOrigin": "2000s",
+    "aliases": ["watercolor", "paint-style"]
+  },
+  {
+    "styleId": "tribal",
+    "styleName": "Tribal",
+    "description": "Ancient tattoo style featuring bold black patterns inspired by indigenous cultures",
+    "characteristics": [
+      "bold-black-lines",
+      "cultural-patterns",
+      "symbolic",
+      "geometric-elements"
+    ],
+    "popularMotifs": ["spirals", "bands", "animal-totems", "cultural-symbols"],
+    "colorPalette": ["black", "minimal-color"],
+    "difficulty": "intermediate",
+    "timeOrigin": "ancient",
+    "aliases": ["indigenous", "cultural-tribal"]
+  },
+  {
+    "styleId": "traditional",
+    "styleName": "Traditional",
+    "description": "Classic American traditional tattoo style with bold lines, solid colors, and iconic imagery",
+    "characteristics": [
+      "bold-lines",
+      "solid-colors",
+      "iconic-imagery",
+      "vintage"
+    ],
+    "popularMotifs": [
+      "roses",
+      "anchors",
+      "eagles",
+      "pin-ups",
+      "swallows",
+      "hearts"
+    ],
+    "colorPalette": ["red", "blue", "yellow", "green", "black"],
+    "difficulty": "intermediate",
+    "timeOrigin": "1900s",
+    "aliases": ["american-traditional", "old-school"]
+  },
+  {
+    "styleId": "surrealism",
+    "styleName": "Surrealism",
+    "description": "Dreamlike and fantastical tattoo style inspired by surrealist art movement",
+    "characteristics": [
+      "dreamlike",
+      "fantastical",
+      "impossible-imagery",
+      "artistic"
+    ],
+    "popularMotifs": [
+      "melting-objects",
+      "floating-elements",
+      "distorted-reality",
+      "abstract-concepts"
+    ],
+    "colorPalette": [
+      "full-spectrum",
+      "unusual-combinations",
+      "artistic-freedom"
+    ],
+    "difficulty": "advanced",
+    "timeOrigin": "1990s",
+    "aliases": ["surreal", "dream-art"]
+  },
+  {
+    "styleId": "sketch",
+    "styleName": "Sketch",
+    "description": "Tattoo style that mimics pencil sketches and drawings with loose, artistic lines",
+    "characteristics": [
+      "loose-lines",
+      "sketch-like",
+      "artistic",
+      "unfinished-appearance"
+    ],
+    "popularMotifs": [
+      "portraits",
+      "animals",
+      "architectural-elements",
+      "artistic-studies"
+    ],
+    "colorPalette": ["black", "grey-tones", "minimal-color"],
+    "difficulty": "advanced",
+    "timeOrigin": "2000s",
+    "aliases": ["pencil-style", "drawing-style"]
+  },
+  {
+    "styleId": "realism",
+    "styleName": "Realism",
+    "description": "Photorealistic tattoo style that aims to replicate the appearance of photographs",
+    "characteristics": [
+      "photorealistic",
+      "detailed-shading",
+      "precise-proportions",
+      "lifelike"
+    ],
+    "popularMotifs": [
+      "portraits",
+      "animals",
+      "landscapes",
+      "objects",
+      "flowers"
+    ],
+    "colorPalette": ["full-spectrum", "natural-tones", "black-and-grey"],
+    "difficulty": "advanced",
+    "timeOrigin": "1980s",
+    "aliases": ["photo-realism", "realistic"]
+  },
+  {
+    "styleId": "psychedelic",
+    "styleName": "Psychedelic",
+    "description": "Vibrant and mind-bending tattoo style inspired by psychedelic art and culture",
+    "characteristics": [
+      "vibrant-colors",
+      "swirling-patterns",
+      "optical-illusions",
+      "trippy"
+    ],
+    "popularMotifs": [
+      "fractals",
+      "kaleidoscope-patterns",
+      "mushrooms",
+      "cosmic-elements"
+    ],
+    "colorPalette": ["neon-colors", "rainbow-spectrum", "fluorescent"],
+    "difficulty": "advanced",
+    "timeOrigin": "1960s",
+    "aliases": ["trippy", "psychedelia"]
+  },
+  {
+    "styleId": "old_school",
+    "styleName": "Old School",
+    "description": "Classic tattoo style with bold outlines, limited color palette, and traditional motifs",
+    "characteristics": [
+      "bold-outlines",
+      "limited-colors",
+      "classic-motifs",
+      "timeless"
+    ],
+    "popularMotifs": ["sailors", "pin-ups", "ships", "daggers", "roses"],
+    "colorPalette": ["red", "blue", "yellow", "green", "black"],
+    "difficulty": "intermediate",
+    "timeOrigin": "early-1900s",
+    "aliases": ["traditional", "sailor-style"]
+  },
+  {
+    "styleId": "new_school",
+    "styleName": "New School",
+    "description": "Modern tattoo style with exaggerated proportions, bright colors, and cartoon influences",
+    "characteristics": [
+      "exaggerated-proportions",
+      "bright-colors",
+      "cartoon-influence",
+      "playful"
+    ],
+    "popularMotifs": [
+      "cartoon-characters",
+      "graffiti-elements",
+      "pop-culture",
+      "animals"
+    ],
+    "colorPalette": ["bright-colors", "neon-accents", "bold-contrasts"],
+    "difficulty": "advanced",
+    "timeOrigin": "1980s",
+    "aliases": ["cartoon-style", "graffiti-influenced"]
+  },
+  {
+    "styleId": "neo_traditional",
+    "styleName": "Neo-Traditional",
+    "description": "Modern evolution of traditional style with enhanced detail and expanded color palette",
+    "characteristics": [
+      "enhanced-detail",
+      "expanded-colors",
+      "modern-twist",
+      "dimensional"
+    ],
+    "popularMotifs": ["animals", "flowers", "portraits", "nature"],
+    "colorPalette": ["expanded-spectrum", "vibrant-colors", "traditional-base"],
+    "difficulty": "advanced",
+    "timeOrigin": "1980s",
+    "aliases": ["new-traditional", "modern-traditional"]
+  },
+  {
+    "styleId": "minimalism",
+    "styleName": "Minimalism",
+    "description": "Simple and clean tattoo style focusing on essential elements with minimal detail",
+    "characteristics": [
+      "simple-lines",
+      "minimal-detail",
+      "clean-design",
+      "understated"
+    ],
+    "popularMotifs": ["simple-shapes", "single-lines", "small-symbols", "text"],
+    "colorPalette": ["black", "single-colors", "minimal-palette"],
+    "difficulty": "intermediate",
+    "timeOrigin": "2010s",
+    "aliases": ["minimal", "simple-style"]
+  },
+  {
+    "styleId": "lettering",
+    "styleName": "Lettering",
+    "description": "Typography-focused tattoo style emphasizing beautiful and artistic text designs",
+    "characteristics": [
+      "typography-focused",
+      "artistic-fonts",
+      "calligraphy",
+      "text-based"
+    ],
+    "popularMotifs": ["quotes", "names", "dates", "script-fonts"],
+    "colorPalette": ["black", "single-colors", "accent-colors"],
+    "difficulty": "intermediate",
+    "timeOrigin": "ancient",
+    "aliases": ["typography", "script", "calligraphy"]
+  },
+  {
+    "styleId": "geometric",
+    "styleName": "Geometric",
+    "description": "Mathematical precision meets art with clean lines and geometric shapes",
+    "characteristics": [
+      "precise-lines",
+      "mathematical",
+      "symmetrical",
+      "modern"
+    ],
+    "popularMotifs": [
+      "mandalas",
+      "sacred-geometry",
+      "patterns",
+      "abstract-shapes"
+    ],
+    "colorPalette": ["black", "minimal-color", "monochrome"],
+    "difficulty": "intermediate",
+    "timeOrigin": "2010s",
+    "aliases": ["sacred-geometry", "mathematical"]
+  },
+  {
+    "styleId": "floral",
+    "styleName": "Floral",
+    "description": "Nature-inspired tattoo style focusing on flowers, plants, and botanical elements",
+    "characteristics": [
+      "nature-inspired",
+      "botanical",
+      "organic-shapes",
+      "delicate"
+    ],
+    "popularMotifs": ["roses", "peonies", "cherry-blossoms", "leaves", "vines"],
+    "colorPalette": ["natural-colors", "pastels", "earth-tones"],
+    "difficulty": "intermediate",
+    "timeOrigin": "ancient",
+    "aliases": ["botanical", "flower-style"]
+  },
+  {
+    "styleId": "fineline",
+    "styleName": "Fine Line",
+    "description": "Delicate tattoo style using thin lines and minimal shading for subtle designs",
+    "characteristics": ["thin-lines", "delicate", "minimal", "subtle"],
+    "popularMotifs": ["flowers", "text", "small-symbols", "constellations"],
+    "colorPalette": ["black", "minimal-color"],
+    "difficulty": "advanced",
+    "timeOrigin": "2010s",
+    "aliases": ["fine-line", "micro-tattoo"]
+  },
+  {
+    "styleId": "blackwork",
+    "styleName": "Blackwork",
+    "description": "Bold tattoo style using only black ink with strong contrast and geometric patterns",
+    "characteristics": [
+      "black-ink-only",
+      "bold-contrast",
+      "geometric",
+      "tribal-influence"
+    ],
+    "popularMotifs": [
+      "geometric-patterns",
+      "mandalas",
+      "tribal-designs",
+      "silhouettes"
+    ],
+    "colorPalette": ["black"],
+    "difficulty": "intermediate",
+    "timeOrigin": "ancient",
+    "aliases": ["black-ink", "tribal-modern"]
+  },
+  {
+    "styleId": "dotwork",
+    "styleName": "Dotwork",
+    "description": "Intricate tattoo style created entirely using dots to form patterns and shading",
+    "characteristics": [
+      "dot-technique",
+      "stippling",
+      "intricate-patterns",
+      "meditative"
+    ],
+    "popularMotifs": [
+      "mandalas",
+      "geometric-patterns",
+      "portraits",
+      "sacred-geometry"
+    ],
+    "colorPalette": ["black", "minimal-color"],
+    "difficulty": "advanced",
+    "timeOrigin": "ancient",
+    "aliases": ["stippling", "pointillism"]
+  }
+]

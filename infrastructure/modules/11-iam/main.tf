@@ -332,7 +332,7 @@ resource "aws_iam_policy" "lambda_rotate_nat_gateway_eip" {
   description = "Allows rotating the NAT Gateway EIP and publishing to SNS."
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid    = "DescribeResources"
@@ -381,9 +381,9 @@ resource "aws_iam_policy" "lambda_rotate_nat_gateway_eip" {
         }
       },
       {
-        Sid      = "PublishSNSNotification"
-        Effect   = "Allow"
-        Action   = "sns:Publish"
+        Sid    = "PublishSNSNotification"
+        Effect = "Allow"
+        Action = "sns:Publish"
         # The SNS topic is created in the app-monitoring module, but its ARN is predictable.
         # This avoids a circular dependency.
         Resource = "arn:aws:sns:${var.context.aws_region}:${var.context.infra_account_id}:${var.context.name_prefix}-critical-alerts"
@@ -411,6 +411,48 @@ resource "aws_iam_role_policy_attachment" "lambda_rotate_nat_gateway_eip_xray" {
 resource "aws_iam_role_policy_attachment" "lambda_rotate_nat_gateway_eip_custom" {
   role       = aws_iam_role.lambda_rotate_nat_gateway_eip.name
   policy_arn = aws_iam_policy.lambda_rotate_nat_gateway_eip.arn
+}
+
+# =============================================================================
+# SECRET ROTATION LAMBDA ROLE
+# =============================================================================
+
+# Secret Rotation Lambda Role
+resource "aws_iam_role" "lambda_secret_rotation" {
+  name = "${var.context.name_prefix}-secret-rotation-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-secret-rotation-role"
+  })
+}
+
+# Attach policies to Secret Rotation Lambda role
+resource "aws_iam_role_policy_attachment" "lambda_secret_rotation_basic" {
+  role       = aws_iam_role.lambda_secret_rotation.name
+  policy_arn = data.aws_iam_policy.lambda_basic_execution.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_secret_rotation_vpc" {
+  role       = aws_iam_role.lambda_secret_rotation.name
+  policy_arn = data.aws_iam_policy.lambda_vpc_access_execution.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_secret_rotation_xray" {
+  role       = aws_iam_role.lambda_secret_rotation.name
+  policy_arn = data.aws_iam_policy.xray_daemon_write_access.arn
 }
 
 # =============================================================================

@@ -22,21 +22,27 @@ graph TD
         end
     end
 
-    subgraph "GSI1: style-location-index"
+    subgraph "GSI1: style-geohash-index"
         direction TB
-        G1[GSI1PK: STYLE#neotraditional<br>GSI1SK: LOCATION#UK#Leeds<br>artistId: ARTIST#alex-123<br>artistName: Alex the Artist]
-        G2[GSI1PK: STYLE#blackwork<br>GSI1SK: LOCATION#UK#Leeds<br>artistId: ARTIST#alex-123<br>artistName: Alex the Artist]
+        G1[GSI1PK: STYLE#neotraditional#SHARD#3<br>GSI1SK: GEOHASH#gcw7k3n#ARTIST#alex-123<br>artistId: ARTIST#alex-123<br>artistName: Alex the Artist]
+        G2[GSI1PK: STYLE#blackwork#SHARD#7<br>GSI1SK: GEOHASH#gcw7k3n#ARTIST#alex-123<br>artistId: ARTIST#alex-123<br>artistName: Alex the Artist]
     end
     
-    subgraph "GSI2: location-studio-index"
+    subgraph "GSI2: artist-name-index"
         direction TB
-        G3[GSI2PK: LOCATION#UK#Leeds<br>GSI2SK: STUDIO#ink-masters<br>studioName: Ink Masters<br>artistCount: 3]
+        G3[GSI2PK: ARTISTNAME#alextheartist<br>GSI2SK: ARTIST#alex-123<br>artistName: Alex the Artist<br>artistId: alex-123]
+    end
+    
+    subgraph "GSI3: instagram-index"
+        direction TB
+        G4[GSI3PK: INSTAGRAM#alex_tattoos<br>artistId: ARTIST#alex-123<br>artistName: Alex the Artist<br>instagramHandle: alex_tattoos]
     end
 
     %% Relationships
     A1 -.-> G1
     A1 -.-> G2
-    S1 -.-> G3
+    A1 -.-> G3
+    A1 -.-> G4
     
     style A1 fill:#f9f,stroke:#333,stroke-width:2px
     style A2 fill:#ccf,stroke:#333
@@ -48,4 +54,5 @@ graph TD
     style G1 fill:#9cf,stroke:#333,stroke-width:2px
     style G2 fill:#9cf,stroke:#333,stroke-width:2px
     style G3 fill:#cf9,stroke:#333,stroke-width:2px
+    style G4 fill:#fcf,stroke:#333,stroke-width:2px
 ```

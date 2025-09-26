@@ -1,0 +1,37 @@
+# Docker Compose Override for macOS
+# Use this file on macOS systems for optimal performance and compatibility
+# Usage: docker-compose -f dev-tools/docker/docker-compose.local.yml -f dev-tools/docker/docker-compose.macos.yml up
+
+version: '3.8'
+
+# macOS-specific overrides for performance
+services:
+  backend:
+    volumes:
+      - ../../backend/src:/var/task/src:ro,delegated
+      - ../../backend/package.json:/var/task/package.json:ro,delegated
+      - ../../backend/package-lock.json:/var/task/package-lock.json:ro,delegated
+
+  frontend:
+    volumes:
+      - ../../frontend/src:/app/src:ro,delegated
+      - ../../frontend/public:/app/public:ro,delegated
+      - ../../frontend/package.json:/app/package.json:ro,delegated
+      - ../../frontend/package-lock.json:/app/package-lock.json:ro,delegated
+      - ../../frontend/next.config.mjs:/app/next.config.mjs:ro,delegated
+      - ../../frontend/tailwind.config.js:/app/tailwind.config.js:ro,delegated
+      - ../../frontend/postcss.config.mjs:/app/postcss.config.mjs:ro,delegated
+      - ../../frontend/jsconfig.json:/app/jsconfig.json:ro,delegated
+      - ../../frontend/.eslintrc.json:/app/.eslintrc.json:ro,delegated
+      # Performance volumes for macOS
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/.next
+    environment:
+      # Native fsevents work well, no polling needed
+      - WATCHPACK_POLLING=false
+      - CHOKIDAR_USEPOLLING=false
+
+# Named volumes for frontend performance
+volumes:
+  frontend_node_modules:
+  frontend_next:

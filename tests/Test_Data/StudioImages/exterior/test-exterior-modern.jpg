@@ -1,0 +1,7 @@
+# This is a placeholder for a test exterior image
+# In a real implementation, this would be a JPEG image file
+# Filename: test-exterior-modern.jpg
+# Dimensions: 1200x800
+# Format: JPEG
+# Description: Modern studio front entrance with glass facade
+# Test scenarios: basic_upload, format_conversion, resize_test

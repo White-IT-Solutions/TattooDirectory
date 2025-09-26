@@ -64,7 +64,7 @@ variable "audit_account_id" {
   type        = string
 
   validation {
-    condition     = can(regex("^[0-9]{12}$", var.security_account_id))
+    condition     = can(regex("^[0-9]{12}$", var.audit_account_id))
     error_message = "AWS Account ID must be a 12-digit number."
   }
 }
@@ -74,7 +74,7 @@ variable "log_archive_account_id" {
   type        = string
 
   validation {
-    condition     = can(regex("^[0-9]{12}$", var.audit_account_id))
+    condition     = can(regex("^[0-9]{12}$", var.log_archive_account_id))
     error_message = "AWS Account ID must be a 12-digit number."
   }
 }
@@ -295,4 +295,56 @@ variable "enable_cross_region_replication" {
   description = "Enable cross-region replication for critical resources (CloudTrail logs, backups)"
   type        = bool
   default     = true # Should be true for production disaster recovery
+}
+
+# ------------------------------------------------------------------------------
+# Lambda Deployment Configuration
+# ------------------------------------------------------------------------------
+
+variable "lambda_api_handler_s3_key" {
+  description = "S3 key for the API handler Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/api-handler/latest/api-handler.zip"
+}
+
+variable "lambda_dynamodb_sync_s3_key" {
+  description = "S3 key for the DynamoDB sync Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/dynamodb-sync/latest/dynamodb-sync.zip"
+}
+
+variable "lambda_discover_studios_s3_key" {
+  description = "S3 key for the discover studios Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/discover-studios/latest/discover-studios.zip"
+}
+
+variable "lambda_find_artists_s3_key" {
+  description = "S3 key for the find artists Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/find-artists/latest/find-artists.zip"
+}
+
+variable "lambda_queue_scraping_s3_key" {
+  description = "S3 key for the queue scraping Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/queue-scraping/latest/queue-scraping.zip"
+}
+
+variable "lambda_rotate_nat_gateway_eip_s3_key" {
+  description = "S3 key for the rotate NAT gateway EIP Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/rotate-nat-gateway-eip/latest/rotate-nat-gateway-eip.zip"
+}
+
+variable "lambda_secret_rotation_s3_key" {
+  description = "S3 key for the secret rotation Lambda deployment package"
+  type        = string
+  default     = "lambda-artifacts/secret-rotation/latest/secret-rotation.zip"
+}
+
+variable "lambda_deployment_version" {
+  description = "Version identifier for the Lambda deployment (for tracking purposes)"
+  type        = string
+  default     = "latest"
 }

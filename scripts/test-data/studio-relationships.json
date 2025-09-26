@@ -1,0 +1,91 @@
+{
+  "relationships": [
+    {
+      "studioId": "studio-001",
+      "studioName": "Ink & Steel Studio",
+      "artists": [
+        {
+          "artistId": "artist-001",
+          "artistName": "Sarah Mitchell",
+          "relationship": "resident",
+          "joinDate": "2020-03-15",
+          "isLead": true,
+          "specialties": ["traditional", "neo_traditional"]
+        }
+      ]
+    },
+    {
+      "studioId": "studio-002",
+      "studioName": "Northern Ink Collective",
+      "artists": [
+        {
+          "artistId": "artist-002",
+          "artistName": "Marcus Thompson",
+          "relationship": "resident",
+          "joinDate": "2019-08-20",
+          "isLead": false,
+          "specialties": ["realism", "blackwork"]
+        }
+      ]
+    },
+    {
+      "studioId": "studio-003",
+      "studioName": "Artisan Ink Studio",
+      "artists": [
+        {
+          "artistId": "artist-003",
+          "artistName": "Elena Rodriguez",
+          "relationship": "resident",
+          "joinDate": "2021-01-10",
+          "isLead": true,
+          "specialties": ["watercolour", "geometric"]
+        },
+        {
+          "artistId": "artist-007",
+          "artistName": "James Wilson",
+          "relationship": "guest",
+          "joinDate": "2023-06-01",
+          "isLead": false,
+          "specialties": ["new_school", "cartoon"]
+        }
+      ]
+    }
+  ],
+  "orphanedArtists": [
+    {
+      "artistId": "artist-999",
+      "artistName": "Test Orphaned Artist",
+      "reason": "Studio closed",
+      "lastStudioId": "studio-closed-001",
+      "needsReassignment": true
+    }
+  ],
+  "validationRules": {
+    "maxArtistsPerStudio": 8,
+    "minArtistsPerStudio": 1,
+    "requiredFields": ["artistId", "studioId", "relationship"],
+    "allowedRelationshipTypes": ["resident", "guest", "apprentice", "owner"],
+    "bidirectionalCheck": true
+  },
+  "testScenarios": {
+    "validRelationships": {
+      "description": "All relationships are properly formed and bidirectional",
+      "expectedResult": "pass"
+    },
+    "orphanedArtist": {
+      "description": "Artist references non-existent studio",
+      "expectedResult": "fail",
+      "errorType": "orphaned_artist"
+    },
+    "missingBackReference": {
+      "description": "Studio doesn't list artist in its artists array",
+      "expectedResult": "fail",
+      "errorType": "missing_back_reference"
+    },
+    "duplicateArtist": {
+      "description": "Artist appears in multiple studios",
+      "expectedResult": "fail",
+      "errorType": "duplicate_assignment"
+    }
+  }
+}

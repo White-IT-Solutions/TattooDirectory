@@ -1,0 +1,181 @@
+{
+  "blackwork": [
+    {
+      "filename": "tattoo_141.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+      "s3Key": "styles/blackwork/tattoo_141.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_41.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
+      "s3Key": "styles/blackwork/tattoo_41.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_42.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_42.png",
+      "s3Key": "styles/blackwork/tattoo_42.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_64.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+      "s3Key": "styles/blackwork/tattoo_64.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_66.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_66.png",
+      "s3Key": "styles/blackwork/tattoo_66.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_79.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
+      "s3Key": "styles/blackwork/tattoo_79.png",
+      "style": "blackwork",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_85.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_85.png",
+      "s3Key": "styles/blackwork/tattoo_85.png",
+      "style": "blackwork",
+      "skipped": true
+    }
+  ],
+  "geometric": [
+    {
+      "filename": "tattoo_1.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_1.png",
+      "s3Key": "styles/geometric/tattoo_1.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_11.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_11.png",
+      "s3Key": "styles/geometric/tattoo_11.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_138.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_138.png",
+      "s3Key": "styles/geometric/tattoo_138.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_139.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_139.png",
+      "s3Key": "styles/geometric/tattoo_139.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_140.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_140.png",
+      "s3Key": "styles/geometric/tattoo_140.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_2.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_2.png",
+      "s3Key": "styles/geometric/tattoo_2.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_3.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_3.png",
+      "s3Key": "styles/geometric/tattoo_3.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_45.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_45.png",
+      "s3Key": "styles/geometric/tattoo_45.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_52.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_52.png",
+      "s3Key": "styles/geometric/tattoo_52.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_53.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_53.png",
+      "s3Key": "styles/geometric/tattoo_53.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_54.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_54.png",
+      "s3Key": "styles/geometric/tattoo_54.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_55.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_55.png",
+      "s3Key": "styles/geometric/tattoo_55.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_56.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_56.png",
+      "s3Key": "styles/geometric/tattoo_56.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_57.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_57.png",
+      "s3Key": "styles/geometric/tattoo_57.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_58.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_58.png",
+      "s3Key": "styles/geometric/tattoo_58.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_59.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_59.png",
+      "s3Key": "styles/geometric/tattoo_59.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_78.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_78.png",
+      "s3Key": "styles/geometric/tattoo_78.png",
+      "style": "geometric",
+      "skipped": true
+    },
+    {
+      "filename": "tattoo_80.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_80.png",
+      "s3Key": "styles/geometric/tattoo_80.png",
+      "style": "geometric",
+      "skipped": true
+    }
+  ]
+}

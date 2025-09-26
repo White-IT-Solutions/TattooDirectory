@@ -1,0 +1,218 @@
+# .github/workflows/terraform-reusable-deploy.yml
+
+name: 'Reusable Terraform Deployment'
+
+on:
+  workflow_call:
+    # --- Inputs: Values passed from the calling workflow ---
+    inputs:
+      environment:
+        description: 'The deployment environment (e.g., dev, prod)'
+        required: true
+        type: string
+      tf_state_key:
+        description: 'The key for the Terraform state file in S3'
+        required: true
+        type: string
+      tf_var_file:
+        description: 'The path to the environment-specific .tfvars file'
+        required: true
+        type: string
+      ssm_prefix:
+        description: 'The SSM parameter prefix for the environment'
+        required: true
+        type: string
+      lambda_prefix:
+        description: 'The name prefix for Lambda functions in the environment'
+        required: true
+        type: string
+      kms_key_alias:
+        description: 'The KMS key alias for SSM parameter encryption'
+        required: true
+        type: string
+      # This input controls if the apply step runs, useful for PRs
+      apply_changes:
+        description: 'Set to true to run terraform apply'
+        required: true
+        type: boolean
+
+    # --- Secrets: Passed securely from the calling workflow ---
+    secrets:
+      AWS_ROLE_TO_ASSUME:
+        required: true
+
+env:
+  AWS_REGION: eu-west-2
+  TERRAFORM_VERSION: 1.8.5
+
+jobs:
+  validate:
+    name: 'Validate Terraform (${{ inputs.environment }})'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./environments/${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Setup workflow command escaping
+        run: |
+          echo 'escape_gh_output() { local input="$1"; input="${input//%/%25}"; input="${input//$'\n'/%0A}"; input="${input//$'\r'/%0D}"; input="${input//:/%3A}"; input="${input//,/%2C}"; echo "$input"; }' >> "$GITHUB_PATH"
+
+      - name: Terraform Init
+        env:
+          TF_STATE_KEY: ${{ inputs.tf_state_key }}
+        run: |
+          terraform init -backend-config="key=$TF_STATE_KEY"
+
+      - name: Terraform Validate
+        run: terraform validate
+
+  wait-for-lambda-packaging:
+    name: 'Wait for Lambda Packaging'
+    runs-on: ubuntu-latest
+    if: inputs.apply_changes == true # Only wait if we intend to apply
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set SHA as environment variable
+        run: echo "GH_SHA=${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Wait for Lambda packaging workflow
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          # The GH_SHA environment variable is set in the previous step
+          # to prevent potential code injection from github.sha.
+          ref: '${{ env.GH_SHA }}'
+          check-name: 'create-deployment-manifest'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+          allowed-conclusions: success
+
+  deploy:
+    name: 'Terraform Deploy (${{ inputs.environment }})'
+    needs: [validate, wait-for-lambda-packaging]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+    defaults:
+      run:
+        working-directory: ./environments/${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Retrieve Lambda artifacts bucket name
+        id: lambda-bucket
+        run: |
+          BUCKET_NAME=$(aws ssm get-parameter --name "$(escape_gh_output "${{ inputs.ssm_prefix }}/lambda-artifacts-bucket-name")" --query 'Parameter.Value' --output text | tr -d '\n\r')
+          echo "bucket-name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+
+      - name: Download deployment manifest
+        run: aws s3 cp s3://${{ steps.lambda-bucket.outputs.bucket-name }}/deployment-manifests/latest/manifest.json /tmp/deployment-manifest.json
+
+      - name: Set Lambda artifact variables
+        id: lambda-artifacts
+        run: |
+          MANIFEST_FILE="/tmp/deployment-manifest.json"
+
+          API_HANDLER_KEY=$(jq -r '.functions["api-handler"].s3_key' "$MANIFEST_FILE")
+          DYNAMODB_SYNC_KEY=$(jq -r '.functions["dynamodb-sync"].s3_key' "$MANIFEST_FILE")
+          DISCOVER_STUDIOS_KEY=$(jq -r '.functions["discover-studios"].s3_key' "$MANIFEST_FILE")
+          FIND_ARTISTS_KEY=$(jq -r '.functions["find-artists"].s3_key' "$MANIFEST_FILE")
+          QUEUE_SCRAPING_KEY=$(jq -r '.functions["queue-scraping"].s3_key' "$MANIFEST_FILE")
+          ROTATE_NAT_GATEWAY_EIP_KEY=$(jq -r '.functions["rotate-nat-gateway-eip"].s3_key' "$MANIFEST_FILE")
+          SECRET_ROTATION_KEY=$(jq -r '.functions["secret-rotation"].s3_key' "$MANIFEST_FILE")
+          DEPLOYMENT_VERSION_RAW=$(jq -r '.version' "$MANIFEST_FILE")
+
+          echo "TF_VAR_lambda_api_handler_s3_key=$API_HANDLER_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_dynamodb_sync_s3_key=$DYNAMODB_SYNC_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_discover_studios_s3_key=$DISCOVER_STUDIOS_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_find_artists_s3_key=$FIND_ARTISTS_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_queue_scraping_s3_key=$QUEUE_SCRAPING_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_rotate_nat_gateway_eip_s3_key=$ROTATE_NAT_GATEWAY_EIP_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_secret_rotation_s3_key=$SECRET_ROTATION_KEY" >> "$GITHUB_ENV"
+          echo "TF_VAR_lambda_deployment_version=$DEPLOYMENT_VERSION_RAW" >> "$GITHUB_ENV"
+          echo "deployment-version=$DEPLOYMENT_VERSION_RAW" >> "$GITHUB_OUTPUT"
+
+      - name: Terraform Init
+        run: terraform init -backend-config="key=${{ inputs.tf_state_key }}"
+
+      - name: Terraform Plan
+        run: terraform plan -input=false -var-file="${{ inputs.tf_var_file }}"
+
+      - name: Terraform Apply
+        if: inputs.apply_changes == true
+        run: terraform apply -auto-approve -input=false -var-file="${{ inputs.tf_var_file }}"
+
+      - name: Validate Lambda deployment
+        if: inputs.apply_changes == true
+        run: |
+          FUNCTIONS=(
+            "${{ inputs.lambda_prefix }}-api-handler"
+            "${{ inputs.lambda_prefix }}-dynamodb-sync"
+            "${{ inputs.lambda_prefix }}-discover-studios"
+            "${{ inputs.lambda_prefix }}-find-artists"
+            "${{ inputs.lambda_prefix }}-queue-scraping"
+            "${{ inputs.lambda_prefix }}-rotate-nat-gateway-eip"
+            "${{ inputs.lambda_prefix }}-secret-rotation"
+          )
+          for FUNCTION_NAME in "${FUNCTIONS[@]}"; do
+            echo "Validating function: $FUNCTION_NAME"
+            aws lambda get-function --function-name "$FUNCTION_NAME" > /dev/null
+          done
+          echo "🎉 All Lambda functions validated successfully!"
+
+      - name: Get API Gateway URLs
+        if: inputs.apply_changes == true
+        id: api-urls
+        run: | # Using escape_gh_output function for safety
+          API_INVOKE_URL=$(terraform output -raw api_gateway_invoke_url)
+          echo "api-invoke-url=$(escape_gh_output "$API_INVOKE_URL")" >> $GITHUB_OUTPUT
+          CLOUDFRONT_ID=$(terraform output -raw cloudfront_distribution_id)
+          echo "cloudfront-id=$(escape_gh_output "$CLOUDFRONT_ID")" >> $GITHUB_OUTPUT
+
+      - name: Update environment configuration
+        if: inputs.apply_changes == true
+        env:
+          API_INVOKE_URL: ${{ steps.api-urls.outputs.api-invoke-url }}
+          CLOUDFRONT_ID: ${{ steps.api-urls.outputs.cloudfront-id }}
+        run: |
+          aws ssm put-parameter \
+            --name "$(escape_gh_output "${{ inputs.ssm_prefix }}/api-gateway-url")" \
+            --value "$(escape_gh_output "$API_INVOKE_URL")" \
+            --type "SecureString" \
+            --key-id "${{ inputs.kms_key_alias }}" \
+            --overwrite
+          
+          if [ -n "$CLOUDFRONT_ID" ]; then
+            aws ssm put-parameter \
+              --name "$(escape_gh_output "${{ inputs.ssm_prefix }}/cloudfront-distribution-id")" \
+              --value "$(escape_gh_output "$CLOUDFRONT_ID")" \
+              --type "String" \
+              --overwrite
+          fi
+
+      - name: Output deployment summary
+        if: inputs.apply_changes == true
+        run: |
+          echo "::notice title=Terraform Deployment Complete::$(escape_gh_output "Infrastructure deployed successfully to ${{ inputs.environment }} environment")"
+          echo "::notice title=Lambda Deployment Version::$(escape_gh_output "${{ steps.lambda-artifacts.outputs.deployment-version }}")"

@@ -1,0 +1,60 @@
+[
+  {
+    "timestamp": "2025-09-10T17:09:59.078Z",
+    "summary": {
+      "totalServices": 5,
+      "runningServices": 0,
+      "avgCpuUsage": 0,
+      "avgMemoryUsage": 0,
+      "totalStartupTime": 120
+    },
+    "services": {
+      "localstack": {
+        "error": "Container not running or accessible: Command failed: docker stats tattoo-localstack-1 --no-stream --format \"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\"\nError response from daemon: No such container: tattoo-localstack-1\n",
+        "timestamp": "2025-09-10T17:04:34.698Z",
+        "startup": {
+          "status": "timeout",
+          "startupTime": 120,
+          "healthy": false
+        }
+      },
+      "backend": {
+        "error": "Container not running or accessible: Command failed: docker stats tattoo-backend-1 --no-stream --format \"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\"\nError response from daemon: No such container: tattoo-backend-1\n",
+        "timestamp": "2025-09-10T17:04:35.392Z",
+        "startup": {
+          "status": "timeout",
+          "startupTime": 120,
+          "healthy": false
+        }
+      },
+      "frontend": {
+        "error": "Container not running or accessible: Command failed: docker stats tattoo-frontend-1 --no-stream --format \"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\"\nError response from daemon: No such container: tattoo-frontend-1\n",
+        "timestamp": "2025-09-10T17:04:36.304Z",
+        "startup": {
+          "status": "timeout",
+          "startupTime": 120,
+          "healthy": false
+        }
+      },
+      "swagger-ui": {
+        "error": "Container not running or accessible: Command failed: docker stats tattoo-swagger-ui-1 --no-stream --format \"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\"\nError response from daemon: No such container: tattoo-swagger-ui-1\n",
+        "timestamp": "2025-09-10T17:04:37.340Z",
+        "startup": {
+          "status": "timeout",
+          "startupTime": 120,
+          "healthy": false
+        }
+      },
+      "data-seeder": {
+        "error": "Container not running or accessible: Command failed: docker stats tattoo-data-seeder-1 --no-stream --format \"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}\"\nError response from daemon: No such container: tattoo-data-seeder-1\n",
+        "timestamp": "2025-09-10T17:04:37.988Z",
+        "startup": {
+          "status": "timeout",
+          "startupTime": 120,
+          "healthy": false
+        }
+      }
+    },
+    "alerts": []
+  }
+]

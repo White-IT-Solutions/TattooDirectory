@@ -1,0 +1,244 @@
+{
+  "studioDataGenerator": {
+    "validInputs": {
+      "studioCount": 3,
+      "scenario": "minimal",
+      "config": {
+        "studio": {
+          "generation": {
+            "minStudios": 1,
+            "maxStudios": 10,
+            "minArtistsPerStudio": 1,
+            "maxArtistsPerStudio": 5
+          }
+        }
+      }
+    },
+    "expectedOutputStructure": {
+      "studioId": "string",
+      "studioName": "string",
+      "address": "string",
+      "postcode": "string",
+      "latitude": "number",
+      "longitude": "number",
+      "contactInfo": "object",
+      "openingHours": "object",
+      "rating": "number",
+      "reviewCount": "number",
+      "established": "number",
+      "specialties": "array"
+    },
+    "invalidInputs": [
+      {
+        "studioCount": -1,
+        "expectedError": "Studio count must be positive"
+      },
+      {
+        "studioCount": 0,
+        "expectedError": "Studio count must be at least 1"
+      },
+      {
+        "scenario": "invalid-scenario",
+        "expectedError": "Unknown scenario"
+      }
+    ]
+  },
+  "studioDataValidator": {
+    "validStudio": {
+      "studioId": "studio-test-001",
+      "studioName": "Test Studio",
+      "address": "123 Test Street, London E1 6AA",
+      "postcode": "E1 6AA",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "locationDisplay": "London, UK",
+      "contactInfo": {
+        "phone": "+44 20 1234 5678",
+        "email": "test@teststudio.com",
+        "website": "https://teststudio.com",
+        "instagram": "@teststudio"
+      },
+      "openingHours": {
+        "monday": "10:00-18:00",
+        "tuesday": "10:00-18:00",
+        "wednesday": "10:00-18:00",
+        "thursday": "10:00-18:00",
+        "friday": "10:00-18:00",
+        "saturday": "10:00-16:00",
+        "sunday": "closed"
+      },
+      "artists": ["artist-001"],
+      "artistCount": 1,
+      "rating": 4.5,
+      "reviewCount": 50,
+      "established": 2020,
+      "specialties": ["traditional"]
+    },
+    "invalidStudios": [
+      {
+        "description": "Missing required field - studioId",
+        "studio": {
+          "studioName": "Test Studio"
+        },
+        "expectedError": "Missing required field: studioId"
+      },
+      {
+        "description": "Invalid postcode format",
+        "studio": {
+          "studioId": "studio-test-001",
+          "studioName": "Test Studio",
+          "postcode": "INVALID"
+        },
+        "expectedError": "Invalid UK postcode format"
+      },
+      {
+        "description": "Invalid rating range",
+        "studio": {
+          "studioId": "studio-test-001",
+          "studioName": "Test Studio",
+          "rating": 6.0
+        },
+        "expectedError": "Rating must be between 1.0 and 5.0"
+      },
+      {
+        "description": "Invalid coordinate range",
+        "studio": {
+          "studioId": "studio-test-001",
+          "studioName": "Test Studio",
+          "latitude": 90.0,
+          "longitude": 0.0
+        },
+        "expectedError": "Coordinates outside UK range"
+      }
+    ]
+  },
+  "relationshipManager": {
+    "validRelationships": {
+      "artists": [
+        {
+          "artistId": "artist-001",
+          "artistName": "Test Artist 1",
+          "tattooStudio": {
+            "studioId": "studio-001",
+            "studioName": "Test Studio 1"
+          }
+        }
+      ],
+      "studios": [
+        {
+          "studioId": "studio-001",
+          "studioName": "Test Studio 1",
+          "artists": ["artist-001"],
+          "artistCount": 1
+        }
+      ]
+    },
+    "invalidRelationships": [
+      {
+        "description": "Artist references non-existent studio",
+        "artists": [
+          {
+            "artistId": "artist-001",
+            "tattooStudio": {
+              "studioId": "studio-999"
+            }
+          }
+        ],
+        "studios": [],
+        "expectedError": "Artist artist-001 references non-existent studio studio-999"
+      },
+      {
+        "description": "Studio doesn't list artist",
+        "artists": [
+          {
+            "artistId": "artist-001",
+            "tattooStudio": {
+              "studioId": "studio-001"
+            }
+          }
+        ],
+        "studios": [
+          {
+            "studioId": "studio-001",
+            "artists": []
+          }
+        ],
+        "expectedError": "Studio studio-001 doesn't list artist artist-001"
+      }
+    ]
+  },
+  "imageProcessor": {
+    "validImageTypes": ["exterior", "interior", "gallery"],
+    "supportedFormats": ["jpg", "jpeg", "png", "webp"],
+    "maxFileSize": 5242880,
+    "minWidth": 800,
+    "testImages": [
+      {
+        "filename": "test-exterior.jpg",
+        "type": "exterior",
+        "width": 1200,
+        "height": 800,
+        "size": 1048576
+      },
+      {
+        "filename": "test-interior.png",
+        "type": "interior",
+        "width": 1000,
+        "height": 750,
+        "size": 2097152
+      }
+    ],
+    "invalidImages": [
+      {
+        "filename": "too-small.jpg",
+        "width": 400,
+        "expectedError": "Image width below minimum requirement"
+      },
+      {
+        "filename": "too-large.jpg",
+        "size": 10485760,
+        "expectedError": "File size exceeds maximum limit"
+      },
+      {
+        "filename": "unsupported.gif",
+        "format": "gif",
+        "expectedError": "Unsupported image format"
+      }
+    ]
+  },
+  "frontendSync": {
+    "expectedMockStructure": {
+      "studios": "array",
+      "studioCount": "number",
+      "availableLocations": "array",
+      "availableSpecialties": "array"
+    },
+    "requiredFields": [
+      "studioId",
+      "studioName",
+      "locationDisplay",
+      "address",
+      "contactInfo",
+      "openingHours",
+      "artists",
+      "artistCount",
+      "rating",
+      "reviewCount",
+      "established",
+      "specialties",
+      "geohash"
+    ],
+    "testScenarios": [
+      {
+        "name": "basic-generation",
+        "studios": 2,
+        "expectedFileSize": "> 1000 bytes"
+      },
+      {
+        "name": "large-dataset",
+        "studios": 10,
+        "expectedFileSize": "> 5000 bytes"
+      }
+    ]
+  }
+}

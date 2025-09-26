@@ -169,8 +169,8 @@ resource "aws_backup_selection" "ecs" {
 resource "aws_backup_vault_notifications" "main" {
   count = var.backup_enabled && var.backup_notification_topic_arn != "" ? 1 : 0
 
-  backup_vault_name   = aws_backup_vault.main[0].name
-  sns_topic_arn       = var.backup_notification_topic_arn
+  backup_vault_name = aws_backup_vault.main[0].name
+  sns_topic_arn     = var.backup_notification_topic_arn
   backup_vault_events = [
     "BACKUP_JOB_STARTED",
     "BACKUP_JOB_COMPLETED",

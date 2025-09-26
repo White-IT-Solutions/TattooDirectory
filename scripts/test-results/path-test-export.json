@@ -1,0 +1,39 @@
+{
+  "platform": "win32",
+  "pathSeparator": "\\",
+  "testPaths": [
+    {
+      "original": "scripts/frontend-sync-processor.js",
+      "normalized": "scripts\\frontend-sync-processor.js",
+      "unix": "scripts/frontend-sync-processor.js",
+      "windows": "scripts\\frontend-sync-processor.js",
+      "joined": "scripts\\test-data\\artists.json",
+      "exists": true
+    },
+    {
+      "original": "frontend/src/app/components",
+      "normalized": "frontend\\src\\app\\components",
+      "unix": "frontend/src/app/components",
+      "windows": "frontend\\src\\app\\components",
+      "joined": "scripts\\test-data\\artists.json",
+      "exists": true
+    },
+    {
+      "original": "devtools/docker/docker-compose.local.yml",
+      "normalized": "devtools\\docker\\docker-compose.local.yml",
+      "unix": "devtools/docker/docker-compose.local.yml",
+      "windows": "devtools\\docker\\docker-compose.local.yml",
+      "joined": "scripts\\test-data\\artists.json",
+      "exists": true
+    },
+    {
+      "original": "scripts/test-data/artists.json",
+      "normalized": "scripts\\test-data\\artists.json",
+      "unix": "scripts/test-data/artists.json",
+      "windows": "scripts\\test-data\\artists.json",
+      "joined": "scripts\\test-data\\artists.json",
+      "exists": true
+    }
+  ],
+  "timestamp": "2025-09-19T11:34:05.478Z"
+}

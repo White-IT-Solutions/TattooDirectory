@@ -1,0 +1,713 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tag Visual Tests renders all tag sizes correctly: tag-sizes 1`] = `
+<div
+  class="flex items-center gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-6 px-2 text-xs rounded-[var(--radius)] gap-1"
+  >
+    <span>
+      sm
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      md
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-8 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+  >
+    <span>
+      lg
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Tag Visual Tests renders all tag variants correctly: tag-variants 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      primary
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--text-primary)] bg-[var(--background-secondary)] border-[var(--border-secondary)] hover:bg-[var(--background-tertiary)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      secondary
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      accent
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-success)] bg-[var(--color-success-50)] border-[var(--color-success-200)] hover:bg-[var(--color-success-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      success
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-warning)] bg-[var(--color-warning-50)] border-[var(--color-warning-200)] hover:bg-[var(--color-warning-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      warning
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-error)] bg-[var(--color-error-50)] border-[var(--color-error-200)] hover:bg-[var(--color-error-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      error
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--text-secondary)] bg-[var(--color-neutral-100)] border-[var(--color-neutral-200)] hover:bg-[var(--color-neutral-200)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      neutral
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Tag Visual Tests renders removable tags correctly: tag-removable 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    aria-label="Removable (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span>
+      Removable
+    </span>
+    <button
+      aria-label="Remove Removable"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+  <span
+    aria-label="Accent Removable (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span>
+      Accent Removable
+    </span>
+    <button
+      aria-label="Remove Accent Removable"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+  <span
+    aria-label="Large Removable (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-success)] bg-[var(--color-success-50)] border-[var(--color-success-200)] hover:bg-[var(--color-success-100)] h-8 px-3 text-sm rounded-[var(--radius-md)] gap-2 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span>
+      Large Removable
+    </span>
+    <button
+      aria-label="Remove Large Removable"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+</div>
+`;
+
+exports[`Tag Visual Tests renders semantic color tags correctly: tag-semantic-colors 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-success)] bg-[var(--color-success-50)] border-[var(--color-success-200)] hover:bg-[var(--color-success-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      Success
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-warning)] bg-[var(--color-warning-50)] border-[var(--color-warning-200)] hover:bg-[var(--color-warning-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      Warning
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-error)] bg-[var(--color-error-50)] border-[var(--color-error-200)] hover:bg-[var(--color-error-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      Error
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--text-secondary)] bg-[var(--color-neutral-100)] border-[var(--color-neutral-200)] hover:bg-[var(--color-neutral-200)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span>
+      Neutral
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Tag Visual Tests renders tag combinations correctly: tag-combinations 1`] = `
+<div
+  class="space-y-4 p-4"
+>
+  <div
+    class="flex flex-wrap gap-2"
+  >
+    <span
+      class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-6 px-2 text-xs rounded-[var(--radius)] gap-1"
+    >
+      <span>
+        Small Primary
+      </span>
+    </span>
+    <span
+      class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--text-primary)] bg-[var(--background-secondary)] border-[var(--border-secondary)] hover:bg-[var(--background-tertiary)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+    >
+      <span>
+        Medium Secondary
+      </span>
+    </span>
+    <span
+      class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-8 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+    >
+      <span>
+        Large Accent
+      </span>
+    </span>
+  </div>
+  <div
+    class="flex flex-wrap gap-2"
+  >
+    <span
+      class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-success)] bg-[var(--color-success-50)] border-[var(--color-success-200)] hover:bg-[var(--color-success-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+    >
+      <span
+        aria-hidden="true"
+        class="h-4 w-4  inline-flex items-center justify-center"
+        style="line-height: 1;"
+      >
+        <span>
+          🏷️
+        </span>
+      </span>
+      <span>
+        Success with Icon
+      </span>
+    </span>
+    <span
+      aria-label="Warning Removable (removable)"
+      class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-warning)] bg-[var(--color-warning-50)] border-[var(--color-warning-200)] hover:bg-[var(--color-warning-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+      role="button"
+      tabindex="0"
+    >
+      <span
+        aria-hidden="true"
+        class="h-4 w-4  inline-flex items-center justify-center"
+        style="line-height: 1;"
+      >
+        <span>
+          🏷️
+        </span>
+      </span>
+      <span>
+        Warning Removable
+      </span>
+      <button
+        aria-label="Remove Warning Removable"
+        class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="h-3 w-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M6 18L18 6M6 6l12 12"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+      </button>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Tag Visual Tests renders tag filter examples correctly: tag-filter-examples 1`] = `
+<div
+  class="space-y-4 p-4"
+>
+  <div
+    class="space-y-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      Style Filters
+    </h3>
+    <div
+      class="flex flex-wrap gap-2"
+    >
+      <span
+        aria-label="Traditional (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          Traditional
+        </span>
+        <button
+          aria-label="Remove Traditional"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+      <span
+        aria-label="Realism (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          Realism
+        </span>
+        <button
+          aria-label="Remove Realism"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+      <span
+        aria-label="Blackwork (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          Blackwork
+        </span>
+        <button
+          aria-label="Remove Blackwork"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div
+    class="space-y-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      Location Filters
+    </h3>
+    <div
+      class="flex flex-wrap gap-2"
+    >
+      <span
+        aria-label="London (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          London
+        </span>
+        <button
+          aria-label="Remove London"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+      <span
+        aria-label="Manchester (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          Manchester
+        </span>
+        <button
+          aria-label="Remove Manchester"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+      <span
+        aria-label="Birmingham (removable)"
+        class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+        role="button"
+        tabindex="0"
+      >
+        <span>
+          Birmingham
+        </span>
+        <button
+          aria-label="Remove Birmingham"
+          class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Tag Visual Tests renders tags with icons and remove buttons correctly: tag-icon-removable 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    aria-label="Icon + Remove (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      Icon + Remove
+    </span>
+    <button
+      aria-label="Remove Icon + Remove"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+  <span
+    aria-label="Warning Icon (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-warning)] bg-[var(--color-warning-50)] border-[var(--color-warning-200)] hover:bg-[var(--color-warning-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      Warning Icon
+    </span>
+    <button
+      aria-label="Remove Warning Icon"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-5 w-5"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+  <span
+    aria-label="Small Error (removable)"
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-error)] bg-[var(--color-error-50)] border-[var(--color-error-200)] hover:bg-[var(--color-error-100)] h-6 px-2 text-xs rounded-[var(--radius)] gap-1 pr-1"
+    role="button"
+    tabindex="0"
+  >
+    <span
+      aria-hidden="true"
+      class="h-3 w-3  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      Small Error
+    </span>
+    <button
+      aria-label="Remove Small Error"
+      class="inline-flex items-center justify-center rounded-full transition-all duration-150 ease-out hover:bg-black/10 active:bg-black/20 focus:outline-none focus:ring-1 focus:ring-current ml-1 h-4 w-4"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="h-3 w-3"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6 18L18 6M6 6l12 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </span>
+</div>
+`;
+
+exports[`Tag Visual Tests renders tags with icons correctly: tag-with-icons 1`] = `
+<div
+  class="flex flex-wrap gap-2 p-4"
+>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-primary)] bg-[var(--color-primary-50)] border-[var(--color-primary-200)] hover:bg-[var(--color-primary-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      With Icon
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--interactive-accent)] bg-[var(--color-accent-50)] border-[var(--color-accent-200)] hover:bg-[var(--color-accent-100)] h-7 px-2.5 text-sm rounded-[var(--radius-md)] gap-1.5"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      Accent Icon
+    </span>
+  </span>
+  <span
+    class="inline-flex items-center justify-center font-medium transition-all duration-200 ease-out border select-none cursor-default whitespace-nowrap text-[var(--feedback-success)] bg-[var(--color-success-50)] border-[var(--color-success-200)] hover:bg-[var(--color-success-100)] h-8 px-3 text-sm rounded-[var(--radius-md)] gap-2"
+  >
+    <span
+      aria-hidden="true"
+      class="h-4 w-4  inline-flex items-center justify-center"
+      style="line-height: 1;"
+    >
+      <span>
+        🏷️
+      </span>
+    </span>
+    <span>
+      Large Success
+    </span>
+  </span>
+</div>
+`;

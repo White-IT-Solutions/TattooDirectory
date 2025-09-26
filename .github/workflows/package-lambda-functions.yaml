@@ -1,0 +1,350 @@
+# .github/workflows/package-lambda-functions.yaml
+
+name: 'Package Lambda Functions'
+
+on:
+  push:
+    branches:
+      - release-dev
+      - release-prod
+      - main
+    paths:
+      - 'backend/src/**'
+  pull_request:
+    branches:
+      - release-dev
+      - release-prod
+      - main
+    paths:
+      - 'backend/src/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-west-2
+  LAMBDA_ARTIFACTS_BUCKET: tattoo-directory-lambda-artifacts
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  package-node-functions:
+    name: 'Package Node.js Lambda Functions'
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        function:
+          - name: api-handler
+            path: backend/src/handlers/api-handler
+            runtime: nodejs20.x
+          - name: dynamodb-sync
+            path: backend/src/handlers/dynamodb-sync
+            runtime: nodejs20.x
+          - name: discover-studios
+            path: backend/src/handlers/discover-studios
+            runtime: nodejs20.x
+          - name: find-artists
+            path: backend/src/handlers/find-artists
+            runtime: nodejs20.x
+          - name: queue-scraping
+            path: backend/src/handlers/queue-scraping
+            runtime: nodejs20.x
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/src/package-lock.json
+
+      - name: Setup workflow command escaping
+        run: |
+          echo 'escape_gh_output() { local input="$1"; input="${input//%/%25}"; input="${input//$'\n'/%0A}"; input="${input//$'\r'/%0D}"; input="${input//:/%3A}"; input="${input//,/%2C}"; echo "$input"; }' >> "$GITHUB_PATH"
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # Select the appropriate role based on the branch.
+          # Use dev role for 'release-dev' and 'main' (for PRs), and prod role for 'release-prod'.
+          role-to-assume: ${{ (github.ref_name == 'release-prod' && secrets.AWS_ROLE_TO_ASSUME_PROD) ||
+                               (github.ref_name == 'release-dev' && secrets.AWS_ROLE_TO_ASSUME_DEV) ||
+                               secrets.AWS_ROLE_TO_ASSUME_DEV }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install dependencies
+        working-directory: backend/src
+        run: |
+          npm ci --only=production
+          # Remove dev dependencies and test files to reduce package size
+          rm -rf node_modules/.cache
+          find node_modules -name "*.md" -delete
+          find node_modules -name "*.txt" -delete
+          find node_modules -name "test" -type d -exec rm -rf {} + 2>/dev/null || true
+          find node_modules -name "tests" -type d -exec rm -rf {} + 2>/dev/null || true
+          find node_modules -name "__tests__" -type d -exec rm -rf {} + 2>/dev/null || true
+
+      - name: Create Lambda package for ${{ matrix.function.name }}
+        run: |
+          # Create temporary directory for packaging
+          mkdir -p "/tmp/lambda-package-${{ matrix.function.name }}"
+          
+          # Copy function code
+          cp -r "${{ matrix.function.path }}"/* "/tmp/lambda-package-${{ matrix.function.name }}/"
+          
+          # Copy shared dependencies
+          cp -r backend/src/common "/tmp/lambda-package-${{ matrix.function.name }}/"
+          cp -r backend/src/node_modules "/tmp/lambda-package-${{ matrix.function.name }}/"
+          
+          # Remove test files and unnecessary files from the package
+          find "/tmp/lambda-package-${{ matrix.function.name }}" -name "__tests__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find "/tmp/lambda-package-${{ matrix.function.name }}" -name "*.test.js" -delete 2>/dev/null || true
+          find "/tmp/lambda-package-${{ matrix.function.name }}" -name "README.md" -delete 2>/dev/null || true
+          find "/tmp/lambda-package-${{ matrix.function.name }}" -name ".gitkeep" -delete 2>/dev/null || true
+          
+          # Create ZIP file
+          cd "/tmp/lambda-package-${{ matrix.function.name }}"
+          zip -r "/tmp/${{ matrix.function.name }}.zip" . -x "*.git*" "*.DS_Store*"
+          
+          # Verify ZIP contents
+          echo "ZIP file contents for ${{ matrix.function.name }}:" # This is fine, just a log
+          unzip -l "/tmp/${{ matrix.function.name }}.zip" | head -20
+
+      - name: Generate version tag
+        id: version
+        run: |
+          # Create version based on git commit and timestamp
+          VERSION="${GITHUB_SHA:0:8}-$(date +%Y%m%d-%H%M%S)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+      - name: Upload to S3
+        run: |
+          # Upload with versioning
+          aws s3 cp "/tmp/${{ matrix.function.name }}.zip" \
+            "s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/${{ steps.version.outputs.version }}/${{ matrix.function.name }}.zip" \
+            --metadata "git-commit=${{ github.sha }},build-date=$(date -u +%Y-%m-%dT%H:%M:%SZ),runtime=$(escape_gh_output "${{ matrix.function.runtime }}")"
+          
+          # Also upload as latest for easy reference
+          aws s3 cp "/tmp/${{ matrix.function.name }}.zip" \
+            "s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/latest/${{ matrix.function.name }}.zip" \
+            --metadata "git-commit=${{ github.sha }},build-date=$(date -u +%Y-%m-%dT%H:%M:%SZ),runtime=$(escape_gh_output "${{ matrix.function.runtime }}")"
+          
+          echo "Uploaded ${{ matrix.function.name }} version ${{ steps.version.outputs.version }} to S3"
+
+      - name: Output artifact information
+        run: |
+          echo "::notice title=Lambda Package Created::$(escape_gh_output "${{ matrix.function.name }} packaged and uploaded as version ${{ steps.version.outputs.version }}")"
+          echo "S3 Path: s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/${{ steps.version.outputs.version }}/${{ matrix.function.name }}.zip" # This is just a log, not a workflow command
+
+  package-python-functions:
+    name: 'Package Python Lambda Functions'
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        function:
+          - name: rotate-nat-gateway-eip
+            path: backend/src/handlers/rotate-nat-gateway-eip
+            runtime: python3.11
+          - name: secret-rotation
+            path: backend/src/handlers/secret-rotation
+            runtime: python3.11
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup workflow command escaping
+        run: |
+          echo 'escape_gh_output() { local input="$1"; input="${input//%/%25}"; input="${input//$'\n'/%0A}"; input="${input//$'\r'/%0D}"; input="${input//:/%3A}"; input="${input//,/%2C}"; echo "$input"; }' >> "$GITHUB_PATH"
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # Select the appropriate role based on the branch.
+          # Use dev role for 'release-dev' and 'main' (for PRs), and prod role for 'release-prod'.
+          role-to-assume: ${{ (github.ref_name == 'release-prod' && secrets.AWS_ROLE_TO_ASSUME_PROD) ||
+                               (github.ref_name == 'release-dev' && secrets.AWS_ROLE_TO_ASSUME_DEV) ||
+                               secrets.AWS_ROLE_TO_ASSUME_DEV }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install boto3 and other common dependencies
+          pip install boto3 botocore
+
+      - name: Create Lambda package for ${{ matrix.function.name }}
+        run: |
+          # Create temporary directory for packaging
+          mkdir -p "/tmp/lambda-package-${{ matrix.function.name }}""
+          
+          # Copy function code
+          cp -r "${{ matrix.function.path }}"/* "/tmp/lambda-package-${{ matrix.function.name }}/""
+          
+          # Install dependencies in the package directory
+          cd "/tmp/lambda-package-${{ matrix.function.name }}"
+          
+          # Check if requirements.txt exists, if not create minimal one
+          if [ ! -f requirements.txt ]; then
+            echo "boto3>=1.26.0" > requirements.txt
+            echo "botocore>=1.29.0" >> requirements.txt
+          fi
+          
+          # Install dependencies
+          pip install -r requirements.txt -t .
+          
+          # Remove test files and unnecessary files
+          find . -name "__tests__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find . -name "*.test.py" -delete 2>/dev/null || true
+          find . -name "README.md" -delete 2>/dev/null || true
+          find . -name ".gitkeep" -delete 2>/dev/null || true
+          find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          find . -name "*.pyc" -delete 2>/dev/null || true
+          
+          # Remove unnecessary files from dependencies
+          find . -name "*.dist-info" -type d -exec rm -rf {} + 2>/dev/null || true
+          find . -name "*.egg-info" -type d -exec rm -rf {} + 2>/dev/null || true
+          
+          # Create ZIP file
+          zip -r "/tmp/${{ matrix.function.name }}.zip" . -x "*.git*" "*.DS_Store*"
+          
+          # Verify ZIP contents
+          echo "ZIP file contents for ${{ matrix.function.name }}:"
+          unzip -l "/tmp/${{ matrix.function.name }}.zip" | head -20
+
+      - name: Generate version tag
+        id: version
+        run: |
+          # Create version based on git commit and timestamp
+          VERSION="${GITHUB_SHA:0:8}-$(date +%Y%m%d-%H%M%S)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+      - name: Upload to S3
+        run: |
+          # Upload with versioning
+          aws s3 cp "/tmp/${{ matrix.function.name }}.zip" \
+            "s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/${{ steps.version.outputs.version }}/${{ matrix.function.name }}.zip" \
+            --metadata "git-commit=${{ github.sha }},build-date=$(date -u +%Y-%m-%dT%H%M%S),runtime=$(escape_gh_output "${{ matrix.function.runtime }}")"
+          
+          # Also upload as latest for easy reference
+          aws s3 cp "/tmp/${{ matrix.function.name }}.zip" \
+            "s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/latest/${{ matrix.function.name }}.zip" \
+            --metadata "git-commit=${{ github.sha }},build-date=$(date -u +%Y-%m-%dT%H%M%S),runtime=$(escape_gh_output "${{ matrix.function.runtime }}")"
+          
+          echo "Uploaded ${{ matrix.function.name }} version ${{ steps.version.outputs.version }} to S3"
+
+      - name: Output artifact information
+        run: |
+          echo "::notice title=Lambda Package Created::$(escape_gh_output "${{ matrix.function.name }} packaged and uploaded as version ${{ steps.version.outputs.version }}")"
+          echo "S3 Path: s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/lambda-artifacts/${{ matrix.function.name }}/${{ steps.version.outputs.version }}/${{ matrix.function.name }}.zip" # This is just a log, not a workflow command
+
+  create-deployment-manifest:
+    name: 'Create Deployment Manifest'
+    needs: [package-node-functions, package-python-functions]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    # Add the escape function to the PATH for this job
+    env:
+      PATH: /usr/local/bin:$PATH # Ensure /usr/local/bin is in PATH for the helper function
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # Select the appropriate role based on the branch.
+          # Use dev role for 'release-dev' and 'main' (for PRs), and prod role for 'release-prod'.
+          role-to-assume: ${{ (github.ref_name == 'release-prod' && secrets.AWS_ROLE_TO_ASSUME_PROD) ||
+                               (github.ref_name == 'release-dev' && secrets.AWS_ROLE_TO_ASSUME_DEV) ||
+                               secrets.AWS_ROLE_TO_ASSUME_DEV }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup workflow command escaping
+        run: |
+          echo 'escape_gh_output() { local input="$1"; input="${input//%/%25}"; input="${input//$'\n'/%0A}"; input="${input//$'\r'/%0D}"; input="${input//:/%3A}"; input="${input//,/%2C}"; echo "$input"; }' >> "$GITHUB_PATH"
+
+      - name: Generate version tag
+        id: version
+        run: |
+          VERSION="${GITHUB_SHA:0:8}-$(date +%Y%m%d-%H%M%S)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create deployment manifest
+        run: |
+          cat > /tmp/deployment-manifest.json << EOF
+          {
+            "version": "${{ steps.version.outputs.version }}",
+            "git_commit": "${{ github.sha }}",
+            "build_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", # Date is safe
+            "branch": "$(escape_gh_output "${{ github.ref_name }}")",
+            "functions": {
+              "api-handler": {
+                "runtime": "nodejs20.x",
+                "s3_key": "lambda-artifacts/api-handler/${{ steps.version.outputs.version }}/api-handler.zip"
+              },
+              "dynamodb-sync": {
+                "runtime": "nodejs20.x",
+                "s3_key": "lambda-artifacts/dynamodb-sync/${{ steps.version.outputs.version }}/dynamodb-sync.zip"
+              },
+              "discover-studios": {
+                "runtime": "nodejs20.x",
+                "s3_key": "lambda-artifacts/discover-studios/${{ steps.version.outputs.version }}/discover-studios.zip"
+              },
+              "find-artists": {
+                "runtime": "nodejs20.x",
+                "s3_key": "lambda-artifacts/find-artists/${{ steps.version.outputs.version }}/find-artists.zip"
+              },
+              "queue-scraping": {
+                "runtime": "nodejs20.x",
+                "s3_key": "lambda-artifacts/queue-scraping/${{ steps.version.outputs.version }}/queue-scraping.zip"
+              },
+              "rotate-nat-gateway-eip": {
+                "runtime": "python3.11",
+                "s3_key": "lambda-artifacts/rotate-nat-gateway-eip/${{ steps.version.outputs.version }}/rotate-nat-gateway-eip.zip"
+              },
+              "secret-rotation": {
+                "runtime": "python3.11",
+                "s3_key": "lambda-artifacts/secret-rotation/${{ steps.version.outputs.version }}/secret-rotation.zip"
+              }
+            }
+          }
+          EOF
+
+      - name: Upload deployment manifest
+        run: |
+          # Upload versioned manifest
+          aws s3 cp /tmp/deployment-manifest.json \
+            s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/deployment-manifests/${{ steps.version.outputs.version }}/manifest.json
+          
+          # Upload as latest manifest
+          aws s3 cp /tmp/deployment-manifest.json \
+            s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/deployment-manifests/latest/manifest.json
+          
+          echo "Deployment manifest uploaded for version ${{ steps.version.outputs.version }}"
+
+      - name: Output deployment information
+        run: |
+          echo "::notice title=Deployment Manifest Created::$(escape_gh_output "All Lambda functions packaged successfully")"
+          echo "Manifest version: $(escape_gh_output "${{ steps.version.outputs.version }}")"
+          echo "Manifest S3 path: $(escape_gh_output "s3://${{ env.LAMBDA_ARTIFACTS_BUCKET }}/deployment-manifests/${{ steps.version.outputs.version }}/manifest.json")"
+          
+          # Output the manifest content for verification
+          echo "Deployment manifest contents:"
+          cat /tmp/deployment-manifest.json | jq .

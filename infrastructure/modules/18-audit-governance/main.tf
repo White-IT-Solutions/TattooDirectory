@@ -98,10 +98,10 @@ resource "aws_cloudwatch_dashboard" "compliance" {
   dashboard_name = "${var.context.name_prefix}-compliance-dashboard"
 
   dashboard_body = templatefile("${path.module}/../00-Templates/config_compliance_dashboard.json.tftpl", {
-    aws_region                 = var.context.aws_region
-    infra_account_id                 = var.context.audit_account_id
-    name_prefix                = var.context.name_prefix
-    config_aggregator_name     = var.enable_config ? aws_config_configuration_aggregator.organization[0].name : ""
+    aws_region                     = var.context.aws_region
+    infra_account_id               = var.context.audit_account_id
+    name_prefix                    = var.context.name_prefix
+    config_aggregator_name         = var.enable_config ? aws_config_configuration_aggregator.organization[0].name : ""
     s3_public_access_rule_name     = var.s3_public_access_rule_name
     dynamodb_encryption_rule_name  = var.dynamodb_encryption_rule_name
     lambda_public_access_rule_name = var.lambda_public_access_rule_name

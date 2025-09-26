@@ -22,10 +22,10 @@ locals {
     name_prefix  = "${var.project_name}-${var.environment}"
 
     # AWS Specific
-    aws_region         = var.aws_region
-    replica_aws_region = var.replica_aws_region
-    infra_account_id          = var.infra_account_id
-    audit_account_id    = var.audit_account_id
+    aws_region             = var.aws_region
+    replica_aws_region     = var.replica_aws_region
+    infra_account_id       = var.infra_account_id
+    audit_account_id       = var.audit_account_id
     log_archive_account_id = var.log_archive_account_id
 
     # Common Configuration & Metadata

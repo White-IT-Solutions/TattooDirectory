@@ -1,0 +1,18 @@
+# .github/workflows/terraform-deploy-prod.yaml
+
+name: 'Terraform CI/CD (prod)'
+
+on:
+  push:
+    branches:
+      - release-prod
+
+jobs:
+  call-reusable-workflow:
+    uses: ./.github/workflows/terraform-reusable-deploy.yml
+    with:
+      environment: prod
+      tf_state_key: prod/terraform.tfstate
+    secrets:
+      # Pass the AWS role from the 'prod' environment secrets
+      AWS_ROLE_TO_ASSUME_PROD: ${{ secrets.AWS_ROLE_TO_ASSUME_PROD }}

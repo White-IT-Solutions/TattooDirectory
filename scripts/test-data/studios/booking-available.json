@@ -1,0 +1,202 @@
+[
+  {
+    "studioId": "studio-booking-001",
+    "studioName": "Open Slots Studio",
+    "address": "25 Shoreditch High Street, Shoreditch, London E1 6PN",
+    "postcode": "E1 6PN",
+    "geohash": "gcpvj1k",
+    "latitude": 51.5231,
+    "longitude": -0.0751,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7739 1234",
+      "email": "bookings@openslotstudio.com",
+      "website": "https://openslotstudio.com",
+      "instagram": "@openslotstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.6,
+    "reviewCount": 87,
+    "established": 2019,
+    "specialties": ["traditional", "realism"],
+    "bookingAvailable": true,
+    "nextAvailableSlot": "2024-01-15",
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-001/exterior-1.jpg",
+        "description": "Welcoming studio entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-001/interior-1.jpg",
+        "description": "Available booking stations",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-001/gallery-1.jpg",
+        "description": "Recent work showcase",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-booking-002",
+    "studioName": "Quick Ink Studio",
+    "address": "67 Camden High Street, Camden, London NW1 7JL",
+    "postcode": "NW1 7JL",
+    "geohash": "gcpvn0m",
+    "latitude": 51.5395,
+    "longitude": -0.1429,
+    "locationDisplay": "Camden, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7485 5678",
+      "email": "hello@quickink.co.uk",
+      "website": "https://quickink.co.uk",
+      "instagram": "@quickinkstudio"
+    },
+    "openingHours": {
+      "monday": "11:00-19:00",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003", "artist-004"],
+    "artistCount": 2,
+    "rating": 4.4,
+    "reviewCount": 123,
+    "established": 2020,
+    "specialties": ["blackwork", "traditional"],
+    "bookingAvailable": true,
+    "nextAvailableSlot": "2024-01-12",
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-002/exterior-1.jpg",
+        "description": "Camden studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-002/interior-1.jpg",
+        "description": "Fast service workspace",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-booking-003",
+    "studioName": "Manchester Ink Hub",
+    "address": "89 Oldham Street, Northern Quarter, Manchester M1 1LZ",
+    "postcode": "M1 1LZ",
+    "geohash": "gcw2j1m",
+    "latitude": 53.4842,
+    "longitude": -2.2377,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 234 9876",
+      "email": "bookings@manchesterinkhub.co.uk",
+      "website": "https://manchesterinkhub.co.uk",
+      "instagram": "@manchesterinkhub"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "12:00-20:00",
+      "wednesday": "12:00-20:00",
+      "thursday": "12:00-20:00",
+      "friday": "12:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-005"],
+    "artistCount": 1,
+    "rating": 4.7,
+    "reviewCount": 156,
+    "established": 2017,
+    "specialties": ["realism"],
+    "bookingAvailable": true,
+    "nextAvailableSlot": "2024-01-18",
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-003/exterior-1.jpg",
+        "description": "Northern Quarter location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-003/interior-1.jpg",
+        "description": "Professional workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-003/gallery-1.jpg",
+        "description": "Realism portfolio",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-booking-004",
+    "studioName": "Birmingham Tattoo Works",
+    "address": "34 Corporation Street, Birmingham B2 4RQ",
+    "postcode": "B2 4RQ",
+    "geohash": "gcqcr3k",
+    "latitude": 52.4814,
+    "longitude": -1.8998,
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 3210",
+      "email": "studio@birminghamtattooworks.co.uk",
+      "website": "https://birminghamtattooworks.co.uk",
+      "instagram": "@birminghamtattooworks"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-006"],
+    "artistCount": 1,
+    "rating": 4.5,
+    "reviewCount": 98,
+    "established": 2018,
+    "specialties": ["blackwork"],
+    "bookingAvailable": true,
+    "nextAvailableSlot": "2024-01-20",
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-004/exterior-1.jpg",
+        "description": "Birmingham city centre studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-booking-004/interior-1.jpg",
+        "description": "Modern tattoo station",
+        "isPrimary": false
+      }
+    ]
+  }
+]

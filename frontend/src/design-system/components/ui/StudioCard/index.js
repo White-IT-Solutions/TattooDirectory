@@ -1,0 +1,1 @@
+export { default as StudioCard, StudioCardCompact } from './StudioCard';

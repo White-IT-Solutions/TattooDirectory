@@ -15,10 +15,10 @@ locals {
   # S3 bucket configurations for audit and log buckets
   s3_buckets = {
     config = {
-      description     = "AWS Config bucket"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "config-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "AWS Config bucket"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "config-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "config_lifecycle"
@@ -46,10 +46,10 @@ locals {
       ]
     }
     cloudtrail = {
-      description     = "CloudTrail logs bucket"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "cloudtrail-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "CloudTrail logs bucket"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "cloudtrail-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "cloudtrail_lifecycle"
@@ -77,10 +77,10 @@ locals {
       ]
     }
     access_logs = {
-      description     = "CloudFront and other access logs"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "access-logs-self-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "CloudFront and other access logs"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "access-logs-self-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "access_logs_lifecycle"
@@ -104,10 +104,10 @@ locals {
       ]
     }
     vpc_flow_logs = {
-      description     = "VPC Flow Logs bucket"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "vpc-flow-logs-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "VPC Flow Logs bucket"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "vpc-flow-logs-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "vpc_flow_logs_lifecycle"
@@ -131,10 +131,10 @@ locals {
       ]
     }
     waf_logs = {
-      description     = "WAF logs bucket"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "waf-logs-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "WAF logs bucket"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "waf-logs-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "waf_logs_lifecycle"
@@ -379,11 +379,11 @@ resource "aws_s3_bucket_policy" "config" {
         Principal = { Service = "config.amazonaws.com" }
         Action    = "s3:PutObject"
         Resource  = "${aws_s3_bucket.main["config"].arn}/*",
-        Condition = { 
-          StringEquals = { 
-            "s3:x-amz-acl" = "bucket-owner-full-control",
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control",
             "AWS:SourceAccount" = [var.context.infra_account_id, var.context.audit_account_id]
-          } 
+          }
         }
       },
       {
@@ -432,11 +432,11 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Principal = { Service = "cloudtrail.amazonaws.com" }
         Action    = "s3:PutObject"
         Resource  = "${aws_s3_bucket.main["cloudtrail"].arn}/AWSLogs/${var.context.audit_account_id}/*",
-        Condition = { 
-          StringEquals = { 
-            "s3:x-amz-acl" = "bucket-owner-full-control",
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control",
             "AWS:SourceAccount" = var.context.audit_account_id
-          } 
+          }
         }
       },
       {
@@ -445,11 +445,11 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Principal = { Service = "cloudtrail.amazonaws.com" }
         Action    = "s3:PutObject"
         Resource  = "${aws_s3_bucket.main["cloudtrail"].arn}/AWSLogs/${var.context.infra_account_id}/*",
-        Condition = { 
-          StringEquals = { 
-            "s3:x-amz-acl" = "bucket-owner-full-control",
-            "AWS:SourceAccount" = var.context.infra_account_id 
-          } 
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control",
+            "AWS:SourceAccount" = var.context.infra_account_id
+          }
         }
       },
       {
@@ -603,7 +603,7 @@ resource "aws_s3_bucket_policy" "waf_logs" {
           # The Firehose role will be in the Security account
           AWS = "arn:aws:iam::${var.context.audit_account_id}:root"
         }
-        Action   = ["s3:AbortMultipartUpload", "s3:GetBucketLocation", "s3:GetObject", "s3:ListBucket", "s3:ListBucketMultipartUploads", "s3:PutObject"]
+        Action = ["s3:AbortMultipartUpload", "s3:GetBucketLocation", "s3:GetObject", "s3:ListBucket", "s3:ListBucketMultipartUploads", "s3:PutObject"]
         Resource = [
           aws_s3_bucket.main["waf_logs"].arn,
           "${aws_s3_bucket.main["waf_logs"].arn}/*"
@@ -693,9 +693,9 @@ resource "aws_kms_alias" "log_archive_replica" {
 
 # Replica S3 buckets (production only)
 resource "aws_s3_bucket" "replica" {
-  for_each = { 
-    for k, v in local.s3_buckets : k => v 
-    if v.is_replicated && var.context.enable_cross_region_replication 
+  for_each = {
+    for k, v in local.s3_buckets : k => v
+    if v.is_replicated && var.context.enable_cross_region_replication
   }
 
   provider = aws.replica
@@ -751,9 +751,9 @@ resource "aws_s3_bucket_public_access_block" "replica" {
 
 # S3 replication configuration
 resource "aws_s3_bucket_replication_configuration" "main" {
-  for_each = { 
-    for k, v in local.s3_buckets : k => v 
-    if v.is_replicated && var.context.enable_cross_region_replication 
+  for_each = {
+    for k, v in local.s3_buckets : k => v
+    if v.is_replicated && var.context.enable_cross_region_replication
   }
 
   role   = var.s3_replication_role_arn

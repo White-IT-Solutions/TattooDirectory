@@ -13,7 +13,7 @@ variable "context" {
     # AWS Specific
     aws_region         = string
     replica_aws_region = string
-    infra_account_id         = string
+    infra_account_id   = string
 
     # Common Configuration & Metadata
     common_tags                     = map(string)

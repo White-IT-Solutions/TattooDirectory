@@ -42,7 +42,7 @@ module "audit_foundation" {
 module "central_logging" {
   source  = "../../modules/04-central-logging"
   context = local.context
-  
+
   kms_key_logs_arn        = module.audit_foundation.kms_key_logs_arn
   waf_logs_bucket_arn     = module.log_storage.waf_logs_bucket_arn
   kms_key_audit_arn       = module.audit_foundation.kms_key_audit_arn
@@ -63,9 +63,9 @@ module "networking" {
   source  = "../../modules/05-networking"
   context = local.context
 
-  kms_key_logs_arn          = module.audit_foundation.kms_key_logs_arn
-  vpc_flow_logs_bucket_arn  = module.log_storage.vpc_flow_logs_bucket_arn
-  availability_zones        = module.foundation.availability_zones
+  kms_key_logs_arn         = module.audit_foundation.kms_key_logs_arn
+  vpc_flow_logs_bucket_arn = module.log_storage.vpc_flow_logs_bucket_arn
+  availability_zones       = module.foundation.availability_zones
 
   providers = {
     aws.us_east_1 = aws.infra_us_east_1
@@ -114,7 +114,7 @@ module "app_security" {
   opensearch_master_password = module.foundation.opensearch_master_password
   app_secrets_password       = module.foundation.app_secrets_password
   waf_firehose_arn           = module.central_logging.waf_firehose_arn
-  
+
   providers = {
     aws = aws.infra_primary
   }
@@ -129,8 +129,8 @@ module "log_storage" {
   source  = "../../modules/08-log-storage"
   context = local.context
 
-  random_suffix             = module.foundation.random_suffix
-  s3_replication_role_arn   = module.iam.s3_replication_role_arn
+  random_suffix           = module.foundation.random_suffix
+  s3_replication_role_arn = module.iam.s3_replication_role_arn
 
   # This module is deployed to the Log Archive Account
   providers = {
@@ -180,6 +180,21 @@ resource "aws_ssm_parameter" "lambda_artifacts_bucket_name" {
   })
 }
 
+resource "aws_ssm_parameter" "cloudfront_distribution_id" {
+  provider = aws.infra_primary
+
+  name  = "/${local.context.name_prefix}/cloudfront-distribution-id"
+  type  = "SecureString"
+  value = module.delivery.cloudfront_distribution_id
+
+  key_id      = module.foundation.kms_key_main_arn
+  description = "The name of the cloudfront distribution for dev."
+
+  tags = merge(local.context.common_tags, {
+    Name = "${local.context.name_prefix}-cloudfront-distribution-id"
+  })
+}
+
 # ------------------------------------------------------------------------------
 # Search Layer
 # Contains OpenSearch resources
@@ -189,7 +204,7 @@ module "search" {
   source  = "../../modules/10-search"
   context = local.context
 
-  kms_key_main_arn                 = module.foundation.kms_key_main_arn #Infra Account KMS
+  kms_key_main_arn                 = module.foundation.kms_key_main_arn       #Infra Account KMS
   kms_key_logs_arn                 = module.audit_foundation.kms_key_logs_arn #Audit Account KMS
   private_subnet_ids               = module.networking.private_subnet_ids
   opensearch_security_group_id     = module.networking.opensearch_security_group_id
@@ -233,7 +248,7 @@ module "compute" {
   context = local.context
 
   lambda_artifacts_bucket_id        = module.app_storage.lambda_artifacts_bucket_id
-  kms_key_main_arn                  = module.foundation.kms_key_main_arn #Infra Account KMS
+  kms_key_main_arn                  = module.foundation.kms_key_main_arn       #Infra Account KMS
   kms_key_logs_arn                  = module.audit_foundation.kms_key_logs_arn #Audit Account KMS
   private_subnet_ids                = module.networking.private_subnet_ids
   lambda_internet_security_group_id = module.networking.lambda_internet_security_group_id
@@ -247,6 +262,7 @@ module "compute" {
   lambda_find_artists_role_arn           = module.iam.lambda_find_artists_role_arn
   lambda_queue_scraping_role_arn         = module.iam.lambda_queue_scraping_role_arn
   lambda_rotate_nat_gateway_eip_role_arn = module.iam.lambda_rotate_nat_gateway_eip_role_arn
+  lambda_secret_rotation_role_arn        = module.iam.lambda_secret_rotation_role_arn
   step_functions_role_arn                = module.iam.step_functions_role_arn
   step_functions_role_name               = module.iam.step_functions_role_name
   ecs_task_execution_role_arn            = module.iam.ecs_task_execution_role_arn
@@ -255,6 +271,7 @@ module "compute" {
   lambda_sync_role_name                  = module.iam.lambda_sync_role_name
   lambda_discover_studios_role_name      = module.iam.lambda_discover_studios_role_name
   lambda_find_artists_role_name          = module.iam.lambda_find_artists_role_name
+  lambda_secret_rotation_role_name       = module.iam.lambda_secret_rotation_role_name
   ecs_task_role_name                     = module.iam.ecs_task_role_name
 
   # Resource references
@@ -264,9 +281,20 @@ module "compute" {
   idempotency_table_arn = module.app_storage.dynamodb_table_arns["idempotency"]
   main_table_stream_arn = module.app_storage.main_table_stream_arn
   opensearch_endpoint   = module.search.domain_endpoint
+  opensearch_domain_arn = module.search.domain_arn
   app_secrets_arn       = module.app_security.app_secrets_arn
   lambda_memory_size    = var.lambda_memory_size
   scraper_image_tag     = var.scraper_image_tag
+
+  # Lambda S3 artifact keys (can be overridden by environment variables from CI/CD)
+  lambda_api_handler_s3_key              = var.lambda_api_handler_s3_key
+  lambda_dynamodb_sync_s3_key            = var.lambda_dynamodb_sync_s3_key
+  lambda_discover_studios_s3_key         = var.lambda_discover_studios_s3_key
+  lambda_find_artists_s3_key             = var.lambda_find_artists_s3_key
+  lambda_queue_scraping_s3_key           = var.lambda_queue_scraping_s3_key
+  lambda_rotate_nat_gateway_eip_s3_key   = var.lambda_rotate_nat_gateway_eip_s3_key
+  lambda_secret_rotation_s3_key          = var.lambda_secret_rotation_s3_key
+  lambda_deployment_version              = var.lambda_deployment_version
 
   providers = {
     aws = aws.infra_primary
@@ -347,14 +375,14 @@ module "backup" {
   source  = "../../modules/16-backup"
   context = local.context
 
-  backup_enabled                = var.backup_enabled
-  backup_retention_days         = var.backup_retention_days
-  kms_key_log_archive_arn       = module.log_storage.kms_key_log_archive_arn
+  backup_enabled                  = var.backup_enabled
+  backup_retention_days           = var.backup_retention_days
+  kms_key_log_archive_arn         = module.log_storage.kms_key_log_archive_arn
   kms_key_log_archive_replica_arn = module.log_storage.kms_key_log_archive_replica_arn
-  backup_role_arn               = module.iam.backup_role_arn
-  dynamodb_table_arns           = values(module.app_storage.dynamodb_table_arns)
-  ecs_cluster_arn               = module.compute.ecs_cluster_arn
-  backup_notification_topic_arn = module.app_monitoring.critical_alerts_topic_arn
+  backup_role_arn                 = module.iam.backup_role_arn
+  dynamodb_table_arns             = values(module.app_storage.dynamodb_table_arns)
+  ecs_cluster_arn                 = module.compute.ecs_cluster_arn
+  backup_notification_topic_arn   = module.app_monitoring.critical_alerts_topic_arn
 
   # This module is deployed to the Log Archive Account
   providers = {
@@ -372,18 +400,18 @@ module "governance" {
   source  = "../../modules/17-governance"
   context = local.context
 
-  enable_config                   = true
-  enable_config_remediation       = var.enable_config_remediation # Use caution enabling this in dev
-  kms_key_main_arn                = module.foundation.kms_key_main_arn # Infra Account KMS
-  kms_key_logs_arn                = module.audit_foundation.kms_key_logs_arn # Audit Account KMS
-  config_service_role_arn         = module.iam.config_service_role_arn
-  config_remediation_role_arn     = "" # TODO: Add remediation role when needed
-  cloudtrail_role_arn             = "" # TODO: Add CloudTrail role when needed
-  config_bucket_name              = module.log_storage.config_bucket_id
-  cloudtrail_bucket_name          = module.log_storage.cloudtrail_bucket_id
-  cloudtrail_bucket_arn           = module.log_storage.cloudtrail_bucket_arn
-  frontend_bucket_arn             = module.app_storage.frontend_bucket_arn
-  dynamodb_table_arns             = values(module.app_storage.dynamodb_table_arns)
+  enable_config               = true
+  enable_config_remediation   = var.enable_config_remediation            # Use caution enabling this in dev
+  kms_key_main_arn            = module.foundation.kms_key_main_arn       # Infra Account KMS
+  kms_key_logs_arn            = module.audit_foundation.kms_key_logs_arn # Audit Account KMS
+  config_service_role_arn     = module.iam.config_service_role_arn
+  config_remediation_role_arn = "" # TODO: Add remediation role when needed
+  cloudtrail_role_arn         = "" # TODO: Add CloudTrail role when needed
+  config_bucket_name          = module.log_storage.config_bucket_id
+  cloudtrail_bucket_name      = module.log_storage.cloudtrail_bucket_id
+  cloudtrail_bucket_arn       = module.log_storage.cloudtrail_bucket_arn
+  frontend_bucket_arn         = module.app_storage.frontend_bucket_arn
+  dynamodb_table_arns         = values(module.app_storage.dynamodb_table_arns)
 
   # This module is deployed to the Infra Account
   providers = {
@@ -400,8 +428,8 @@ module "audit_governance" {
   source  = "../../modules/18-audit-governance"
   context = local.context
 
-  enable_config              = true
-  s3_public_access_rule_name = module.governance.s3_public_access_rule_name
+  enable_config                  = true
+  s3_public_access_rule_name     = module.governance.s3_public_access_rule_name
   dynamodb_encryption_rule_name  = module.governance.dynamodb_encryption_rule_name
   lambda_public_access_rule_name = module.governance.lambda_public_access_rule_name
   cloudfront_https_rule_name     = module.governance.cloudfront_https_rule_name #Audit Account
@@ -428,7 +456,7 @@ module "delivery" {
   frontend_backup_bucket_regional_domain_name = module.app_storage.frontend_backup_bucket_regional_domain_name
 
   # API Gateway Inputs
-  api_gateway_id     = module.api.api_id
+  api_gateway_id       = module.api.api_id
   api_gateway_endpoint = module.api.api_endpoint
 
   # Security & Logging Inputs
@@ -467,8 +495,8 @@ locals {
 
 resource "aws_iam_policy" "s3_replication" { #Infra Account
   provider = aws.infra_primary
-  count = local.context.enable_cross_region_replication ? 1 : 0
-  name  = "${local.context.name_prefix}-s3-replication-policy"
+  count    = local.context.enable_cross_region_replication ? 1 : 0
+  name     = "${local.context.name_prefix}-s3-replication-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -508,7 +536,7 @@ resource "aws_iam_policy" "s3_replication" { #Infra Account
 }
 
 resource "aws_iam_role_policy_attachment" "s3_replication" {
-  provider = aws.infra_primary
+  provider   = aws.infra_primary
   count      = local.context.enable_cross_region_replication ? 1 : 0
   role       = module.iam.s3_replication_role_name
   policy_arn = aws_iam_policy.s3_replication[0].arn
@@ -534,16 +562,35 @@ resource "aws_iam_policy" "github_actions_cicd" {
         Resource = aws_ssm_parameter.lambda_artifacts_bucket_name.arn
       },
       {
+        Sid      = "AllowManageApiGatewayUrlParameter"
+        Effect   = "Allow"
+        Action   = ["ssm:PutParameter", "ssm:GetParameter"]
+        Resource = "arn:aws:ssm:${local.context.aws_region}:*:parameter/${local.context.name_prefix}/api-gateway-url"
+      },
+      {
         Sid      = "AllowKmsDecryptForSsm"
         Effect   = "Allow"
-        Action   = "kms:Decrypt"
+        Action   = ["kms:Decrypt", "kms:Encrypt"]
         Resource = module.foundation.kms_key_main_arn
-        # Condition to ensure the role can only use this key for decrypting via SSM
         Condition = {
           "StringEquals" = {
             "kms:ViaService" = "ssm.${local.context.aws_region}.amazonaws.com"
           }
         }
+      },
+      {
+        Sid      = "AllowS3FrontendDeployment"
+        Effect   = "Allow"
+        Action   = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          "${module.app_storage.frontend_bucket_arn}",
+          "${module.app_storage.frontend_bucket_arn}/*"
+        ]
       }
     ]
   })

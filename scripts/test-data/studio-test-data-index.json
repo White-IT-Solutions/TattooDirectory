@@ -1,0 +1,330 @@
+{
+  "studioTestDataIndex": {
+    "version": "1.1",
+    "description": "Comprehensive index of all studio test data and fixtures",
+    "lastUpdated": "2024-01-15",
+    "categories": {
+      "scenarioData": {
+        "description": "Studio test data organized by testing scenarios",
+        "files": [
+          {
+            "filename": "studios/minimal.json",
+            "scenario": "minimal",
+            "studioCount": 2,
+            "description": "Minimal dataset for quick testing",
+            "useCases": ["unit_tests", "quick_validation", "development"]
+          },
+          {
+            "filename": "studios/search-basic.json",
+            "scenario": "search-basic",
+            "studioCount": 3,
+            "description": "Basic search functionality testing with studios",
+            "useCases": [
+              "search_testing",
+              "basic_filtering",
+              "component_validation"
+            ]
+          },
+          {
+            "filename": "studios/london-artists.json",
+            "scenario": "london-artists",
+            "studioCount": 3,
+            "description": "London-focused studios for location testing",
+            "useCases": [
+              "location_filtering",
+              "postcode_validation",
+              "geographic_tests"
+            ]
+          },
+          {
+            "filename": "studios/high-rated.json",
+            "scenario": "high-rated",
+            "studioCount": 2,
+            "description": "High-rated studios for quality testing",
+            "useCases": [
+              "rating_filters",
+              "quality_validation",
+              "premium_features"
+            ]
+          },
+          {
+            "filename": "studios/new-artists.json",
+            "scenario": "new-artists",
+            "studioCount": 2,
+            "description": "Recently added artists and new studios",
+            "useCases": [
+              "new_content_testing",
+              "recent_additions",
+              "fresh_data_validation"
+            ]
+          },
+          {
+            "filename": "studios/booking-available.json",
+            "scenario": "booking-available",
+            "studioCount": 4,
+            "description": "Artists and studios with open booking slots",
+            "useCases": [
+              "booking_functionality",
+              "availability_testing",
+              "scheduling_validation"
+            ]
+          },
+          {
+            "filename": "studios/portfolio-rich.json",
+            "scenario": "portfolio-rich",
+            "studioCount": 3,
+            "description": "Artists with extensive portfolios and well-documented studios",
+            "useCases": [
+              "portfolio_testing",
+              "image_gallery_validation",
+              "content_rich_scenarios"
+            ]
+          },
+          {
+            "filename": "studios/multi-style.json",
+            "scenario": "multi-style",
+            "studioCount": 2,
+            "description": "Artists and studios with multiple style specializations",
+            "useCases": [
+              "style_filtering",
+              "multi_specialty_testing",
+              "diverse_content_validation"
+            ]
+          },
+          {
+            "filename": "studios/pricing-range.json",
+            "scenario": "pricing-range",
+            "studioCount": 3,
+            "description": "Mid-range pricing testing for artists and studios",
+            "useCases": [
+              "pricing_validation",
+              "cost_filtering",
+              "budget_range_testing"
+            ]
+          },
+          {
+            "filename": "studios/studio-diverse.json",
+            "scenario": "studio-diverse",
+            "studioCount": 5,
+            "description": "Diverse studio types and specializations with varied artist assignments",
+            "useCases": [
+              "diversity_testing",
+              "geographic_distribution",
+              "specialty_variety_validation"
+            ]
+          },
+          {
+            "filename": "studios/full-dataset.json",
+            "scenario": "full-dataset",
+            "studioCount": 6,
+            "description": "Comprehensive dataset with all features",
+            "useCases": [
+              "integration_tests",
+              "performance_testing",
+              "full_feature_validation"
+            ]
+          },
+          {
+            "filename": "studios/performance-test.json",
+            "scenario": "performance-test",
+            "studioCount": 2,
+            "description": "Large dataset for performance testing (100+ artists, 40+ studios)",
+            "useCases": [
+              "performance_testing",
+              "load_testing",
+              "stress_testing"
+            ]
+          },
+          {
+            "filename": "studios/mega-dataset.json",
+            "scenario": "mega-dataset",
+            "studioCount": 2,
+            "description": "Extra large dataset for stress testing (250+ artists, 100+ studios)",
+            "useCases": [
+              "stress_testing",
+              "scalability_testing",
+              "extreme_load_testing"
+            ]
+          },
+          {
+            "filename": "studios/london-studios.json",
+            "scenario": "london-studios",
+            "studioCount": 3,
+            "description": "London-focused studios and artists with proper postcodes",
+            "useCases": [
+              "location_testing",
+              "postcode_validation",
+              "london_specific_testing"
+            ]
+          },
+          {
+            "filename": "studios/high-rated-studios.json",
+            "scenario": "high-rated-studios",
+            "studioCount": 2,
+            "description": "High-rated studios and artists (4.5+ stars)",
+            "useCases": [
+              "quality_testing",
+              "premium_features",
+              "rating_validation"
+            ]
+          }
+        ]
+      },
+      "relationshipData": {
+        "description": "Artist-studio relationship test data",
+        "files": [
+          {
+            "filename": "studio-relationships.json",
+            "description": "Bidirectional relationship test data",
+            "useCases": [
+              "relationship_validation",
+              "consistency_checks",
+              "orphan_detection"
+            ]
+          }
+        ]
+      },
+      "frontendMockData": {
+        "description": "Frontend development mock data examples",
+        "files": [
+          {
+            "filename": "frontend-studio-mock-examples.js",
+            "description": "Frontend component mock data examples",
+            "useCases": [
+              "frontend_development",
+              "component_testing",
+              "ui_validation"
+            ]
+          }
+        ]
+      },
+      "testFixtures": {
+        "description": "Unit and integration test fixtures",
+        "files": [
+          {
+            "filename": "unit-test-fixtures.json",
+            "description": "Fixtures for unit testing individual components",
+            "useCases": ["unit_tests", "component_validation", "error_testing"]
+          },
+          {
+            "filename": "integration-test-fixtures.json",
+            "description": "Fixtures for integration testing across services",
+            "useCases": [
+              "integration_tests",
+              "end_to_end_validation",
+              "service_integration"
+            ]
+          }
+        ]
+      },
+      "imageTestData": {
+        "description": "Studio image test files and validation data",
+        "directories": [
+          {
+            "path": "tests/Test_Data/StudioImages/exterior/",
+            "description": "Studio exterior test images",
+            "fileCount": 3,
+            "useCases": ["image_processing", "s3_upload", "format_conversion"]
+          },
+          {
+            "path": "tests/Test_Data/StudioImages/interior/",
+            "description": "Studio interior test images",
+            "fileCount": 4,
+            "useCases": [
+              "image_processing",
+              "quality_optimization",
+              "thumbnail_generation"
+            ]
+          },
+          {
+            "path": "tests/Test_Data/StudioImages/gallery/",
+            "description": "Studio gallery test images",
+            "fileCount": 3,
+            "useCases": [
+              "image_processing",
+              "detail_preservation",
+              "color_accuracy"
+            ]
+          }
+        ],
+        "manifestFile": "tests/Test_Data/StudioImages/image-test-manifest.json"
+      }
+    },
+    "usageGuide": {
+      "unitTesting": {
+        "description": "How to use test data for unit testing",
+        "recommendedFiles": ["unit-test-fixtures.json", "studios/minimal.json"],
+        "examples": [
+          "Load minimal studio data for component testing",
+          "Use validation fixtures to test error handling",
+          "Test relationship manager with known good/bad data"
+        ]
+      },
+      "integrationTesting": {
+        "description": "How to use test data for integration testing",
+        "recommendedFiles": [
+          "integration-test-fixtures.json",
+          "studios/full-dataset.json",
+          "studio-relationships.json"
+        ],
+        "examples": [
+          "Test complete pipeline with full dataset",
+          "Validate data consistency across services",
+          "Test image processing with real image files"
+        ]
+      },
+      "frontendDevelopment": {
+        "description": "How to use test data for frontend development",
+        "recommendedFiles": [
+          "frontend-studio-mock-examples.js",
+          "studios/london-artists.json"
+        ],
+        "examples": [
+          "Use mock data examples for component development",
+          "Test StudioSearch component with realistic data",
+          "Validate frontend data structure requirements"
+        ]
+      },
+      "performanceTesting": {
+        "description": "How to use test data for performance testing",
+        "recommendedFiles": [
+          "studios/full-dataset.json",
+          "integration-test-fixtures.json"
+        ],
+        "examples": [
+          "Load test with large studio datasets",
+          "Measure image processing performance",
+          "Test search performance with varied data"
+        ]
+      }
+    },
+    "validationRules": {
+      "dataConsistency": {
+        "description": "Rules for maintaining test data consistency",
+        "rules": [
+          "All studio IDs must be unique across all test files",
+          "Artist-studio relationships must be bidirectional",
+          "UK postcodes must be valid format",
+          "Coordinates must be within UK geographic bounds",
+          "Rating values must be between 1.0 and 5.0",
+          "Established years must be between 1900 and current year"
+        ]
+      },
+      "fileStructure": {
+        "description": "Rules for test data file structure",
+        "rules": [
+          "JSON files must be valid and properly formatted",
+          "Image files must be in supported formats (jpg, png, webp)",
+          "File names must follow naming conventions",
+          "Directory structure must match expected patterns"
+        ]
+      }
+    },
+    "maintenanceGuidelines": {
+      "updateFrequency": "Update test data when schema changes or new scenarios are added",
+      "versionControl": "Increment version number when making breaking changes",
+      "backupStrategy": "Keep previous versions for compatibility testing",
+      "validationProcess": "Run validation tests after any test data changes"
+    }
+  }
+}

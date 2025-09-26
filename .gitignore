@@ -3,13 +3,12 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-bun.lockb
 
 # Production builds
-build/
-dist/
-.next/
-out/
+/build
+/dist
+/.next/
+/out/
 
 # Environment variables
 .env
@@ -20,15 +19,13 @@ out/
 
 # IDE files
 .vscode/
-.kiro/
 .idea/
-.gitignore
 *.swp
 *.swo
-*.sublime-*
-*code-workspace
+*~
+.kiro
 
-# OS files
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -38,69 +35,28 @@ ehthumbs.db
 Thumbs.db
 
 # Logs
-logs/
+logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
+# Coverage reports
 coverage/
 *.lcov
 
-# nyc test coverage
-.nyc_output
-
-# Temporary files
-tmp/
-temp/
-.tmp/
-
-# Local Terraform Directories
-**/.terraform/*
-
-# .tfstate files
-.tfstate
-*.tfstate.backup
-
-# .tfvars files
+# Terraform
+*.tfstate
+*.tfstate.*
 *.tfvars
-*.tfvars.json
-
-# Terraform lock files
+.terraform/
 .terraform.lock.hcl
 
-# AWS SAM
-.aws-sam/
+# AWS
+.aws/
 
-# Lambda deployment packages
-*.zip
+# Temporary files
+*.tmp
+*.temp
+temp/
 
-# Serverless Framework
-.serverless/
-
-# CDK
-cdk.out/
-
-# Exclude temporary folders
-temp-*/
-ink-flow-finder/
-
-# Test results
-test-results/
-coverage/
-
-# Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
-
-# Misc Directories
-**/AI_Assisted_Documentation/*
+# Kiro settings (keep steering rules but ignore other settings)
+.kiro/settings/
+docs/AI_Assisted_Documentation/*

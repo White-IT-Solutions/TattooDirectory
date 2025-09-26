@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-09-19T10:39:23.811Z",
+  "summary": {
+    "total": 18,
+    "passed": 10,
+    "failed": 8,
+    "successRate": 55.55555555555556
+  },
+  "errors": [
+    {
+      "test": "Error Handler Integration",
+      "error": "Recovery strategy was not attempted",
+      "stack": "Error: Recovery strategy was not attempted\n    at FrontendSyncProcessorErrorTests.testErrorHandlerIntegration (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:267:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "Error Classification",
+      "error": "Expected error type FILE_SYSTEM, got CONFIGURATION",
+      "stack": "Error: Expected error type FILE_SYSTEM, got CONFIGURATION\n    at FrontendSyncProcessorErrorTests.testErrorClassification (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:314:15)\n    at FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "Corrupted Data Recovery",
+      "error": "Recovery from corrupted data failed",
+      "stack": "Error: Recovery from corrupted data failed\n    at FrontendSyncProcessorErrorTests.testCorruptedDataRecovery (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:585:15)\n    at FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:27)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "File System Recovery",
+      "error": "Recovery failed: Manual intervention required",
+      "stack": "Error: Recovery failed: Manual intervention required\n    at ErrorHandler.handleError (C:\\dev\\Tattoo_MVP\\scripts\\error-handler.js:292:15)\n    at async FrontendSyncProcessorErrorTests.testFileSystemRecovery (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:615:30)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "Unified Error Reporting",
+      "error": "Error type FILE_SYSTEM not tracked in stats",
+      "stack": "Error: Error type FILE_SYSTEM not tracked in stats\n    at FrontendSyncProcessorErrorTests.testUnifiedErrorReporting (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:748:15)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "Error Statistics Tracking",
+      "error": "Expected 1 errors of type FILE_SYSTEM, got 0",
+      "stack": "Error: Expected 1 errors of type FILE_SYSTEM, got 0\n    at FrontendSyncProcessorErrorTests.testErrorStatisticsTracking (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:846:15)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "State Manager Error Integration",
+      "error": "Recovery failed: Manual intervention required",
+      "stack": "Error: Recovery failed: Manual intervention required\n    at ErrorHandler.handleError (C:\\dev\\Tattoo_MVP\\scripts\\error-handler.js:292:15)\n    at async FrontendSyncProcessorErrorTests.testStateManagerErrorIntegration (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1099:30)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    },
+    {
+      "test": "Cross-Service Error Propagation",
+      "error": "Recovery failed: No operation provided for retry",
+      "stack": "Error: Recovery failed: No operation provided for retry\n    at ErrorHandler.handleError (C:\\dev\\Tattoo_MVP\\scripts\\error-handler.js:292:15)\n    at async FrontendSyncProcessorErrorTests.testCrossServiceErrorPropagation (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1180:7)\n    at async FrontendSyncProcessorErrorTests.runAllTests (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:210:9)\n    at async main (C:\\dev\\Tattoo_MVP\\scripts\\test-frontend-sync-processor-error-handling.js:1246:20)"
+    }
+  ],
+  "errorHandlerStats": {
+    "totalErrors": 9,
+    "errorsByType": {
+      "CONFIGURATION": 1,
+      "SERVICE_UNAVAILABLE": 4,
+      "TIMEOUT": 3,
+      "FILE_SYSTEM": 1
+    },
+    "errorsBySeverity": {
+      "MEDIUM": 5,
+      "HIGH": 4
+    },
+    "recoveryAttempts": 3,
+    "successfulRecoveries": 3,
+    "failedRecoveries": 12
+  },
+  "recommendations": [
+    "Review failed tests and implement necessary fixes",
+    "Review error patterns and improve error handling strategies",
+    "Investigate test failures to improve system reliability"
+  ]
+}

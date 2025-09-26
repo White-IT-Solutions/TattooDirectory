@@ -14,10 +14,10 @@ locals {
   # S3 bucket configurations for application buckets only
   s3_buckets = {
     frontend = {
-      description     = "Frontend static assets"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "frontend-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "Frontend static assets"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "frontend-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "delete_old_versions"
@@ -35,10 +35,10 @@ locals {
       ]
     }
     frontend_backup = {
-      description     = "Frontend backup static assets"
-      is_replicated   = var.context.enable_cross_region_replication
-      logging_prefix  = "frontend-backup-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "Frontend backup static assets"
+      is_replicated  = var.context.enable_cross_region_replication
+      logging_prefix = "frontend-backup-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "delete_old_versions"
@@ -56,10 +56,10 @@ locals {
       ]
     }
     lambda_artifacts = {
-      description     = "Lambda deployment packages"
-      is_replicated   = false # Lambda packages are part of the deployment pipeline, no need to replicate
-      logging_prefix  = "lambda-artifacts-access-logs/"
-      force_destroy   = var.context.environment == "dev" ? true : false
+      description    = "Lambda deployment packages"
+      is_replicated  = false # Lambda packages are part of the deployment pipeline, no need to replicate
+      logging_prefix = "lambda-artifacts-access-logs/"
+      force_destroy  = var.context.environment == "dev" ? true : false
       lifecycle_rules = [
         {
           id     = "cleanup_old_lambda_versions"
@@ -243,10 +243,10 @@ resource "aws_s3_bucket_notification" "main" {
 
 # Main application table
 resource "aws_dynamodb_table" "main" {
-  name           = "${var.context.name_prefix}-main"
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "PK"
-  range_key      = "SK"
+  name         = "${var.context.name_prefix}-main"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "PK"
+  range_key    = "SK"
 
   attribute {
     name = "PK"
@@ -259,19 +259,53 @@ resource "aws_dynamodb_table" "main" {
   }
 
   attribute {
-    name = "GSI1PK"
+    name = "gsi1pk"
     type = "S"
   }
 
   attribute {
-    name = "GSI1SK"
+    name = "gsi1sk"
     type = "S"
   }
 
+  attribute {
+    name = "gsi2pk"
+    type = "S"
+  }
+
+  attribute {
+    name = "gsi2sk"
+    type = "S"
+  }
+
+  attribute {
+    name = "gsi3pk"
+    type = "S"
+  }
+
+  # GSI1: style-geohash-index for style and location-based searches
+  # Supports queries like: find artists by style and geographic proximity
   global_secondary_index {
-    name            = "GSI1"
-    hash_key        = "GSI1PK"
-    range_key       = "GSI1SK"
+    name            = "style-geohash-index"
+    hash_key        = "gsi1pk"
+    range_key       = "gsi1sk"
+    projection_type = "ALL"
+  }
+
+  # GSI2: artist-name-index for artist name lookups
+  # Supports queries like: find artist by normalized name
+  global_secondary_index {
+    name            = "artist-name-index"
+    hash_key        = "gsi2pk"
+    range_key       = "gsi2sk"
+    projection_type = "ALL"
+  }
+
+  # GSI3: instagram-index for Instagram handle lookups
+  # Supports queries like: find artist by Instagram handle, duplicate detection
+  global_secondary_index {
+    name            = "instagram-index"
+    hash_key        = "gsi3pk"
     projection_type = "ALL"
   }
 
@@ -388,7 +422,7 @@ data "aws_iam_policy_document" "frontend_bucket_policy" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    actions   = ["s3:*"]
+    actions = ["s3:*"]
     resources = [
       each.value,
       "${each.value}/*",
@@ -418,9 +452,9 @@ resource "aws_s3_bucket_policy" "frontend_policies" {
 
 # Replica S3 buckets (production only)
 resource "aws_s3_bucket" "replica" {
-  for_each = { 
-    for k, v in local.s3_buckets : k => v 
-    if v.is_replicated && var.context.enable_cross_region_replication 
+  for_each = {
+    for k, v in local.s3_buckets : k => v
+    if v.is_replicated && var.context.enable_cross_region_replication
   }
 
   provider = aws.replica
@@ -475,9 +509,9 @@ resource "aws_s3_bucket_public_access_block" "replica" {
 
 # S3 replication configuration
 resource "aws_s3_bucket_replication_configuration" "main" {
-  for_each = { 
-    for k, v in local.s3_buckets : k => v 
-    if v.is_replicated && var.context.enable_cross_region_replication 
+  for_each = {
+    for k, v in local.s3_buckets : k => v
+    if v.is_replicated && var.context.enable_cross_region_replication
   }
 
   role   = var.s3_replication_role_arn

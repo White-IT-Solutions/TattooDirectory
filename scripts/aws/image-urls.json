@@ -1,0 +1,741 @@
+{
+  "blackwork": [
+    {
+      "filename": "tattoo_141.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+      "s3Key": "styles/blackwork/tattoo_141.png"
+    },
+    {
+      "filename": "tattoo_41.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_41.png",
+      "s3Key": "styles/blackwork/tattoo_41.png"
+    },
+    {
+      "filename": "tattoo_42.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_42.png",
+      "s3Key": "styles/blackwork/tattoo_42.png"
+    },
+    {
+      "filename": "tattoo_64.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+      "s3Key": "styles/blackwork/tattoo_64.png"
+    },
+    {
+      "filename": "tattoo_66.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_66.png",
+      "s3Key": "styles/blackwork/tattoo_66.png"
+    },
+    {
+      "filename": "tattoo_79.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_79.png",
+      "s3Key": "styles/blackwork/tattoo_79.png"
+    },
+    {
+      "filename": "tattoo_85.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_85.png",
+      "s3Key": "styles/blackwork/tattoo_85.png"
+    }
+  ],
+  "dotwork": [
+    {
+      "filename": "tattoo_60.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_60.png",
+      "s3Key": "styles/dotwork/tattoo_60.png"
+    },
+    {
+      "filename": "tattoo_61.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_61.png",
+      "s3Key": "styles/dotwork/tattoo_61.png"
+    },
+    {
+      "filename": "tattoo_62.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_62.png",
+      "s3Key": "styles/dotwork/tattoo_62.png"
+    },
+    {
+      "filename": "tattoo_63.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_63.png",
+      "s3Key": "styles/dotwork/tattoo_63.png"
+    },
+    {
+      "filename": "tattoo_65.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_65.png",
+      "s3Key": "styles/dotwork/tattoo_65.png"
+    },
+    {
+      "filename": "tattoo_67.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_67.png",
+      "s3Key": "styles/dotwork/tattoo_67.png"
+    }
+  ],
+  "fineline": [
+    {
+      "filename": "tattoo_4.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_4.png",
+      "s3Key": "styles/fineline/tattoo_4.png"
+    },
+    {
+      "filename": "tattoo_46.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_46.png",
+      "s3Key": "styles/fineline/tattoo_46.png"
+    },
+    {
+      "filename": "tattoo_47.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_47.png",
+      "s3Key": "styles/fineline/tattoo_47.png"
+    },
+    {
+      "filename": "tattoo_48.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_48.png",
+      "s3Key": "styles/fineline/tattoo_48.png"
+    },
+    {
+      "filename": "tattoo_5.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_5.png",
+      "s3Key": "styles/fineline/tattoo_5.png"
+    },
+    {
+      "filename": "tattoo_6.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_6.png",
+      "s3Key": "styles/fineline/tattoo_6.png"
+    },
+    {
+      "filename": "tattoo_7.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_7.png",
+      "s3Key": "styles/fineline/tattoo_7.png"
+    },
+    {
+      "filename": "tattoo_8.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_8.png",
+      "s3Key": "styles/fineline/tattoo_8.png"
+    },
+    {
+      "filename": "tattoo_9.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_9.png",
+      "s3Key": "styles/fineline/tattoo_9.png"
+    }
+  ],
+  "floral": [
+    {
+      "filename": "tattoo_124.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_124.png",
+      "s3Key": "styles/floral/tattoo_124.png"
+    },
+    {
+      "filename": "tattoo_127.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_127.png",
+      "s3Key": "styles/floral/tattoo_127.png"
+    },
+    {
+      "filename": "tattoo_129.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_129.png",
+      "s3Key": "styles/floral/tattoo_129.png"
+    },
+    {
+      "filename": "tattoo_130.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_130.png",
+      "s3Key": "styles/floral/tattoo_130.png"
+    },
+    {
+      "filename": "tattoo_68.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_68.png",
+      "s3Key": "styles/floral/tattoo_68.png"
+    }
+  ],
+  "geometric": [
+    {
+      "filename": "tattoo_1.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_1.png",
+      "s3Key": "styles/geometric/tattoo_1.png"
+    },
+    {
+      "filename": "tattoo_11.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_11.png",
+      "s3Key": "styles/geometric/tattoo_11.png"
+    },
+    {
+      "filename": "tattoo_138.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_138.png",
+      "s3Key": "styles/geometric/tattoo_138.png"
+    },
+    {
+      "filename": "tattoo_139.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_139.png",
+      "s3Key": "styles/geometric/tattoo_139.png"
+    },
+    {
+      "filename": "tattoo_140.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_140.png",
+      "s3Key": "styles/geometric/tattoo_140.png"
+    },
+    {
+      "filename": "tattoo_2.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_2.png",
+      "s3Key": "styles/geometric/tattoo_2.png"
+    },
+    {
+      "filename": "tattoo_3.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_3.png",
+      "s3Key": "styles/geometric/tattoo_3.png"
+    },
+    {
+      "filename": "tattoo_45.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_45.png",
+      "s3Key": "styles/geometric/tattoo_45.png"
+    },
+    {
+      "filename": "tattoo_52.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_52.png",
+      "s3Key": "styles/geometric/tattoo_52.png"
+    },
+    {
+      "filename": "tattoo_53.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_53.png",
+      "s3Key": "styles/geometric/tattoo_53.png"
+    },
+    {
+      "filename": "tattoo_54.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_54.png",
+      "s3Key": "styles/geometric/tattoo_54.png"
+    },
+    {
+      "filename": "tattoo_55.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_55.png",
+      "s3Key": "styles/geometric/tattoo_55.png"
+    },
+    {
+      "filename": "tattoo_56.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_56.png",
+      "s3Key": "styles/geometric/tattoo_56.png"
+    },
+    {
+      "filename": "tattoo_57.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_57.png",
+      "s3Key": "styles/geometric/tattoo_57.png"
+    },
+    {
+      "filename": "tattoo_58.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_58.png",
+      "s3Key": "styles/geometric/tattoo_58.png"
+    },
+    {
+      "filename": "tattoo_59.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_59.png",
+      "s3Key": "styles/geometric/tattoo_59.png"
+    },
+    {
+      "filename": "tattoo_78.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_78.png",
+      "s3Key": "styles/geometric/tattoo_78.png"
+    },
+    {
+      "filename": "tattoo_80.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/geometric/tattoo_80.png",
+      "s3Key": "styles/geometric/tattoo_80.png"
+    }
+  ],
+  "lettering": [
+    {
+      "filename": "tattoo_118.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_118.png",
+      "s3Key": "styles/lettering/tattoo_118.png"
+    },
+    {
+      "filename": "tattoo_119.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_119.png",
+      "s3Key": "styles/lettering/tattoo_119.png"
+    },
+    {
+      "filename": "tattoo_120.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_120.png",
+      "s3Key": "styles/lettering/tattoo_120.png"
+    },
+    {
+      "filename": "tattoo_121.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_121.png",
+      "s3Key": "styles/lettering/tattoo_121.png"
+    },
+    {
+      "filename": "tattoo_122.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_122.png",
+      "s3Key": "styles/lettering/tattoo_122.png"
+    },
+    {
+      "filename": "tattoo_123.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_123.png",
+      "s3Key": "styles/lettering/tattoo_123.png"
+    }
+  ],
+  "minimalism": [
+    {
+      "filename": "tattoo_10.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_10.png",
+      "s3Key": "styles/minimalism/tattoo_10.png"
+    },
+    {
+      "filename": "tattoo_43.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_43.png",
+      "s3Key": "styles/minimalism/tattoo_43.png"
+    },
+    {
+      "filename": "tattoo_44.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_44.png",
+      "s3Key": "styles/minimalism/tattoo_44.png"
+    },
+    {
+      "filename": "tattoo_49.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_49.png",
+      "s3Key": "styles/minimalism/tattoo_49.png"
+    },
+    {
+      "filename": "tattoo_50.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_50.png",
+      "s3Key": "styles/minimalism/tattoo_50.png"
+    },
+    {
+      "filename": "tattoo_51.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_51.png",
+      "s3Key": "styles/minimalism/tattoo_51.png"
+    }
+  ],
+  "neo_traditional": [
+    {
+      "filename": "tattoo_29.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_29.png",
+      "s3Key": "styles/neo_traditional/tattoo_29.png"
+    },
+    {
+      "filename": "tattoo_30.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_30.png",
+      "s3Key": "styles/neo_traditional/tattoo_30.png"
+    },
+    {
+      "filename": "tattoo_31.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_31.png",
+      "s3Key": "styles/neo_traditional/tattoo_31.png"
+    },
+    {
+      "filename": "tattoo_32.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_32.png",
+      "s3Key": "styles/neo_traditional/tattoo_32.png"
+    },
+    {
+      "filename": "tattoo_33.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_33.png",
+      "s3Key": "styles/neo_traditional/tattoo_33.png"
+    },
+    {
+      "filename": "tattoo_34.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_34.png",
+      "s3Key": "styles/neo_traditional/tattoo_34.png"
+    },
+    {
+      "filename": "tattoo_35.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_35.png",
+      "s3Key": "styles/neo_traditional/tattoo_35.png"
+    }
+  ],
+  "new_school": [
+    {
+      "filename": "tattoo_12.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_12.png",
+      "s3Key": "styles/new_school/tattoo_12.png"
+    },
+    {
+      "filename": "tattoo_13.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
+      "s3Key": "styles/new_school/tattoo_13.png"
+    },
+    {
+      "filename": "tattoo_14.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_14.png",
+      "s3Key": "styles/new_school/tattoo_14.png"
+    },
+    {
+      "filename": "tattoo_15.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_15.png",
+      "s3Key": "styles/new_school/tattoo_15.png"
+    },
+    {
+      "filename": "tattoo_18.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_18.png",
+      "s3Key": "styles/new_school/tattoo_18.png"
+    },
+    {
+      "filename": "tattoo_20.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_20.png",
+      "s3Key": "styles/new_school/tattoo_20.png"
+    },
+    {
+      "filename": "tattoo_86.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_86.png",
+      "s3Key": "styles/new_school/tattoo_86.png"
+    }
+  ],
+  "old_school": [
+    {
+      "filename": "tattoo_100.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_100.png",
+      "s3Key": "styles/old_school/tattoo_100.png"
+    },
+    {
+      "filename": "tattoo_101.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_101.png",
+      "s3Key": "styles/old_school/tattoo_101.png"
+    },
+    {
+      "filename": "tattoo_110.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_110.png",
+      "s3Key": "styles/old_school/tattoo_110.png"
+    },
+    {
+      "filename": "tattoo_81.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_81.png",
+      "s3Key": "styles/old_school/tattoo_81.png"
+    },
+    {
+      "filename": "tattoo_82.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_82.png",
+      "s3Key": "styles/old_school/tattoo_82.png"
+    },
+    {
+      "filename": "tattoo_83.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_83.png",
+      "s3Key": "styles/old_school/tattoo_83.png"
+    },
+    {
+      "filename": "tattoo_90.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_90.png",
+      "s3Key": "styles/old_school/tattoo_90.png"
+    },
+    {
+      "filename": "tattoo_91.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_91.png",
+      "s3Key": "styles/old_school/tattoo_91.png"
+    },
+    {
+      "filename": "tattoo_92.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_92.png",
+      "s3Key": "styles/old_school/tattoo_92.png"
+    },
+    {
+      "filename": "tattoo_93.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_93.png",
+      "s3Key": "styles/old_school/tattoo_93.png"
+    },
+    {
+      "filename": "tattoo_94.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_94.png",
+      "s3Key": "styles/old_school/tattoo_94.png"
+    },
+    {
+      "filename": "tattoo_95.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_95.png",
+      "s3Key": "styles/old_school/tattoo_95.png"
+    },
+    {
+      "filename": "tattoo_96.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_96.png",
+      "s3Key": "styles/old_school/tattoo_96.png"
+    },
+    {
+      "filename": "tattoo_97.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_97.png",
+      "s3Key": "styles/old_school/tattoo_97.png"
+    },
+    {
+      "filename": "tattoo_98.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_98.png",
+      "s3Key": "styles/old_school/tattoo_98.png"
+    },
+    {
+      "filename": "tattoo_99.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_99.png",
+      "s3Key": "styles/old_school/tattoo_99.png"
+    }
+  ],
+  "psychedelic": [
+    {
+      "filename": "tattoo_128.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_128.png",
+      "s3Key": "styles/psychedelic/tattoo_128.png"
+    },
+    {
+      "filename": "tattoo_16.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_16.png",
+      "s3Key": "styles/psychedelic/tattoo_16.png"
+    },
+    {
+      "filename": "tattoo_17.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_17.png",
+      "s3Key": "styles/psychedelic/tattoo_17.png"
+    },
+    {
+      "filename": "tattoo_19.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_19.png",
+      "s3Key": "styles/psychedelic/tattoo_19.png"
+    }
+  ],
+  "realism": [
+    {
+      "filename": "tattoo_21.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_21.png",
+      "s3Key": "styles/realism/tattoo_21.png"
+    },
+    {
+      "filename": "tattoo_23.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_23.png",
+      "s3Key": "styles/realism/tattoo_23.png"
+    },
+    {
+      "filename": "tattoo_24.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_24.png",
+      "s3Key": "styles/realism/tattoo_24.png"
+    },
+    {
+      "filename": "tattoo_25.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_25.png",
+      "s3Key": "styles/realism/tattoo_25.png"
+    },
+    {
+      "filename": "tattoo_26.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_26.png",
+      "s3Key": "styles/realism/tattoo_26.png"
+    },
+    {
+      "filename": "tattoo_27.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_27.png",
+      "s3Key": "styles/realism/tattoo_27.png"
+    },
+    {
+      "filename": "tattoo_38.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_38.png",
+      "s3Key": "styles/realism/tattoo_38.png"
+    },
+    {
+      "filename": "tattoo_84.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/realism/tattoo_84.png",
+      "s3Key": "styles/realism/tattoo_84.png"
+    }
+  ],
+  "sketch": [
+    {
+      "filename": "tattoo_36.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_36.png",
+      "s3Key": "styles/sketch/tattoo_36.png"
+    },
+    {
+      "filename": "tattoo_37.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_37.png",
+      "s3Key": "styles/sketch/tattoo_37.png"
+    },
+    {
+      "filename": "tattoo_39.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_39.png",
+      "s3Key": "styles/sketch/tattoo_39.png"
+    },
+    {
+      "filename": "tattoo_40.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_40.png",
+      "s3Key": "styles/sketch/tattoo_40.png"
+    }
+  ],
+  "surrealism": [
+    {
+      "filename": "tattoo_131.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_131.png",
+      "s3Key": "styles/surrealism/tattoo_131.png"
+    },
+    {
+      "filename": "tattoo_132.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_132.png",
+      "s3Key": "styles/surrealism/tattoo_132.png"
+    },
+    {
+      "filename": "tattoo_133.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_133.png",
+      "s3Key": "styles/surrealism/tattoo_133.png"
+    },
+    {
+      "filename": "tattoo_134.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_134.png",
+      "s3Key": "styles/surrealism/tattoo_134.png"
+    },
+    {
+      "filename": "tattoo_135.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_135.png",
+      "s3Key": "styles/surrealism/tattoo_135.png"
+    },
+    {
+      "filename": "tattoo_136.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_136.png",
+      "s3Key": "styles/surrealism/tattoo_136.png"
+    },
+    {
+      "filename": "tattoo_137.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_137.png",
+      "s3Key": "styles/surrealism/tattoo_137.png"
+    }
+  ],
+  "traditional": [
+    {
+      "filename": "tattoo_102.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_102.png",
+      "s3Key": "styles/traditional/tattoo_102.png"
+    },
+    {
+      "filename": "tattoo_103.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_103.png",
+      "s3Key": "styles/traditional/tattoo_103.png"
+    },
+    {
+      "filename": "tattoo_104.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_104.png",
+      "s3Key": "styles/traditional/tattoo_104.png"
+    },
+    {
+      "filename": "tattoo_105.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_105.png",
+      "s3Key": "styles/traditional/tattoo_105.png"
+    },
+    {
+      "filename": "tattoo_106.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_106.png",
+      "s3Key": "styles/traditional/tattoo_106.png"
+    },
+    {
+      "filename": "tattoo_107.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_107.png",
+      "s3Key": "styles/traditional/tattoo_107.png"
+    },
+    {
+      "filename": "tattoo_108.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_108.png",
+      "s3Key": "styles/traditional/tattoo_108.png"
+    },
+    {
+      "filename": "tattoo_109.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_109.png",
+      "s3Key": "styles/traditional/tattoo_109.png"
+    },
+    {
+      "filename": "tattoo_22.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_22.png",
+      "s3Key": "styles/traditional/tattoo_22.png"
+    },
+    {
+      "filename": "tattoo_77.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_77.png",
+      "s3Key": "styles/traditional/tattoo_77.png"
+    },
+    {
+      "filename": "tattoo_87.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_87.png",
+      "s3Key": "styles/traditional/tattoo_87.png"
+    },
+    {
+      "filename": "tattoo_88.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_88.png",
+      "s3Key": "styles/traditional/tattoo_88.png"
+    },
+    {
+      "filename": "tattoo_89.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_89.png",
+      "s3Key": "styles/traditional/tattoo_89.png"
+    }
+  ],
+  "tribal": [
+    {
+      "filename": "tattoo_111.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_111.png",
+      "s3Key": "styles/tribal/tattoo_111.png"
+    },
+    {
+      "filename": "tattoo_112.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_112.png",
+      "s3Key": "styles/tribal/tattoo_112.png"
+    },
+    {
+      "filename": "tattoo_113.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_113.png",
+      "s3Key": "styles/tribal/tattoo_113.png"
+    },
+    {
+      "filename": "tattoo_114.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_114.png",
+      "s3Key": "styles/tribal/tattoo_114.png"
+    },
+    {
+      "filename": "tattoo_115.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_115.png",
+      "s3Key": "styles/tribal/tattoo_115.png"
+    },
+    {
+      "filename": "tattoo_116.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_116.png",
+      "s3Key": "styles/tribal/tattoo_116.png"
+    },
+    {
+      "filename": "tattoo_117.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_117.png",
+      "s3Key": "styles/tribal/tattoo_117.png"
+    }
+  ],
+  "watercolour": [
+    {
+      "filename": "tattoo_125.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_125.png",
+      "s3Key": "styles/watercolour/tattoo_125.png"
+    },
+    {
+      "filename": "tattoo_126.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_126.png",
+      "s3Key": "styles/watercolour/tattoo_126.png"
+    },
+    {
+      "filename": "tattoo_28.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_28.png",
+      "s3Key": "styles/watercolour/tattoo_28.png"
+    },
+    {
+      "filename": "tattoo_69.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_69.png",
+      "s3Key": "styles/watercolour/tattoo_69.png"
+    },
+    {
+      "filename": "tattoo_70.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_70.png",
+      "s3Key": "styles/watercolour/tattoo_70.png"
+    },
+    {
+      "filename": "tattoo_71.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_71.png",
+      "s3Key": "styles/watercolour/tattoo_71.png"
+    },
+    {
+      "filename": "tattoo_72.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_72.png",
+      "s3Key": "styles/watercolour/tattoo_72.png"
+    },
+    {
+      "filename": "tattoo_73.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_73.png",
+      "s3Key": "styles/watercolour/tattoo_73.png"
+    },
+    {
+      "filename": "tattoo_74.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_74.png",
+      "s3Key": "styles/watercolour/tattoo_74.png"
+    },
+    {
+      "filename": "tattoo_75.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_75.png",
+      "s3Key": "styles/watercolour/tattoo_75.png"
+    },
+    {
+      "filename": "tattoo_76.png",
+      "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_76.png",
+      "s3Key": "styles/watercolour/tattoo_76.png"
+    }
+  ]
+}

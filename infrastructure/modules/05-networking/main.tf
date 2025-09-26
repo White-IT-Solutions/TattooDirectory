@@ -355,7 +355,7 @@ resource "aws_vpc_security_group_egress_rule" "fargate_http_to_internet" {
 
 # Network ACL for Public Subnets
 resource "aws_network_acl" "public" {
-# checkov:skip=CKV2_AWS_1: Attatched via aws_network_acl_association
+  # checkov:skip=CKV2_AWS_1: Attatched via aws_network_acl_association
   vpc_id = aws_vpc.main.id
 
   # Inbound rules for public subnets

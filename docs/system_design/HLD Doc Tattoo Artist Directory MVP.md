@@ -721,6 +721,47 @@ Cache Hit: If the image is in the cache, CloudFront delivers it directly to the 
 
 Cache Miss: If the image isn't in the cache, CloudFront retrieves it from the origin S3 bucket, delivers it to the user, and caches it for future requests.
 
+### **2.4.15 Multi-Account Architecture Diagram**
+
+![A diagram illustrating the AWS Control Tower multi-account structure, showing the separation of Management, Security (Audit, Log Archive), and Infrastructure accounts.](</docs/diagrams/Multi-Account Architecture.png> "Multi-Account Architecture")
+
+**Diagram Explanation**
+
+- **AWS Organization:** The root container for all accounts, managed by AWS Control Tower.
+- **Management Account:** Sits at the root, handling organization-wide billing, Control Tower administration, and IAM Identity Center for centralized user access.
+- **Security OU:** Contains the **Audit** and **Log Archive** accounts, separating security and governance functions from workloads.
+    - **Audit Account:** Centralizes security monitoring, receiving findings from GuardDuty, Security Hub, and compliance data from AWS Config from all other accounts.
+    - **Log Archive Account:** Serves as the immutable, central repository for all logs (CloudTrail, VPC Flow Logs, WAF Logs) streamed from the Infrastructure account.
+- **Infrastructure OU:** Contains the **Infrastructure/AppDev Account** where all application workloads (VPC, Lambda, Fargate, DynamoDB, etc.) are deployed.
+- **Cross-Account Flows:** The diagram illustrates the key data flows:
+    - **Logs:** From the Infrastructure account to the Log Archive account.
+    - **Security Findings:** From all accounts to the Audit account.
+    - **Governance:** Policies and guardrails are pushed down from the Management account to all other accounts.
+
+### **2.4.16 Centralized Logging Diagram**
+
+![A diagram illustrating the centralized logging pipeline, showing logs flowing from the Infrastructure account to the Log Archive account via Kinesis Data Firehose.](</docs/diagrams/Centralized Logging Architecture.png> "Centralized Logging Architecture")
+
+**Diagram Explanation**
+
+- **Log Sources (Infrastructure Account):** Shows various services within the application's VPC generating logs, including AWS WAF, VPC Flow Logs, and application logs from Lambda and Fargate.
+- **Operational Logs:** Application and debug logs are sent to CloudWatch Logs within the Infrastructure account for immediate access by development and operations teams.
+- **Security Log Aggregation:** A Kinesis Data Firehose stream is configured in the Infrastructure account to capture security-relevant logs (WAF, VPC Flow, filtered application logs).
+- **Cross-Account Delivery:** The Firehose stream delivers these logs across the account boundary into a secure S3 bucket in the **Log Archive Account**.
+- **Immutable Storage (Log Archive Account):** The target S3 bucket is configured with Object Lock and cross-region replication for long-term, compliant, and durable storage.
+- **Security Analysis (Audit Account):** The diagram shows how services in the Audit account (like Security Hub and GuardDuty) consume findings and compliance data, providing a separate, secure environment for analysis and alerting without giving security teams direct access to production workloads.
+
+### **2.4.17 Backup and Disaster Recovery Diagram**
+
+![A diagram illustrating the backup and disaster recovery pipeline, showing how various functions are backed up and restored.](</docs/diagrams/Backup and Disaster Recovery Architecture.png> "Backup and Disaster Recovery Architecture")
+
+**Diagram Explanation**
+
+- **Centralized Management:** The entire structure is managed under an AWS Organization. A central Management Account, using AWS Control Tower, automates the creation of new AWS accounts and enforces organization-wide security rules called Service Control Policies (SCPs).
+- **Dedicated Security Hub:** There's a dedicated Security Organizational Unit (OU) that contains a central Log Archive Account. This account acts as the main hub for all security monitoring. It aggregates security findings from services like AWS Security Hub, Amazon GuardDuty, and Amazon Detective across all other accounts.
+- **Comprehensive Log Collection:** All individual Member Accounts are configured to automatically send their logs (e.g., CloudTrail for API activity, VPC Flow Logs for network traffic) to a centralized S3 bucket located in the Log Archive Account. This ensures all logs are stored securely in one place for analysis and auditing.
+- **Highlighted Areas of Concern:** The diagram uses red boxes to flag two critical areas that require special attention: Baseline IAM Roles (foundational permissions) and Alerting & Notifications for security events. This suggests these are key areas to ensure the system is secure and responsive.
+
 ---
 
 #

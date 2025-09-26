@@ -1,0 +1,715 @@
+openapi: 3.0.3
+info:
+  title: Tattoo Artist Directory API
+  description: |
+    Local development API for the Tattoo Artist Directory MVP.
+    
+    This API provides endpoints for searching and retrieving tattoo artist information.
+    All endpoints support circuit breaker pattern for resilience and return RFC 9457 compliant error responses.
+    
+    ## Authentication
+    No authentication required for local development environment.
+    
+    ## Rate Limiting
+    No rate limiting applied in local development environment.
+    
+    ## Error Handling
+    All error responses follow RFC 9457 Problem Details for HTTP APIs standard.
+  version: 1.0.0
+  contact:
+    name: Development Team
+    email: dev@tattoo-directory.local
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:9000/2015-03-31/functions/function/invocations
+    description: Local Lambda Runtime Interface Emulator
+  - url: http://localhost:9000
+    description: Direct Lambda RIE Access (Alternative)
+
+paths:
+  /v1/artists:
+    get:
+      summary: Search artists
+      description: |
+        Search for tattoo artists with optional filtering by query, style, or location.
+        At least one search parameter is required.
+        
+        **Circuit Breaker**: This endpoint is protected by a circuit breaker that will return 503 if the search service is unavailable.
+      operationId: searchArtists
+      tags:
+        - Artists
+      parameters:
+        - name: query
+          in: query
+          description: Search term for artist names
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+          example: "Sarah Mitchell"
+        - name: style
+          in: query
+          description: Filter by tattoo style (exact match)
+          required: false
+          schema:
+            type: string
+            enum: [traditional, neo-traditional, realism, blackwork, watercolor, geometric, tribal, japanese, minimalist, dotwork, linework]
+          example: "traditional"
+        - name: location
+          in: query
+          description: Filter by location (city, postcode, or region)
+          required: false
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 100
+          example: "London"
+        - name: limit
+          in: query
+          description: Maximum number of artists to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+          example: 10
+        - name: page
+          in: query
+          description: Page number for pagination (1-based)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          example: 1
+      responses:
+        '200':
+          description: Successful search response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+              examples:
+                successful_search:
+                  summary: Successful artist search
+                  value:
+                    - artistId: "artist-001"
+                      artistName: "Sarah Mitchell"
+                      instagramHandle: "sarahtattoos"
+                      geohash: "gcpvj0"
+                      locationDisplay: "London, UK"
+                      styles: ["traditional", "neo-traditional"]
+                      portfolioImages:
+                        - url: "https://example.com/portfolio/sarah-001.jpg"
+                          description: "Traditional rose tattoo"
+                          style: "traditional"
+                      contactInfo:
+                        instagram: "@sarahtattoos"
+                        website: "https://sarahmitchelltattoo.com"
+                        email: "sarah@example.com"
+        '400':
+          description: Bad request - missing required parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                missing_parameters:
+                  summary: Missing search parameters
+                  value:
+                    type: "https://api.tattoodirectory.com/docs/errors#400"
+                    title: "Bad Request"
+                    status: 400
+                    detail: "At least one search parameter is required: 'query', 'style', or 'location'."
+                    instance: "req-12345"
+        '503':
+          description: Service unavailable - circuit breaker open
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                circuit_breaker_open:
+                  summary: Circuit breaker fallback
+                  value:
+                    type: "https://api.tattoodirectory.com/docs/errors#503"
+                    title: "Service Unavailable"
+                    status: 503
+                    detail: "The search service is temporarily unavailable. Please try again later."
+                    instance: "req-12345"
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                internal_error:
+                  summary: Unexpected server error
+                  value:
+                    type: "https://api.tattoodirectory.com/docs/errors#500"
+                    title: "Internal Server Error"
+                    status: 500
+                    detail: "An unexpected error occurred during the search operation."
+                    instance: "req-12345"
+
+  /v1/artists/{artistId}:
+    get:
+      summary: Get artist by ID
+      description: |
+        Retrieve detailed information about a specific artist by their unique identifier.
+        
+        **Circuit Breaker**: This endpoint is protected by a circuit breaker that will return 503 if the search service is unavailable.
+      operationId: getArtistById
+      tags:
+        - Artists
+      parameters:
+        - name: artistId
+          in: path
+          required: true
+          description: Unique identifier for the artist
+          schema:
+            type: string
+            pattern: '^artist-[a-zA-Z0-9]+$'
+          example: "artist-001"
+      responses:
+        '200':
+          description: Artist found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'         
+              examples:
+                artist_found:
+                  summary: Artist details retrieved
+                  value:
+                    artistId: "artist-001"
+                    artistName: "Sarah Mitchell"
+                    instagramHandle: "sarahtattoos"
+                    geohash: "gcpvj0"
+                    locationDisplay: "London, UK"
+                    styles: ["traditional", "neo-traditional"]
+                    portfolioImages:
+                      - url: "https://example.com/portfolio/sarah-001.jpg"
+                        description: "Traditional rose tattoo"
+                        style: "traditional"
+                      - url: "https://example.com/portfolio/sarah-002.jpg"
+                        description: "Neo-traditional flower piece"
+                        style: "neo-traditional"
+                    contactInfo:
+                      instagram: "@sarahtattoos"
+                      website: "https://sarahmitchelltattoo.com"
+                      email: "sarah@example.com"
+        '400':
+          description: Bad request - invalid artist ID format
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                missing_artist_id:
+                  summary: Missing artist ID
+                  value:
+                    type: "https://api.tattoodirectory.com/docs/errors#400"
+                    title: "Bad Request"
+                    status: 400
+                    detail: "Artist ID is required in the path."
+                    instance: "req-12345"
+        '404':
+          description: Artist not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                artist_not_found:
+                  summary: Artist does not exist
+                  value:
+                    type: "https://api.tattoodirectory.com/docs/errors#404"
+                    title: "Not Found"
+                    status: 404
+                    detail: "Artist with ID 'artist-999' was not found."
+                    instance: "req-12345"
+        '503':
+          description: Service unavailable - circuit breaker open
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+  /v1/styles:
+    get:
+      summary: Get available tattoo styles
+      description: |
+        Retrieve all available tattoo styles with their usage counts.
+        This endpoint aggregates styles from all artists in the system.
+        
+        **Circuit Breaker**: This endpoint is protected by a circuit breaker that will return 503 if the search service is unavailable.
+      operationId: getTattooStyles
+      tags:
+        - Styles
+      responses:
+        '200':
+          description: Styles retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TattooStyle'
+              examples:
+                styles_list:
+                  summary: Available tattoo styles
+                  value:
+                    - name: "traditional"
+                      count: 45
+                    - name: "realism"
+                      count: 32
+                    - name: "blackwork"
+                      count: 28
+                    - name: "neo-traditional"
+                      count: 25
+                    - name: "watercolor"
+                      count: 18
+        '503':
+          description: Service unavailable - circuit breaker open
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    Artist:
+      type: object
+      description: Tattoo artist profile with portfolio and contact information
+      required:
+        - artistId
+        - artistName
+        - instagramHandle
+        - locationDisplay
+        - styles
+      properties:
+        artistId:
+          type: string
+          description: Unique identifier for the artist
+          pattern: '^artist-[a-zA-Z0-9]+$'
+          example: "artist-001"
+        artistName:
+          type: string
+          description: Artist's professional name
+          minLength: 1
+          maxLength: 100
+          example: "Sarah Mitchell"
+        instagramHandle:
+          type: string
+          description: Instagram username without @ symbol
+          pattern: '^[a-zA-Z0-9._]+$'
+          minLength: 1
+          maxLength: 30
+          example: "sarahtattoos"
+        geohash:
+          type: string
+          description: Geohash for location-based searches
+          pattern: '^[0-9a-z]+$'
+          minLength: 4
+          maxLength: 12
+          example: "gcpvj0"
+        locationDisplay:
+          type: string
+          description: Human-readable location (e.g., "London, UK")
+          minLength: 1
+          maxLength: 100
+          example: "London, UK"
+        styles:
+          type: array
+          description: List of tattoo styles the artist specializes in
+          minItems: 1
+          maxItems: 10
+          items:
+            type: string
+            enum: [traditional, neo-traditional, realism, blackwork, watercolor, geometric, tribal, japanese, minimalist, dotwork, linework, biomechanical, portrait, script, cover-up]
+          example: ["traditional", "neo-traditional"]
+        portfolioImages:
+          type: array
+          description: Sample portfolio images showcasing the artist's work
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/PortfolioImage'
+        contactInfo:
+          $ref: '#/components/schemas/ContactInfo'
+        studioInfo:
+          $ref: '#/components/schemas/StudioInfo'
+        rating:
+          type: number
+          description: Average rating from reviews (1-5 scale)
+          minimum: 1
+          maximum: 5
+          example: 4.8
+        reviewCount:
+          type: integer
+          description: Total number of reviews
+          minimum: 0
+          example: 127
+        isVerified:
+          type: boolean
+          description: Whether the artist profile has been verified
+          example: true
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When the profile was last updated
+          example: "2024-01-15T10:30:00Z"
+
+    PortfolioImage:
+      type: object
+      description: Portfolio image with metadata
+      required:
+        - url
+        - description
+        - style
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Image URL (HTTPS required)
+          pattern: '^https://'
+          example: "https://example.com/portfolio/sarah-001.jpg"
+        description:
+          type: string
+          description: Image description or caption
+          minLength: 1
+          maxLength: 200
+          example: "Traditional rose tattoo on forearm"
+        style:
+          type: string
+          description: Primary tattoo style represented in the image
+          enum: [traditional, neo-traditional, realism, blackwork, watercolor, geometric, tribal, japanese, minimalist, dotwork, linework, biomechanical, portrait, script, cover-up]
+          example: "traditional"
+        tags:
+          type: array
+          description: Additional descriptive tags for the image
+          maxItems: 10
+          items:
+            type: string
+            minLength: 1
+            maxLength: 30
+          example: ["rose", "forearm", "color", "floral"]
+        bodyPart:
+          type: string
+          description: Body part where the tattoo is located
+          enum: [arm, leg, back, chest, shoulder, hand, foot, neck, face, torso, other]
+          example: "arm"
+        isColor:
+          type: boolean
+          description: Whether the tattoo uses color (true) or is black and grey (false)
+          example: true
+        size:
+          type: string
+          description: Approximate size category of the tattoo
+          enum: [small, medium, large, extra-large]
+          example: "medium"
+
+    ContactInfo:
+      type: object
+      description: Artist contact information
+      properties:
+        instagram:
+          type: string
+          description: Instagram handle with @ symbol
+          pattern: '^@[a-zA-Z0-9._]+$'
+          example: "@sarahtattoos"
+        website:
+          type: string
+          format: uri
+          description: Artist or studio website
+          pattern: '^https?://'
+          example: "https://sarahmitchelltattoo.com"
+        email:
+          type: string
+          format: email
+          description: Contact email address
+          example: "sarah@example.com"
+        phone:
+          type: string
+          description: Contact phone number
+          pattern: '^\+?[1-9]\d{1,14}$'
+          example: "+44 20 7946 0958"
+        bookingUrl:
+          type: string
+          format: uri
+          description: Direct booking link
+          example: "https://booking.sarahmitchelltattoo.com"
+
+    StudioInfo:
+      type: object
+      description: Tattoo studio information
+      properties:
+        studioName:
+          type: string
+          description: Name of the tattoo studio
+          minLength: 1
+          maxLength: 100
+          example: "Ink & Art Studio"
+        address:
+          type: string
+          description: Full studio address
+          minLength: 1
+          maxLength: 200
+          example: "123 High Street, London, SW1A 1AA, UK"
+        website:
+          type: string
+          format: uri
+          description: Studio website
+          pattern: '^https?://'
+          example: "https://inkartstudio.com"
+        phone:
+          type: string
+          description: Studio phone number
+          pattern: '^\+?[1-9]\d{1,14}$'
+          example: "+44 20 7946 0958"
+        openingHours:
+          type: object
+          description: Studio opening hours
+          properties:
+            monday:
+              type: string
+              example: "10:00-18:00"
+            tuesday:
+              type: string
+              example: "10:00-18:00"
+            wednesday:
+              type: string
+              example: "10:00-18:00"
+            thursday:
+              type: string
+              example: "10:00-18:00"
+            friday:
+              type: string
+              example: "10:00-18:00"
+            saturday:
+              type: string
+              example: "10:00-16:00"
+            sunday:
+              type: string
+              example: "Closed"
+
+    TattooStyle:
+      type: object
+      description: Tattoo style with usage statistics
+      required:
+        - name
+        - count
+      properties:
+        name:
+          type: string
+          description: Name of the tattoo style
+          enum: [traditional, neo-traditional, realism, blackwork, watercolor, geometric, tribal, japanese, minimalist, dotwork, linework, biomechanical, portrait, script, cover-up]
+          example: "traditional"
+        count:
+          type: integer
+          description: Number of artists specializing in this style
+          minimum: 0
+          example: 45
+        description:
+          type: string
+          description: Brief description of the style
+          maxLength: 500
+          example: "Traditional tattoos feature bold lines, bright colors, and classic imagery like roses, anchors, and pin-ups."
+
+    ProblemDetails:
+      type: object
+      description: RFC 9457 Problem Details for HTTP APIs
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI reference that identifies the problem type
+          example: "https://api.tattoodirectory.com/docs/errors#400"
+        title:
+          type: string
+          description: Short, human-readable summary of the problem type
+          example: "Bad Request"
+        status:
+          type: integer
+          description: HTTP status code
+          minimum: 100
+          maximum: 599
+          example: 400
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+          example: "At least one search parameter is required: 'query', 'style', or 'location'."
+        instance:
+          type: string
+          description: URI reference that identifies the specific occurrence of the problem
+          example: "req-12345"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: "2024-01-15T10:30:00Z"
+        traceId:
+          type: string
+          description: Unique identifier for request tracing
+          example: "abc123def456"
+
+  parameters:
+    ArtistId:
+      name: artistId
+      in: path
+      required: true
+      description: Unique identifier for the artist
+      schema:
+        type: string
+        pattern: '^artist-[a-zA-Z0-9]+$'
+      example: "artist-001"
+
+    QueryParam:
+      name: query
+      in: query
+      description: Search term for artist names
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 100
+      example: "Sarah Mitchell"
+
+    StyleParam:
+      name: style
+      in: query
+      description: Filter by tattoo style (exact match)
+      required: false
+      schema:
+        type: string
+        enum: [traditional, neo-traditional, realism, blackwork, watercolor, geometric, tribal, japanese, minimalist, dotwork, linework]
+      example: "traditional"
+
+    LocationParam:
+      name: location
+      in: query
+      description: Filter by location (city, postcode, or region)
+      required: false
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 100
+      example: "London"
+
+    LimitParam:
+      name: limit
+      in: query
+      description: Maximum number of results to return
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+      example: 10
+
+    PageParam:
+      name: page
+      in: query
+      description: Page number for pagination (1-based)
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ServiceUnavailable:
+      description: Service unavailable - circuit breaker open
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  examples:
+    ArtistExample:
+      summary: Complete artist profile
+      value:
+        artistId: "artist-001"
+        artistName: "Sarah Mitchell"
+        instagramHandle: "sarahtattoos"
+        geohash: "gcpvj0"
+        locationDisplay: "London, UK"
+        styles: ["traditional", "neo-traditional"]
+        portfolioImages:
+          - url: "https://example.com/portfolio/sarah-001.jpg"
+            description: "Traditional rose tattoo on forearm"
+            style: "traditional"
+            tags: ["rose", "forearm", "color"]
+            bodyPart: "arm"
+            isColor: true
+            size: "medium"
+        contactInfo:
+          instagram: "@sarahtattoos"
+          website: "https://sarahmitchelltattoo.com"
+          email: "sarah@example.com"
+          phone: "+44 20 7946 0958"
+        studioInfo:
+          studioName: "Ink & Art Studio"
+          address: "123 High Street, London, SW1A 1AA, UK"
+          website: "https://inkartstudio.com"
+        rating: 4.8
+        reviewCount: 127
+        isVerified: true
+        lastUpdated: "2024-01-15T10:30:00Z"
+
+tags:
+  - name: Artists
+    description: Operations related to tattoo artists
+  - name: Styles
+    description: Operations related to tattoo styles
+
+externalDocs:
+  description: Find more info about the Tattoo Artist Directory API
+  url: https://github.com/tattoo-directory/api-docs

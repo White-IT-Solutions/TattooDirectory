@@ -1,0 +1,203 @@
+[
+  {
+    "studioId": "studio-portfolio-001",
+    "studioName": "Master Portfolio Studio",
+    "address": "89 Brick Lane, Spitalfields, London E1 6QL",
+    "postcode": "E1 6QL",
+    "geohash": "gcpvj0x",
+    "latitude": 51.5212,
+    "longitude": -0.0725,
+    "locationDisplay": "Spitalfields, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7247 5555",
+      "email": "gallery@masterportfolio.co.uk",
+      "website": "https://masterportfolio.co.uk",
+      "instagram": "@masterportfoliostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.9,
+    "reviewCount": 287,
+    "established": 2010,
+    "specialties": ["realism", "traditional", "neo_traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/exterior-1.jpg",
+        "description": "Prestigious studio entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/interior-1.jpg",
+        "description": "Master artist workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/interior-2.jpg",
+        "description": "Premium equipment setup",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/gallery-1.jpg",
+        "description": "Award-winning portfolio wall",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/gallery-2.jpg",
+        "description": "Traditional masterpieces",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/gallery-3.jpg",
+        "description": "Realism showcase",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/gallery-4.jpg",
+        "description": "Neo-traditional collection",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-001/gallery-5.jpg",
+        "description": "Master artist signatures",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-portfolio-002",
+    "studioName": "Gallery Ink Manchester",
+    "address": "123 Oldham Street, Northern Quarter, Manchester M1 1LU",
+    "postcode": "M1 1LU",
+    "geohash": "gcw2j1n",
+    "latitude": 53.4845,
+    "longitude": -2.2371,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 834 6666",
+      "email": "gallery@galleryink.co.uk",
+      "website": "https://galleryink.co.uk",
+      "instagram": "@galleryinkmanchester"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003"],
+    "artistCount": 1,
+    "rating": 4.8,
+    "reviewCount": 198,
+    "established": 2013,
+    "specialties": ["realism", "traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-002/exterior-1.jpg",
+        "description": "Gallery-style studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-002/interior-1.jpg",
+        "description": "Gallery workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-002/interior-2.jpg",
+        "description": "Exhibition space",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-002/gallery-1.jpg",
+        "description": "Extensive portfolio display",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-002/gallery-2.jpg",
+        "description": "Realism gallery wall",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-portfolio-003",
+    "studioName": "Artisan Gallery Birmingham",
+    "address": "45 Corporation Street, Birmingham B2 4RH",
+    "postcode": "B2 4RH",
+    "geohash": "gcqcr3m",
+    "latitude": 52.4816,
+    "longitude": -1.9001,
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 7777",
+      "email": "artisan@artisangallery.co.uk",
+      "website": "https://artisangallery.co.uk",
+      "instagram": "@artisangallerybirmingham"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-18:00",
+      "friday": "10:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-004"],
+    "artistCount": 1,
+    "rating": 4.7,
+    "reviewCount": 156,
+    "established": 2015,
+    "specialties": ["neo_traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-003/exterior-1.jpg",
+        "description": "Artisan gallery entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-003/interior-1.jpg",
+        "description": "Artisan workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-003/gallery-1.jpg",
+        "description": "Neo-traditional showcase",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-portfolio-003/gallery-2.jpg",
+        "description": "Artisan portfolio collection",
+        "isPrimary": false
+      }
+    ]
+  }
+]

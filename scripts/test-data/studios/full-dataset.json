@@ -1,0 +1,314 @@
+[
+  {
+    "studioId": "studio-full-001",
+    "studioName": "Ink & Steel Studio",
+    "address": "123 Brick Lane, Shoreditch, London E1 6SB",
+    "postcode": "E1 6SB",
+    "geohash": "gcpvj0u",
+    "latitude": 51.5225,
+    "longitude": -0.0786,
+    "locationDisplay": "Shoreditch, London, UK",
+    "contactInfo": {
+      "phone": "+44 20 7946 0958",
+      "email": "info@inkandsteel.com",
+      "website": "https://inkandsteel.com",
+      "instagram": "@inkandsteelstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": ["artist-001", "artist-002"],
+    "artistCount": 2,
+    "rating": 4.7,
+    "reviewCount": 189,
+    "established": 2015,
+    "specialties": ["traditional", "neo_traditional"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-001/exterior-1.jpg",
+        "description": "Iconic Brick Lane location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-001/interior-1.jpg",
+        "description": "Industrial-style workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-001/interior-2.jpg",
+        "description": "Artist stations",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-001/gallery-1.jpg",
+        "description": "Traditional flash collection",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-full-002",
+    "studioName": "Northern Ink Collective",
+    "address": "45 Oldham Street, Northern Quarter, Manchester M1 1JG",
+    "postcode": "M1 1JG",
+    "geohash": "gcw2j1k",
+    "latitude": 53.4839,
+    "longitude": -2.2374,
+    "locationDisplay": "Northern Quarter, Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 234 5678",
+      "email": "hello@northernink.co.uk",
+      "website": "https://northernink.co.uk",
+      "instagram": "@northerninkcollective"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "11:00-19:00",
+      "wednesday": "11:00-19:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-003"],
+    "artistCount": 1,
+    "rating": 4.9,
+    "reviewCount": 256,
+    "established": 2012,
+    "specialties": ["realism", "blackwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-002/exterior-1.jpg",
+        "description": "Northern Quarter studio front",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-002/interior-1.jpg",
+        "description": "Modern collective workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-002/gallery-1.jpg",
+        "description": "Realism portfolio wall",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-full-003",
+    "studioName": "Artisan Ink Studio",
+    "address": "78 Vyse Street, Jewellery Quarter, Birmingham B18 6HA",
+    "postcode": "B18 6HA",
+    "geohash": "gcqcr2m",
+    "latitude": 52.4862,
+    "longitude": -1.9015,
+    "locationDisplay": "Jewellery Quarter, Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 121 456 7890",
+      "email": "studio@artisanink.co.uk",
+      "website": "https://artisanink.co.uk",
+      "instagram": "@artisaninkstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-17:00",
+      "tuesday": "10:00-17:00",
+      "wednesday": "10:00-17:00",
+      "thursday": "10:00-19:00",
+      "friday": "10:00-19:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-004", "artist-005"],
+    "artistCount": 2,
+    "rating": 4.6,
+    "reviewCount": 143,
+    "established": 2018,
+    "specialties": ["watercolour", "geometric"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-003/exterior-1.jpg",
+        "description": "Historic Jewellery Quarter building",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-003/interior-1.jpg",
+        "description": "Artisan workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-003/gallery-1.jpg",
+        "description": "Watercolour art showcase",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-full-004",
+    "studioName": "Fineline Studios",
+    "address": "92 Park Street, Bristol BS1 5LA",
+    "postcode": "BS1 5LA",
+    "geohash": "gcnp38k",
+    "latitude": 51.4545,
+    "longitude": -2.5879,
+    "locationDisplay": "Bristol, UK",
+    "contactInfo": {
+      "phone": "+44 117 925 3456",
+      "email": "bookings@finelinestudios.co.uk",
+      "website": "https://finelinestudios.co.uk",
+      "instagram": "@finelinestudios"
+    },
+    "openingHours": {
+      "monday": "11:00-18:00",
+      "tuesday": "11:00-18:00",
+      "wednesday": "11:00-18:00",
+      "thursday": "11:00-18:00",
+      "friday": "11:00-18:00",
+      "saturday": "10:00-17:00",
+      "sunday": "closed"
+    },
+    "artists": ["artist-006"],
+    "artistCount": 1,
+    "rating": 4.8,
+    "reviewCount": 98,
+    "established": 2019,
+    "specialties": ["fineline", "minimalism"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-004/exterior-1.jpg",
+        "description": "Modern Bristol studio",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-004/interior-1.jpg",
+        "description": "Clean minimalist workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-004/gallery-1.jpg",
+        "description": "Fineline portfolio display",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-full-005",
+    "studioName": "Sacred Geometry Ink",
+    "address": "34 Grassmarket, Edinburgh EH1 2JU",
+    "postcode": "EH1 2JU",
+    "geohash": "gcvwr0k",
+    "latitude": 55.9478,
+    "longitude": -3.1967,
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 131 225 7890",
+      "email": "info@sacredgeometryink.com",
+      "website": "https://sacredgeometryink.com",
+      "instagram": "@sacredgeometryink"
+    },
+    "openingHours": {
+      "monday": "closed",
+      "tuesday": "12:00-19:00",
+      "wednesday": "12:00-19:00",
+      "thursday": "12:00-19:00",
+      "friday": "12:00-19:00",
+      "saturday": "11:00-18:00",
+      "sunday": "13:00-17:00"
+    },
+    "artists": ["artist-007", "artist-008"],
+    "artistCount": 2,
+    "rating": 4.7,
+    "reviewCount": 167,
+    "established": 2016,
+    "specialties": ["geometric", "dotwork"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-005/exterior-1.jpg",
+        "description": "Historic Grassmarket location",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-005/interior-1.jpg",
+        "description": "Sacred geometry themed interior",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-005/gallery-1.jpg",
+        "description": "Geometric art collection",
+        "isPrimary": false
+      }
+    ]
+  },
+  {
+    "studioId": "studio-full-006",
+    "studioName": "Blackwork Collective",
+    "address": "67 Bold Street, Liverpool L1 4EZ",
+    "postcode": "L1 4EZ",
+    "geohash": "gcw6g8k",
+    "latitude": 53.4048,
+    "longitude": -2.9814,
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 151 709 1234",
+      "email": "collective@blackworkstudio.co.uk",
+      "website": "https://blackworkstudio.co.uk",
+      "instagram": "@blackworkcollective"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": ["artist-009", "artist-010"],
+    "artistCount": 2,
+    "rating": 4.5,
+    "reviewCount": 112,
+    "established": 2017,
+    "specialties": ["blackwork", "tribal"],
+    "images": [
+      {
+        "type": "exterior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-006/exterior-1.jpg",
+        "description": "Bold Street studio entrance",
+        "isPrimary": true
+      },
+      {
+        "type": "interior",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-006/interior-1.jpg",
+        "description": "Dark themed workspace",
+        "isPrimary": false
+      },
+      {
+        "type": "gallery",
+        "url": "http://localhost:4566/tattoo-directory-images/studios/studio-full-006/gallery-1.jpg",
+        "description": "Blackwork portfolio wall",
+        "isPrimary": false
+      }
+    ]
+  }
+]
