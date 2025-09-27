@@ -9,9 +9,28 @@ import json
 PROJECT_ID = "your-gcp-project-id"  # <--- REPLACE with your Google Cloud Project ID
 LOCATION = "us-central1"           # <--- REPLACE with your desired region if needed
 OUTPUT_DIR = "generated_content"    # Main directory to save all images
-NUM_TATTOO_IMAGES = 1000           # Number of tattoo portfolio images
-NUM_STUDIOS = 100                  # Number of studios to generate images for
-IMAGES_PER_STUDIO = 6              # 2 internal, 2 external, 2 working area images
+
+# Test run configuration (8 images total)
+TEST_MODE = True                   # Set to False for full production run
+TEST_TATTOO_STYLES = 5             # Number of styles to test (1 image each)
+TEST_STUDIO_IMAGES = 3             # 1 internal, 1 external, 1 working area
+
+# Full production configuration (960 images total)
+FULL_TATTOO_IMAGES = 660           # 22 styles x 30 images each = 660 tattoo images
+FULL_NUM_STUDIOS = 100             # Number of studios to generate images for
+FULL_IMAGES_PER_STUDIO = 3         # 1 internal, 1 external, 1 working area (300 studio images)
+
+# Dynamic configuration based on mode
+if TEST_MODE:
+    NUM_TATTOO_IMAGES = TEST_TATTOO_STYLES  # 5 images
+    NUM_STUDIOS = 1                         # 1 studio
+    IMAGES_PER_STUDIO = TEST_STUDIO_IMAGES  # 3 images
+    IMAGES_PER_STYLE = 1                    # 1 image per style for test
+else:
+    NUM_TATTOO_IMAGES = FULL_TATTOO_IMAGES  # 660 images
+    NUM_STUDIOS = FULL_NUM_STUDIOS          # 100 studios
+    IMAGES_PER_STUDIO = FULL_IMAGES_PER_STUDIO  # 3 images per studio
+    IMAGES_PER_STYLE = 30                   # 30 images per style for full run
 
 # Image generation settings for Imagen 4
 IMAGE_SETTINGS = {
@@ -305,9 +324,11 @@ def generate_studio_images():
             
             print(f"[Studio {studio_idx+1}/{NUM_STUDIOS}] Generating images for '{studio_name}' in {location}")
             
-            # Generate 2 images for each category
+            # Generate images based on mode (1 per category for test, 2 per category for full)
+            images_per_category = 1 if TEST_MODE else 2
+            
             for category in ["internal", "external", "working"]:
-                for img_idx in range(2):
+                for img_idx in range(images_per_category):
                     description = random.choice(studio_image_categories[category])
                     prompt = create_studio_prompt(category, description, studio_name, location, studio_type)
                     
@@ -318,7 +339,7 @@ def generate_studio_images():
                         print(f"  -> Skipping existing: {filename}")
                         continue
                     
-                    print(f"  -> Generating {category} image {img_idx+1}/2...")
+                    print(f"  -> Generating {category} image {img_idx+1}/{images_per_category}...")
                     
                     # Generate image with Imagen 4 settings
                     response = model.generate_images(
@@ -354,7 +375,7 @@ def generate_studio_images():
     return studio_metadata
 
 def generate_tattoo_images_final():
-    """Main function to generate and save tattoo portfolio images."""
+    """Main function to generate and save tattoo portfolio images with equal distribution across styles."""
     vertexai.init(project=PROJECT_ID, location=LOCATION)
     model = ImageGenerationModel.from_pretrained("imagegeneration@006")
 
@@ -364,67 +385,96 @@ def generate_tattoo_images_final():
         print(f"Created tattoos directory: {tattoos_dir}")
 
     print(f"Starting tattoo portfolio generation of {NUM_TATTOO_IMAGES} images...")
+    
+    if TEST_MODE:
+        # Test mode: Generate 1 image for first 5 styles
+        styles_to_use = tattoo_styles[:TEST_TATTOO_STYLES]
+        print(f"TEST MODE: Generating 1 image each for {len(styles_to_use)} styles: {styles_to_use}")
+    else:
+        # Full mode: Generate equal distribution across all 22 styles
+        styles_to_use = tattoo_styles
+        print(f"FULL MODE: Generating {IMAGES_PER_STYLE} images each for {len(styles_to_use)} styles")
 
-    for i in range(NUM_TATTOO_IMAGES):
-        try:
-            # --- DYNAMIC COMPONENT SELECTION ---
-            style = random.choice(tattoo_styles)
-            subject = random.choice(tattoo_subjects)
-            placement = random.choice(body_placements)
-            skin = random.choice(skin_tones)
-            framing = random.choice(framing_styles)
-            lighting = random.choice(lighting_styles)
-            directives = " ".join(random.sample(artistic_directives, k=random.randint(1, 2)))
+    image_counter = 0
+    
+    # Generate images with equal distribution across styles
+    for style_idx, style in enumerate(styles_to_use):
+        style_dir = os.path.join(tattoos_dir, style)
+        if not os.path.exists(style_dir):
+            os.makedirs(style_dir)
+        
+        print(f"\n--- STYLE {style_idx+1}/{len(styles_to_use)}: {style.upper()} ---")
+        
+        for img_in_style in range(IMAGES_PER_STYLE):
+            try:
+                image_counter += 1
+                
+                # --- DYNAMIC COMPONENT SELECTION ---
+                subject = random.choice(tattoo_subjects)
+                placement = random.choice(body_placements)
+                skin = random.choice(skin_tones)
+                framing = random.choice(framing_styles)
+                lighting = random.choice(lighting_styles)
+                directives = " ".join(random.sample(artistic_directives, k=random.randint(1, 2)))
 
-            # --- OPTIMIZED PROMPT FOR IMAGEN 4 ---
-            prompt = create_tattoo_prompt_with_imagen4(style, subject, placement, skin, framing, lighting, directives)
-            
-            # --- FILE AND FOLDER MANAGEMENT ---
-            style_dir = os.path.join(tattoos_dir, style)
-            if not os.path.exists(style_dir):
-                os.makedirs(style_dir)
+                # --- OPTIMIZED PROMPT FOR IMAGEN 4 ---
+                prompt = create_tattoo_prompt_with_imagen4(style, subject, placement, skin, framing, lighting, directives)
+                
+                # --- FILE AND FOLDER MANAGEMENT ---
+                safe_subject = subject.replace(" ", "_").replace("'", "").split(",")[0].lower()[:30]  # Limit length
+                filename = f"{style}_{safe_subject}_{img_in_style+1:04d}.png"
+                output_path = os.path.join(style_dir, filename)
+                
+                if os.path.exists(output_path):
+                    print(f"[{image_counter}/{NUM_TATTOO_IMAGES}] Skipping existing file: {filename}")
+                    continue
 
-            safe_subject = subject.replace(" ", "_").replace("'", "").split(",")[0].lower()[:30]  # Limit length
-            filename = f"{style}_{safe_subject}_{i+1:04d}.png"
-            output_path = os.path.join(style_dir, filename)
-            
-            if os.path.exists(output_path):
-                print(f"[{i+1}/{NUM_TATTOO_IMAGES}] Skipping existing file: {filename}")
-                continue
+                print(f"[{image_counter}/{NUM_TATTOO_IMAGES}] Style: {style} ({img_in_style+1}/{IMAGES_PER_STYLE}) | Generating: {subject[:50]}...")
 
-            print(f"[{i+1}/{NUM_TATTOO_IMAGES}] Style: {style} | Generating: {subject[:50]}...")
+                # --- API CALL WITH IMAGEN 4 SETTINGS ---
+                response = model.generate_images(
+                    prompt=prompt,
+                    number_of_images=1,
+                    aspect_ratio=IMAGE_SETTINGS["tattoo_portfolio"]["aspect_ratio"],
+                    safety_filter_level=IMAGE_SETTINGS["tattoo_portfolio"]["safety_filter_level"],
+                    person_generation=IMAGE_SETTINGS["tattoo_portfolio"]["person_generation"]
+                )
+                
+                response[0].save(location=output_path)
+                print(f"    -> Saved to {output_path}")
+                time.sleep(1.5)  # API rate-limiting delay
 
-            # --- API CALL WITH IMAGEN 4 SETTINGS ---
-            response = model.generate_images(
-                prompt=prompt,
-                number_of_images=1,
-                aspect_ratio=IMAGE_SETTINGS["tattoo_portfolio"]["aspect_ratio"],
-                safety_filter_level=IMAGE_SETTINGS["tattoo_portfolio"]["safety_filter_level"],
-                person_generation=IMAGE_SETTINGS["tattoo_portfolio"]["person_generation"]
-            )
-            
-            response[0].save(location=output_path)
-            print(f"    -> Saved to {output_path}")
-            time.sleep(1.5)  # API rate-limiting delay
+            except Exception as e:
+                print(f"Error occurred for tattoo {image_counter}: {e}")
+                time.sleep(5)
 
-        except Exception as e:
-            print(f"Error occurred for tattoo {i+1}: {e}")
-            time.sleep(5)
-
-    print(f"\nTattoo portfolio generation complete! Generated {NUM_TATTOO_IMAGES} images.")
+    print(f"\nTattoo portfolio generation complete! Generated {image_counter} images across {len(styles_to_use)} styles.")
 
 def generate_all_content():
     """Main function to generate both tattoo portfolio and studio images."""
     print("=" * 60)
     print("TATTOO DIRECTORY CONTENT GENERATION")
     print("=" * 60)
+    
+    mode_text = "TEST MODE" if TEST_MODE else "FULL PRODUCTION MODE"
+    print(f"🔧 {mode_text}")
     print(f"Configuration:")
     print(f"  - Project ID: {PROJECT_ID}")
     print(f"  - Location: {LOCATION}")
     print(f"  - Output Directory: {OUTPUT_DIR}")
-    print(f"  - Tattoo Images: {NUM_TATTOO_IMAGES}")
-    print(f"  - Studios: {NUM_STUDIOS}")
-    print(f"  - Images per Studio: {IMAGES_PER_STUDIO}")
+    print(f"  - Mode: {'Test' if TEST_MODE else 'Full Production'}")
+    
+    if TEST_MODE:
+        print(f"  - Tattoo Images: {NUM_TATTOO_IMAGES} (1 each for {TEST_TATTOO_STYLES} styles)")
+        print(f"  - Studios: {NUM_STUDIOS} (1 test studio)")
+        print(f"  - Studio Images: {IMAGES_PER_STUDIO} (1 internal, 1 external, 1 working)")
+        print(f"  - TOTAL IMAGES: {NUM_TATTOO_IMAGES + (NUM_STUDIOS * IMAGES_PER_STUDIO)} (5 tattoos + 3 studio = 8 images)")
+    else:
+        print(f"  - Tattoo Images: {NUM_TATTOO_IMAGES} ({IMAGES_PER_STYLE} each for {len(tattoo_styles)} styles)")
+        print(f"  - Studios: {NUM_STUDIOS}")
+        print(f"  - Studio Images per Studio: {IMAGES_PER_STUDIO}")
+        print(f"  - TOTAL IMAGES: {NUM_TATTOO_IMAGES + (NUM_STUDIOS * IMAGES_PER_STUDIO)} (660 tattoos + 300 studio = 960 images)")
+    
     print("=" * 60)
     
     # Create main output directory
@@ -434,7 +484,7 @@ def generate_all_content():
     
     try:
         # Generate studio images first (smaller dataset)
-        print("\n🏢 PHASE 1: Generating Studio Images")
+        print(f"\n🏢 PHASE 1: Generating Studio Images")
         print("-" * 40)
         studio_metadata = generate_studio_images()
         
@@ -446,16 +496,27 @@ def generate_all_content():
         # Generate summary report
         print(f"\n📊 GENERATION SUMMARY")
         print("-" * 40)
+        print(f"✅ Mode: {'Test Run' if TEST_MODE else 'Full Production'}")
         print(f"✅ Studios generated: {len(studio_metadata) if 'studio_metadata' in locals() else 0}")
         print(f"✅ Expected tattoo images: {NUM_TATTOO_IMAGES}")
         print(f"✅ Total expected images: {NUM_STUDIOS * IMAGES_PER_STUDIO + NUM_TATTOO_IMAGES}")
         print(f"📁 Output directory: {OUTPUT_DIR}")
         
+        if TEST_MODE:
+            print(f"🧪 Test completed with 8 images total (5 tattoos + 3 studio)")
+            print(f"💡 To run full production, set TEST_MODE = False in the script")
+        else:
+            print(f"🚀 Full production completed with 960 images total (660 tattoos + 300 studio)")
+        
         # Save generation metadata
         generation_info = {
             "generation_date": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "mode": "test" if TEST_MODE else "production",
             "configuration": {
+                "test_mode": TEST_MODE,
                 "tattoo_images": NUM_TATTOO_IMAGES,
+                "images_per_style": IMAGES_PER_STYLE,
+                "styles_used": len(tattoo_styles[:TEST_TATTOO_STYLES]) if TEST_MODE else len(tattoo_styles),
                 "studios": NUM_STUDIOS,
                 "images_per_studio": IMAGES_PER_STUDIO,
                 "total_expected": NUM_STUDIOS * IMAGES_PER_STUDIO + NUM_TATTOO_IMAGES

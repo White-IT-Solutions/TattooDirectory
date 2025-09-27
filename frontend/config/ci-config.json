@@ -1,0 +1,134 @@
+{
+  "workflows": {
+    "ui-ux-audit": {
+      "triggers": {
+        "pullRequest": {
+          "paths": ["frontend/**", ".github/workflows/ui-ux-audit.yml"],
+          "testType": "visual-regression"
+        },
+        "schedule": {
+          "cron": "0 2 * * *",
+          "testType": "comprehensive"
+        },
+        "manual": {
+          "testTypes": [
+            "visual-regression",
+            "accessibility",
+            "theme-testing",
+            "responsive",
+            "comprehensive"
+          ]
+        }
+      },
+      "matrix": {
+        "browsers": ["chromium", "firefox", "webkit"],
+        "viewports": ["desktop", "tablet", "mobile"],
+        "themes": ["light", "dark"]
+      },
+      "timeouts": {
+        "serverStart": 60000,
+        "testExecution": 300000,
+        "reportGeneration": 120000
+      }
+    },
+    "baseline-management": {
+      "actions": ["update-all", "update-specific", "rollback", "validate"],
+      "retention": {
+        "baselines": 180,
+        "validations": 7
+      }
+    },
+    "artifact-management": {
+      "schedule": "0 3 * * 0",
+      "retention": {
+        "testResults": 30,
+        "reports": 90,
+        "baselines": 180
+      },
+      "storageThreshold": 1073741824
+    }
+  },
+  "reporting": {
+    "formats": ["json", "html"],
+    "prComments": {
+      "enabled": true,
+      "template": "default",
+      "includeScreenshots": true
+    },
+    "notifications": {
+      "criticalIssues": true,
+      "majorIssues": false,
+      "storageWarnings": true
+    }
+  },
+  "testing": {
+    "parallel": {
+      "enabled": true,
+      "maxWorkers": 4
+    },
+    "retries": {
+      "flaky": 2,
+      "network": 3
+    },
+    "thresholds": {
+      "accessibility": {
+        "minScore": 90,
+        "criticalViolations": 0
+      },
+      "visual": {
+        "pixelThreshold": 0.2,
+        "maxDifference": 5.0
+      },
+      "performance": {
+        "maxLoadTime": 3000,
+        "maxRenderTime": 1000
+      }
+    }
+  },
+  "artifacts": {
+    "storage": {
+      "screenshots": {
+        "format": "png",
+        "quality": 90,
+        "compression": true
+      },
+      "reports": {
+        "compression": true,
+        "includeRawData": false
+      }
+    },
+    "cleanup": {
+      "automatic": true,
+      "preserveBaselines": true,
+      "archiveReports": true
+    }
+  },
+  "security": {
+    "secrets": {
+      "required": [],
+      "optional": ["SLACK_WEBHOOK", "TEAMS_WEBHOOK"]
+    },
+    "permissions": {
+      "contents": "read",
+      "actions": "write",
+      "pullRequests": "write"
+    }
+  },
+  "environments": {
+    "development": {
+      "baseUrl": "http://localhost:3000",
+      "skipSlowTests": true,
+      "debugMode": true
+    },
+    "staging": {
+      "baseUrl": "https://staging.tattoo-directory.com",
+      "fullTestSuite": true,
+      "updateBaselines": false
+    },
+    "production": {
+      "baseUrl": "https://tattoo-directory.com",
+      "readOnlyTests": true,
+      "alertOnFailure": true
+    }
+  }
+}

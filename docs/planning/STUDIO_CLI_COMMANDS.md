@@ -1,0 +1,1 @@
+✅ MOVED: docs\STUDIO_CLI_COMMANDS.md -

@@ -1,0 +1,278 @@
+name: Artifact Management and Cleanup
+
+on:
+  schedule:
+    # Run cleanup weekly on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      cleanup_type:
+        description: 'Type of cleanup to perform'
+        required: true
+        type: choice
+        options:
+          - 'test-results'
+          - 'baselines'
+          - 'reports'
+          - 'all'
+        default: 'all'
+      retention_days:
+        description: 'Retention period in days'
+        required: false
+        type: number
+        default: 30
+
+jobs:
+  cleanup-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup old test results
+        if: github.event.inputs.cleanup_type == 'test-results' || github.event.inputs.cleanup_type == 'all'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const retentionDays = ${{ github.event.inputs.retention_days || 30 }};
+            const cutoffDate = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000);
+            
+            // Get all workflow runs
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ui-ux-audit.yml',
+              per_page: 100
+            });
+            
+            for (const run of runs.data.workflow_runs) {
+              if (new Date(run.created_at) < cutoffDate) {
+                // Get artifacts for this run
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+                
+                // Delete test result artifacts (keep reports and baselines)
+                for (const artifact of artifacts.data.artifacts) {
+                  if (artifact.name.includes('test-results') || 
+                      artifact.name.includes('visual-test-results') ||
+                      artifact.name.includes('accessibility-results') ||
+                      artifact.name.includes('theme-test-results') ||
+                      artifact.name.includes('responsive-results')) {
+                    await github.rest.actions.deleteArtifact({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      artifact_id: artifact.id
+                    });
+                    console.log(`Deleted artifact: ${artifact.name}`);
+                  }
+                }
+              }
+            }
+
+      - name: Cleanup old baselines
+        if: github.event.inputs.cleanup_type == 'baselines' || github.event.inputs.cleanup_type == 'all'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const retentionDays = 180; // Keep baselines longer
+            const cutoffDate = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000);
+            
+            // Get baseline management workflow runs
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'baseline-management.yml',
+              per_page: 100
+            });
+            
+            for (const run of runs.data.workflow_runs) {
+              if (new Date(run.created_at) < cutoffDate) {
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+                
+                // Delete old baseline artifacts (keep recent ones)
+                for (const artifact of artifacts.data.artifacts) {
+                  if (artifact.name.includes('baselines-') && 
+                      !artifact.name.includes('validation')) {
+                    await github.rest.actions.deleteArtifact({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      artifact_id: artifact.id
+                    });
+                    console.log(`Deleted baseline artifact: ${artifact.name}`);
+                  }
+                }
+              }
+            }
+
+      - name: Cleanup old reports
+        if: github.event.inputs.cleanup_type == 'reports' || github.event.inputs.cleanup_type == 'all'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const retentionDays = 90; // Keep reports for 3 months
+            const cutoffDate = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000);
+            
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ui-ux-audit.yml',
+              per_page: 100
+            });
+            
+            for (const run of runs.data.workflow_runs) {
+              if (new Date(run.created_at) < cutoffDate) {
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+                
+                // Delete old report artifacts
+                for (const artifact of artifacts.data.artifacts) {
+                  if (artifact.name.includes('ui-audit-report')) {
+                    await github.rest.actions.deleteArtifact({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      artifact_id: artifact.id
+                    });
+                    console.log(`Deleted report artifact: ${artifact.name}`);
+                  }
+                }
+              }
+            }
+
+  archive-reports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Archive monthly reports
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const now = new Date();
+            const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+            const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            
+            // Get all UI audit runs from last month
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ui-ux-audit.yml',
+              created: `${lastMonth.toISOString().split('T')[0]}..${thisMonth.toISOString().split('T')[0]}`,
+              per_page: 100
+            });
+            
+            const monthlyReports = [];
+            
+            for (const run of runs.data.workflow_runs) {
+              if (run.conclusion === 'success') {
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
+                
+                const reportArtifact = artifacts.data.artifacts.find(
+                  a => a.name === 'ui-audit-report'
+                );
+                
+                if (reportArtifact) {
+                  monthlyReports.push({
+                    runId: run.id,
+                    createdAt: run.created_at,
+                    artifactId: reportArtifact.id
+                  });
+                }
+              }
+            }
+            
+            console.log(`Found ${monthlyReports.length} reports from last month`);
+            
+            // Create monthly summary
+            const summary = {
+              month: lastMonth.toISOString().substring(0, 7),
+              reportCount: monthlyReports.length,
+              reports: monthlyReports
+            };
+            
+            console.log('Monthly summary:', JSON.stringify(summary, null, 2));
+
+  storage-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Calculate storage usage
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let totalSize = 0;
+            let artifactCount = 0;
+            const artifactTypes = {};
+            
+            // Get all workflows
+            const workflows = await github.rest.actions.listRepoWorkflows({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            for (const workflow of workflows.data.workflows) {
+              if (workflow.name.includes('UI/UX') || workflow.name.includes('Baseline') || workflow.name.includes('Artifact')) {
+                const runs = await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: workflow.id,
+                  per_page: 50
+                });
+                
+                for (const run of runs.data.workflow_runs) {
+                  const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: run.id
+                  });
+                  
+                  for (const artifact of artifacts.data.artifacts) {
+                    totalSize += artifact.size_in_bytes;
+                    artifactCount++;
+                    
+                    const type = artifact.name.split('-')[0];
+                    artifactTypes[type] = (artifactTypes[type] || 0) + artifact.size_in_bytes;
+                  }
+                }
+              }
+            }
+            
+            const totalSizeMB = (totalSize / 1024 / 1024).toFixed(2);
+            
+            console.log(`Storage Usage Summary:`);
+            console.log(`Total Artifacts: ${artifactCount}`);
+            console.log(`Total Size: ${totalSizeMB} MB`);
+            console.log(`Breakdown by type:`);
+            
+            for (const [type, size] of Object.entries(artifactTypes)) {
+              const sizeMB = (size / 1024 / 1024).toFixed(2);
+              console.log(`  ${type}: ${sizeMB} MB`);
+            }
+            
+            // Create issue if storage is too high (>1GB)
+            if (totalSize > 1024 * 1024 * 1024) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '⚠️ High artifact storage usage detected',
+                body: `Artifact storage has exceeded 1GB (currently ${totalSizeMB} MB).
+                
+                Consider:
+                - Running artifact cleanup
+                - Reducing retention periods
+                - Optimizing test result sizes
+                
+                Current breakdown:
+                ${Object.entries(artifactTypes).map(([type, size]) => 
+                  `- ${type}: ${(size / 1024 / 1024).toFixed(2)} MB`
+                ).join('\n')}`,
+                labels: ['maintenance', 'storage']
+              });
+            }
