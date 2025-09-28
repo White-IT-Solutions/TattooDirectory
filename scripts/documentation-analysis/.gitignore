@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Coverage reports
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+.temp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test artifacts
+test-results/
+junit.xml

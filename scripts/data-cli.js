@@ -1591,15 +1591,15 @@ class DataCLI {
     console.log(`  npm run setup-data --frontend-only --export --validate`);
     console.log('');
     console.log(`  ${COLORS.dim}# Reset to clean state${COLORS.reset}`);
-    console.log(`  npm run reset-data clean`);
+    console.log(`  npm run reset-data --workspace=scripts-data clean`);
     console.log('');
     console.log(`  ${COLORS.dim}# Seed enhanced scenario with comprehensive data${COLORS.reset}`);
-    console.log(`  npm run seed-scenario london-focused`);
+    console.log(`  npm run seed --workspace=scripts-scenario london-focused`);
     console.log('');
     console.log(`  ${COLORS.dim}# Studio-specific operations${COLORS.reset}`);
-    console.log(`  npm run seed-studios --scenario studio-diverse`);
-    console.log(`  npm run validate-studios relationships`);
-    console.log(`  npm run reset-studios --preserve-relationships`);
+    console.log(`  npm run seed --workspace=scripts-studios --scenario studio-diverse`);
+    console.log(`  npm run validate --workspace=scripts/documentation-analysis-studios relationships`);
+    console.log(`  npm run reset-data --workspace=scripts-studios --preserve-relationships`);
     console.log(`  npm run studio-status`);
     console.log('');
     console.log(`  ${COLORS.dim}# Generate large datasets for performance testing${COLORS.reset}`);
@@ -1619,7 +1619,7 @@ class DataCLI {
     console.log(`  npm run help <command>     Show help for specific command`);
     console.log(`  npm run help setup-data    Show setup-data command help`);
     console.log(`  npm run scenarios          List available enhanced scenarios`);
-    console.log(`  npm run reset-states       List available reset states`);
+    console.log(`  npm run reset-data --workspace=scripts-states       List available reset states`);
     console.log('');
   }
 
@@ -1640,12 +1640,12 @@ class DataCLI {
     });
 
     console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
-    console.log(`  npm run seed-scenario <scenario-name>`);
+    console.log(`  npm run seed --workspace=scripts-scenario <scenario-name>`);
     console.log('');
     console.log(`${COLORS.bright}EXAMPLES:${COLORS.reset}`);
-    console.log(`  npm run seed-scenario minimal`);
-    console.log(`  npm run seed-scenario london-artists`);
-    console.log(`  npm run seed-scenario full-dataset`);
+    console.log(`  npm run seed --workspace=scripts-scenario minimal`);
+    console.log(`  npm run seed --workspace=scripts-scenario london-artists`);
+    console.log(`  npm run seed --workspace=scripts-scenario full-dataset`);
     console.log('');
   }
 
@@ -1668,12 +1668,12 @@ class DataCLI {
     });
 
     console.log(`${COLORS.bright}USAGE:${COLORS.reset}`);
-    console.log(`  npm run reset-data <state-name>`);
+    console.log(`  npm run reset-data --workspace=scripts-data <state-name>`);
     console.log('');
     console.log(`${COLORS.bright}EXAMPLES:${COLORS.reset}`);
-    console.log(`  npm run reset-data clean`);
-    console.log(`  npm run reset-data search-ready`);
-    console.log(`  npm run reset-data frontend-ready`);
+    console.log(`  npm run reset-data --workspace=scripts-data clean`);
+    console.log(`  npm run reset-data --workspace=scripts-data search-ready`);
+    console.log(`  npm run reset-data --workspace=scripts-data frontend-ready`);
     console.log('');
   }
 
@@ -1897,7 +1897,7 @@ class DataCLI {
     this.printSubSection('Get Additional Help:');
     this.printBullet('View command help: `npm run help <command>`');
     this.printBullet('List available scenarios: `npm run scenarios`');
-    this.printBullet('List available reset states: `npm run reset-states`');
+    this.printBullet('List available reset states: `npm run reset-data --workspace=scripts-states`');
     
     console.log('');
     this.printInfo('💡 Tip: Run with DEBUG=true for detailed error information');
@@ -1968,11 +1968,11 @@ class DataCLI {
           },
           { 
             action: 'List available reset states', 
-            command: 'npm run reset-states'
+            command: 'npm run reset-data --workspace=scripts-states'
           },
           { 
             action: 'Reset to known good state', 
-            command: 'npm run reset-data fresh'
+            command: 'npm run reset-data --workspace=scripts-data fresh'
           }
         ]
       });
@@ -1989,15 +1989,15 @@ class DataCLI {
           },
           { 
             action: 'Check data consistency', 
-            command: 'npm run validate-data consistency'
+            command: 'npm run validate --workspace=scripts/documentation-analysis-data consistency'
           },
           { 
             action: 'Validate image accessibility', 
-            command: 'npm run validate-data images'
+            command: 'npm run validate --workspace=scripts/documentation-analysis-data images'
           },
           { 
             action: 'Reset and reseed data', 
-            command: 'npm run reset-data fresh',
+            command: 'npm run reset-data --workspace=scripts-data fresh',
             note: 'This will clear and reload all data'
           }
         ]
@@ -2073,7 +2073,7 @@ class DataCLI {
           },
           { 
             action: 'Reset to clean state', 
-            command: 'npm run reset-data clean'
+            command: 'npm run reset-data --workspace=scripts-data clean'
           }
         ]
       });
@@ -2202,7 +2202,7 @@ class DataCLI {
         'Disable firewall temporarily to test'
       ],
       data: [
-        'Run `npm run reset-data fresh`',
+        'Run `npm run reset-data --workspace=scripts-data fresh`',
         'Check `npm run health-check`'
       ],
       configuration: [
@@ -2602,7 +2602,7 @@ class DataCLI {
       this.printSection('Recommended Actions:');
       this.printBullet('Review the errors above and fix data inconsistencies');
       this.printBullet('Run specific validation commands to focus on problem areas');
-      this.printBullet('Use `npm run validate-studios` for studio-specific validation');
+      this.printBullet('Use `npm run validate --workspace=scripts/documentation-analysis-studios` for studio-specific validation');
       this.printBullet('Use `npm run health-check` for service connectivity issues');
     }
 

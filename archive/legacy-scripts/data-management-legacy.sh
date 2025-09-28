@@ -4,7 +4,7 @@
 # Maintains compatibility with existing Docker integration
 
 echo "⚠️  DEPRECATION NOTICE: This script is deprecated"
-echo "Please use the new npm commands (npm run setup-data, npm run reset-data, etc.)"
+echo "Please use the new npm commands (npm run setup-data, npm run reset-data --workspace=scripts-data, etc.)"
 echo "Running via compatibility layer..."
 echo ""
 

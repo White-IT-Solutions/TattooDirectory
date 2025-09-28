@@ -1,0 +1,10 @@
+# Reports Directory
+
+This directory will contain generated reports from documentation analysis:
+
+- Gap analysis reports
+- Validation reports
+- Consolidation summaries
+- Progress tracking reports
+
+Reports are generated at runtime and should not be committed to version control.

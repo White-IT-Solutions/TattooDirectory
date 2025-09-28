@@ -1,0 +1,9 @@
+# Backups Directory
+
+This directory will contain backups of original documentation files before consolidation:
+
+- Timestamped backups of modified files
+- Original file structure snapshots
+- Recovery information
+
+Backups are created automatically during consolidation process.

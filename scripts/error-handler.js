@@ -546,7 +546,7 @@ class ErrorHandler {
           'Review configuration file: scripts/data-config.js',
           'Check environment variables in .env files',
           'Validate service endpoints and credentials',
-          'Run configuration validation: npm run validate-config',
+          'Run configuration validation: npm run validate --workspace=scripts/documentation-analysis-config',
           'Compare with working configuration examples'
         ];
         guide.resources = [

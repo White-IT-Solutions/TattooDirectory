@@ -1,0 +1,41 @@
+{
+  "name": "documentation-analysis",
+  "version": "1.0.0",
+  "description": "Documentation analysis and consolidation tools for the Tattoo Artist Directory MVP",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "analyze": "node scripts/analyze-documentation.js",
+    "consolidate": "node scripts/consolidate-documentation.js",
+    "validate": "node scripts/validate-documentation.js",
+    "gap-analysis": "node scripts/gap-analysis.js",
+    "fix-outdated-content": "node scripts/fix-outdated-content.js",
+    "consolidate-duplicates": "node scripts/consolidate-duplicates.js",
+    "create-missing-docs": "node scripts/create-missing-docs.js",
+    "docs-health-summary": "node scripts/documentation-health-summary.js",
+    "file-mapping": "node scripts/generate-file-mapping.js",
+    "delete-duplicates": "node scripts/delete-duplicates.js",
+    "cleanup": "node cleanup-old-docs.js",
+    "cleanup:live": "node cleanup-old-docs.js --live",
+    "cross-reference": "node cross-reference-commands.js",
+    "migrate-legacy": "node migrate-legacy-commands.js",
+    "migrate-legacy:live": "node migrate-legacy-commands.js --live"
+  },
+  "keywords": [
+    "documentation",
+    "analysis",
+    "consolidation",
+    "markdown",
+    "npm-scripts"
+  ],
+  "author": "Tattoo Artist Directory MVP Team",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

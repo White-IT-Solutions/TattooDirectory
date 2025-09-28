@@ -1,0 +1,10 @@
+# Scripts Directory
+
+This directory will contain executable scripts for documentation processing:
+
+- analyze-documentation.js - Main analysis script
+- consolidate-documentation.js - Consolidation script
+- validate-documentation.js - Validation script
+- gap-analysis.js - Gap analysis script
+
+Scripts will be implemented in subsequent tasks.

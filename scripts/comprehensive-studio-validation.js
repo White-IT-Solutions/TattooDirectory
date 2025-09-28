@@ -150,7 +150,7 @@ class ComprehensiveStudioValidator {
 
   async testArtistStudioRelationships() {
     try {
-      const output = execSync('npm run manage-studio-relationships validate', { encoding: 'utf8' });
+      const output = execSync('npm run manage-studio-relationships --workspace=scripts-studio-relationships validate', { encoding: 'utf8' });
       const completed = output.includes('completed successfully');
       
       return {
