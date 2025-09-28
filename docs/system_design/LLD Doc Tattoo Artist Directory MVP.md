@@ -135,7 +135,7 @@ The Data Aggregation Engine is responsible for programmatically collecting and p
 
    * ### **Trigger:** Fargate service is configured with auto-scaling based on the SQS queue depth (e.g., scale up if `ApproximateNumberOfMessagesVisible > 100`).
 
-   * ### **Action:** Each Fargate task starts, pulls a message from the SQS queue, scrapes the corresponding portfolio, and deletes the message upon successful completion. Before writing to DynamoDB, the task is responsible for transforming the raw scraped data into the final item structure. This includes computing the GSI keys (`gsi1pk`, `gsi1sk`, and `gsi2pk`) based on the artist's inferred styles, location, and Instagram handle to enable efficient search queries. The task implements the complete GSI key generation algorithm as specified in the HLD Section 8.1, ensuring consistent data formatting and search optimization. It then writes the complete item directly to DynamoDB using conditional expressions for idempotency.
+   * ### **Action:** Each Fargate task starts, pulls a message from the SQS queue, scrapes the corresponding portfolio, and deletes the message upon successful completion. Before writing to DynamoDB, the task is responsible for transforming the raw scraped data into the final item structure. This includes computing the GSI keys (`gsi1pk` and `gsi1sk`) based on the artist's inferred styles and location to enable efficient search queries. It then writes the complete item directly to DynamoDB.
 
 ### This buffered pattern ensures that scraping jobs are not lost if there's a temporary issue with the Fargate service and allows the scraping workload to be processed at a controlled rate.
 
@@ -164,45 +164,31 @@ Proactive Monitoring: The system is configured with a dedicated CloudWatch Alarm
 
 ## **4.1. Data Models (DynamoDB Single-Table Design)**
 
-The `TattooDirectory` single-table design is optimized for the application's core access patterns, ensuring high performance and scalability.
+The `TattooDirectory` single-table design is optimized for the application's access patterns.
 
-### **Key Structure Rationale**
+**Key Structure Rationale:**
 
-* **PK: `ARTIST#{artistId}`:** By partitioning on the artist ID, all information related to a single artist (metadata, images, styles) is co-located in the same physical partition. This allows the `getArtistProfile` endpoint to fetch an artist's entire profile with a single, highly efficient `Query` operation (`WHERE PK = 'ARTIST#alex-123'`).
+* **PK: `ARTIST#{artistId}`:** By partitioning on the artist ID, all information related to a single artist (metadata, images, styles) is co-located in the same physical partition. This allows the `getArtistProfile` endpoint to fetch an artist's entire profile with a single, highly efficient `Query` operation (`WHERE PK = 'ARTIST#alex-123'`), instead of multiple `GetItem` calls.  
+* **SK: `METADATA`, `IMAGE#{imageId}`:** The use of composite sort keys allows for versatile queries. A query for an artist can retrieve just the `METADATA` or all `IMAGE#` items, providing flexibility.
 
-* **SK: `METADATA`, `IMAGE#{imageId}`, `STYLE#{styleName}`:** The use of composite sort keys allows for versatile queries. A single query can retrieve just the `METADATA`, all `IMAGE#` items, or all `STYLE#` items associated with an artist, providing significant flexibility.
+**GSI for Search Rationale (`style-location-index`):**
 
-### **GSI Rationale for Search and Lookups**
-
-The Global Secondary Indexes (GSIs) are the core of the directory's search and lookup capabilities.
-
-* **GSI1 (`style-geohash-index`):**
-    * **GSI1 PK: `STYLE#{style}#SHARD#{N}`:** This key enables finding all artists of a specific style. Crucially, it includes a **random shard number** (`#SHARD#N`) to distribute write operations evenly, preventing "hot partitions" for very popular styles and ensuring scalability.
-    * **GSI1 SK: `GEOHASH#{geohash}#ARTIST#{artistId}`:** This key uses a **geohash** instead of a simple city/country string. This unlocks powerful and efficient geographic proximity searches (e.g., "find artists near me"), which is a superior user experience. The query `WHERE gsi1pk = 'STYLE#neotraditional#SHARD#5' AND begins_with(gsi1sk, 'GEOHASH#gcpvj')` is executed in parallel across all shards to power the main search feature.
-
-* **GSI2 (`artist-name-index`):**
-    * **GSI2 PK: `ARTISTNAME#{normalizedName}`:** This new index supports a critical access pattern: finding an artist directly by their name. The name is normalized (lowercase, no spaces) for consistent lookups.
-
-* **GSI3 (`instagram-index`):**
-    * **GSI3 PK: `INSTAGRAM#{handle}`:** Enables the efficient lookup of an artist by their unique Instagram handle, which is essential for features like profile claims and detecting duplicate entries.
-
----
+* **GSI1 PK: `gsi1pk` (`STYLE#neotraditional`):** This allows for a direct query to find all artists associated with a specific style.  
+* **GSI1 SK: `gsi1sk` (`LOCATION#leeds#...`):** The composite sort key allows for further filtering within a style by location. The query `WHERE gsi1pk = 'STYLE#neotraditional' AND begins_with(gsi1sk, 'LOCATION#leeds')` is extremely efficient for powering the main search feature.
 
 ## **4.2. Data Model Table**
 
-The following table describes the primary attributes found on an artist's main `METADATA` item. Note that index-driving items (e.g., `SK: STYLE#{styleName}`) have a different, more minimal structure.
-
-| Attribute Name    | Type   | Description                                                                                              | Example                                 |
-| :---------------- | :----- | :------------------------------------------------------------------------------------------------------- | :-------------------------------------- |
-| `PK`              | String | Partition Key.                                                                                           | `ARTIST#artist-123`                     |
-| `SK`              | String | Sort Key. Defines the item type within the partition.                                                    | `METADATA`                              |
-| `artistName`      | String | The artist's full name.                                                                                  | `Alex the Artist`                       |
-| `instagramHandle` | String | The artist's Instagram username, without the `@`.                                                        | `alextattoo`                            |
-| `geohash`         | String | A geohash of the artist's studio location, used for proximity searches.                                  | `gcpvj`                                 |
-| `locationDisplay` | String | A human-readable location string for display purposes only.                                              | `Leeds, UK`                             |
-| `gsi2pk`          | String | **GSI2 PK.** Format: `ARTISTNAME#{normalizedName}`. For name lookups.                                    | `ARTISTNAME#alextheartist`              |
-| `gsi2sk`          | String | **GSI2 SK.** Format: `ARTIST#{artistId}`.                                                                | `ARTIST#artist-123`                     |
-| `gsi3pk`          | String | **GSI3 PK.** Format: `INSTAGRAM#{handle}`. For Instagram lookups.                                        | `INSTAGRAM#alextattoo`                  |
+| Attribute Name | Type | Description | Example |
+| :---- | :---- | :---- | :---- |
+| `PK` | String | Partition Key. ARTIST\#{artist\_id} | ARTIST\#12345 |
+| `SK` | String | Sort Key. PROFILE\#{artist\_id} | PROFILE\#12345 |
+| `artistName` | String | The artist's full name. | Alex the Artist |
+| `instagramHandle` | String | The artist's Instagram username. | @alextattoo |
+| `locationCity` | String | The primary city of operation. | London |
+| `locationCountry` | String | The primary country of operation. | UK |
+| `styles` | String Set | A set of inferred style tags, derived from the Style Inference Engine. Used for filtering and searching. All values are stored in lowercase. | \["traditional", "blackwork", "dotwork"\] |
+| `gsi1pk` | String | GSI 1 Partition Key. STYLE\#{style\_name} | STYLE\#traditional |
+| `gsi1sk` | String | GSI 1 Sort Key. LOCATION\#{country}\#{city} | LOCATION\#UK\#London |
 
 ## **4.3. Data Sizing and Volumetrics**
 
