@@ -10,7 +10,7 @@ cd "$(dirname "$0")/data-seeder"
 echo "Starting comprehensive validation..."
 echo
 
-npm run final-validation
+npm run validate --workspace=scripts/documentation-analysis:complete
 
 echo
 echo "Validation complete!"

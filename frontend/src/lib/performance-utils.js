@@ -234,6 +234,13 @@ export class PerformanceMonitor {
   }
 
   /**
+   * Clear all measurements
+   */
+  clear() {
+    this.measurements.clear();
+  }
+
+  /**
    * Clear old measurements
    */
   clearOldMeasurements(maxAge = 24 * 60 * 60 * 1000) { // 24 hours
@@ -714,6 +721,13 @@ export class RequestDeduplicator {
    */
   clear() {
     this.pendingRequests.clear();
+  }
+
+  /**
+   * Cancel all pending requests (alias for clear)
+   */
+  cancelAll() {
+    this.clear();
   }
 
   /**

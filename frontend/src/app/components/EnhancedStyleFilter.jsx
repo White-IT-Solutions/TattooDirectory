@@ -119,11 +119,15 @@ const PopularityIndicator = ({ popularity }) => {
 export default function EnhancedStyleFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  
+  // Memoize available styles to prevent infinite loops
+  const availableEnhancedStyles = useMemo(() => getAvailableEnhancedStyles(), []);
+  
   const [selected, setSelected] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [hoveredStyle, setHoveredStyle] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [filteredStyles, setFilteredStyles] = useState(getAvailableEnhancedStyles());
+  const [filteredStyles, setFilteredStyles] = useState(availableEnhancedStyles);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [isKeyboardMode, setIsKeyboardMode] = useState(false);
   const containerRef = useRef(null);
@@ -139,14 +143,14 @@ export default function EnhancedStyleFilter() {
   // Memoized filtered styles for performance
   const memoizedFilteredStyles = useMemo(() => {
     if (!searchQuery.trim()) {
-      return getAvailableEnhancedStyles();
+      return availableEnhancedStyles;
     } else {
       const searchResults = searchStylesByAlias(searchQuery);
       return searchResults.filter(style => 
         AVAILABLE_STYLES.includes(style.id)
       );
     }
-  }, [searchQuery]);
+  }, [searchQuery, availableEnhancedStyles]);
 
   // Debounced search query update
   const debouncedSetSearchQuery = useCallback(

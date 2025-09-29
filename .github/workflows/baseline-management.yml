@@ -1,0 +1,196 @@
+name: Visual Baseline Management
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Baseline management action'
+        required: true
+        type: choice
+        options:
+          - 'update-all'
+          - 'update-specific'
+          - 'rollback'
+          - 'validate'
+      browser:
+        description: 'Browser (for specific updates)'
+        required: false
+        type: choice
+        options:
+          - 'chromium'
+          - 'firefox'
+          - 'webkit'
+          - 'all'
+        default: 'all'
+      viewport:
+        description: 'Viewport (for specific updates)'
+        required: false
+        type: choice
+        options:
+          - 'desktop'
+          - 'tablet'
+          - 'mobile'
+          - 'all'
+        default: 'all'
+      commit_sha:
+        description: 'Commit SHA for rollback'
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  update-baselines:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.action == 'update-all' || github.event.inputs.action == 'update-specific'
+    strategy:
+      matrix:
+        browser: ${{ github.event.inputs.browser == 'all' && fromJson('["chromium", "firefox", "webkit"]') || fromJson(format('["{0}"]', github.event.inputs.browser)) }}
+        viewport: ${{ github.event.inputs.viewport == 'all' && fromJson('["desktop", "tablet", "mobile"]') || fromJson(format('["{0}"]', github.event.inputs.viewport)) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install ${{ matrix.browser }} --with-deps
+
+      - name: Start development server
+        working-directory: frontend
+        run: |
+          npm run build
+          npm run start &
+          npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Generate new baselines
+        working-directory: frontend
+        run: |
+          npx playwright test tests/e2e/visual-regression \
+            --project=${{ matrix.browser }} \
+            --grep="@${{ matrix.viewport }}" \
+            --update-snapshots
+
+      - name: Upload new baselines
+        uses: actions/upload-artifact@v3
+        with:
+          name: baselines-${{ matrix.browser }}-${{ matrix.viewport }}-${{ github.sha }}
+          path: frontend/tests/e2e/visual-regression/baselines/
+          retention-days: 180
+
+      - name: Commit baseline updates
+        if: github.event.inputs.action == 'update-all'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add frontend/tests/e2e/visual-regression/baselines/
+          git commit -m "Update visual baselines for ${{ matrix.browser }}-${{ matrix.viewport }}" || exit 0
+          git push
+
+  rollback-baselines:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.action == 'rollback'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rollback to specific commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if [ -n "${{ github.event.inputs.commit_sha }}" ]; then
+            git checkout ${{ github.event.inputs.commit_sha }} -- frontend/tests/e2e/visual-regression/baselines/
+            git commit -m "Rollback baselines to ${{ github.event.inputs.commit_sha }}"
+            git push
+          else
+            echo "No commit SHA provided for rollback"
+            exit 1
+          fi
+
+  validate-baselines:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.action == 'validate'
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+        viewport: [desktop, tablet, mobile]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install ${{ matrix.browser }} --with-deps
+
+      - name: Validate baseline integrity
+        working-directory: frontend
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          
+          const baselinesDir = path.join(process.cwd(), 'tests', 'e2e', 'visual-regression', 'baselines');
+          const browser = '${{ matrix.browser }}';
+          const viewport = '${{ matrix.viewport }}';
+          
+          const browserDir = path.join(baselinesDir, browser, viewport);
+          
+          if (!fs.existsSync(browserDir)) {
+            console.error('Missing baseline directory:', browserDir);
+            process.exit(1);
+          }
+          
+          const files = fs.readdirSync(browserDir);
+          const imageFiles = files.filter(f => f.endsWith('.png'));
+          
+          console.log('Found', imageFiles.length, 'baseline images for', browser, viewport);
+          
+          if (imageFiles.length === 0) {
+            console.error('No baseline images found');
+            process.exit(1);
+          }
+          
+          // Validate image files
+          imageFiles.forEach(file => {
+            const filePath = path.join(browserDir, file);
+            const stats = fs.statSync(filePath);
+            if (stats.size === 0) {
+              console.error('Empty baseline file:', file);
+              process.exit(1);
+            }
+          });
+          
+          console.log('All baselines validated successfully');
+          "
+
+      - name: Upload validation results
+        uses: actions/upload-artifact@v3
+        with:
+          name: baseline-validation-${{ matrix.browser }}-${{ matrix.viewport }}
+          path: frontend/tests/e2e/visual-regression/baselines/
+          retention-days: 7

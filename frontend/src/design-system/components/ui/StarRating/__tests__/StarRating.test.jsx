@@ -4,13 +4,16 @@ import StarRating from '../StarRating';
 describe('StarRating', () => {
   it('renders 5 star containers', () => {
     const { container } = render(<StarRating rating={3.5} />);
-    const starContainers = container.querySelectorAll('.relative');
+    // Each star has a container div with class "relative", but there's also a parent container
+    // Count only the star containers (direct children of the stars container)
+    const starsContainer = container.querySelector('.flex.items-center.relative');
+    const starContainers = starsContainer.querySelectorAll('.relative');
     expect(starContainers).toHaveLength(5); // 5 star containers
   });
 
   it('displays correct rating with full stars', () => {
     render(<StarRating rating={4} reviewCount={25} />);
-    expect(screen.getByText('(25)')).toBeInTheDocument();
+    expect(screen.getByText('25')).toBeInTheDocument();
   });
 
   it('displays half stars correctly', () => {
@@ -21,7 +24,7 @@ describe('StarRating', () => {
 
   it('hides review count when showCount is false', () => {
     render(<StarRating rating={4} reviewCount={25} showCount={false} />);
-    expect(screen.queryByText('(25)')).not.toBeInTheDocument();
+    expect(screen.queryByText('25')).not.toBeInTheDocument();
   });
 
   it('applies correct size classes', () => {

@@ -1,0 +1,7 @@
+{
+  "testResults": "30 days",
+  "screenshots": "30 days",
+  "baselines": "180 days",
+  "reports": "90 days",
+  "cleanupSchedule": "Weekly on Sundays"
+}

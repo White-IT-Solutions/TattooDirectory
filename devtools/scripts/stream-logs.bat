@@ -1,0 +1,3 @@
+@echo off 
+echo Starting CloudWatch Logs streaming utility... 
+powershell -ExecutionPolicy Bypass -File "%~dp0stream-logs.ps1" %* 

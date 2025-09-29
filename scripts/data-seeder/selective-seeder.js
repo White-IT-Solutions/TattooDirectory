@@ -4,7 +4,7 @@
  * LEGACY SCRIPT - DEPRECATED
  * 
  * This script has been replaced by the unified data management system.
- * Please use: npm run seed-scenario <scenario-name>
+ * Please use: npm run seed --workspace=scripts --workspace=scripts-scenario <scenario-name>
  * 
  * This wrapper maintains backward compatibility for existing Docker integration.
  */
@@ -15,7 +15,7 @@ const { main } = require('./selective-seeder-wrapper');
 // If this script is called directly, use the wrapper
 if (require.main === module) {
   console.log('\n⚠️  DEPRECATION NOTICE: This script is deprecated');
-  console.log('Please use: npm run seed-scenario <scenario-name>');
+  console.log('Please use: npm run seed --workspace=scripts --workspace=scripts-scenario <scenario-name>');
   console.log('Running via compatibility layer...\n');
   
   main().catch(error => {

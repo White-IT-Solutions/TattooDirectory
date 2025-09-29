@@ -20,8 +20,8 @@ describe('StarRating Component', () => {
       const stars = screen.getAllByRole('img', { hidden: true });
       expect(stars).toHaveLength(10); // 5 empty + 5 filled stars
       
-      // Should show review count
-      expect(screen.getByText('(80)')).toBeInTheDocument();
+      // Should show review count (number is wrapped in FormattedNumber component)
+      expect(screen.getByText('80')).toBeInTheDocument();
     });
 
     test('renders correct number of full and half stars', () => {
@@ -36,12 +36,12 @@ describe('StarRating Component', () => {
       render(<StarRating rating={0} reviewCount={0} />);
       
       // Should not show review count when zero
-      expect(screen.queryByText('(0)')).not.toBeInTheDocument();
+      expect(screen.queryByText('0')).not.toBeInTheDocument();
     });
 
     test('handles edge case ratings', () => {
       render(<StarRating rating={5.0} reviewCount={1} />);
-      expect(screen.getByText('(1)')).toBeInTheDocument();
+      expect(screen.getByText('1')).toBeInTheDocument();
     });
   });
 
@@ -65,7 +65,7 @@ describe('StarRating Component', () => {
         />
       );
       
-      const starsContainer = screen.getByRole('img', { hidden: true }).parentElement;
+      const starsContainer = screen.getAllByRole('img', { hidden: true })[0].parentElement.parentElement;
       fireEvent.mouseEnter(starsContainer);
       
       await waitFor(() => {
@@ -164,14 +164,14 @@ describe('StarRating Component', () => {
     test('formats large review counts', () => {
       render(<StarRating rating={4.5} reviewCount={1234} />);
       
-      // Should show formatted count
-      expect(screen.getByText('(1.2K)')).toBeInTheDocument();
+      // Should show formatted count (FormattedNumber with compact=true shows 1.2K)
+      expect(screen.getByText('1.2K')).toBeInTheDocument();
     });
 
     test('hides review count when showCount is false', () => {
       render(<StarRating rating={4.5} reviewCount={80} showCount={false} />);
       
-      expect(screen.queryByText('(80)')).not.toBeInTheDocument();
+      expect(screen.queryByText('80')).not.toBeInTheDocument();
     });
   });
 

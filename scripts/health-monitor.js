@@ -1592,8 +1592,8 @@ class HealthMonitor {
           troubleshooting: [
             'Check studio data generation parameters in data-config.js',
             'Verify studio data seeding completed successfully',
-            'Run: npm run validate-studios for detailed error report',
-            'Consider regenerating studio data: npm run seed-studios'
+            'Run: npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-studios for detailed error report',
+            'Consider regenerating studio data: npm run seed --workspace=scripts --workspace=scripts-studios'
           ]
         });
       }
@@ -1607,7 +1607,7 @@ class HealthMonitor {
           troubleshooting: [
             'Check artist-studio relationship consistency',
             'Verify bidirectional references are maintained',
-            'Run: npm run validate-studios --type=relationships',
+            'Run: npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-studios --type=relationships',
             'Consider running relationship repair: npm run repair-relationships'
           ]
         });
@@ -1656,7 +1656,7 @@ class HealthMonitor {
           troubleshooting: [
             'Check OpenSearch studio index exists and is populated',
             'Verify studio data seeding completed for both services',
-            'Run: npm run seed-studios to reseed studio data',
+            'Run: npm run seed --workspace=scripts --workspace=scripts-studios to reseed studio data',
             'Check OpenSearch service connectivity'
           ]
         });
@@ -1670,7 +1670,7 @@ class HealthMonitor {
         description: 'Studio data validation passed all checks',
         actions: [
           'Continue regular health monitoring',
-          'Consider running periodic validation: npm run validate-studios',
+          'Consider running periodic validation: npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-studios',
           'Monitor studio data growth and performance'
         ]
       });
@@ -1680,7 +1680,7 @@ class HealthMonitor {
         description: 'Address identified studio data issues',
         actions: [
           'Review and fix validation errors in order of severity',
-          'Run targeted validation: npm run validate-studios --type=studios',
+          'Run targeted validation: npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-studios --type=studios',
           'Consider full studio data regeneration if issues persist',
           'Update monitoring alerts for studio data quality'
         ]

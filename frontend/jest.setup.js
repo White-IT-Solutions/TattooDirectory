@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { toHaveNoViolations } from 'jest-axe';
+import React from 'react';
 
 // Extend Jest matchers for accessibility testing
 expect.extend(toHaveNoViolations);
@@ -116,6 +117,44 @@ global.PerformanceObserver = class PerformanceObserver {
     return [];
   }
 };
+
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+  usePathname: () => '/test',
+  useSearchParams: () => ({
+    get: jest.fn(),
+    getAll: jest.fn(),
+    has: jest.fn(),
+    keys: jest.fn(),
+    values: jest.fn(),
+    entries: jest.fn(),
+    forEach: jest.fn(),
+    toString: () => '',
+  }),
+  useParams: () => ({}),
+}));
+
+// Mock Next.js Link component
+jest.mock('next/link', () => {
+  return function MockLink({ children, href, ...props }) {
+    return React.createElement('a', { href, ...props }, children);
+  };
+});
+
+// Mock Next.js Image component
+jest.mock('next/image', () => {
+  return function MockImage({ src, alt, ...props }) {
+    return React.createElement('img', { src, alt, ...props });
+  };
+});
 
 // Suppress console warnings in tests unless explicitly needed
 const originalConsoleWarn = console.warn;

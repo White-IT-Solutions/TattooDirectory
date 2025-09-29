@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# UI/UX Test Artifacts
+test-results/
+playwright-report/
+tests/e2e/visual-regression/screenshots/
+!tests/e2e/visual-regression/baselines/

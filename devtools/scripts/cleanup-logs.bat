@@ -1,0 +1,3 @@
+@echo off 
+echo Starting CloudWatch Logs cleanup utility... 
+powershell -ExecutionPolicy Bypass -File "%~dp0cleanup-logs.ps1" %* 

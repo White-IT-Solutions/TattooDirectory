@@ -72,7 +72,7 @@ class BackwardCompatibilityLayer {
   async legacySelectiveSeeder(scenario) {
     this.showDeprecationWarning(
       'scripts/data-seeder/selective-seeder.js',
-      `npm run seed-scenario ${scenario}`,
+      `npm run seed --workspace=scripts --workspace=scripts-scenario ${scenario}`,
       'The new system supports all existing scenarios with better validation'
     );
 
@@ -177,7 +177,7 @@ class BackwardCompatibilityLayer {
   async legacyValidation(type = 'all') {
     this.showDeprecationWarning(
       'scripts/data-seeder/validate-data.js',
-      'npm run validate-data',
+      'npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-data',
       'The new system provides enhanced validation with cross-service consistency checks'
     );
 
@@ -203,11 +203,11 @@ class BackwardCompatibilityLayer {
       if (scriptPath.includes('seed.js')) {
         console.log('   → Migrate to: npm run setup-data');
       } else if (scriptPath.includes('selective-seeder.js')) {
-        console.log('   → Migrate to: npm run seed-scenario <scenario-name>');
+        console.log('   → Migrate to: npm run seed --workspace=scripts --workspace=scripts-scenario <scenario-name>');
       } else if (scriptPath.includes('health-check.js')) {
         console.log('   → Migrate to: npm run health-check');
       } else if (scriptPath.includes('validate-data.js')) {
-        console.log('   → Migrate to: npm run validate-data');
+        console.log('   → Migrate to: npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-data');
       } else {
         console.log('   → Check docs/MIGRATION_GUIDE.md for migration instructions');
       }

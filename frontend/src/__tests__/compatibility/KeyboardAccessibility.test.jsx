@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import Link from "next/link";
 
 describe("Keyboard Navigation and Screen Reader Compatibility", () => {
   test("should render basic accessibility test", () => {
