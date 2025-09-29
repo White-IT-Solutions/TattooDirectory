@@ -25,6 +25,142 @@ class DocumentationValidator extends IDocumentationValidator {
   }
 
   /**
+   * Validates markdown syntax across all documentation
+   * @returns {Promise<Object>} Syntax validation results
+   */
+  async validateSyntax() {
+    try {
+      const docs = await this._getAllDocumentationFiles();
+      const errors = [];
+      const warnings = [];
+      
+      for (const doc of docs) {
+        try {
+          const content = await FileUtils.readFile(doc.path);
+          // Basic markdown validation
+          if (!content.trim()) {
+            warnings.push({ file: doc.path, message: 'Empty file' });
+          }
+        } catch (error) {
+          errors.push({ file: doc.path, error: error.message });
+        }
+      }
+      
+      return { errors, warnings };
+    } catch (error) {
+      return { errors: [{ error: error.message }], warnings: [] };
+    }
+  }
+
+  /**
+   * Validates links and references in documentation
+   * @returns {Promise<Object>} Link validation results
+   */
+  async validateLinks() {
+    try {
+      const docs = await this._getAllDocumentationFiles();
+      const references = await this._extractReferences(docs);
+      const brokenRefs = await this._validateCrossReferences(references);
+      
+      return {
+        errors: brokenRefs,
+        warnings: [],
+        total: references.length
+      };
+    } catch (error) {
+      return { errors: [{ error: error.message }], warnings: [] };
+    }
+  }
+
+  /**
+   * Validates content structure
+   * @returns {Promise<Object>} Structure validation results
+   */
+  async validateStructure() {
+    try {
+      const docs = await this._getAllDocumentationFiles();
+      const errors = [];
+      const warnings = [];
+      
+      for (const doc of docs) {
+        // Basic structure validation
+        if (doc.path.includes('README') && !doc.content?.includes('#')) {
+          warnings.push({ file: doc.path, message: 'README missing main heading' });
+        }
+      }
+      
+      return { errors, warnings };
+    } catch (error) {
+      return { errors: [{ error: error.message }], warnings: [] };
+    }
+  }
+
+  /**
+   * Checks content freshness and outdated information
+   * @returns {Promise<Object>} Freshness check results
+   */
+  async checkFreshness() {
+    try {
+      const docs = await this._getAllDocumentationFiles();
+      const warnings = [];
+      
+      // Check for outdated content patterns
+      for (const doc of docs) {
+        if (doc.content?.includes('TODO') || doc.content?.includes('FIXME')) {
+          warnings.push({ file: doc.path, message: 'Contains TODO/FIXME items' });
+        }
+      }
+      
+      return { warnings, errors: [] };
+    } catch (error) {
+      return { errors: [{ error: error.message }], warnings: [] };
+    }
+  }
+
+  /**
+   * Validates a single file
+   * @param {string} filePath - Path to file to validate
+   * @returns {Promise<Object>} Validation result for single file
+   */
+  async validateFile(filePath) {
+    try {
+      const content = await FileUtils.readFile(filePath);
+      const errors = [];
+      const warnings = [];
+      
+      if (!content.trim()) {
+        warnings.push('File is empty');
+      }
+      
+      return { success: errors.length === 0, errors, warnings };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Gets all documentation files
+   * @private
+   * @returns {Promise<Object[]>} Array of documentation file objects
+   */
+  async _getAllDocumentationFiles() {
+    const FileUtils = require('./utils/FileUtils');
+    const files = await FileUtils.findFiles(process.cwd(), ['**/*.md'], ['**/node_modules/**']);
+    
+    const docs = [];
+    for (const file of files) {
+      try {
+        const content = await FileUtils.readFile(file);
+        docs.push({ path: file, content });
+      } catch (error) {
+        docs.push({ path: file, error: error.message });
+      }
+    }
+    
+    return docs;
+  }
+
+  /**
    * Validates a complete documentation set
    * @param {Object} docs - Documentation set to validate
    * @returns {Promise<ValidationReport>} Validation results

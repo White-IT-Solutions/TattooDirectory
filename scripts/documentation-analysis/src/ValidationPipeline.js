@@ -36,7 +36,7 @@ class ValidationPipeline {
     this.analyzer = new DocumentationAnalyzer(this.config);
     this.validator = new DocumentationValidator(this.config);
     this.commandGenerator = new CommandDocumentationGenerator(this.config);
-    this.fileUtils = new FileUtils();
+    this.fileUtils = FileUtils;
   }
 
   /**
@@ -419,7 +419,12 @@ ${
     const results = [];
     for (const filePath of filePaths) {
       try {
-        const result = await this.validator.validateFile(filePath);
+        // Resolve file path relative to project root
+        const fullPath = path.isAbsolute(filePath) 
+          ? filePath 
+          : path.resolve(this.config.projectRoot, filePath);
+        
+        const result = await this.validator.validateFile(fullPath);
         results.push({ file: filePath, ...result });
       } catch (error) {
         results.push({
@@ -443,10 +448,10 @@ ${
       const files = await this.analyzer.discoverFiles();
       const criticalFiles = files.filter(
         (f) =>
-          f.includes("README") ||
-          f.includes("QUICK_START") ||
-          f.includes("package.json")
-      );
+          f.path.includes("README") ||
+          f.path.includes("QUICK_START") ||
+          f.path.includes("package.json")
+      ).map(f => f.path);
 
       const results = await this.validateFiles(criticalFiles);
       const issues = results.filter((r) => !r.success || r.errors?.length > 0);
@@ -465,5 +470,4 @@ ${
     }
   }
 }
-m;
-odule.exports = ValidationPipeline;
+module.exports = ValidationPipeline;

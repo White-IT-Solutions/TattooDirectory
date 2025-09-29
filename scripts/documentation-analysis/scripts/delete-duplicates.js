@@ -11,43 +11,169 @@ const path = require('path');
 // Set the correct project root
 const projectRoot = path.resolve(__dirname, '../../..');
 
-// High confidence duplicates to delete (from the file mapping report)
-const highConfidenceDuplicates = [
-  'docs/architecture/api-design.md',
-  'docs/architecture/data-models.md',
-  'docs/architecture/system-overview.md',
-  'docs/diagrams_as_code/AWS Amplify Architecture.md',
-  'docs/diagrams_as_code/AWS Configured Access.md',
-  'docs/diagrams_as_code/Backup and Disaster Recovery.md',
-  'docs/diagrams_as_code/C4 Model Level 1 - System Context.md',
-  'docs/diagrams_as_code/C4 Model Level 2 - Containers.md',
-  'docs/diagrams_as_code/C4 Model Level 3 - Components.md',
-  'docs/diagrams_as_code/CICD Pipeline Diagram.md',
-  'docs/diagrams_as_code/Data Aggregation Sequence Diagram.md',
-  'docs/diagrams_as_code/Data Governance & Takedown Process Diagram.md',
-  'docs/diagrams_as_code/Data Model Diagram (DynamoDB Single-Table Design).md',
-  'docs/diagrams_as_code/Feature Dependency Map.md',
-  'docs/diagrams_as_code/High Level Overview.md',
-  'docs/diagrams_as_code/Image Ingestion and Display.md',
-  'docs/diagrams_as_code/Logging Architecture.md',
-  'docs/diagrams_as_code/Multi-Account Architecture.md',
-  'docs/diagrams_as_code/Network Architecture Diagram (VPC).md',
-  'docs/diagrams_as_code/Observability & Alerting Flow Diagram.md',
-  'docs/diagrams_as_code/State Machine Diagram (AWS Step Functions).md',
-  'docs/diagrams_as_code/User Interaction Sequence Diagram (Search).md',
-  'docs/frontend/tests/API_REFERENCE.md',
-  'docs/frontend/tests/e2e/TROUBLESHOOTING_GUIDE.md',
-  'docs/localstack/troubleshooting/API_TESTING_GUIDE.md',
-  'docs/localstack/troubleshooting/BEST-PRACTICES.md',
-  'docs/localstack/troubleshooting/MONITORING_SYSTEM.md',
-  'docs/localstack/troubleshooting/PERFORMANCE_MONITORING.md',
-  'docs/localstack/troubleshooting/SECURITY-GUIDELINES.md',
-  'docs/localstack/troubleshooting/TROUBLESHOOTING_MASTER.md',
-  'docs/localstack/troubleshooting/VIDEO-TUTORIALS-GUIDE.md',
-  'docs/scripts/DATA-MANAGEMENT.md',
-  'docs/setup/dependencies.md',
-  'docs/workflows/monitoring.md'
-];
+/**
+ * Calculate similarity between two strings using simple comparison
+ */
+function calculateSimilarity(str1, str2) {
+  if (str1 === str2) return 1.0;
+  
+  const len1 = str1.length;
+  const len2 = str2.length;
+  
+  if (len1 === 0 || len2 === 0) return 0;
+  
+  // Simple similarity based on common words
+  const words1 = str1.toLowerCase().split(/\s+/);
+  const words2 = str2.toLowerCase().split(/\s+/);
+  
+  const commonWords = words1.filter(word => words2.includes(word));
+  const totalWords = Math.max(words1.length, words2.length);
+  
+  return commonWords.length / totalWords;
+}
+
+/**
+ * Check if two files are actual duplicates by comparing content
+ */
+async function areFilesDuplicates(file1Path, file2Path) {
+  try {
+    const content1 = await fs.readFile(path.join(projectRoot, file1Path), 'utf8');
+    const content2 = await fs.readFile(path.join(projectRoot, file2Path), 'utf8');
+    
+    // Exact match
+    if (content1 === content2) {
+      return { isDuplicate: true, similarity: 1.0, reason: 'identical content' };
+    }
+    
+    // Check if one is a redirect to the other (must be short and contain explicit redirect language)
+    const isRedirect1 = content1.length < 500 && (
+      content1.includes('This file has been moved to') || 
+      content1.includes('→') || 
+      content1.includes('Moved to:') ||
+      content1.includes('See:')
+    );
+    const isRedirect2 = content2.length < 500 && (
+      content2.includes('This file has been moved to') || 
+      content2.includes('→') || 
+      content2.includes('Moved to:') ||
+      content2.includes('See:')
+    );
+    
+    if (isRedirect1 && content1.includes(file2Path)) {
+      return { isDuplicate: true, similarity: 0.9, reason: 'redirect file' };
+    }
+    if (isRedirect2 && content2.includes(file1Path)) {
+      return { isDuplicate: true, similarity: 0.9, reason: 'redirect file' };
+    }
+    
+    // Check similarity (only for files with similar names or in similar locations)
+    const basename1 = path.basename(file1Path);
+    const basename2 = path.basename(file2Path);
+    
+    // Only compare similarity if files have same name or are in related directories
+    if (basename1 === basename2 || 
+        file1Path.includes('archive_docs') && file2Path.includes('consolidated') ||
+        file1Path.includes('consolidated') && file2Path.includes('archive_docs')) {
+      
+      const similarity = calculateSimilarity(content1, content2);
+      if (similarity > 0.85) {
+        return { isDuplicate: true, similarity, reason: `high similarity (${Math.round(similarity * 100)}%)` };
+      }
+    }
+    
+    return { isDuplicate: false, similarity: 0, reason: 'different content' };
+    
+  } catch (error) {
+    return { isDuplicate: false, similarity: 0, reason: 'error reading files' };
+  }
+}
+
+/**
+ * Find duplicate files by scanning the docs directory and comparing content
+ */
+async function findDuplicateFiles() {
+  const duplicates = [];
+  const docsPath = path.join(projectRoot, 'docs');
+  
+  try {
+    console.log('   📁 Scanning all markdown files...');
+    const allFiles = await getAllMarkdownFiles(docsPath);
+    const relativePaths = allFiles.map(f => f.replace(projectRoot + path.sep, '').replace(/\\/g, '/'));
+    
+    console.log(`   📄 Found ${relativePaths.length} markdown files`);
+    console.log('   🔍 Comparing files for duplicates...');
+    
+    // Compare each file with every other file
+    for (let i = 0; i < relativePaths.length; i++) {
+      for (let j = i + 1; j < relativePaths.length; j++) {
+        const file1 = relativePaths[i];
+        const file2 = relativePaths[j];
+        
+        // Skip if already marked as duplicate
+        if (duplicates.includes(file1) || duplicates.includes(file2)) {
+          continue;
+        }
+        
+        const comparison = await areFilesDuplicates(file1, file2);
+        
+        if (comparison.isDuplicate) {
+          console.log(`   🔗 Found duplicate: ${file1} ↔ ${file2} (${comparison.reason})`);
+          
+          // Decide which one to keep
+          let fileToDelete;
+          if (file1.includes('consolidated') && !file2.includes('consolidated')) {
+            fileToDelete = file2; // Keep consolidated version
+          } else if (!file1.includes('consolidated') && file2.includes('consolidated')) {
+            fileToDelete = file1; // Keep consolidated version
+          } else if (file1.includes('archive_docs') && !file2.includes('archive_docs')) {
+            fileToDelete = file1; // Delete archived version
+          } else if (!file1.includes('archive_docs') && file2.includes('archive_docs')) {
+            fileToDelete = file2; // Delete archived version
+          } else {
+            // Keep the one with more specific path (deeper directory structure)
+            const depth1 = file1.split('/').length;
+            const depth2 = file2.split('/').length;
+            fileToDelete = depth1 > depth2 ? file2 : file1;
+          }
+          
+          duplicates.push(fileToDelete);
+          console.log(`     → Will delete: ${fileToDelete}`);
+        }
+      }
+    }
+    
+    return duplicates;
+  } catch (error) {
+    console.error('Error finding duplicates:', error.message);
+    return [];
+  }
+}
+
+/**
+ * Recursively get all markdown files
+ */
+async function getAllMarkdownFiles(dir) {
+  const files = [];
+  
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      
+      if (entry.isDirectory()) {
+        const subFiles = await getAllMarkdownFiles(fullPath);
+        files.push(...subFiles);
+      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+        files.push(fullPath);
+      }
+    }
+  } catch (error) {
+    // Skip directories we can't read
+  }
+  
+  return files;
+}
 
 /**
  * Check if file exists and is safe to delete
@@ -121,12 +247,25 @@ async function deleteDuplicates(dryRun = false) {
     console.log('🔍 DRY RUN MODE - No files will be actually deleted\n');
   }
   
+  // Find duplicates dynamically
+  console.log('🔍 Scanning for duplicate files...');
+  const duplicatesToDelete = await findDuplicateFiles();
+  
+  if (duplicatesToDelete.length === 0) {
+    console.log('✅ No duplicate files found to delete!');
+    return;
+  }
+  
+  console.log(`📋 Found ${duplicatesToDelete.length} potential duplicate(s):\n`);
+  duplicatesToDelete.forEach(file => console.log(`   - ${file}`));
+  console.log('');
+  
   let deletedCount = 0;
   let skippedCount = 0;
   let errorCount = 0;
   const deletedDirs = new Set();
   
-  for (const filePath of highConfidenceDuplicates) {
+  for (const filePath of duplicatesToDelete) {
     console.log(`🔍 Checking: ${filePath}`);
     
     const checkResult = await checkFileForDeletion(filePath);
@@ -166,7 +305,7 @@ async function deleteDuplicates(dryRun = false) {
   
   // Summary
   console.log('\n📊 Deletion Summary:');
-  console.log(`   Files processed: ${highConfidenceDuplicates.length}`);
+  console.log(`   Files processed: ${duplicatesToDelete.length}`);
   console.log(`   Files ${dryRun ? 'would be ' : ''}deleted: ${deletedCount}`);
   console.log(`   Files skipped: ${skippedCount}`);
   if (errorCount > 0) {

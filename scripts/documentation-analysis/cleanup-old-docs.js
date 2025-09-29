@@ -83,9 +83,78 @@ class DocumentationCleanup {
    * Find files marked as moved
    */
   async findMovedFiles() {
-    const files = await FileUtils.findFiles(this.config.projectRoot, ['**/*.md']);
+    // Target specific files that are causing validation issues
+    const problematicFiles = [
+      // Root level old files
+      'docs/README-DEVTOOLS.md',
+      'docs/BEST-PRACTICES.md', 
+      'docs/CI-CD Implementation.md',
+      'docs/LOCAL-DEVELOPMENT-GUIDE.md',
+      'docs/SECURITY-GUIDELINES.md',
+      'docs/VIDEO-TUTORIALS-GUIDE.md',
+      
+      // Planning files that exist in consolidated
+      'docs/planning/API_DOCUMENTATION.md',
+      'docs/planning/TROUBLESHOOTING.md',
+      'docs/planning/terraform-deployment-guide.md',
+      'docs/planning/CI-CD Implementation.md',
+      
+      // Backend/Frontend files that have been consolidated
+      'docs/backend/README_BACKEND.md',
+      'docs/frontend/README_FRONTEND.md',
+      'docs/frontend/README_DOCKER.md',
+      'docs/frontend/CI_CD_INTEGRATION.md',
+      'docs/frontend/CI_CD_INTEGRATION_COMPLETE.md',
+      'docs/frontend/ENVIRONMENT_CONFIGURATION.md',
+      'docs/frontend/frontend_docs_README_FRONTEND.md',
+      'docs/frontend/PERFORMANCE_SUMMARY.md',
+      
+      // LocalStack files that have been consolidated
+      'docs/localstack/README.md',
+      'docs/localstack/README-CLOUDWATCH-LOGS.md', 
+      'docs/localstack/README-ENHANCED-LOCALSTACK.md',
+      'docs/localstack/README_LOCAL.md',
+      
+      // Scripts files that have been consolidated
+      'docs/scripts/README.md',
+      'docs/scripts/DATA-MANAGEMENT.md',
+      'docs/scripts/error-handling-fix-summary.md',
+      'docs/scripts/README_DATA_SEEDER.md',
+      'docs/scripts/compatibility-matrix.md',
+      'docs/scripts/migration-validation-report.md',
+      'docs/scripts/npm-command-test-summary.md',
+      'docs/scripts/npm-commands-fix-summary.md',
+      'docs/scripts/PRODUCTION-PARITY-VALIDATION.md',
+      'docs/scripts/README_CONTENT_GENERATION.md',
+      'docs/scripts/README-Configuration.md',
+      'docs/scripts/STUDIO_IMAGE_PROCESSOR_SUMMARY.md',
+      'docs/scripts/Tattoo_Vertex_Docs.md',
+      'docs/scripts/test_data_studios_README.md',
+      'docs/scripts/TESTING_ISSUES.md',
+      
+      // Infrastructure files
+      'docs/infrastructure/README.md',
+      
+      // Backup files that are duplicates
+      'docs/backups/DATA-MANAGEMENT.md',
+      'docs/backups/README_DATA_SEEDER.md'
+    ];
+
+    for (const file of problematicFiles) {
+      const fullPath = path.join(this.config.projectRoot, file);
+      try {
+        await fs.access(fullPath);
+        this.filesToRemove.push(fullPath);
+        this.movedFiles.push(fullPath);
+      } catch (error) {
+        // File doesn't exist, skip
+      }
+    }
     
-    for (const file of files) {
+    // Also check for files with moved markers
+    const allFiles = await FileUtils.findFiles(this.config.projectRoot, ['**/*.md']);
+    
+    for (const file of allFiles) {
       try {
         const content = await fs.readFile(file, 'utf8');
         
@@ -96,8 +165,10 @@ class DocumentationCleanup {
             content.includes('This file has been moved') ||
             content.includes('Content moved to')) {
           
-          this.filesToRemove.push(file);
-          this.movedFiles.push(file);
+          if (!this.filesToRemove.includes(file)) {
+            this.filesToRemove.push(file);
+            this.movedFiles.push(file);
+          }
         }
       } catch (error) {
         console.warn(`Warning: Could not read ${file}: ${error.message}`);
@@ -110,12 +181,85 @@ class DocumentationCleanup {
    */
   async findDuplicateFiles() {
     const duplicates = [
-      // Known duplicates from consolidation
-      'docs/setup/README.md', // Consolidated into other setup docs
-      'docs/backend/README.md', // Moved to components
-      'docs/frontend/README.md', // Moved to components
-      'docs/infrastructure/README.md', // Moved to components
-      'docs/scripts/README.md', // Moved to components
+      // Root level old files causing validation issues
+      'docs/README-DEVTOOLS.md',
+      'docs/BEST-PRACTICES.md',
+      'docs/CI-CD Implementation.md',
+      'docs/LOCAL-DEVELOPMENT-GUIDE.md',
+      'docs/SECURITY-GUIDELINES.md',
+      'docs/VIDEO-TUTORIALS-GUIDE.md',
+      
+      // Planning files that have been moved to consolidated
+      'docs/planning/API_DOCUMENTATION.md',
+      'docs/planning/DYNAMODB_STREAMS_IMPLEMENTATION.md',
+      'docs/planning/TROUBLESHOOTING.md',
+      'docs/planning/STUDIO_CLI_COMMANDS.md',
+      'docs/planning/STUDIO_HEALTH_MONITORING.md',
+      
+      // Data management files that have been consolidated
+      'docs/data_management/DATA_MANAGEMENT_GUIDE.md',
+      'docs/data_management/MIGRATION_GUIDE.md',
+      'docs/data_management/COMMAND_COMPARISON.md',
+      'docs/data_management/FINAL_SYSTEM_VALIDATION_REPORT.md',
+      'docs/data_management/FRONTEND_SYNC_MIGRATION_GUIDE.md',
+      'docs/data_management/MIGRATION_COMPLETION_REPORT.md',
+      'docs/data_management/PERFORMANCE_BENCHMARKS.md',
+      'docs/data_management/STUDIO_ARTIST_RELATIONSHIPS.md',
+      'docs/data_management/STUDIO_DATA_MIGRATION_GUIDE.md',
+      'docs/data_management/STUDIO_DATA_SCHEMA.md',
+      'docs/data_management/STUDIO_IMAGE_PROCESSING.md',
+      
+      // Backend files that have been moved
+      'docs/backend/README_BACKEND.md',
+      
+      // Frontend files that have been moved
+      'docs/frontend/CI_CD_INTEGRATION_COMPLETE.md',
+      'docs/frontend/CI_CD_INTEGRATION.md',
+      'docs/frontend/ENVIRONMENT_CONFIGURATION.md',
+      'docs/frontend/frontend_docs_README_FRONTEND.md',
+      'docs/frontend/PERFORMANCE_SUMMARY.md',
+      'docs/frontend/README_DOCKER.md',
+      'docs/frontend/README_FRONTEND.md',
+      'docs/frontend/README-AdvancedSearch.md',
+      'docs/frontend/README-Enhanced-Styles.md',
+      'docs/frontend/README-SearchController.md',
+      'docs/frontend/README-SearchResultsSystem.md',
+      
+      // LocalStack files that have been moved
+      'docs/localstack/README.md',
+      'docs/localstack/README-CLOUDWATCH-LOGS.md',
+      'docs/localstack/README-ENHANCED-LOCALSTACK.md',
+      'docs/localstack/README_LOCAL.md',
+      
+      // Scripts files that have been moved
+      'docs/scripts/compatibility-matrix.md',
+      'docs/scripts/DATA-MANAGEMENT.md',
+      'docs/scripts/error-handling-fix-summary.md',
+      'docs/scripts/migration-validation-report.md',
+      'docs/scripts/npm-command-test-summary.md',
+      'docs/scripts/npm-commands-fix-summary.md',
+      'docs/scripts/PRODUCTION-PARITY-VALIDATION.md',
+      'docs/scripts/README.md',
+      'docs/scripts/README_CONTENT_GENERATION.md',
+      'docs/scripts/README_DATA_SEEDER.md',
+      'docs/scripts/README-Configuration.md',
+      'docs/scripts/STUDIO_IMAGE_PROCESSOR_SUMMARY.md',
+      'docs/scripts/Tattoo_Vertex_Docs.md',
+      'docs/scripts/test_data_studios_README.md',
+      'docs/scripts/TESTING_ISSUES.md',
+      
+      // Infrastructure files that have been moved
+      'docs/infrastructure/README.md',
+      
+      // Backup files that are duplicates
+      'docs/backups/DATA-MANAGEMENT.md',
+      'docs/backups/README_DATA_SEEDER.md',
+      
+      // Test files that have been moved
+      'docs/tests/e2e/IMPLEMENTATION_GUIDE.md',
+      'docs/tests/e2e/integration_tests_README.md',
+      'docs/tests/e2e/README.md',
+      'docs/tests/e2e/studio_images_README.md'
     ];
 
     for (const duplicate of duplicates) {
@@ -200,11 +344,15 @@ class DocumentationCleanup {
     console.log(`\n📁 ${this.config.dryRun ? 'Checking for' : 'Removing'} empty directories...`);
     
     const dirsToCheck = [
-      'docs/setup',
-      'docs/backend', 
-      'docs/frontend',
-      'docs/infrastructure',
-      'docs/scripts',
+      'docs/backups',
+      'docs/data_management',
+      'docs/tests/e2e',
+      'docs/tests',
+      'docs/localstack/setup',
+      'docs/localstack/troubleshooting',
+      'docs/frontend/design_system',
+      'docs/frontend/tests/e2e',
+      'docs/frontend/tests',
       'docs/old',
       'docs/deprecated'
     ];

@@ -85,6 +85,10 @@ export function FormattedNumber({
     if (compact) {
       options.notation = 'compact';
       options.compactDisplay = 'short';
+      // Show one decimal place for compact numbers to get 1.2K instead of 1K
+      if (decimals === 0) {
+        options.maximumFractionDigits = 1;
+      }
     }
 
     switch (format) {

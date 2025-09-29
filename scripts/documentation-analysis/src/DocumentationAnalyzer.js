@@ -27,6 +27,28 @@ class DocumentationAnalyzer extends IDocumentationAnalyzer {
   }
 
   /**
+   * Discovers all documentation files in the project
+   * @returns {Promise<string[]>} Array of documentation file paths
+   */
+  async discoverFiles() {
+    return await this._scanDocumentationFiles();
+  }
+
+  /**
+   * Finds gaps in documentation coverage
+   * @returns {Promise<Object[]>} Array of documentation gaps
+   */
+  async findGaps() {
+    try {
+      const currentFiles = await this._scanDocumentationFiles();
+      return await this._identifyMissingFiles(currentFiles);
+    } catch (error) {
+      console.warn('Error finding gaps:', error.message);
+      return [];
+    }
+  }
+
+  /**
    * Analyzes the current documentation structure
    * @returns {Promise<DocumentationMap>} Map of current documentation state
    */

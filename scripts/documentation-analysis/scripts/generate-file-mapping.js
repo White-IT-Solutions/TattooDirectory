@@ -67,6 +67,7 @@ async function getFileHash(filePath) {
 function findPotentialDuplicates(docsFiles, consolidatedFiles) {
   const duplicates = [];
   
+  // First, find duplicates between docs and consolidated
   for (const docsFile of docsFiles) {
     const potentialMatches = consolidatedFiles.filter(consFile => {
       // Check for exact name match
@@ -91,8 +92,35 @@ function findPotentialDuplicates(docsFiles, consolidatedFiles) {
       duplicates.push({
         original: docsFile,
         consolidated: potentialMatches,
-        confidence: potentialMatches.length === 1 ? 'high' : 'medium'
+        confidence: potentialMatches.length === 1 ? 'high' : 'medium',
+        type: 'docs-to-consolidated'
       });
+    }
+  }
+  
+  // Second, find duplicates within docs directory (same filename in different locations)
+  const filesByName = {};
+  for (const docsFile of docsFiles) {
+    if (!filesByName[docsFile.name]) {
+      filesByName[docsFile.name] = [];
+    }
+    filesByName[docsFile.name].push(docsFile);
+  }
+  
+  // Find files with same name in multiple locations
+  for (const [fileName, files] of Object.entries(filesByName)) {
+    if (files.length > 1) {
+      // Sort by path length to prefer files in more specific directories
+      files.sort((a, b) => b.relativePath.length - a.relativePath.length);
+      
+      for (let i = 1; i < files.length; i++) {
+        duplicates.push({
+          original: files[i], // The file to potentially remove
+          consolidated: [files[0]], // The file to keep
+          confidence: 'high',
+          type: 'within-docs-duplicate'
+        });
+      }
     }
   }
   
@@ -173,26 +201,39 @@ Generated on: ${new Date().toLocaleString()}
 
   report += `\n## Potential Duplicates
 
-These files in /docs/ may have equivalents in /docs/consolidated/:
+These files in /docs/ may have equivalents in /docs/consolidated/ or are duplicated within /docs/:
 
 `;
 
-  // Group duplicates by confidence level
+  // Group duplicates by type and confidence level
+  const docsToConsolidated = duplicates.filter(d => d.type === 'docs-to-consolidated');
+  const withinDocsDuplicates = duplicates.filter(d => d.type === 'within-docs-duplicate');
+  
   const highConfidence = duplicates.filter(d => d.confidence === 'high');
   const mediumConfidence = duplicates.filter(d => d.confidence === 'medium');
 
-  if (highConfidence.length > 0) {
-    report += `### High Confidence Matches (${highConfidence.length})\n\n`;
-    for (const duplicate of highConfidence) {
+  if (withinDocsDuplicates.length > 0) {
+    report += `### Duplicates Within /docs/ Directory (${withinDocsDuplicates.length})\n\n`;
+    for (const duplicate of withinDocsDuplicates) {
+      report += `- **${duplicate.original.relativePath}**\n`;
+      report += `  - Duplicate of: ${duplicate.consolidated[0].relativePath}\n`;
+      report += `  - Size: ${duplicate.original.size} bytes vs ${duplicate.consolidated[0].size} bytes\n`;
+      report += `  - Recommendation: Remove duplicate, keep the one in more specific directory\n\n`;
+    }
+  }
+
+  if (docsToConsolidated.filter(d => d.confidence === 'high').length > 0) {
+    report += `### High Confidence Matches to Consolidated (${docsToConsolidated.filter(d => d.confidence === 'high').length})\n\n`;
+    for (const duplicate of docsToConsolidated.filter(d => d.confidence === 'high')) {
       report += `- **${duplicate.original.relativePath}**\n`;
       report += `  - Consolidated: ${duplicate.consolidated[0].relativePath}\n`;
       report += `  - Size: ${duplicate.original.size} bytes vs ${duplicate.consolidated[0].size} bytes\n\n`;
     }
   }
 
-  if (mediumConfidence.length > 0) {
-    report += `### Medium Confidence Matches (${mediumConfidence.length})\n\n`;
-    for (const duplicate of mediumConfidence) {
+  if (docsToConsolidated.filter(d => d.confidence === 'medium').length > 0) {
+    report += `### Medium Confidence Matches to Consolidated (${docsToConsolidated.filter(d => d.confidence === 'medium').length})\n\n`;
+    for (const duplicate of docsToConsolidated.filter(d => d.confidence === 'medium')) {
       report += `- **${duplicate.original.relativePath}**\n`;
       report += `  - Possible matches:\n`;
       for (const match of duplicate.consolidated) {
@@ -213,11 +254,11 @@ These files in /docs/ may have equivalents in /docs/consolidated/:
 These files in /docs/ don't appear to have equivalents in /docs/consolidated/:
 
 `;
-    for (const file of filesWithoutMatches.slice(0, 20)) {
+    for (const file of filesWithoutMatches.slice(0, 60)) {
       report += `- ${file.relativePath}\n`;
     }
-    if (filesWithoutMatches.length > 20) {
-      report += `- ... and ${filesWithoutMatches.length - 20} more files\n`;
+    if (filesWithoutMatches.length > 60) {
+      report += `- ... and ${filesWithoutMatches.length - 60} more files\n`;
     }
   }
 

@@ -22,6 +22,56 @@ class CommandDocumentationGenerator extends ICommandDocumentationGenerator {
   }
 
   /**
+   * Generates command reference documentation
+   * @returns {Promise<Object[]>} Array of command documentation
+   */
+  async generateReference() {
+    try {
+      const content = await this.generateCommandReference();
+      const packagePaths = [
+        path.join(this.projectRoot, 'package.json'),
+        path.join(this.projectRoot, 'frontend', 'package.json'),
+        path.join(this.projectRoot, 'backend', 'package.json')
+      ];
+      
+      const commands = [];
+      for (const packagePath of packagePaths) {
+        if (await FileUtils.fileExists(packagePath)) {
+          const extracted = await this.extractCommands(packagePath);
+          commands.push(...extracted.commands);
+        }
+      }
+      
+      return commands;
+    } catch (error) {
+      console.warn('Error generating reference:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * Updates existing command documentation
+   * @returns {Promise<Object>} Update results
+   */
+  async updateDocumentation() {
+    try {
+      const commands = await this.generateReference();
+      const commandRefPath = path.join(this.projectRoot, 'docs', 'reference', 'command-reference.md');
+      
+      if (await FileUtils.fileExists(commandRefPath)) {
+        const content = await this.generateCommandDocs({ all: commands });
+        await FileUtils.writeFile(commandRefPath, content);
+        return { updated: true, path: commandRefPath, commands: commands.length };
+      }
+      
+      return { updated: false, reason: 'Command reference file not found' };
+    } catch (error) {
+      console.warn('Error updating documentation:', error.message);
+      return { updated: false, error: error.message };
+    }
+  }
+
+  /**
    * Extracts commands from a package.json file
    * @param {string} packagePath - Path to package.json file
    * @returns {Promise<Object>} Command mapping

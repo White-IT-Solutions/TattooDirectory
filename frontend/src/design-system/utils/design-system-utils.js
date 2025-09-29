@@ -382,6 +382,57 @@ export function createStandardizedComponent(componentType, defaultConfig = {}) {
 }
 
 /**
+ * List of design system props that should not be passed to DOM elements
+ */
+const DESIGN_SYSTEM_PROPS = [
+  'shadowLevel',
+  'visualEffects', 
+  'animationLevel',
+  'useDesignTokens',
+  'respectReducedMotion',
+  'optimizeImages',
+  'withFeedback',
+  'feedbackType',
+  'enableGlassmorphism',
+  'glassVariant',
+  'enableGradientOverlays',
+  'gradientType',
+  'enableTextures',
+  'textureType',
+  'enableColoredShadows',
+  'shadowColor',
+  'enableMicroInteractions',
+  'enableHoverAnimations',
+  'enableFocusAnimations',
+  'enableLazyImages',
+  'enableIntersectionObserver',
+  'enableConnectionAwareLoading',
+  'enableVirtualization',
+  'reduceEffectsOnMobile',
+  'variant',
+  'size',
+  'loading',
+  'lazy'
+];
+
+/**
+ * Filters out design system props that shouldn't be passed to DOM elements
+ * @param {Object} props - Props object to filter
+ * @returns {Object} Filtered props safe for DOM elements
+ */
+export function filterDOMProps(props) {
+  const filtered = {};
+  
+  Object.entries(props).forEach(([key, value]) => {
+    if (!DESIGN_SYSTEM_PROPS.includes(key)) {
+      filtered[key] = value;
+    }
+  });
+  
+  return filtered;
+}
+
+/**
  * Merges component configurations with proper precedence
  * @param {...Object} configs - Configuration objects to merge
  * @returns {Object} Merged configuration

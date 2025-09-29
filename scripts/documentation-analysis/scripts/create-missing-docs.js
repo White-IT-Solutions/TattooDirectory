@@ -5,19 +5,19 @@
  * Creates essential missing documentation files
  */
 
-const fs = require('fs').promises;
-const path = require('path');
-const process = require('process');
+const fs = require("fs").promises;
+const path = require("path");
+const process = require("process");
 
 // Set the correct project root
-const projectRoot = path.resolve(__dirname, '../../..');
+const projectRoot = path.resolve(__dirname, "../../..");
 
 /**
  * Main function to create missing documentation
  */
 async function createMissingDocs() {
-  console.log('📝 Creating missing documentation files...\n');
-  
+  console.log("📝 Creating missing documentation files...\n");
+
   // Change to project root directory
   const originalCwd = process.cwd();
   process.chdir(projectRoot);
@@ -25,7 +25,7 @@ async function createMissingDocs() {
   try {
     const stats = {
       filesCreated: 0,
-      errorsEncountered: 0
+      errorsEncountered: 0,
     };
 
     // Create essential missing documentation
@@ -33,17 +33,16 @@ async function createMissingDocs() {
     await createApiReference();
     await createTroubleshootingGuide();
     await createCommandReference();
-    
+
     stats.filesCreated = 4;
 
-    console.log('\n📊 Creation Summary:');
+    console.log("\n📊 Creation Summary:");
     console.log(`   Files Created: ${stats.filesCreated}`);
     console.log(`   Errors Encountered: ${stats.errorsEncountered}`);
 
-    console.log('\n✅ Missing documentation creation completed!');
-
+    console.log("\n✅ Missing documentation creation completed!");
   } catch (error) {
-    console.error('❌ Documentation creation failed:', error.message);
+    console.error("❌ Documentation creation failed:", error.message);
     process.exit(1);
   } finally {
     process.chdir(originalCwd);
@@ -51,9 +50,12 @@ async function createMissingDocs() {
 }
 
 async function createDevelopmentGuide() {
-  const filePath = path.join(projectRoot, 'docs/consolidated/development/DEVELOPMENT_GUIDE.md');
+  const filePath = path.join(
+    projectRoot,
+    "docs/consolidated/development/DEVELOPMENT_GUIDE.md"
+  );
   await fs.mkdir(path.dirname(filePath), { recursive: true });
-  
+
   const content = `# Development Guide
 
 ## Quick Start
@@ -86,14 +88,17 @@ npm run local:logs
 For complete command reference, see [Commands](../reference/commands.md).
 `;
 
-  await fs.writeFile(filePath, content, 'utf8');
-  console.log('✅ Created DEVELOPMENT_GUIDE.md');
+  await fs.writeFile(filePath, content, "utf8");
+  console.log("✅ Created DEVELOPMENT_GUIDE.md");
 }
 
 async function createApiReference() {
-  const filePath = path.join(projectRoot, 'docs/consolidated/reference/API_REFERENCE.md');
+  const filePath = path.join(
+    projectRoot,
+    "docs/consolidated/reference/API_REFERENCE.md"
+  );
   await fs.mkdir(path.dirname(filePath), { recursive: true });
-  
+
   const content = `# API Reference
 
 ## Base URL
@@ -121,14 +126,17 @@ Currently using API key authentication for development.
 For detailed API documentation, see the Swagger UI at \`http://localhost:8080\` when running locally.
 `;
 
-  await fs.writeFile(filePath, content, 'utf8');
-  console.log('✅ Created API_REFERENCE.md');
+  await fs.writeFile(filePath, content, "utf8");
+  console.log("✅ Created API_REFERENCE.md");
 }
 
 async function createTroubleshootingGuide() {
-  const filePath = path.join(projectRoot, 'docs/consolidated/troubleshooting/TROUBLESHOOTING_GUIDE.md');
+  const filePath = path.join(
+    projectRoot,
+    "docs/consolidated/troubleshooting/TROUBLESHOOTING_GUIDE.md"
+  );
   await fs.mkdir(path.dirname(filePath), { recursive: true });
-  
+
   const content = `# Troubleshooting Guide
 
 ## Common Issues
@@ -168,14 +176,17 @@ If you get port conflict errors:
 4. Check the [LocalStack troubleshooting](localstack/TROUBLESHOOTING_MASTER.md)
 `;
 
-  await fs.writeFile(filePath, content, 'utf8');
-  console.log('✅ Created TROUBLESHOOTING_GUIDE.md');
+  await fs.writeFile(filePath, content, "utf8");
+  console.log("✅ Created TROUBLESHOOTING_GUIDE.md");
 }
 
 async function createCommandReference() {
-  const filePath = path.join(projectRoot, 'docs/consolidated/reference/COMMAND_REFERENCE.md');
+  const filePath = path.join(
+    projectRoot,
+    "docs/consolidated/reference/COMMAND_REFERENCE.md"
+  );
   await fs.mkdir(path.dirname(filePath), { recursive: true });
-  
+
   const content = `# Command Reference
 
 ## Local Development
@@ -209,12 +220,12 @@ async function createCommandReference() {
 For detailed usage of each command, run the command with \`--help\` flag.
 `;
 
-  await fs.writeFile(filePath, content, 'utf8');
-  console.log('✅ Created COMMAND_REFERENCE.md');
+  await fs.writeFile(filePath, content, "utf8");
+  console.log("✅ Created COMMAND_REFERENCE.md");
 }
 
 // Show usage if help requested
-if (process.argv.includes('--help') || process.argv.includes('-h')) {
+if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(`
 Create Missing Documentation
 

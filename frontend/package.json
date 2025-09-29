@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:docker": "next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
-    "build:analyze": "npm run build && npm run validate --workspace=scripts/documentation-analysis:build",
+    "build:analyze": "npm run build && npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis:build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",

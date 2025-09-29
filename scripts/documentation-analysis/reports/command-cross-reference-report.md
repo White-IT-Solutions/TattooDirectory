@@ -1,0 +1,990 @@
+# Command Cross-Reference Report
+
+Generated: 2025-09-29T15:06:17.345Z
+
+## Summary
+
+- **Total Commands Found**: 551
+- **Total Commands Documented**: 381
+- **Missing from Documentation**: 0
+- **Extra in Documentation**: 11
+- **Legacy Commands**: 0
+
+## Missing Commands (Non-Legacy)
+
+These commands exist in package.json files but are not documented:
+
+
+
+## Missing Commands (Legacy)
+
+These legacy commands exist but are not documented (may be safe to ignore):
+
+
+
+## Extra Commands
+
+These commands are documented but don't exist in package.json files:
+
+- `node cleanup-old-docs.js`
+- `node cleanup-old-docs.js --help`
+- `node cleanup-old-docs.js --live`
+- `node cross-reference-commands.js`
+- `node migrate-legacy-commands.js`
+- `node migrate-legacy-commands.js --live`
+- `node run-consolidation.js`
+- `node run-validation.js`
+- `npm run build --workspaces`
+- `npm run monitor:comprehensive:comprehensive`
+- `npm run test --workspaces`
+
+## Legacy Commands Analysis
+
+No legacy commands found.
+
+## All Commands Found
+
+- `npm run alerts:test`
+- `npm run analyze`
+- `npm run analyze --workspace=scripts\documentation-analysis`
+- `npm run baselines:update`
+- `npm run baselines:update --workspace=frontend`
+- `npm run baselines:validate`
+- `npm run baselines:validate --workspace=frontend`
+- `npm run build`
+- `npm run build --workspace=backend\src`
+- `npm run build --workspace=frontend`
+- `npm run build:analyze`
+- `npm run build:analyze --workspace=frontend`
+- `npm run ci:local-workflow`
+- `npm run ci:local-workflow --workspace=frontend`
+- `npm run ci:setup`
+- `npm run ci:setup --workspace=frontend`
+- `npm run ci:status`
+- `npm run ci:status --workspace=frontend`
+- `npm run ci:test`
+- `npm run ci:test-config`
+- `npm run ci:test-config --workspace=frontend`
+- `npm run ci:test-integration`
+- `npm run ci:test-integration --workspace=frontend`
+- `npm run ci:validate`
+- `npm run clean`
+- `npm run clean --workspace=backend\src`
+- `npm run clean --workspace=scripts\data-seeder`
+- `npm run clean --workspace=tests\e2e`
+- `npm run cleanup`
+- `npm run cleanup --workspace=scripts\documentation-analysis`
+- `npm run cleanup:live`
+- `npm run cleanup:live --workspace=scripts\documentation-analysis`
+- `npm run config`
+- `npm run config --workspace=scripts`
+- `npm run config:platform`
+- `npm run config:platform --workspace=scripts`
+- `npm run config:test`
+- `npm run config:validate`
+- `npm run config:validate --workspace=scripts`
+- `npm run consolidate`
+- `npm run consolidate --workspace=scripts\documentation-analysis`
+- `npm run consolidate-duplicates`
+- `npm run consolidate-duplicates --workspace=scripts\documentation-analysis`
+- `npm run create-missing-docs`
+- `npm run create-missing-docs --workspace=scripts\documentation-analysis`
+- `npm run cross-reference`
+- `npm run cross-reference --workspace=scripts\documentation-analysis`
+- `npm run data-status`
+- `npm run data-status --workspace=scripts`
+- `npm run debug:backend`
+- `npm run debug:frontend`
+- `npm run debug:start`
+- `npm run delete-duplicates`
+- `npm run delete-duplicates --workspace=scripts\documentation-analysis`
+- `npm run deploy:prep`
+- `npm run deploy:prep --workspace=frontend`
+- `npm run dev`
+- `npm run dev --workspace=backend\src\containers\fargate-scraper`
+- `npm run dev --workspace=frontend`
+- `npm run dev:activate-error`
+- `npm run dev:advanced`
+- `npm run dev:advanced:health`
+- `npm run dev:advanced:restart`
+- `npm run dev:advanced:status`
+- `npm run dev:advanced:stop`
+- `npm run dev:backend`
+- `npm run dev:deactivate-errors`
+- `npm run dev:debug-export`
+- `npm run dev:debug-logger`
+- `npm run dev:debug-test`
+- `npm run dev:docker`
+- `npm run dev:docker --workspace=frontend`
+- `npm run dev:error-tester`
+- `npm run dev:frontend`
+- `npm run dev:hot-reload`
+- `npm run dev:list-scenarios`
+- `npm run dev:mock-artists`
+- `npm run dev:mock-data`
+- `npm run dev:mock-dataset`
+- `npm run dev:mock-errors`
+- `npm run dev:mock-search`
+- `npm run dev:test-errors`
+- `npm run docs-health-summary`
+- `npm run docs-health-summary --workspace=scripts\documentation-analysis`
+- `npm run docs:consolidate`
+- `npm run docs:consolidate-duplicates`
+- `npm run docs:create-missing`
+- `npm run docs:delete-duplicates`
+- `npm run docs:file-mapping`
+- `npm run docs:fix-consolidated-links`
+- `npm run docs:fix-outdated`
+- `npm run docs:gap-analysis`
+- `npm run docs:generate`
+- `npm run docs:generate-foundation`
+- `npm run docs:health-summary`
+- `npm run docs:pipeline`
+- `npm run docs:pipeline:dry-run`
+- `npm run docs:test`
+- `npm run docs:test-e2e`
+- `npm run docs:validate`
+- `npm run docs:validate-foundation`
+- `npm run enhanced-integration-test`
+- `npm run enhanced-integration-test --workspace=scripts\data-seeder`
+- `npm run file-mapping`
+- `npm run file-mapping --workspace=scripts\documentation-analysis`
+- `npm run final-validation`
+- `npm run final-validation --workspace=scripts\data-seeder`
+- `npm run fix-consolidated-links`
+- `npm run fix-consolidated-links --workspace=scripts\documentation-analysis`
+- `npm run fix-outdated-content`
+- `npm run fix-outdated-content --workspace=scripts\documentation-analysis`
+- `npm run fix:build`
+- `npm run fix:build --workspace=frontend`
+- `npm run gap-analysis`
+- `npm run gap-analysis --workspace=scripts\documentation-analysis`
+- `npm run generate-foundation`
+- `npm run generate-foundation --workspace=scripts\documentation-analysis`
+- `npm run health-check`
+- `npm run health-check --workspace=backend\src\containers\fargate-scraper`
+- `npm run health-check --workspace=scripts`
+- `npm run help`
+- `npm run help --workspace=scripts`
+- `npm run incremental-processor`
+- `npm run incremental-processor --workspace=scripts`
+- `npm run info`
+- `npm run info --workspace=scripts`
+- `npm run integration-test`
+- `npm run integration-test --workspace=scripts\data-seeder`
+- `npm run lint`
+- `npm run lint --workspace=backend\src`
+- `npm run lint --workspace=frontend`
+- `npm run local:clean`
+- `npm run local:cleanup`
+- `npm run local:docker-info`
+- `npm run local:emergency-stop`
+- `npm run local:health`
+- `npm run local:logs`
+- `npm run local:logs:backend`
+- `npm run local:logs:frontend`
+- `npm run local:logs:localstack`
+- `npm run local:logs:swagger`
+- `npm run local:logs:viewer`
+- `npm run local:monitor`
+- `npm run local:monitor:live`
+- `npm run local:platform-info`
+- `npm run local:report`
+- `npm run local:reset`
+- `npm run local:resources`
+- `npm run local:restart`
+- `npm run local:start`
+- `npm run local:start:secure`
+- `npm run local:start:unix`
+- `npm run local:start:windows`
+- `npm run local:status`
+- `npm run local:stop`
+- `npm run local:stop:unix`
+- `npm run local:stop:windows`
+- `npm run local:test-api`
+- `npm run local:utils`
+- `npm run logs:backend`
+- `npm run logs:errors`
+- `npm run logs:frontend`
+- `npm run logs:start`
+- `npm run logs:view`
+- `npm run manage`
+- `npm run manage --workspace=scripts\data-seeder`
+- `npm run manage-studio-relationships`
+- `npm run manage-studio-relationships --workspace=scripts`
+- `npm run manage-studio-relationships:rebuild`
+- `npm run manage-studio-relationships:repair`
+- `npm run manage-studio-relationships:report`
+- `npm run manage-studio-relationships:validate`
+- `npm run migrate`
+- `npm run migrate --workspace=scripts\data-seeder`
+- `npm run migrate-legacy`
+- `npm run migrate-legacy --workspace=scripts\documentation-analysis`
+- `npm run migrate-legacy:live`
+- `npm run migrate-legacy:live --workspace=scripts\documentation-analysis`
+- `npm run monitor`
+- `npm run monitor --workspace=scripts\data-seeder`
+- `npm run monitor:comprehensive`
+- `npm run monitor:config`
+- `npm run monitor:config:reset`
+- `npm run monitor:dashboard`
+- `npm run monitor:environment`
+- `npm run monitor:environment-continuous`
+- `npm run monitor:health`
+- `npm run monitor:health-advanced`
+- `npm run monitor:health-continuous`
+- `npm run monitor:localstack`
+- `npm run monitor:report`
+- `npm run monitor:reset`
+- `npm run monitor:status`
+- `npm run monitor:validate`
+- `npm run optimize:cache`
+- `npm run optimize:cache:analyze`
+- `npm run optimize:startup`
+- `npm run optimize:startup:benchmark`
+- `npm run package`
+- `npm run package --workspace=backend\src`
+- `npm run performance:benchmark`
+- `npm run performance:benchmark:quick`
+- `npm run performance:dashboard`
+- `npm run performance:demo`
+- `npm run performance:export`
+- `npm run performance:monitor`
+- `npm run performance:monitor:continuous`
+- `npm run performance:monitor:startup`
+- `npm run performance:resources`
+- `npm run performance:resources:once`
+- `npm run performance:test`
+- `npm run pipeline`
+- `npm run pipeline --workspace=scripts\documentation-analysis`
+- `npm run pipeline:all`
+- `npm run pipeline:all --workspace=scripts\documentation-analysis`
+- `npm run pipeline:all-dry`
+- `npm run pipeline:all-dry --workspace=scripts\documentation-analysis`
+- `npm run pipeline:consolidate`
+- `npm run pipeline:consolidate --workspace=scripts\documentation-analysis`
+- `npm run pipeline:dry-run`
+- `npm run pipeline:dry-run --workspace=scripts\documentation-analysis`
+- `npm run pipeline:foundation`
+- `npm run pipeline:foundation --workspace=scripts\documentation-analysis`
+- `npm run pipeline:quick`
+- `npm run pipeline:quick --workspace=scripts\documentation-analysis`
+- `npm run pipeline:validate`
+- `npm run pipeline:validate --workspace=scripts\documentation-analysis`
+- `npm run process-studio-images`
+- `npm run process-studio-images --workspace=scripts`
+- `npm run process-studio-images:force`
+- `npm run process-studio-images:validate`
+- `npm run reset`
+- `npm run reset --workspace=scripts\data-seeder`
+- `npm run reset-data`
+- `npm run reset-data --workspace=scripts`
+- `npm run reset-data:clean`
+- `npm run reset-data:clean --workspace=scripts`
+- `npm run reset-data:fresh`
+- `npm run reset-data:fresh --workspace=scripts`
+- `npm run reset-data:frontend-ready`
+- `npm run reset-data:frontend-ready --workspace=scripts`
+- `npm run reset-data:location-test`
+- `npm run reset-data:location-test --workspace=scripts`
+- `npm run reset-data:minimal`
+- `npm run reset-data:minimal --workspace=scripts`
+- `npm run reset-data:performance-test`
+- `npm run reset-data:performance-test --workspace=scripts`
+- `npm run reset-data:search-ready`
+- `npm run reset-data:search-ready --workspace=scripts`
+- `npm run reset-data:style-test`
+- `npm run reset-data:style-test --workspace=scripts`
+- `npm run reset-states`
+- `npm run reset-states --workspace=scripts`
+- `npm run reset-studios`
+- `npm run reset-studios --workspace=scripts`
+- `npm run reset-studios:preserve`
+- `npm run scenarios`
+- `npm run scenarios --workspace=scripts`
+- `npm run security:configure`
+- `npm run security:configure-access`
+- `npm run security:configure-network`
+- `npm run security:fix`
+- `npm run security:monitor`
+- `npm run security:report`
+- `npm run security:sanitize`
+- `npm run security:scan-images`
+- `npm run security:template`
+- `npm run security:validate`
+- `npm run security:validate-access`
+- `npm run security:validate-env`
+- `npm run security:validate-network`
+- `npm run seed`
+- `npm run seed --workspace=scripts`
+- `npm run seed --workspace=scripts\data-seeder`
+- `npm run seed-scenario`
+- `npm run seed-scenario --workspace=scripts`
+- `npm run seed-scenario:booking-available`
+- `npm run seed-scenario:booking-available --workspace=scripts`
+- `npm run seed-scenario:full-dataset`
+- `npm run seed-scenario:full-dataset --workspace=scripts`
+- `npm run seed-scenario:high-rated`
+- `npm run seed-scenario:high-rated --workspace=scripts`
+- `npm run seed-scenario:london-artists`
+- `npm run seed-scenario:london-artists --workspace=scripts`
+- `npm run seed-scenario:minimal`
+- `npm run seed-scenario:minimal --workspace=scripts`
+- `npm run seed-scenario:multi-style`
+- `npm run seed-scenario:multi-style --workspace=scripts`
+- `npm run seed-scenario:new-artists`
+- `npm run seed-scenario:new-artists --workspace=scripts`
+- `npm run seed-scenario:portfolio-rich`
+- `npm run seed-scenario:portfolio-rich --workspace=scripts`
+- `npm run seed-scenario:pricing-range`
+- `npm run seed-scenario:pricing-range --workspace=scripts`
+- `npm run seed-scenario:search-basic`
+- `npm run seed-scenario:search-basic --workspace=scripts`
+- `npm run seed-studios`
+- `npm run seed-studios --workspace=scripts`
+- `npm run seed-studios:force`
+- `npm run seed-studios:validate`
+- `npm run seed:clean`
+- `npm run seed:clean --workspace=scripts`
+- `npm run seed:validate`
+- `npm run seed:validate --workspace=scripts`
+- `npm run selective`
+- `npm run selective --workspace=scripts\data-seeder`
+- `npm run setup`
+- `npm run setup --workspace=scripts`
+- `npm run setup --workspace=tests\e2e`
+- `npm run setup-data`
+- `npm run setup-data --workspace=scripts`
+- `npm run setup-data:force`
+- `npm run setup-data:force --workspace=scripts`
+- `npm run setup-data:frontend-only`
+- `npm run setup-data:frontend-only --workspace=scripts`
+- `npm run setup-data:images-only`
+- `npm run setup-data:images-only --workspace=scripts`
+- `npm run start`
+- `npm run start --workspace=backend\src\containers\fargate-scraper`
+- `npm run start --workspace=frontend`
+- `npm run start --workspace=scripts\data-seeder`
+- `npm run state`
+- `npm run state --workspace=scripts`
+- `npm run state-manager`
+- `npm run state-manager --workspace=scripts`
+- `npm run state:reset`
+- `npm run state:reset --workspace=scripts`
+- `npm run state:unlock`
+- `npm run state:unlock --workspace=scripts`
+- `npm run studio-health`
+- `npm run studio-health --workspace=scripts`
+- `npm run studio-health:addresses`
+- `npm run studio-health:comprehensive`
+- `npm run studio-health:images`
+- `npm run studio-health:quick`
+- `npm run studio-health:relationships`
+- `npm run studio-status`
+- `npm run studio-status --workspace=scripts`
+- `npm run studio-troubleshoot`
+- `npm run studio:dev-setup`
+- `npm run studio:full-test`
+- `npm run studio:quick-test`
+- `npm run sync`
+- `npm run sync --workspace=scripts\data-seeder`
+- `npm run test`
+- `npm run test --workspace=backend`
+- `npm run test --workspace=backend\src`
+- `npm run test --workspace=backend\src\containers\fargate-scraper`
+- `npm run test --workspace=frontend`
+- `npm run test --workspace=scripts`
+- `npm run test --workspace=scripts\documentation-analysis`
+- `npm run test --workspace=tests\e2e`
+- `npm run test --workspace=tests\integration`
+- `npm run test-utilities`
+- `npm run test-utilities --workspace=scripts\data-seeder`
+- `npm run test:accessibility`
+- `npm run test:accessibility --workspace=frontend`
+- `npm run test:all`
+- `npm run test:api`
+- `npm run test:api --workspace=tests\integration`
+- `npm run test:ci`
+- `npm run test:ci --workspace=backend\src`
+- `npm run test:cleanup`
+- `npm run test:cleanup --workspace=tests\integration`
+- `npm run test:comprehensive`
+- `npm run test:comprehensive --workspace=frontend`
+- `npm run test:comprehensive:auth`
+- `npm run test:comprehensive:auth --workspace=frontend`
+- `npm run test:comprehensive:core`
+- `npm run test:comprehensive:core --workspace=frontend`
+- `npm run test:comprehensive:dark`
+- `npm run test:comprehensive:dark --workspace=frontend`
+- `npm run test:comprehensive:debug`
+- `npm run test:comprehensive:debug --workspace=frontend`
+- `npm run test:comprehensive:errors`
+- `npm run test:comprehensive:errors --workspace=frontend`
+- `npm run test:comprehensive:execution`
+- `npm run test:comprehensive:execution --workspace=frontend`
+- `npm run test:comprehensive:headed`
+- `npm run test:comprehensive:headed --workspace=frontend`
+- `npm run test:comprehensive:mobile`
+- `npm run test:comprehensive:mobile --workspace=frontend`
+- `npm run test:comprehensive:orchestrator`
+- `npm run test:comprehensive:orchestrator --workspace=frontend`
+- `npm run test:comprehensive:portfolio`
+- `npm run test:comprehensive:portfolio --workspace=frontend`
+- `npm run test:comprehensive:search`
+- `npm run test:comprehensive:search --workspace=frontend`
+- `npm run test:coverage`
+- `npm run test:coverage --workspace=backend`
+- `npm run test:coverage --workspace=backend\src`
+- `npm run test:coverage --workspace=backend\src\containers\fargate-scraper`
+- `npm run test:coverage --workspace=frontend`
+- `npm run test:coverage --workspace=scripts`
+- `npm run test:coverage --workspace=scripts\documentation-analysis`
+- `npm run test:coverage --workspace=tests\integration`
+- `npm run test:cross-page`
+- `npm run test:cross-page --workspace=frontend`
+- `npm run test:data`
+- `npm run test:data --workspace=tests\integration`
+- `npm run test:debug`
+- `npm run test:debug --workspace=tests\e2e`
+- `npm run test:e2e`
+- `npm run test:e2e --workspace=frontend`
+- `npm run test:e2e:accessibility`
+- `npm run test:e2e:accessibility --workspace=frontend`
+- `npm run test:e2e:all-coverage`
+- `npm run test:e2e:all-coverage --workspace=frontend`
+- `npm run test:e2e:auth`
+- `npm run test:e2e:auth --workspace=frontend`
+- `npm run test:e2e:clean`
+- `npm run test:e2e:comprehensive`
+- `npm run test:e2e:comprehensive --workspace=frontend`
+- `npm run test:e2e:debug`
+- `npm run test:e2e:debug --workspace=frontend`
+- `npm run test:e2e:errors`
+- `npm run test:e2e:errors --workspace=frontend`
+- `npm run test:e2e:execution`
+- `npm run test:e2e:execution --workspace=frontend`
+- `npm run test:e2e:full-suite`
+- `npm run test:e2e:full-suite --workspace=frontend`
+- `npm run test:e2e:headed`
+- `npm run test:e2e:headed --workspace=frontend`
+- `npm run test:e2e:headless`
+- `npm run test:e2e:integration`
+- `npm run test:e2e:orchestrator`
+- `npm run test:e2e:orchestrator --workspace=frontend`
+- `npm run test:e2e:portfolio`
+- `npm run test:e2e:portfolio --workspace=frontend`
+- `npm run test:e2e:report`
+- `npm run test:e2e:report --workspace=frontend`
+- `npm run test:e2e:responsive`
+- `npm run test:e2e:responsive --workspace=frontend`
+- `npm run test:e2e:runner`
+- `npm run test:e2e:runner --workspace=frontend`
+- `npm run test:e2e:search`
+- `npm run test:e2e:search --workspace=frontend`
+- `npm run test:e2e:setup`
+- `npm run test:e2e:theme`
+- `npm run test:e2e:theme --workspace=frontend`
+- `npm run test:e2e:ui`
+- `npm run test:e2e:ui --workspace=frontend`
+- `npm run test:e2e:visual`
+- `npm run test:e2e:visual --workspace=frontend`
+- `npm run test:e2e:workflows`
+- `npm run test:final-integration`
+- `npm run test:frontend-sync-errors`
+- `npm run test:frontend-sync-errors:verbose`
+- `npm run test:headless`
+- `npm run test:headless --workspace=tests\e2e`
+- `npm run test:integration`
+- `npm run test:integration --workspace=frontend`
+- `npm run test:integration --workspace=tests\e2e`
+- `npm run test:integration:api`
+- `npm run test:integration:cleanup`
+- `npm run test:integration:coverage`
+- `npm run test:integration:coverage --workspace=frontend`
+- `npm run test:integration:data`
+- `npm run test:integration:setup`
+- `npm run test:integration:watch`
+- `npm run test:integration:watch --workspace=frontend`
+- `npm run test:monitoring`
+- `npm run test:responsive`
+- `npm run test:responsive --workspace=frontend`
+- `npm run test:setup`
+- `npm run test:setup --workspace=tests\integration`
+- `npm run test:studio`
+- `npm run test:studio --workspace=scripts`
+- `npm run test:studio:cli`
+- `npm run test:studio:coverage`
+- `npm run test:studio:coverage --workspace=scripts`
+- `npm run test:studio:data`
+- `npm run test:studio:frontend`
+- `npm run test:studio:health`
+- `npm run test:studio:integration`
+- `npm run test:studio:relationships`
+- `npm run test:studio:unit`
+- `npm run test:studio:unit --workspace=scripts`
+- `npm run test:studio:watch`
+- `npm run test:theme`
+- `npm run test:theme --workspace=frontend`
+- `npm run test:ui-audit`
+- `npm run test:ui-audit --workspace=frontend`
+- `npm run test:ui-audit:accessibility`
+- `npm run test:ui-audit:accessibility --workspace=frontend`
+- `npm run test:ui-audit:responsive`
+- `npm run test:ui-audit:responsive --workspace=frontend`
+- `npm run test:ui-audit:theme`
+- `npm run test:ui-audit:theme --workspace=frontend`
+- `npm run test:ui-audit:visual`
+- `npm run test:ui-audit:visual --workspace=frontend`
+- `npm run test:unit`
+- `npm run test:unit:backend`
+- `npm run test:unit:coverage`
+- `npm run test:unit:frontend`
+- `npm run test:unit:scripts`
+- `npm run test:visual`
+- `npm run test:visual --workspace=frontend`
+- `npm run test:visual --workspace=tests\e2e`
+- `npm run test:watch`
+- `npm run test:watch --workspace=backend`
+- `npm run test:watch --workspace=backend\src`
+- `npm run test:watch --workspace=backend\src\containers\fargate-scraper`
+- `npm run test:watch --workspace=frontend`
+- `npm run test:watch --workspace=scripts`
+- `npm run test:watch --workspace=scripts\documentation-analysis`
+- `npm run test:watch --workspace=tests\e2e`
+- `npm run test:watch --workspace=tests\integration`
+- `npm run test:workflows`
+- `npm run test:workflows --workspace=tests\e2e`
+- `npm run update-data`
+- `npm run update-data --workspace=scripts`
+- `npm run upload-images`
+- `npm run upload-images --workspace=scripts`
+- `npm run validate`
+- `npm run validate --workspace=scripts\data-seeder`
+- `npm run validate --workspace=scripts\documentation-analysis`
+- `npm run validate-data`
+- `npm run validate-data --workspace=scripts`
+- `npm run validate-data:consistency`
+- `npm run validate-data:consistency --workspace=scripts`
+- `npm run validate-data:images`
+- `npm run validate-data:images --workspace=scripts`
+- `npm run validate-data:scenarios`
+- `npm run validate-data:scenarios --workspace=scripts`
+- `npm run validate-data:studios`
+- `npm run validate-enhanced`
+- `npm run validate-enhanced --workspace=scripts\data-seeder`
+- `npm run validate-foundation`
+- `npm run validate-foundation --workspace=scripts\documentation-analysis`
+- `npm run validate-studio-data-e2e`
+- `npm run validate-studio-data-e2e:full`
+- `npm run validate-studio-data-e2e:save-report`
+- `npm run validate-studio-data-e2e:verbose`
+- `npm run validate-studios`
+- `npm run validate-studios --workspace=scripts`
+- `npm run validate-studios:addresses`
+- `npm run validate-studios:consistency`
+- `npm run validate-studios:data`
+- `npm run validate-studios:images`
+- `npm run validate-studios:relationships`
+- `npm run validate:all`
+- `npm run validate:all --workspace=scripts`
+- `npm run validate:build`
+- `npm run validate:build --workspace=frontend`
+- `npm run validate:complete`
+- `npm run validate:cross-platform`
+- `npm run validate:deployment`
+- `npm run validate:parity`
+- `npm run validate:production-parity`
+- `npm run validate:readiness`
+
+## All Documented Commands
+
+- `node cleanup-old-docs.js`
+- `node cleanup-old-docs.js --help`
+- `node cleanup-old-docs.js --live`
+- `node cross-reference-commands.js`
+- `node migrate-legacy-commands.js`
+- `node migrate-legacy-commands.js --live`
+- `node run-consolidation.js`
+- `node run-validation.js`
+- `npm run alerts:test`
+- `npm run analyze --workspace=scripts/documentation-analysis`
+- `npm run baselines:update --workspace=frontend`
+- `npm run baselines:validate --workspace=frontend`
+- `npm run build --workspace=frontend`
+- `npm run build --workspaces`
+- `npm run build:analyze --workspace=frontend`
+- `npm run ci:local-workflow --workspace=frontend`
+- `npm run ci:setup --workspace=frontend`
+- `npm run ci:status --workspace=frontend`
+- `npm run ci:test`
+- `npm run ci:test-config --workspace=frontend`
+- `npm run ci:test-integration --workspace=frontend`
+- `npm run ci:validate`
+- `npm run clean --workspace=backend`
+- `npm run clean --workspace=frontend`
+- `npm run clean --workspace=tests/e2e`
+- `npm run cleanup`
+- `npm run cleanup:live`
+- `npm run config`
+- `npm run config --workspace=scripts`
+- `npm run config:platform --workspace=scripts`
+- `npm run config:test`
+- `npm run config:validate`
+- `npm run consolidate --workspace=scripts/documentation-analysis`
+- `npm run consolidate-duplicates --workspace=scripts/documentation-analysis`
+- `npm run create-missing-docs --workspace=scripts/documentation-analysis`
+- `npm run cross-reference`
+- `npm run data-status`
+- `npm run debug:backend`
+- `npm run debug:frontend`
+- `npm run debug:start`
+- `npm run delete-duplicates --workspace=scripts/documentation-analysis`
+- `npm run deploy:prep --workspace=frontend`
+- `npm run dev --workspace=frontend`
+- `npm run dev:activate-error`
+- `npm run dev:advanced`
+- `npm run dev:advanced:health`
+- `npm run dev:advanced:restart`
+- `npm run dev:advanced:status`
+- `npm run dev:advanced:stop`
+- `npm run dev:backend`
+- `npm run dev:deactivate-errors`
+- `npm run dev:debug-export`
+- `npm run dev:debug-logger`
+- `npm run dev:debug-test`
+- `npm run dev:docker --workspace=frontend`
+- `npm run dev:error-tester`
+- `npm run dev:frontend`
+- `npm run dev:hot-reload`
+- `npm run dev:list-scenarios`
+- `npm run dev:mock-artists`
+- `npm run dev:mock-data`
+- `npm run dev:mock-dataset`
+- `npm run dev:mock-errors`
+- `npm run dev:mock-search`
+- `npm run dev:test-errors`
+- `npm run docs-health-summary --workspace=scripts/documentation-analysis`
+- `npm run docs:consolidate`
+- `npm run docs:consolidate-duplicates`
+- `npm run docs:create-missing`
+- `npm run docs:delete-duplicates`
+- `npm run docs:file-mapping`
+- `npm run docs:fix-consolidated-links`
+- `npm run docs:fix-outdated`
+- `npm run docs:gap-analysis`
+- `npm run docs:generate`
+- `npm run docs:generate-foundation`
+- `npm run docs:health-summary`
+- `npm run docs:pipeline`
+- `npm run docs:pipeline:dry-run`
+- `npm run docs:test`
+- `npm run docs:test-e2e`
+- `npm run docs:validate`
+- `npm run docs:validate-foundation`
+- `npm run enhanced-integration-test`
+- `npm run enhanced-integration-test --workspace=scripts/data-seeder`
+- `npm run file-mapping --workspace=scripts/documentation-analysis`
+- `npm run final-validation --workspace=scripts/data-seeder`
+- `npm run fix-consolidated-links --workspace=scripts/documentation-analysis`
+- `npm run fix-outdated-content --workspace=scripts/documentation-analysis`
+- `npm run fix:build --workspace=frontend`
+- `npm run gap-analysis --workspace=scripts/documentation-analysis`
+- `npm run generate-foundation --workspace=scripts/documentation-analysis`
+- `npm run health-check`
+- `npm run help`
+- `npm run incremental-processor --workspace=scripts`
+- `npm run info --workspace=scripts`
+- `npm run integration-test --workspace=scripts/data-seeder`
+- `npm run lint --workspace=backend`
+- `npm run lint --workspace=frontend`
+- `npm run local:clean`
+- `npm run local:cleanup`
+- `npm run local:docker-info`
+- `npm run local:emergency-stop`
+- `npm run local:health`
+- `npm run local:logs`
+- `npm run local:logs:backend`
+- `npm run local:logs:frontend`
+- `npm run local:logs:localstack`
+- `npm run local:logs:swagger`
+- `npm run local:logs:viewer`
+- `npm run local:monitor`
+- `npm run local:monitor:live`
+- `npm run local:platform-info`
+- `npm run local:report`
+- `npm run local:reset`
+- `npm run local:resources`
+- `npm run local:restart`
+- `npm run local:start`
+- `npm run local:start:secure`
+- `npm run local:start:unix`
+- `npm run local:start:windows`
+- `npm run local:status`
+- `npm run local:stop`
+- `npm run local:stop:unix`
+- `npm run local:stop:windows`
+- `npm run local:test-api`
+- `npm run local:utils`
+- `npm run logs:backend`
+- `npm run logs:errors`
+- `npm run logs:frontend`
+- `npm run logs:start`
+- `npm run logs:view`
+- `npm run manage --workspace=scripts/data-seeder`
+- `npm run manage-studio-relationships`
+- `npm run manage-studio-relationships:rebuild`
+- `npm run manage-studio-relationships:repair`
+- `npm run manage-studio-relationships:report`
+- `npm run manage-studio-relationships:validate`
+- `npm run migrate --workspace=scripts/data-seeder`
+- `npm run migrate-legacy`
+- `npm run migrate-legacy:live`
+- `npm run monitor --workspace=scripts/data-seeder`
+- `npm run monitor:comprehensive`
+- `npm run monitor:comprehensive:comprehensive`
+- `npm run monitor:config`
+- `npm run monitor:config:reset`
+- `npm run monitor:dashboard`
+- `npm run monitor:environment`
+- `npm run monitor:environment-continuous`
+- `npm run monitor:health`
+- `npm run monitor:health-advanced`
+- `npm run monitor:health-continuous`
+- `npm run monitor:localstack`
+- `npm run monitor:report`
+- `npm run monitor:reset`
+- `npm run monitor:status`
+- `npm run monitor:validate`
+- `npm run optimize:cache`
+- `npm run optimize:cache:analyze`
+- `npm run optimize:startup`
+- `npm run optimize:startup:benchmark`
+- `npm run package --workspace=backend`
+- `npm run performance:benchmark`
+- `npm run performance:benchmark:quick`
+- `npm run performance:dashboard`
+- `npm run performance:demo`
+- `npm run performance:export`
+- `npm run performance:monitor`
+- `npm run performance:monitor:continuous`
+- `npm run performance:monitor:startup`
+- `npm run performance:resources`
+- `npm run performance:resources:once`
+- `npm run performance:test`
+- `npm run pipeline --workspace=scripts/documentation-analysis`
+- `npm run pipeline:all --workspace=scripts/documentation-analysis`
+- `npm run pipeline:all-dry --workspace=scripts/documentation-analysis`
+- `npm run pipeline:consolidate --workspace=scripts/documentation-analysis`
+- `npm run pipeline:dry-run --workspace=scripts/documentation-analysis`
+- `npm run pipeline:foundation --workspace=scripts/documentation-analysis`
+- `npm run pipeline:quick --workspace=scripts/documentation-analysis`
+- `npm run pipeline:validate --workspace=scripts/documentation-analysis`
+- `npm run process-studio-images`
+- `npm run process-studio-images:force`
+- `npm run process-studio-images:validate`
+- `npm run reset --workspace=scripts/data-seeder`
+- `npm run reset-data`
+- `npm run reset-data:clean`
+- `npm run reset-data:fresh`
+- `npm run reset-data:frontend-ready`
+- `npm run reset-data:location-test`
+- `npm run reset-data:minimal`
+- `npm run reset-data:performance-test`
+- `npm run reset-data:search-ready`
+- `npm run reset-data:style-test`
+- `npm run reset-states`
+- `npm run reset-studios`
+- `npm run reset-studios:preserve`
+- `npm run scenarios`
+- `npm run security:configure`
+- `npm run security:configure-access`
+- `npm run security:configure-network`
+- `npm run security:fix`
+- `npm run security:monitor`
+- `npm run security:report`
+- `npm run security:sanitize`
+- `npm run security:scan-images`
+- `npm run security:template`
+- `npm run security:validate`
+- `npm run security:validate-access`
+- `npm run security:validate-env`
+- `npm run security:validate-network`
+- `npm run seed`
+- `npm run seed-scenario`
+- `npm run seed-scenario:booking-available`
+- `npm run seed-scenario:full-dataset`
+- `npm run seed-scenario:high-rated`
+- `npm run seed-scenario:london-artists`
+- `npm run seed-scenario:minimal`
+- `npm run seed-scenario:multi-style`
+- `npm run seed-scenario:new-artists`
+- `npm run seed-scenario:portfolio-rich`
+- `npm run seed-scenario:pricing-range`
+- `npm run seed-scenario:search-basic`
+- `npm run seed-studios`
+- `npm run seed-studios:force`
+- `npm run seed-studios:validate`
+- `npm run seed:clean`
+- `npm run seed:validate`
+- `npm run selective --workspace=scripts/data-seeder`
+- `npm run setup --workspace=scripts`
+- `npm run setup --workspace=tests/e2e`
+- `npm run setup-data`
+- `npm run setup-data:force`
+- `npm run setup-data:frontend-only`
+- `npm run setup-data:images-only`
+- `npm run start --workspace=frontend`
+- `npm run state`
+- `npm run state-manager --workspace=scripts`
+- `npm run state:reset`
+- `npm run state:unlock --workspace=scripts`
+- `npm run studio-health`
+- `npm run studio-health:addresses`
+- `npm run studio-health:comprehensive`
+- `npm run studio-health:images`
+- `npm run studio-health:quick`
+- `npm run studio-health:relationships`
+- `npm run studio-status`
+- `npm run studio-troubleshoot`
+- `npm run studio:dev-setup`
+- `npm run studio:full-test`
+- `npm run studio:quick-test`
+- `npm run sync --workspace=scripts/data-seeder`
+- `npm run test --workspace=backend`
+- `npm run test --workspace=frontend`
+- `npm run test --workspace=scripts`
+- `npm run test --workspace=tests/e2e`
+- `npm run test --workspace=tests/integration`
+- `npm run test --workspaces`
+- `npm run test-utilities --workspace=scripts/data-seeder`
+- `npm run test:accessibility --workspace=frontend`
+- `npm run test:all`
+- `npm run test:api --workspace=tests/integration`
+- `npm run test:ci --workspace=backend/src`
+- `npm run test:cleanup --workspace=tests/integration`
+- `npm run test:comprehensive`
+- `npm run test:comprehensive --workspace=frontend`
+- `npm run test:comprehensive:auth --workspace=frontend`
+- `npm run test:comprehensive:core --workspace=frontend`
+- `npm run test:comprehensive:dark --workspace=frontend`
+- `npm run test:comprehensive:debug --workspace=frontend`
+- `npm run test:comprehensive:errors --workspace=frontend`
+- `npm run test:comprehensive:execution --workspace=frontend`
+- `npm run test:comprehensive:headed --workspace=frontend`
+- `npm run test:comprehensive:mobile --workspace=frontend`
+- `npm run test:comprehensive:orchestrator --workspace=frontend`
+- `npm run test:comprehensive:portfolio --workspace=frontend`
+- `npm run test:comprehensive:search --workspace=frontend`
+- `npm run test:coverage --workspace=backend`
+- `npm run test:coverage --workspace=frontend`
+- `npm run test:coverage --workspace=scripts/documentation-analysis`
+- `npm run test:cross-page --workspace=frontend`
+- `npm run test:data --workspace=tests/integration`
+- `npm run test:debug --workspace=tests/e2e`
+- `npm run test:e2e`
+- `npm run test:e2e --workspace=frontend`
+- `npm run test:e2e:accessibility --workspace=frontend`
+- `npm run test:e2e:all-coverage --workspace=frontend`
+- `npm run test:e2e:auth --workspace=frontend`
+- `npm run test:e2e:clean`
+- `npm run test:e2e:comprehensive --workspace=frontend`
+- `npm run test:e2e:debug`
+- `npm run test:e2e:debug --workspace=frontend`
+- `npm run test:e2e:errors --workspace=frontend`
+- `npm run test:e2e:execution --workspace=frontend`
+- `npm run test:e2e:full-suite --workspace=frontend`
+- `npm run test:e2e:headed --workspace=frontend`
+- `npm run test:e2e:headless`
+- `npm run test:e2e:integration`
+- `npm run test:e2e:orchestrator --workspace=frontend`
+- `npm run test:e2e:portfolio --workspace=frontend`
+- `npm run test:e2e:report --workspace=frontend`
+- `npm run test:e2e:responsive --workspace=frontend`
+- `npm run test:e2e:runner --workspace=frontend`
+- `npm run test:e2e:search --workspace=frontend`
+- `npm run test:e2e:setup`
+- `npm run test:e2e:theme --workspace=frontend`
+- `npm run test:e2e:ui --workspace=frontend`
+- `npm run test:e2e:visual`
+- `npm run test:e2e:visual --workspace=frontend`
+- `npm run test:e2e:workflows`
+- `npm run test:final-integration`
+- `npm run test:frontend-sync-errors`
+- `npm run test:frontend-sync-errors:verbose`
+- `npm run test:headless --workspace=tests/e2e`
+- `npm run test:integration`
+- `npm run test:integration --workspace=frontend`
+- `npm run test:integration:api`
+- `npm run test:integration:cleanup`
+- `npm run test:integration:coverage`
+- `npm run test:integration:data`
+- `npm run test:integration:setup`
+- `npm run test:integration:watch --workspace=frontend`
+- `npm run test:monitoring`
+- `npm run test:responsive --workspace=frontend`
+- `npm run test:setup --workspace=tests/integration`
+- `npm run test:studio`
+- `npm run test:studio:cli`
+- `npm run test:studio:coverage`
+- `npm run test:studio:data`
+- `npm run test:studio:frontend`
+- `npm run test:studio:health`
+- `npm run test:studio:integration`
+- `npm run test:studio:relationships`
+- `npm run test:studio:unit`
+- `npm run test:studio:watch`
+- `npm run test:theme --workspace=frontend`
+- `npm run test:ui-audit --workspace=frontend`
+- `npm run test:ui-audit:accessibility --workspace=frontend`
+- `npm run test:ui-audit:responsive --workspace=frontend`
+- `npm run test:ui-audit:theme --workspace=frontend`
+- `npm run test:ui-audit:visual --workspace=frontend`
+- `npm run test:unit`
+- `npm run test:unit:backend`
+- `npm run test:unit:coverage`
+- `npm run test:unit:frontend`
+- `npm run test:unit:scripts`
+- `npm run test:visual --workspace=frontend`
+- `npm run test:visual --workspace=tests/e2e`
+- `npm run test:watch --workspace=backend`
+- `npm run test:watch --workspace=frontend`
+- `npm run test:watch --workspace=scripts/documentation-analysis`
+- `npm run test:workflows --workspace=tests/e2e`
+- `npm run update-data --workspace=scripts`
+- `npm run upload-images --workspace=scripts`
+- `npm run validate --workspace=scripts/documentation-analysis`
+- `npm run validate --workspace=scripts/documentation-analysis:complete`
+- `npm run validate-data`
+- `npm run validate-data:consistency`
+- `npm run validate-data:images`
+- `npm run validate-data:scenarios`
+- `npm run validate-data:studios`
+- `npm run validate-enhanced --workspace=scripts/data-seeder`
+- `npm run validate-foundation --workspace=scripts/documentation-analysis`
+- `npm run validate-studio-data-e2e`
+- `npm run validate-studio-data-e2e:full`
+- `npm run validate-studio-data-e2e:save-report`
+- `npm run validate-studio-data-e2e:verbose`
+- `npm run validate-studios`
+- `npm run validate-studios:addresses`
+- `npm run validate-studios:consistency`
+- `npm run validate-studios:data`
+- `npm run validate-studios:images`
+- `npm run validate-studios:relationships`
+- `npm run validate:all`
+- `npm run validate:build --workspace=frontend`
+- `npm run validate:complete`
+- `npm run validate:cross-platform`
+- `npm run validate:deployment`
+- `npm run validate:parity`
+- `npm run validate:production-parity`
+- `npm run validate:readiness`
+
+## Recommendations
+
+✅ All non-legacy commands are properly documented
+
+2. Remove or update extra documented commands
+
+✅ No legacy commands found
+

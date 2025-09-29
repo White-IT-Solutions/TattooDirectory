@@ -21,20 +21,20 @@ class LegacyCommandMigrator {
     // Migration mapping from legacy to current commands
     this.migrationMap = new Map([
       // High-priority migrations
-      ['npm run seed --workspace=scripts', 'npm run seed --workspace=scripts --workspace=scripts'],
-      ['npm run validate --workspace=scripts/documentation-analysis', 'npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis'],
-      ['npm run reset-data --workspace=scripts', 'npm run reset-data --workspace=scripts-data --workspace=scripts'],
-      ['npm run monitor:comprehensive', 'npm run monitor:comprehensive:comprehensive'],
-      ['npm run manage-studio-relationships --workspace=scripts', 'npm run manage-studio-relationships --workspace=scripts-studio-relationships --workspace=scripts'],
+      ['npm run seed --workspace=scripts --workspace=scripts', 'npm run seed --workspace=scripts --workspace=scripts --workspace=scripts'],
+      ['npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis', 'npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis'],
+      ['npm run reset-data --workspace=scripts-data --workspace=scripts', 'npm run reset-data --workspace=scripts-data --workspace=scripts-data --workspace=scripts'],
+      ['npm run monitor:comprehensive:comprehensive', 'npm run monitor:comprehensive:comprehensive:comprehensive'],
+      ['npm run manage-studio-relationships --workspace=scripts-studio-relationships --workspace=scripts', 'npm run manage-studio-relationships --workspace=scripts-studio-relationships --workspace=scripts-studio-relationships --workspace=scripts'],
       ['npm run local:clean', 'npm run local:clean'],
       
       // Medium-priority migrations
-      ['npm run validate:complete', 'npm run validate --workspace=scripts/documentation-analysis:complete'],
-      ['npm run validate --workspace=scripts/documentation-analysis-enhanced', 'npm run validate --workspace=scripts/documentation-analysis:all --workspace=scripts'],
+      ['npm run validate --workspace=scripts/documentation-analysis:complete', 'npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis:complete'],
+      ['npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis-enhanced', 'npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis:all --workspace=scripts'],
       ['npm run setup-data --workspace=scripts', 'npm run setup-data --workspace=scripts'],
       
       // Low-priority migrations
-      ['npm run seed-scenario --workspace=scripts', 'npm run seed --workspace=scripts-scenario --workspace=scripts'],
+      ['npm run seed --workspace=scripts-scenario --workspace=scripts', 'npm run seed --workspace=scripts --workspace=scripts-scenario --workspace=scripts'],
       ['npm run test:studio --workspace=scripts', 'npm run test:studio --workspace=scripts'],
       ['npm run test:integration', 'npm run test:integration'],
       ['npm run setup-data:force --workspace=scripts', 'npm run setup-data:force --workspace=scripts'],
@@ -288,7 +288,7 @@ ${migrations.map(m => `- \`${m.file}\` (${m.occurrences} occurrences)`).join('\n
 
 ${this.config.dryRun ? 
   '1. Review this report and run migration with --live flag if satisfied' :
-  '1. Test the migrated commands to ensure they work correctly\n2. Run validation: `npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis`\n3. Run cross-reference check: `npm run cross-reference --workspace=scripts/documentation-analysis`'
+  '1. Test the migrated commands to ensure they work correctly\n2. Run validation: `npm run validate --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis --workspace=scripts/documentation-analysis`\n3. Run cross-reference check: `npm run cross-reference --workspace=scripts/documentation-analysis`'
 }
 
 ## Rollback Instructions

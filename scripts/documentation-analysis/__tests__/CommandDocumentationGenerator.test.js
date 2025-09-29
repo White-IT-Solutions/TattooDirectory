@@ -212,7 +212,7 @@ describe('CommandDocumentationGenerator', () => {
 
       expect(examples).toHaveLength(1);
       expect(examples[0].scenario).toBe('Basic data seeding');
-      expect(examples[0].command).toBe('npm run seed --workspace=scripts:data');
+      expect(examples[0].command).toBe('npm run seed --workspace=scripts --workspace=scripts:data');
       expect(examples[0].notes).toContain('Ensure LocalStack is running before seeding data');
     });
 

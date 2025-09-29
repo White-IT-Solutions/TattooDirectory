@@ -42,8 +42,7 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
           path: path.join(
             this.projectRoot,
             "docs",
-            "consolidated",
-            "development",
+            "workflows",
             "DEVELOPMENT_GUIDE.md"
           ),
         },
@@ -52,9 +51,8 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
           path: path.join(
             this.projectRoot,
             "docs",
-            "consolidated",
             "reference",
-            "API_REFERENCE.md"
+            "api_reference.md"
           ),
         },
         {
@@ -62,7 +60,6 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
           path: path.join(
             this.projectRoot,
             "docs",
-            "consolidated",
             "troubleshooting",
             "TROUBLESHOOTING_GUIDE.md"
           ),
@@ -107,16 +104,44 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
 
       // Check for missing setup documentation
       const setupDocs = [
-        "local-development.md",
-        "frontend-only.md",
-        "docker-setup.md",
-        "dependencies.md",
+        {
+          name: "local-development.md",
+          paths: [
+            path.join(this.projectRoot, "docs", "setup", "local-development.md"),
+            path.join(this.projectRoot, "docs", "getting-started", "SETUP_MASTER.md")
+          ]
+        },
+        {
+          name: "frontend-only.md",
+          paths: [
+            path.join(this.projectRoot, "docs", "setup", "frontend-only.md")
+          ]
+        },
+        {
+          name: "docker-setup.md",
+          paths: [
+            path.join(this.projectRoot, "docs", "setup", "docker-setup.md"),
+            path.join(this.projectRoot, "docs", "getting-started", "docker-setup.md")
+          ]
+        },
+        {
+          name: "dependencies.md",
+          paths: [
+            path.join(this.projectRoot, "docs", "setup", "dependencies.md"),
+            path.join(this.projectRoot, "docs", "getting-started", "dependencies.md")
+          ]
+        },
       ];
+      
       for (const doc of setupDocs) {
-        const docPath = path.join(this.projectRoot, "docs", "setup", doc);
-        if (!(await FileUtils.fileExists(docPath))) {
+        // Check if any of the possible paths exist
+        const exists = await Promise.all(
+          doc.paths.map(docPath => FileUtils.fileExists(docPath))
+        );
+        
+        if (!exists.some(Boolean)) {
           missingDocs.push({
-            feature: doc.replace(".md", "").replace("-", " "),
+            feature: doc.name.replace(".md", "").replace("-", " "),
             component: "setup",
             importance: "critical",
             estimatedEffort: "small",
@@ -518,6 +543,8 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
   async _findUndocumentedScripts(scripts) {
     const undocumented = [];
     const commandRefPaths = [
+      path.join(this.projectRoot, "docs", "reference", "command-reference.md"),
+      path.join(this.projectRoot, "docs", "reference", "npm-scripts.md"),
       path.join(
         this.projectRoot,
         "docs",
@@ -525,7 +552,6 @@ class GapAnalysisReporter extends IGapAnalysisReporter {
         "reference",
         "COMMAND_REFERENCE.md"
       ),
-      path.join(this.projectRoot, "docs", "reference", "command-reference.md"),
     ];
 
     let commandRefContent = "";

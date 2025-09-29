@@ -9,7 +9,7 @@ cd /d "%~dp0data-seeder"
 echo Starting comprehensive validation...
 echo.
 
-npm run validate:complete
+npm run validate --workspace=scripts/documentation-analysis:complete
 
 echo.
 echo Validation complete!
