@@ -1,0 +1,16 @@
+{
+  "name": "Modern Heart Art",
+  "location": "Belfast",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_modern_heart_art.png"
+    ],
+    "external": [
+      "external_01_modern_heart_art.png"
+    ],
+    "working": [
+      "working_01_modern_heart_art.png"
+    ]
+  }
+}

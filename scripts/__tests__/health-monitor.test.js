@@ -59,7 +59,7 @@ jest.mock('aws-sdk', () => {
     };
 });
 
-const { HealthMonitor } = require('../health-monitor');
+const { HealthMonitor } = require('../utilities/health-monitor');
 const { DataConfiguration } = require('../data-config');
 
 // Mock HTTP modules

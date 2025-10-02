@@ -1,0 +1,16 @@
+{
+  "name": "Black Sun Gallery",
+  "location": "Glasgow",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_black_sun_gallery.png"
+    ],
+    "external": [
+      "external_01_black_sun_gallery.png"
+    ],
+    "working": [
+      "working_01_black_sun_gallery.png"
+    ]
+  }
+}

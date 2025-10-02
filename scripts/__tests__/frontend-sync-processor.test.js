@@ -9,14 +9,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { FrontendSyncProcessor } = require('../frontend-sync-processor');
+const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock file system operations
 jest.mock('fs');
 
 // Mock state manager
-jest.mock('../state-manager', () => ({
+jest.mock('../utilities/state-manager', () => ({
   STATE_MANAGER: {
     detectChanges: jest.fn()
   }

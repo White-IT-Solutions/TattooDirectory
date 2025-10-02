@@ -500,7 +500,7 @@ echo ☁️ LocalStack: http://localhost:4566`;
                 execSync('docker-compose -f devtools/docker/docker-compose.local.yml up -d', { stdio: 'pipe' });
                 
                 // Wait for all services to be ready
-                const PerformanceMonitor = require('./performance-monitor.js');
+                const PerformanceMonitor = require('../performance/performance-monitor.js');
                 const monitor = new PerformanceMonitor();
                 const startupTimes = await monitor.monitorStartupTimes();
                 

@@ -19,7 +19,7 @@ jest.mock('../api.js', () => ({
 }));
 
 // Mock enhanced tattoo styles
-jest.mock('../../app/data/testData/enhancedTattooStyles.js', () => ({
+jest.mock('../data/tattooStyles.js', () => ({
   enhancedTattooStyles: {
     'old_school': {
       id: 'old_school',

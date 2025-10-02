@@ -1,0 +1,16 @@
+{
+  "name": "Black Shop",
+  "location": "Manchester",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_black_shop.png"
+    ],
+    "external": [
+      "external_01_black_shop.png"
+    ],
+    "working": [
+      "working_01_black_shop.png"
+    ]
+  }
+}

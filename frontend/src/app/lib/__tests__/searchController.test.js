@@ -1,5 +1,5 @@
 import searchController from '../searchController';
-import { enhancedTattooStyles } from '../../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles } from '../../../lib/data/tattooStyles.js';
 
 // Mock data for testing
 const mockArtistData = [

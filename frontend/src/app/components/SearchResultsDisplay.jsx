@@ -16,7 +16,7 @@ import ArtistCard from './ArtistCard';
 import StudioCard from '../../design-system/components/ui/StudioCard/StudioCard';
 import { ArtistCardSkeleton } from '../../design-system/components/ui/Skeleton/ArtistCardSkeleton';
 import { StudioCardSkeleton } from '../../design-system/components/ui/Skeleton/StudioCardSkeleton';
-import { enhancedTattooStyles, difficultyLevels } from '../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles, difficultyLevels } from '../../lib/data/tattooStyles.js';
 import { cn } from '../../design-system/utils/cn';
 import { 
   ariaLiveRegion, 

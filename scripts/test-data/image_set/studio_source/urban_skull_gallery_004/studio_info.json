@@ -1,0 +1,16 @@
+{
+  "name": "Urban Skull Gallery",
+  "location": "Bristol",
+  "type": "futuristic modern",
+  "images": {
+    "internal": [
+      "internal_01_urban_skull_gallery.png"
+    ],
+    "external": [
+      "external_01_urban_skull_gallery.png"
+    ],
+    "working": [
+      "working_01_urban_skull_gallery.png"
+    ]
+  }
+}

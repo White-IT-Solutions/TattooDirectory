@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { enhancedTattooStyles, difficultyLevels } from "../data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, difficultyLevels } from '../../lib/data/tattooStyles.js';
 import Badge from "../../design-system/components/ui/Badge/Badge";
 import Tag from "../../design-system/components/ui/Tag/Tag";
 

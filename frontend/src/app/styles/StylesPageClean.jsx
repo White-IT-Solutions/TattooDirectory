@@ -9,7 +9,7 @@ import Button from '../../design-system/components/ui/Button/Button';
 import { Skeleton } from '../../design-system/components/ui/Skeleton/Skeleton';
 import { PageWrapper } from '../../design-system/components/layout';
 import { useToast } from '../../design-system/components/feedback/Toast';
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 
 // Lazy load StyleGallery component
 const StyleGallery = React.lazy(() => import('../../design-system/components/ui/StyleGallery/StyleGallery'));

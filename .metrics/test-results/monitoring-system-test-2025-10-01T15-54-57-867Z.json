@@ -1,0 +1,111 @@
+{
+  "timestamp": "2025-10-01T15:54:57.060Z",
+  "tests": [
+    {
+      "name": "Health Monitor Import",
+      "status": "FAILED",
+      "duration": 372,
+      "error": "HealthMonitor is not a constructor"
+    },
+    {
+      "name": "Health Monitor Configuration",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "HealthMonitor is not a constructor"
+    },
+    {
+      "name": "Health Check Execution",
+      "status": "PASSED",
+      "duration": 46,
+      "result": "SKIPPED - Services not running"
+    },
+    {
+      "name": "Environment Validator Import",
+      "status": "FAILED",
+      "duration": 2,
+      "error": "Cannot find module './alert-system'\nRequire stack:\n- C:\\dev\\Tattoo_MVP\\scripts\\validation\\environment-health-validator.js\n- C:\\dev\\Tattoo_MVP\\scripts\\testing\\test-monitoring-system.js"
+    },
+    {
+      "name": "Validation Components",
+      "status": "FAILED",
+      "duration": 1,
+      "error": "Cannot find module './alert-system'\nRequire stack:\n- C:\\dev\\Tattoo_MVP\\scripts\\validation\\environment-health-validator.js\n- C:\\dev\\Tattoo_MVP\\scripts\\testing\\test-monitoring-system.js"
+    },
+    {
+      "name": "Basic Validation Methods",
+      "status": "FAILED",
+      "duration": 1,
+      "error": "Cannot find module './alert-system'\nRequire stack:\n- C:\\dev\\Tattoo_MVP\\scripts\\validation\\environment-health-validator.js\n- C:\\dev\\Tattoo_MVP\\scripts\\testing\\test-monitoring-system.js"
+    },
+    {
+      "name": "Alert System Import",
+      "status": "PASSED",
+      "duration": 2,
+      "result": "Alert system imported successfully"
+    },
+    {
+      "name": "Default Alert Rules",
+      "status": "PASSED",
+      "duration": 0,
+      "result": "7 alert rules configured"
+    },
+    {
+      "name": "Notification Channels",
+      "status": "PASSED",
+      "duration": 0,
+      "result": "3 notification channels configured"
+    },
+    {
+      "name": "Alert Processing",
+      "status": "PASSED",
+      "duration": 29,
+      "result": "Alert processing generated 3 alerts"
+    },
+    {
+      "name": "Dashboard API Endpoints",
+      "status": "PASSED",
+      "duration": 0,
+      "result": "SKIPPED - Dashboard not running"
+    },
+    {
+      "name": "Required Script Files",
+      "status": "FAILED",
+      "duration": 1,
+      "error": "Required file health-monitor.js not found"
+    },
+    {
+      "name": "Metrics Directory Creation",
+      "status": "PASSED",
+      "duration": 1,
+      "result": "Metrics directory accessible"
+    },
+    {
+      "name": "File Permissions",
+      "status": "FAILED",
+      "duration": 1,
+      "error": "Cannot access health-monitor.js: ENOENT: no such file or directory, stat 'C:\\dev\\Tattoo_MVP\\scripts\\testing\\health-monitor.js'"
+    },
+    {
+      "name": "Configuration Loading",
+      "status": "FAILED",
+      "duration": 328,
+      "error": "Cannot find module './environment-health-validator'\nRequire stack:\n- C:\\dev\\Tattoo_MVP\\scripts\\monitoring\\comprehensive-monitoring-dashboard.js\n- C:\\dev\\Tattoo_MVP\\scripts\\monitoring\\start-monitoring.js\n- C:\\dev\\Tattoo_MVP\\scripts\\testing\\test-monitoring-system.js"
+    },
+    {
+      "name": "Configuration Persistence",
+      "status": "FAILED",
+      "duration": 3,
+      "error": "Cannot find module './environment-health-validator'\nRequire stack:\n- C:\\dev\\Tattoo_MVP\\scripts\\monitoring\\comprehensive-monitoring-dashboard.js\n- C:\\dev\\Tattoo_MVP\\scripts\\monitoring\\start-monitoring.js\n- C:\\dev\\Tattoo_MVP\\scripts\\testing\\test-monitoring-system.js"
+    },
+    {
+      "name": "Environment Variables",
+      "status": "PASSED",
+      "duration": 0,
+      "result": "Environment variable handling correct"
+    }
+  ],
+  "passed": 8,
+  "failed": 9,
+  "skipped": 2,
+  "totalTime": 800
+}

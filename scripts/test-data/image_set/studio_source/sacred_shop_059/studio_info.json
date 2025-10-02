@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Shop",
+  "location": "London",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_sacred_shop.png"
+    ],
+    "external": [
+      "external_01_sacred_shop.png"
+    ],
+    "working": [
+      "working_01_sacred_shop.png"
+    ]
+  }
+}

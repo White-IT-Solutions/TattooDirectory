@@ -1,0 +1,16 @@
+{
+  "name": "Electric Gallery",
+  "location": "Norwich",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_electric_gallery.png"
+    ],
+    "external": [
+      "external_01_electric_gallery.png"
+    ],
+    "working": [
+      "working_01_electric_gallery.png"
+    ]
+  }
+}

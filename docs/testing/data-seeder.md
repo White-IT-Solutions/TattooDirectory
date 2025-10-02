@@ -163,7 +163,7 @@ This uploads test images to LocalStack S3 and updates test data files with prope
 
 ### Adding New Test Data
 
-1. Add images to appropriate folder in `tests/Test_Data/ImageSet/`
+1. Add images to appropriate folder in `scripts/test-data/image_set/tattoo_source/`
 2. Add data to appropriate JSON file in `../test-data/`
 3. Update validation schemas if needed
 4. Run image setup: `cd ../scripts && npm run setup`

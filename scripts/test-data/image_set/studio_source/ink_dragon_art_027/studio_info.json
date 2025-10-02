@@ -1,0 +1,16 @@
+{
+  "name": "Ink Dragon Art",
+  "location": "York",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_ink_dragon_art.png"
+    ],
+    "external": [
+      "external_01_ink_dragon_art.png"
+    ],
+    "working": [
+      "working_01_ink_dragon_art.png"
+    ]
+  }
+}

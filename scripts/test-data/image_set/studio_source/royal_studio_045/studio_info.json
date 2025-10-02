@@ -1,0 +1,16 @@
+{
+  "name": "Royal Studio",
+  "location": "Birmingham",
+  "type": "bright contemporary",
+  "images": {
+    "internal": [
+      "internal_01_royal_studio.png"
+    ],
+    "external": [
+      "external_01_royal_studio.png"
+    ],
+    "working": [
+      "working_01_royal_studio.png"
+    ]
+  }
+}

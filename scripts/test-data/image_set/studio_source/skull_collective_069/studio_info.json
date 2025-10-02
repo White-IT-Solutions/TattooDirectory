@@ -1,0 +1,16 @@
+{
+  "name": "Skull Collective",
+  "location": "Birmingham",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_skull_collective.png"
+    ],
+    "external": [
+      "external_01_skull_collective.png"
+    ],
+    "working": [
+      "working_01_skull_collective.png"
+    ]
+  }
+}

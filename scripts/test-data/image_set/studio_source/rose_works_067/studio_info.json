@@ -1,0 +1,16 @@
+{
+  "name": "Rose Works",
+  "location": "Newcastle",
+  "type": "bright contemporary",
+  "images": {
+    "internal": [
+      "internal_01_rose_works.png"
+    ],
+    "external": [
+      "external_01_rose_works.png"
+    ],
+    "working": [
+      "working_01_rose_works.png"
+    ]
+  }
+}

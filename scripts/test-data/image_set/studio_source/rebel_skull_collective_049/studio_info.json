@@ -1,0 +1,16 @@
+{
+  "name": "Rebel Skull Collective",
+  "location": "Canterbury",
+  "type": "high-end luxury",
+  "images": {
+    "internal": [
+      "internal_01_rebel_skull_collective.png"
+    ],
+    "external": [
+      "external_01_rebel_skull_collective.png"
+    ],
+    "working": [
+      "working_01_rebel_skull_collective.png"
+    ]
+  }
+}

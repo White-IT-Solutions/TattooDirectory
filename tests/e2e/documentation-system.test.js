@@ -286,7 +286,7 @@ ibe('Gap Analysis', () => {
 
         test('should validate documentation structure', () => {
             // Run validation and check exit code
-            const result = execSync('node scripts/documentation-consolidation-pipeline.js --validate-only', { 
+            const result = execSync('node scripts/documentation-analysis/documentation-consolidation-pipeline.js --validate-only', { 
                 stdio: 'pipe',
                 encoding: 'utf8'
             });

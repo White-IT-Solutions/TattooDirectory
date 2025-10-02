@@ -8,14 +8,14 @@
  */
 
 const { StudioDataProcessor } = require('../data-management/studio-data-processor');
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock external dependencies
-jest.mock('../database-seeder');
-jest.mock('../health-monitor');
-jest.mock('../state-manager');
-jest.mock('../unified-data-manager');
+jest.mock('../data-management/database-seeder');
+jest.mock('../utilities/health-monitor');
+jest.mock('../utilities/state-manager');
+jest.mock('../data-management/unified-data-manager');
 
 describe('Studio Data Pipeline Integration', () => {
   let studioProcessor;

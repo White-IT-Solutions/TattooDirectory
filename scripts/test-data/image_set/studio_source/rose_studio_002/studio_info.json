@@ -1,0 +1,16 @@
+{
+  "name": "Rose Studio",
+  "location": "London",
+  "type": "urban loft",
+  "images": {
+    "internal": [
+      "internal_01_rose_studio.png"
+    ],
+    "external": [
+      "external_01_rose_studio.png"
+    ],
+    "working": [
+      "working_01_rose_studio.png"
+    ]
+  }
+}

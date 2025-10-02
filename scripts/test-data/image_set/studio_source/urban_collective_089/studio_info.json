@@ -1,0 +1,16 @@
+{
+  "name": "Urban Collective",
+  "location": "Edinburgh",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_urban_collective.png"
+    ],
+    "external": [
+      "external_01_urban_collective.png"
+    ],
+    "working": [
+      "working_01_urban_collective.png"
+    ]
+  }
+}

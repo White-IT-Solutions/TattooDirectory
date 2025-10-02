@@ -6,16 +6,16 @@
  * Requirements: 14.5, 14.6, 14.7, 14.8
  */
 
-const { UnifiedDataManager } = require('../../unified-data-manager');
-const { DataPipeline, OPERATION_TYPES } = require('../../pipeline-engine');
-const { STATE_MANAGER } = require('../../state-manager');
-const { HealthMonitor } = require('../../health-monitor');
-const { FrontendSyncProcessor } = require('../../frontend-sync-processor');
+const { UnifiedDataManager } = require('../../data-management/unified-data-manager');
+const { DataPipeline, OPERATION_TYPES } = require('../../data-management/pipeline-engine');
+const { STATE_MANAGER } = require('../../utilities/state-manager');
+const { HealthMonitor } = require('../../utilities/health-monitor');
+const { FrontendSyncProcessor } = require('../../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../../data-config');
 
 // Mock external dependencies
-jest.mock('../../image-processor');
-jest.mock('../../database-seeder');
+jest.mock('../../data-management/image-processor');
+jest.mock('../../data-management/database-seeder');
 
 describe('Cross-Service Data Synchronization Integration Tests', () => {
   let unifiedManager;

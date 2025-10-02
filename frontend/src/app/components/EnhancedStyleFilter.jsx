@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from "../data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 import { mockArtistData as mockArtists } from "../data/mockArtistData";
 import Badge from "../../design-system/components/ui/Badge/Badge";
 import Tag from "../../design-system/components/ui/Tag/Tag";

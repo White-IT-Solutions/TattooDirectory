@@ -47,7 +47,7 @@ describe('Studio E2E Validation CLI Integration', () => {
   describe('Standalone Validation Script', () => {
     test('should be able to run standalone validation script with --help', () => {
       try {
-        const output = execSync('node scripts/validate-studio-data-e2e.js --help', { 
+        const output = execSync('node scripts/validation/validate-studio-data-e2e.js --help', { 
           encoding: 'utf8',
           timeout: 5000
         });
@@ -57,7 +57,7 @@ describe('Studio E2E Validation CLI Integration', () => {
         expect(output).toContain('Options:');
       } catch (error) {
         // Script should at least exist and be executable
-        expect(fs.existsSync('scripts/validate-studio-data-e2e.js')).toBe(true);
+        expect(fs.existsSync('scripts/validation/validate-studio-data-e2e.js')).toBe(true);
       }
     });
   });

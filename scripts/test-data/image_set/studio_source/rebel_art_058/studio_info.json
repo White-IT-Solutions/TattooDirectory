@@ -1,0 +1,16 @@
+{
+  "name": "Rebel Art",
+  "location": "Bath",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_rebel_art.png"
+    ],
+    "external": [
+      "external_01_rebel_art.png"
+    ],
+    "working": [
+      "working_01_rebel_art.png"
+    ]
+  }
+}

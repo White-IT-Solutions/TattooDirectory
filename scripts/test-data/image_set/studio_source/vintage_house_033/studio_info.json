@@ -1,0 +1,16 @@
+{
+  "name": "Vintage House",
+  "location": "Bath",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_vintage_house.png"
+    ],
+    "external": [
+      "external_01_vintage_house.png"
+    ],
+    "working": [
+      "working_01_vintage_house.png"
+    ]
+  }
+}

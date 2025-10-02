@@ -11,7 +11,7 @@
  * - Continuous health monitoring with alert integration
  */
 
-const HealthMonitor = require('./health-monitor');
+const HealthMonitor = require('../utilities/health-monitor');
 const AlertSystem = require('./alert-system');
 const EnvironmentValidator = require('./environment-validator');
 const { performance } = require('perf_hooks');

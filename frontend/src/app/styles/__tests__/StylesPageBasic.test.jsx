@@ -9,7 +9,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock the enhanced tattoo styles data
-jest.mock('../../data/testData/enhancedTattooStyles', () => ({
+jest.mock('../../../lib/data/tattooStyles.js', () => ({
   enhancedTattooStyles: {
     traditional: {
       id: 'traditional',

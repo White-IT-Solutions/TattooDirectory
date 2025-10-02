@@ -65,9 +65,11 @@ function getPlatformPaths(environment) {
     
     // Data directories
     testDataDir: path.join(projectRoot, 'scripts', 'test-data'),
-    imageSourceDir: path.join(projectRoot, 'tests', 'Test_Data', 'ImageSet'),
+    imageSourceDir: path.join(projectRoot, 'scripts', 'test-data', 'image_set', 'tattoo_source'),
     studioTestDataDir: path.join(projectRoot, 'scripts', 'test-data', 'studios'),
-    studioImageSourceDir: path.join(projectRoot, 'tests', 'Test_Data', 'StudioImages'),
+    studioImageSourceDir: path.join(projectRoot, 'scripts', 'test-data', 'image_set', 'studio_source'),
+    // Studio images now organized by studio (studio-first structure)
+    // Each studio directory contains: studio_info.json + image files
     
     // Frontend mock data
     frontendMockData: path.join(projectRoot, 'frontend', 'src', 'app', 'data', 'mockArtistData.js'),
@@ -81,9 +83,8 @@ function getPlatformPaths(environment) {
     dockerComposeFile: path.join(projectRoot, 'devtools', 'docker', 'docker-compose.local.yml'),
     
     // Output directories
-    outputDir: path.join(projectRoot, 'scripts', 'output'),
-    logsDir: path.join(projectRoot, 'scripts', 'logs'),
-    backupDir: path.join(projectRoot, 'scripts', 'backups')
+    outputDir: path.join(projectRoot, '.metrics', 'generated'),
+    logsDir: path.join(projectRoot, 'scripts', 'logs')
   };
 }
 
@@ -462,7 +463,6 @@ class DataConfiguration {
       this.paths.stateTrackingDir,
       this.paths.outputDir,
       this.paths.logsDir,
-      this.paths.backupDir,
       this.paths.studioTestDataDir,
       this.paths.studioImageSourceDir
     ];

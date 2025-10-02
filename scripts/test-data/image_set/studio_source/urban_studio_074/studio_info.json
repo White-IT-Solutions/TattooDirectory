@@ -1,0 +1,16 @@
+{
+  "name": "Urban Studio",
+  "location": "Exeter",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_urban_studio.png"
+    ],
+    "external": [
+      "external_01_urban_studio.png"
+    ],
+    "working": [
+      "working_01_urban_studio.png"
+    ]
+  }
+}

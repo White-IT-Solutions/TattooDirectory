@@ -1,0 +1,16 @@
+{
+  "name": "Vintage Heart Parlour",
+  "location": "Norwich",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_vintage_heart_parlour.png"
+    ],
+    "external": [
+      "external_01_vintage_heart_parlour.png"
+    ],
+    "working": [
+      "working_01_vintage_heart_parlour.png"
+    ]
+  }
+}

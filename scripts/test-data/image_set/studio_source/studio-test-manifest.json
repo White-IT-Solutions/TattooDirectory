@@ -1,0 +1,2551 @@
+{
+  "studioTestManifest": {
+    "version": "2.0",
+    "description": "Studio-first test manifest for complete studio profile testing",
+    "lastUpdated": "2025-10-02",
+    "structure": "studio-first",
+    "totalStudios": 102,
+    "studios": [
+      {
+        "studioId": "anchor_collective_078",
+        "name": "Anchor Collective",
+        "location": "Newcastle",
+        "type": "clean medical",
+        "images": {
+          "external": [
+            "external_01_anchor_collective.png"
+          ],
+          "internal": [
+            "internal_01_anchor_collective.png"
+          ],
+          "working": [
+            "working_01_anchor_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "anchor_house_092",
+        "name": "Anchor House",
+        "location": "Newcastle",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_anchor_house.png"
+          ],
+          "internal": [
+            "internal_01_anchor_house.png"
+          ],
+          "working": [
+            "working_01_anchor_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "anchor_parlour_040",
+        "name": "Anchor Parlour",
+        "location": "Manchester",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_anchor_parlour.png"
+          ],
+          "internal": [
+            "internal_01_anchor_parlour.png"
+          ],
+          "working": [
+            "working_01_anchor_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "black_parlour_043",
+        "name": "Black Parlour",
+        "location": "Norwich",
+        "type": "cozy boutique",
+        "images": {
+          "external": [
+            "external_01_black_parlour.png"
+          ],
+          "internal": [
+            "internal_01_black_parlour.png"
+          ],
+          "working": [
+            "working_01_black_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "black_shop_001",
+        "name": "Black Shop",
+        "location": "Manchester",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_black_shop.png"
+          ],
+          "internal": [
+            "internal_01_black_shop.png"
+          ],
+          "working": [
+            "working_01_black_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "black_sun_gallery_025",
+        "name": "Black Sun Gallery",
+        "location": "Glasgow",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_black_sun_gallery.png"
+          ],
+          "internal": [
+            "internal_01_black_sun_gallery.png"
+          ],
+          "working": [
+            "working_01_black_sun_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "classic_collective_054",
+        "name": "Classic Collective",
+        "location": "Newcastle",
+        "type": "modern minimalist",
+        "images": {
+          "external": [
+            "external_01_classic_collective.png"
+          ],
+          "internal": [
+            "internal_01_classic_collective.png"
+          ],
+          "working": [
+            "working_01_classic_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "classic_collective_095",
+        "name": "Classic Collective",
+        "location": "Newcastle",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_classic_collective.png"
+          ],
+          "internal": [
+            "internal_01_classic_collective.png"
+          ],
+          "working": [
+            "working_01_classic_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "classic_house_028",
+        "name": "Classic House",
+        "location": "Norwich",
+        "type": "clean medical",
+        "images": {
+          "external": [
+            "external_01_classic_house.png"
+          ],
+          "internal": [
+            "internal_01_classic_house.png"
+          ],
+          "working": [
+            "working_01_classic_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "classic_studio_079",
+        "name": "Classic Studio",
+        "location": "Cardiff",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_classic_studio.png"
+          ],
+          "internal": [
+            "internal_01_classic_studio.png"
+          ],
+          "working": [
+            "working_01_classic_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "crown_parlour_050",
+        "name": "Crown Parlour",
+        "location": "Newcastle",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_crown_parlour.png"
+          ],
+          "internal": [
+            "internal_01_crown_parlour.png"
+          ],
+          "working": [
+            "working_01_crown_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "crown_tattoo_034",
+        "name": "Crown Tattoo",
+        "location": "Oxford",
+        "type": "clean medical",
+        "images": {
+          "external": [
+            "external_01_crown_tattoo.png"
+          ],
+          "internal": [
+            "internal_01_crown_tattoo.png"
+          ],
+          "working": [
+            "working_01_crown_tattoo.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_gallery_042",
+        "name": "Dragon Gallery",
+        "location": "Edinburgh",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_dragon_gallery.png"
+          ],
+          "internal": [
+            "internal_01_dragon_gallery.png"
+          ],
+          "working": [
+            "working_01_dragon_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_house_007",
+        "name": "Dragon House",
+        "location": "Sheffield",
+        "type": "modern minimalist",
+        "images": {
+          "external": [
+            "external_01_dragon_house.png"
+          ],
+          "internal": [
+            "internal_01_dragon_house.png"
+          ],
+          "working": [
+            "working_01_dragon_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_house_084",
+        "name": "Dragon House",
+        "location": "Leeds",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_dragon_house.png"
+          ],
+          "internal": [
+            "internal_01_dragon_house.png"
+          ],
+          "working": [
+            "working_01_dragon_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_ink_064",
+        "name": "Dragon Ink",
+        "location": "Cardiff",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_dragon_ink.png"
+          ],
+          "internal": [
+            "internal_01_dragon_ink.png"
+          ],
+          "working": [
+            "working_01_dragon_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_parlour_015",
+        "name": "Dragon Parlour",
+        "location": "Sheffield",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_dragon_parlour.png"
+          ],
+          "internal": [
+            "internal_01_dragon_parlour.png"
+          ],
+          "working": [
+            "working_01_dragon_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "dragon_tattoo_065",
+        "name": "Dragon Tattoo",
+        "location": "Bath",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_dragon_tattoo.png"
+          ],
+          "internal": [
+            "internal_01_dragon_tattoo.png"
+          ],
+          "working": [
+            "working_01_dragon_tattoo.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_anchor_collective_076",
+        "name": "Electric Anchor Collective",
+        "location": "Sheffield",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_electric_anchor_collective.png"
+          ],
+          "internal": [
+            "internal_01_electric_anchor_collective.png"
+          ],
+          "working": [
+            "working_01_electric_anchor_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_anchor_parlour_021",
+        "name": "Electric Anchor Parlour",
+        "location": "Leeds",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_electric_anchor_parlour.png"
+          ],
+          "internal": [
+            "internal_01_electric_anchor_parlour.png"
+          ],
+          "working": [
+            "working_01_electric_anchor_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_collective_001",
+        "name": "Electric Collective",
+        "location": "Exeter",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_electric_collective.png"
+          ],
+          "internal": [
+            "internal_01_electric_collective.png"
+          ],
+          "working": [
+            "working_01_electric_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_dragon_collective_047",
+        "name": "Electric Dragon Collective",
+        "location": "Brighton",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_electric_dragon_collective.png"
+          ],
+          "internal": [
+            "internal_01_electric_dragon_collective.png"
+          ],
+          "working": [
+            "working_01_electric_dragon_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_dragon_collective_071",
+        "name": "Electric Dragon Collective",
+        "location": "Edinburgh",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_electric_dragon_collective.png"
+          ],
+          "internal": [
+            "internal_01_electric_dragon_collective.png"
+          ],
+          "working": [
+            "working_01_electric_dragon_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_dragon_gallery_032",
+        "name": "Electric Dragon Gallery",
+        "location": "Edinburgh",
+        "type": "urban loft",
+        "images": {
+          "external": [
+            "external_01_electric_dragon_gallery.png"
+          ],
+          "internal": [
+            "internal_01_electric_dragon_gallery.png"
+          ],
+          "working": [
+            "working_01_electric_dragon_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_dragon_house_055",
+        "name": "Electric Dragon House",
+        "location": "Bath",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_electric_dragon_house.png"
+          ],
+          "internal": [
+            "internal_01_electric_dragon_house.png"
+          ],
+          "working": [
+            "working_01_electric_dragon_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_gallery_097",
+        "name": "Electric Gallery",
+        "location": "Norwich",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_electric_gallery.png"
+          ],
+          "internal": [
+            "internal_01_electric_gallery.png"
+          ],
+          "working": [
+            "working_01_electric_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_phoenix_parlour_018",
+        "name": "Electric Phoenix Parlour",
+        "location": "Bath",
+        "type": "urban loft",
+        "images": {
+          "external": [
+            "external_01_electric_phoenix_parlour.png"
+          ],
+          "internal": [
+            "internal_01_electric_phoenix_parlour.png"
+          ],
+          "working": [
+            "working_01_electric_phoenix_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "electric_tattoo_087",
+        "name": "Electric Tattoo",
+        "location": "Portsmouth",
+        "type": "vintage traditional",
+        "images": {
+          "external": [
+            "external_01_electric_tattoo.png"
+          ],
+          "internal": [
+            "internal_01_electric_tattoo.png"
+          ],
+          "working": [
+            "working_01_electric_tattoo.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "heart_collective_013",
+        "name": "Heart Collective",
+        "location": "Newcastle",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_heart_collective.png"
+          ],
+          "internal": [
+            "internal_01_heart_collective.png"
+          ],
+          "working": [
+            "working_01_heart_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "heart_collective_053",
+        "name": "Heart Collective",
+        "location": "Leeds",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_heart_collective.png"
+          ],
+          "internal": [
+            "internal_01_heart_collective.png"
+          ],
+          "working": [
+            "working_01_heart_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "heart_shop_036",
+        "name": "Heart Shop",
+        "location": "Oxford",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_heart_shop.png"
+          ],
+          "internal": [
+            "internal_01_heart_shop.png"
+          ],
+          "working": [
+            "working_01_heart_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_collective_073",
+        "name": "Ink Collective",
+        "location": "Norwich",
+        "type": "cozy boutique",
+        "images": {
+          "external": [
+            "external_01_ink_collective.png"
+          ],
+          "internal": [
+            "internal_01_ink_collective.png"
+          ],
+          "working": [
+            "working_01_ink_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_dragon_art_027",
+        "name": "Ink Dragon Art",
+        "location": "York",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_ink_dragon_art.png"
+          ],
+          "internal": [
+            "internal_01_ink_dragon_art.png"
+          ],
+          "working": [
+            "working_01_ink_dragon_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_heart_art_039",
+        "name": "Ink Heart Art",
+        "location": "Sheffield",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_ink_heart_art.png"
+          ],
+          "internal": [
+            "internal_01_ink_heart_art.png"
+          ],
+          "working": [
+            "working_01_ink_heart_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_moon_collective_080",
+        "name": "Ink Moon Collective",
+        "location": "Brighton",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_ink_moon_collective.png"
+          ],
+          "internal": [
+            "internal_01_ink_moon_collective.png"
+          ],
+          "working": [
+            "working_01_ink_moon_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_parlour_001",
+        "name": "Ink Parlour",
+        "location": "Newcastle",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_ink_parlour.png"
+          ],
+          "internal": [
+            "internal_01_ink_parlour.png"
+          ],
+          "working": [
+            "working_01_ink_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "ink_phoenix_parlour_077",
+        "name": "Ink Phoenix Parlour",
+        "location": "Oxford",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_ink_phoenix_parlour.png"
+          ],
+          "internal": [
+            "internal_01_ink_phoenix_parlour.png"
+          ],
+          "working": [
+            "working_01_ink_phoenix_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_anchor_shop_009",
+        "name": "Modern Anchor Shop",
+        "location": "Leeds",
+        "type": "modern minimalist",
+        "images": {
+          "external": [
+            "external_01_modern_anchor_shop.png"
+          ],
+          "internal": [
+            "internal_01_modern_anchor_shop.png"
+          ],
+          "working": [
+            "working_01_modern_anchor_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_collective_017",
+        "name": "Modern Collective",
+        "location": "Newcastle",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_modern_collective.png"
+          ],
+          "internal": [
+            "internal_01_modern_collective.png"
+          ],
+          "working": [
+            "working_01_modern_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_dragon_house_019",
+        "name": "Modern Dragon House",
+        "location": "Manchester",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_modern_dragon_house.png"
+          ],
+          "internal": [
+            "internal_01_modern_dragon_house.png"
+          ],
+          "working": [
+            "working_01_modern_dragon_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_gallery_070",
+        "name": "Modern Gallery",
+        "location": "Birmingham",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_modern_gallery.png"
+          ],
+          "internal": [
+            "internal_01_modern_gallery.png"
+          ],
+          "working": [
+            "working_01_modern_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_heart_art_008",
+        "name": "Modern Heart Art",
+        "location": "Belfast",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_modern_heart_art.png"
+          ],
+          "internal": [
+            "internal_01_modern_heart_art.png"
+          ],
+          "working": [
+            "working_01_modern_heart_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_parlour_086",
+        "name": "Modern Parlour",
+        "location": "Oxford",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_modern_parlour.png"
+          ],
+          "internal": [
+            "internal_01_modern_parlour.png"
+          ],
+          "working": [
+            "working_01_modern_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_rose_studio_020",
+        "name": "Modern Rose Studio",
+        "location": "Leeds",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_modern_rose_studio.png"
+          ],
+          "internal": [
+            "internal_01_modern_rose_studio.png"
+          ],
+          "working": [
+            "working_01_modern_rose_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_shop_014",
+        "name": "Modern Shop",
+        "location": "Portsmouth",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_modern_shop.png"
+          ],
+          "internal": [
+            "internal_01_modern_shop.png"
+          ],
+          "working": [
+            "working_01_modern_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_shop_022",
+        "name": "Modern Shop",
+        "location": "Bristol",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_modern_shop.png"
+          ],
+          "internal": [
+            "internal_01_modern_shop.png"
+          ],
+          "working": [
+            "working_01_modern_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "modern_skull_art_006",
+        "name": "Modern Skull Art",
+        "location": "Chester",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_modern_skull_art.png"
+          ],
+          "internal": [
+            "internal_01_modern_skull_art.png"
+          ],
+          "working": [
+            "working_01_modern_skull_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "moon_collective_031",
+        "name": "Moon Collective",
+        "location": "Edinburgh",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_moon_collective.png"
+          ],
+          "internal": [
+            "internal_01_moon_collective.png"
+          ],
+          "working": [
+            "working_01_moon_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "moon_gallery_062",
+        "name": "Moon Gallery",
+        "location": "Nottingham",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_moon_gallery.png"
+          ],
+          "internal": [
+            "internal_01_moon_gallery.png"
+          ],
+          "working": [
+            "working_01_moon_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "moon_shop_012",
+        "name": "Moon Shop",
+        "location": "Brighton",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_moon_shop.png"
+          ],
+          "internal": [
+            "internal_01_moon_shop.png"
+          ],
+          "working": [
+            "working_01_moon_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "phoenix_shop_063",
+        "name": "Phoenix Shop",
+        "location": "Manchester",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_phoenix_shop.png"
+          ],
+          "internal": [
+            "internal_01_phoenix_shop.png"
+          ],
+          "working": [
+            "working_01_phoenix_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "phoenix_works_098",
+        "name": "Phoenix Works",
+        "location": "Liverpool",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_phoenix_works.png"
+          ],
+          "internal": [
+            "internal_01_phoenix_works.png"
+          ],
+          "working": [
+            "working_01_phoenix_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_art_058",
+        "name": "Rebel Art",
+        "location": "Bath",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_rebel_art.png"
+          ],
+          "internal": [
+            "internal_01_rebel_art.png"
+          ],
+          "working": [
+            "working_01_rebel_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_house_030",
+        "name": "Rebel House",
+        "location": "Sheffield",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_rebel_house.png"
+          ],
+          "internal": [
+            "internal_01_rebel_house.png"
+          ],
+          "working": [
+            "working_01_rebel_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_house_060",
+        "name": "Rebel House",
+        "location": "Newcastle",
+        "type": "vintage traditional",
+        "images": {
+          "external": [
+            "external_01_rebel_house.png"
+          ],
+          "internal": [
+            "internal_01_rebel_house.png"
+          ],
+          "working": [
+            "working_01_rebel_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_ink_016",
+        "name": "Rebel Ink",
+        "location": "Edinburgh",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_rebel_ink.png"
+          ],
+          "internal": [
+            "internal_01_rebel_ink.png"
+          ],
+          "working": [
+            "working_01_rebel_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_ink_035",
+        "name": "Rebel Ink",
+        "location": "Bath",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_rebel_ink.png"
+          ],
+          "internal": [
+            "internal_01_rebel_ink.png"
+          ],
+          "working": [
+            "working_01_rebel_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_ink_052",
+        "name": "Rebel Ink",
+        "location": "Nottingham",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_rebel_ink.png"
+          ],
+          "internal": [
+            "internal_01_rebel_ink.png"
+          ],
+          "working": [
+            "working_01_rebel_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_skull_collective_049",
+        "name": "Rebel Skull Collective",
+        "location": "Canterbury",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_rebel_skull_collective.png"
+          ],
+          "internal": [
+            "internal_01_rebel_skull_collective.png"
+          ],
+          "working": [
+            "working_01_rebel_skull_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rebel_tattoo_082",
+        "name": "Rebel Tattoo",
+        "location": "Leeds",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_rebel_tattoo.png"
+          ],
+          "internal": [
+            "internal_01_rebel_tattoo.png"
+          ],
+          "working": [
+            "working_01_rebel_tattoo.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rose_gallery_099",
+        "name": "Rose Gallery",
+        "location": "London",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_rose_gallery.png"
+          ],
+          "internal": [
+            "internal_01_rose_gallery.png"
+          ],
+          "working": [
+            "working_01_rose_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rose_house_100",
+        "name": "Rose House",
+        "location": "Canterbury",
+        "type": "cozy boutique",
+        "images": {
+          "external": [
+            "external_01_rose_house.png"
+          ],
+          "internal": [
+            "internal_01_rose_house.png"
+          ],
+          "working": [
+            "working_01_rose_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rose_parlour_048",
+        "name": "Rose Parlour",
+        "location": "Bath",
+        "type": "clean medical",
+        "images": {
+          "external": [
+            "external_01_rose_parlour.png"
+          ],
+          "internal": [
+            "internal_01_rose_parlour.png"
+          ],
+          "working": [
+            "working_01_rose_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rose_studio_002",
+        "name": "Rose Studio",
+        "location": "London",
+        "type": "urban loft",
+        "images": {
+          "external": [
+            "external_01_rose_studio.png"
+          ],
+          "internal": [
+            "internal_01_rose_studio.png"
+          ],
+          "working": [
+            "working_01_rose_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "rose_works_067",
+        "name": "Rose Works",
+        "location": "Newcastle",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_rose_works.png"
+          ],
+          "internal": [
+            "internal_01_rose_works.png"
+          ],
+          "working": [
+            "working_01_rose_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_house_005",
+        "name": "Royal House",
+        "location": "Sheffield",
+        "type": "modern minimalist",
+        "images": {
+          "external": [
+            "external_01_royal_house.png"
+          ],
+          "internal": [
+            "internal_01_royal_house.png"
+          ],
+          "working": [
+            "working_01_royal_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_rose_gallery_066",
+        "name": "Royal Rose Gallery",
+        "location": "Glasgow",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_royal_rose_gallery.png"
+          ],
+          "internal": [
+            "internal_01_royal_rose_gallery.png"
+          ],
+          "working": [
+            "working_01_royal_rose_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_rose_shop_075",
+        "name": "Royal Rose Shop",
+        "location": "Norwich",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_royal_rose_shop.png"
+          ],
+          "internal": [
+            "internal_01_royal_rose_shop.png"
+          ],
+          "working": [
+            "working_01_royal_rose_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_shop_083",
+        "name": "Royal Shop",
+        "location": "York",
+        "type": "urban loft",
+        "images": {
+          "external": [
+            "external_01_royal_shop.png"
+          ],
+          "internal": [
+            "internal_01_royal_shop.png"
+          ],
+          "working": [
+            "working_01_royal_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_studio_045",
+        "name": "Royal Studio",
+        "location": "Birmingham",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_royal_studio.png"
+          ],
+          "internal": [
+            "internal_01_royal_studio.png"
+          ],
+          "working": [
+            "working_01_royal_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_sun_gallery_051",
+        "name": "Royal Sun Gallery",
+        "location": "Chester",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_royal_sun_gallery.png"
+          ],
+          "internal": [
+            "internal_01_royal_sun_gallery.png"
+          ],
+          "working": [
+            "working_01_royal_sun_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "royal_works_029",
+        "name": "Royal Works",
+        "location": "Canterbury",
+        "type": "classic traditional",
+        "images": {
+          "external": [
+            "external_01_royal_works.png"
+          ],
+          "internal": [
+            "internal_01_royal_works.png"
+          ],
+          "working": [
+            "working_01_royal_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_art_096",
+        "name": "Sacred Art",
+        "location": "Portsmouth",
+        "type": "cozy boutique",
+        "images": {
+          "external": [
+            "external_01_sacred_art.png"
+          ],
+          "internal": [
+            "internal_01_sacred_art.png"
+          ],
+          "working": [
+            "working_01_sacred_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_collective_088",
+        "name": "Sacred Collective",
+        "location": "Nottingham",
+        "type": "futuristic modern",
+        "images": {
+          "external": [
+            "external_01_sacred_collective.png"
+          ],
+          "internal": [
+            "internal_01_sacred_collective.png"
+          ],
+          "working": [
+            "working_01_sacred_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_heart_art_044",
+        "name": "Sacred Heart Art",
+        "location": "Cardiff",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_sacred_heart_art.png"
+          ],
+          "internal": [
+            "internal_01_sacred_heart_art.png"
+          ],
+          "working": [
+            "working_01_sacred_heart_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_rose_ink_003",
+        "name": "Sacred Rose Ink",
+        "location": "Portsmouth",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_sacred_rose_ink.png"
+          ],
+          "internal": [
+            "internal_01_sacred_rose_ink.png"
+          ],
+          "working": [
+            "working_01_sacred_rose_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_rose_studio_094",
+        "name": "Sacred Rose Studio",
+        "location": "Oxford",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_sacred_rose_studio.png"
+          ],
+          "internal": [
+            "internal_01_sacred_rose_studio.png"
+          ],
+          "working": [
+            "working_01_sacred_rose_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "sacred_shop_059",
+        "name": "Sacred Shop",
+        "location": "London",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_sacred_shop.png"
+          ],
+          "internal": [
+            "internal_01_sacred_shop.png"
+          ],
+          "working": [
+            "working_01_sacred_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "skull_collective_069",
+        "name": "Skull Collective",
+        "location": "Birmingham",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_skull_collective.png"
+          ],
+          "internal": [
+            "internal_01_skull_collective.png"
+          ],
+          "working": [
+            "working_01_skull_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "skull_collective_081",
+        "name": "Skull Collective",
+        "location": "Birmingham",
+        "type": "bright contemporary",
+        "images": {
+          "external": [
+            "external_01_skull_collective.png"
+          ],
+          "internal": [
+            "internal_01_skull_collective.png"
+          ],
+          "working": [
+            "working_01_skull_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "skull_studio_090",
+        "name": "Skull Studio",
+        "location": "Manchester",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_skull_studio.png"
+          ],
+          "internal": [
+            "internal_01_skull_studio.png"
+          ],
+          "working": [
+            "working_01_skull_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "skull_works_072",
+        "name": "Skull Works",
+        "location": "Newcastle",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_skull_works.png"
+          ],
+          "internal": [
+            "internal_01_skull_works.png"
+          ],
+          "working": [
+            "working_01_skull_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "star_studio_085",
+        "name": "Star Studio",
+        "location": "Bath",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_star_studio.png"
+          ],
+          "internal": [
+            "internal_01_star_studio.png"
+          ],
+          "working": [
+            "working_01_star_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "star_works_057",
+        "name": "Star Works",
+        "location": "Newcastle",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_star_works.png"
+          ],
+          "internal": [
+            "internal_01_star_works.png"
+          ],
+          "working": [
+            "working_01_star_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_art_010",
+        "name": "Urban Art",
+        "location": "York",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_urban_art.png"
+          ],
+          "internal": [
+            "internal_01_urban_art.png"
+          ],
+          "working": [
+            "working_01_urban_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_art_037",
+        "name": "Urban Art",
+        "location": "Edinburgh",
+        "type": "urban loft",
+        "images": {
+          "external": [
+            "external_01_urban_art.png"
+          ],
+          "internal": [
+            "internal_01_urban_art.png"
+          ],
+          "working": [
+            "working_01_urban_art.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_collective_089",
+        "name": "Urban Collective",
+        "location": "Edinburgh",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_urban_collective.png"
+          ],
+          "internal": [
+            "internal_01_urban_collective.png"
+          ],
+          "working": [
+            "working_01_urban_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_dragon_works_041",
+        "name": "Urban Dragon Works",
+        "location": "Birmingham",
+        "type": "clean medical",
+        "images": {
+          "external": [
+            "external_01_urban_dragon_works.png"
+          ],
+          "internal": [
+            "internal_01_urban_dragon_works.png"
+          ],
+          "working": [
+            "working_01_urban_dragon_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_gallery_026",
+        "name": "Urban Gallery",
+        "location": "Cambridge",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_urban_gallery.png"
+          ],
+          "internal": [
+            "internal_01_urban_gallery.png"
+          ],
+          "working": [
+            "working_01_urban_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_house_046",
+        "name": "Urban House",
+        "location": "Manchester",
+        "type": "gothic dark",
+        "images": {
+          "external": [
+            "external_01_urban_house.png"
+          ],
+          "internal": [
+            "internal_01_urban_house.png"
+          ],
+          "working": [
+            "working_01_urban_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_moon_works_024",
+        "name": "Urban Moon Works",
+        "location": "Brighton",
+        "type": "high-end luxury",
+        "images": {
+          "external": [
+            "external_01_urban_moon_works.png"
+          ],
+          "internal": [
+            "internal_01_urban_moon_works.png"
+          ],
+          "working": [
+            "working_01_urban_moon_works.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_shop_011",
+        "name": "Urban Shop",
+        "location": "Norwich",
+        "type": "futuristic modern",
+        "images": {
+          "external": [
+            "external_01_urban_shop.png"
+          ],
+          "internal": [
+            "internal_01_urban_shop.png"
+          ],
+          "working": [
+            "working_01_urban_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_shop_056",
+        "name": "Urban Shop",
+        "location": "Bristol",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_urban_shop.png"
+          ],
+          "internal": [
+            "internal_01_urban_shop.png"
+          ],
+          "working": [
+            "working_01_urban_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_skull_gallery_004",
+        "name": "Urban Skull Gallery",
+        "location": "Bristol",
+        "type": "futuristic modern",
+        "images": {
+          "external": [
+            "external_01_urban_skull_gallery.png"
+          ],
+          "internal": [
+            "internal_01_urban_skull_gallery.png"
+          ],
+          "working": [
+            "working_01_urban_skull_gallery.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_star_collective_061",
+        "name": "Urban Star Collective",
+        "location": "Liverpool",
+        "type": "vintage traditional",
+        "images": {
+          "external": [
+            "external_01_urban_star_collective.png"
+          ],
+          "internal": [
+            "internal_01_urban_star_collective.png"
+          ],
+          "working": [
+            "working_01_urban_star_collective.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "urban_studio_074",
+        "name": "Urban Studio",
+        "location": "Exeter",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_urban_studio.png"
+          ],
+          "internal": [
+            "internal_01_urban_studio.png"
+          ],
+          "working": [
+            "working_01_urban_studio.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_dragon_shop_038",
+        "name": "Vintage Dragon Shop",
+        "location": "Plymouth",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_vintage_dragon_shop.png"
+          ],
+          "internal": [
+            "internal_01_vintage_dragon_shop.png"
+          ],
+          "working": [
+            "working_01_vintage_dragon_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_heart_parlour_068",
+        "name": "Vintage Heart Parlour",
+        "location": "Norwich",
+        "type": "retro americana",
+        "images": {
+          "external": [
+            "external_01_vintage_heart_parlour.png"
+          ],
+          "internal": [
+            "internal_01_vintage_heart_parlour.png"
+          ],
+          "working": [
+            "working_01_vintage_heart_parlour.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_house_033",
+        "name": "Vintage House",
+        "location": "Bath",
+        "type": "industrial chic",
+        "images": {
+          "external": [
+            "external_01_vintage_house.png"
+          ],
+          "internal": [
+            "internal_01_vintage_house.png"
+          ],
+          "working": [
+            "working_01_vintage_house.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_ink_023",
+        "name": "Vintage Ink",
+        "location": "Birmingham",
+        "type": "rustic vintage",
+        "images": {
+          "external": [
+            "external_01_vintage_ink.png"
+          ],
+          "internal": [
+            "internal_01_vintage_ink.png"
+          ],
+          "working": [
+            "working_01_vintage_ink.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_phoenix_shop_093",
+        "name": "Vintage Phoenix Shop",
+        "location": "Leeds",
+        "type": "street art inspired",
+        "images": {
+          "external": [
+            "external_01_vintage_phoenix_shop.png"
+          ],
+          "internal": [
+            "internal_01_vintage_phoenix_shop.png"
+          ],
+          "working": [
+            "working_01_vintage_phoenix_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      },
+      {
+        "studioId": "vintage_shop_091",
+        "name": "Vintage Shop",
+        "location": "Canterbury",
+        "type": "artistic bohemian",
+        "images": {
+          "external": [
+            "external_01_vintage_shop.png"
+          ],
+          "internal": [
+            "internal_01_vintage_shop.png"
+          ],
+          "working": [
+            "working_01_vintage_shop.png"
+          ]
+        },
+        "totalImages": 3,
+        "testScenarios": [
+          "studio_profile_complete",
+          "image_processing_pipeline",
+          "metadata_validation",
+          "multi_type_images"
+        ]
+      }
+    ],
+    "imageTypes": {
+      "external": {
+        "description": "Studio exterior and entrance photos",
+        "requiredCount": 1,
+        "testScenarios": [
+          "basic_upload",
+          "format_conversion",
+          "resize_test"
+        ]
+      },
+      "internal": {
+        "description": "Studio interior workspace photos",
+        "requiredCount": 1,
+        "testScenarios": [
+          "basic_upload",
+          "format_conversion",
+          "quality_test"
+        ]
+      },
+      "working": {
+        "description": "Studio working environment and equipment photos",
+        "requiredCount": 1,
+        "testScenarios": [
+          "basic_upload",
+          "detail_preservation",
+          "compression_test"
+        ]
+      }
+    },
+    "testScenarios": {
+      "studio_profile_complete": {
+        "description": "Test complete studio profile processing",
+        "expectedResult": "Studio processed with all image types and metadata",
+        "validation": [
+          "metadata_exists",
+          "all_image_types_present",
+          "images_accessible"
+        ]
+      },
+      "image_processing_pipeline": {
+        "description": "Test end-to-end image processing for studio",
+        "expectedResult": "All studio images processed and optimized",
+        "validation": [
+          "images_uploaded",
+          "thumbnails_created",
+          "webp_versions_exist"
+        ]
+      },
+      "metadata_validation": {
+        "description": "Test studio metadata validation and enrichment",
+        "expectedResult": "Studio metadata validated and enriched",
+        "validation": [
+          "required_fields_present",
+          "location_validated",
+          "type_classified"
+        ]
+      },
+      "multi_type_images": {
+        "description": "Test processing multiple image types per studio",
+        "expectedResult": "All image types processed correctly",
+        "validation": [
+          "external_images_processed",
+          "internal_images_processed",
+          "working_images_processed"
+        ]
+      }
+    },
+    "validationRules": {
+      "minImagesPerStudio": 1,
+      "maxImagesPerStudio": 10,
+      "requiredImageTypes": [
+        "external",
+        "internal"
+      ],
+      "optionalImageTypes": [
+        "working"
+      ],
+      "supportedFormats": [
+        "jpg",
+        "jpeg",
+        "png",
+        "webp"
+      ],
+      "minWidth": 800,
+      "maxFileSize": 5242880,
+      "namingConvention": "studios/{studioId}/{type}_{index}_{studio_name}.{ext}"
+    },
+    "performanceTargets": {
+      "studioProcessingTime": "< 30 seconds per studio",
+      "imageUploadTime": "< 5 seconds per image",
+      "metadataProcessingTime": "< 2 seconds per studio"
+    }
+  }
+}

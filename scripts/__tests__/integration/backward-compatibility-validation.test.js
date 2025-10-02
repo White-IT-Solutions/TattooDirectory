@@ -12,10 +12,10 @@
 const { execSync, spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { UnifiedDataManager } = require('../../unified-data-manager');
-const { MigrationUtility } = require('../../migration-utility');
-const { SystemTester } = require('../../comprehensive-system-test');
-const { BackwardCompatibilityLayer } = require('../../backward-compatibility');
+const { UnifiedDataManager } = require('../../data-management/unified-data-manager');
+const { MigrationUtility } = require('../../utilities/migration/migration-utility');
+const { SystemTester } = require('../../testing/comprehensive-system-test');
+const { BackwardCompatibilityLayer } = require('../../utilities/migration/backward-compatibility');
 
 class BackwardCompatibilityValidator {
   constructor() {
@@ -343,7 +343,7 @@ class BackwardCompatibilityValidator {
    * Test health monitoring
    */
   async testHealthMonitoring() {
-    const { HealthMonitor } = require('../../health-monitor');
+    const { HealthMonitor } = require('../../utilities/health-monitor');
     const healthMonitor = new HealthMonitor();
     
     if (typeof healthMonitor.checkAllServices !== 'function') {
@@ -387,7 +387,7 @@ class BackwardCompatibilityValidator {
    * Test error handling
    */
   async testErrorHandling() {
-    const { ErrorHandler } = require('../../error-handler');
+    const { ErrorHandler } = require('../../utilities/error-handler');
     const errorHandler = new ErrorHandler();
     
     if (typeof errorHandler.handleError !== 'function') {

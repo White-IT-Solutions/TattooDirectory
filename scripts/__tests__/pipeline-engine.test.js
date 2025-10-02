@@ -5,21 +5,21 @@
  * parallel execution, progress tracking, and error handling mechanisms.
  */
 
-const { DataPipeline, PIPELINE_STAGES, OPERATION_TYPES } = require('../pipeline-engine');
+const { DataPipeline, PIPELINE_STAGES, OPERATION_TYPES } = require('../data-management/pipeline-engine');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock dependencies
-jest.mock('../state-manager');
-jest.mock('../image-processor');
-jest.mock('../database-seeder');
-jest.mock('../frontend-sync-processor');
-jest.mock('../error-handler');
+jest.mock('../utilities/state-manager');
+jest.mock('../data-management/image-processor');
+jest.mock('../data-management/database-seeder');
+jest.mock('../data-management/frontend-sync-processor');
+jest.mock('../utilities/error-handler');
 
-const { STATE_MANAGER } = require('../state-manager');
-const { ImageProcessor } = require('../image-processor');
-const { DatabaseSeeder } = require('../database-seeder');
-const { FrontendSyncProcessor } = require('../frontend-sync-processor');
-const { ErrorHandler } = require('../error-handler');
+const { STATE_MANAGER } = require('../utilities/state-manager');
+const { ImageProcessor } = require('../data-management/image-processor');
+const { DatabaseSeeder } = require('../data-management/database-seeder');
+const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
+const { ErrorHandler } = require('../utilities/error-handler');
 
 describe('DataPipeline', () => {
   let pipeline;

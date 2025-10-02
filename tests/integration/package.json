@@ -1,5 +1,5 @@
 {
-  "name": "@tattoo-directory/integration-tests",
+  "name": "tattoo-directory-integration-tests",
   "version": "1.0.0",
   "description": "Integration tests for Tattoo Directory API with LocalStack backend",
   "type": "module",

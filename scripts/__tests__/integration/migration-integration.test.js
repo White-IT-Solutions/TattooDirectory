@@ -5,14 +5,14 @@
  * backward compatibility, migration utilities, and validation.
  */
 
-const { BackwardCompatibilityLayer } = require('../../backward-compatibility');
-const { MigrationUtility } = require('../../migration-utility');
-const { ComparisonValidator } = require('../../comparison-validator');
-const { UnifiedDataManager } = require('../../unified-data-manager');
+const { BackwardCompatibilityLayer } = require('../../utilities/migration/backward-compatibility');
+const { MigrationUtility } = require('../../utilities/migration/migration-utility');
+const { ComparisonValidator } = require('../../utilities/migration/comparison-validator');
+const { UnifiedDataManager } = require('../../data-management/unified-data-manager');
 const fs = require('fs');
 
 // Mock dependencies
-jest.mock('../../unified-data-manager');
+jest.mock('../../data-management/unified-data-manager');
 jest.mock('fs');
 
 describe('Migration Integration', () => {
@@ -127,7 +127,7 @@ describe('Migration Integration', () => {
           s3Bucket: 'tattoo-directory-images'
         },
         paths: {
-          imageSource: 'tests/Test_Data/ImageSet',
+          imageSource: 'scripts/test-data/image_set/tattoo_source',
           testData: 'scripts/test-data'
         },
         scenarios: {

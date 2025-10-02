@@ -1,0 +1,16 @@
+{
+  "name": "Heart Shop",
+  "location": "Oxford",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_heart_shop.png"
+    ],
+    "external": [
+      "external_01_heart_shop.png"
+    ],
+    "working": [
+      "working_01_heart_shop.png"
+    ]
+  }
+}

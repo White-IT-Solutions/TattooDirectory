@@ -7,7 +7,7 @@
  */
 
 import { api } from './api.js';
-import { enhancedTattooStyles, searchStylesByAlias } from '../app/data/testData/enhancedTattooStyles.js';
+import { enhancedTattooStyles, searchStylesByAlias } from './data/tattooStyles.js';
 import { 
   debounce, 
   performanceMonitor, 

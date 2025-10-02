@@ -1,0 +1,16 @@
+{
+  "name": "Anchor Collective",
+  "location": "Newcastle",
+  "type": "clean medical",
+  "images": {
+    "internal": [
+      "internal_01_anchor_collective.png"
+    ],
+    "external": [
+      "external_01_anchor_collective.png"
+    ],
+    "working": [
+      "working_01_anchor_collective.png"
+    ]
+  }
+}

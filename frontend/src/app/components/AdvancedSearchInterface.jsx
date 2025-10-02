@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { enhancedTattooStyles, difficultyLevels } from "../data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, difficultyLevels } from '../../lib/data/tattooStyles.js';
 import { mockArtistData } from "../data/mockArtistData";
 import Button from "../../design-system/components/ui/Button/Button";
 import Card from "../../design-system/components/ui/Card/Card";

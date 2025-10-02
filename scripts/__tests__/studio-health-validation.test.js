@@ -7,13 +7,13 @@
  * Tests health monitoring, data consistency validation, and troubleshooting
  */
 
-const { HealthMonitor } = require('../health-monitor');
+const { HealthMonitor } = require('../utilities/health-monitor');
 const { StudioDataValidator } = require('../data-management/studio-data-validator');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock external dependencies
-jest.mock('../database-seeder');
-jest.mock('../state-manager');
+jest.mock('../data-management/database-seeder');
+jest.mock('../utilities/state-manager');
 
 describe('Studio Health Validation', () => {
   let healthMonitor;

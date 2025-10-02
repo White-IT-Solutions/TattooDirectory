@@ -175,16 +175,16 @@ awslocal s3 ls s3://tattoo-images/studios/ --recursive --endpoint-url http://loc
 2. **Check studio image structure:**
    ```bash
    # Verify studio image directories
-   ls -la tests/Test_Data/StudioImages/
+   ls -la scripts/test-data/image_set/studio_source/
    
    # Check studio image manifest
-   cat tests/Test_Data/StudioImages/image-test-manifest.json
+   cat scripts/test-data/image_set/studio_source/image-test-manifest.json
    ```
 
 3. **Manual studio image upload:**
    ```bash
    # Test manual studio image upload
-   awslocal s3 cp tests/Test_Data/StudioImages/exterior-1.jpg \
+   awslocal s3 cp scripts/test-data/image_set/studio_source/exterior-1.jpg \
      s3://tattoo-images/studios/studio-001/exterior-1.webp \
      --endpoint-url http://localhost:4566
    
@@ -515,16 +515,16 @@ curl http://localhost:4566/tattoo-directory-images
 2. **Check image files:**
    ```bash
    # Verify source images exist
-   ls -la tests/Test_Data/ImageSet/
+   ls -la scripts/test-data/image_set/tattoo_source/
    
    # Check file permissions
-   find tests/Test_Data/ImageSet/ -type f -name "*.png" -o -name "*.jpg"
+   find scripts/test-data/image_set/tattoo_source/ -type f -name "*.png" -o -name "*.jpg"
    ```
 
 3. **Manual image upload test:**
    ```bash
    # Test single image upload
-   awslocal s3 cp tests/Test_Data/ImageSet/traditional/tattoo_1.png \
+   awslocal s3 cp scripts/test-data/image_set/tattoo_source/traditional/tattoo_1.png \
      s3://tattoo-directory-images/test-image.png \
      --endpoint-url http://localhost:4566
    ```
@@ -879,7 +879,7 @@ ls -la .kiro/data-management-state/
 cat .kiro/data-management-state/last-state.json
 
 # Check file checksums
-find tests/Test_Data/ImageSet/ -type f -exec md5sum {} \;
+find scripts/test-data/image_set/tattoo_source/ -type f -exec md5sum {} \;
 ```
 
 **Solutions:**

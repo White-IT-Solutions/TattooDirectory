@@ -14,7 +14,7 @@ const s3 = new AWS.S3({
 });
 
 const BUCKET_NAME = 'tattoo-directory-images';
-const IMAGE_BASE_PATH = path.join(__dirname, '..', '..', 'tests', 'Test_Data', 'ImageSet');
+const IMAGE_BASE_PATH = path.join(__dirname, '..', '..', 'scripts', 'test-data', 'image_set', 'tattoo_source');
 
 // Style mapping from folder names to styleIds
 const STYLE_MAPPING = {

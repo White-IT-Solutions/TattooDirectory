@@ -1,0 +1,16 @@
+{
+  "name": "Urban Star Collective",
+  "location": "Liverpool",
+  "type": "vintage traditional",
+  "images": {
+    "internal": [
+      "internal_01_urban_star_collective.png"
+    ],
+    "external": [
+      "external_01_urban_star_collective.png"
+    ],
+    "working": [
+      "working_01_urban_star_collective.png"
+    ]
+  }
+}

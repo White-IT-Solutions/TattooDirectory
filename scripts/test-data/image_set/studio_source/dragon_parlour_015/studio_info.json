@@ -1,0 +1,16 @@
+{
+  "name": "Dragon Parlour",
+  "location": "Sheffield",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_dragon_parlour.png"
+    ],
+    "external": [
+      "external_01_dragon_parlour.png"
+    ],
+    "working": [
+      "working_01_dragon_parlour.png"
+    ]
+  }
+}

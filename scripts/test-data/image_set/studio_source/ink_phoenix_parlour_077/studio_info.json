@@ -1,0 +1,16 @@
+{
+  "name": "Ink Phoenix Parlour",
+  "location": "Oxford",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_ink_phoenix_parlour.png"
+    ],
+    "external": [
+      "external_01_ink_phoenix_parlour.png"
+    ],
+    "working": [
+      "working_01_ink_phoenix_parlour.png"
+    ]
+  }
+}

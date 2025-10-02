@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SearchResultsDisplay from '../SearchResultsDisplay';
-import { enhancedTattooStyles } from '../../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles } from '../../../lib/data/tattooStyles.js';
 
 // Mock the design system components
 jest.mock('../../../design-system/components/ui', () => ({

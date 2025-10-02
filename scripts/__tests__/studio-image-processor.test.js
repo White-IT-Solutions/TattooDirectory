@@ -160,16 +160,48 @@ describe('StudioImageProcessor', () => {
     });
   });
 
-  describe('getSourceImagesForType', () => {
-    test('should get images from specific type directory', async () => {
-      const images = await processor.getSourceImagesForType('exterior');
+  describe('processStudioTestImages', () => {
+    test('should process images from studio-first directory structure', async () => {
+      const mockStudio = {
+        studioId: 'test-studio-001',
+        studioName: 'Test Studio'
+      };
       
-      expect(fs.existsSync).toHaveBeenCalledWith(
-        expect.stringContaining(path.join('StudioImages', 'exterior'))
-      );
-      expect(images).toHaveLength(2);
-      expect(images[0]).toHaveProperty('filename', 'test-image.jpg');
-      expect(images[0]).toHaveProperty('type', 'exterior');
+      const studioTestDir = path.join('scripts', 'test-data', 'image_set', 'studio_source', 'test-studio-001');
+      
+      // Mock studio directory with test images
+      fs.existsSync.mockImplementation((path) => {
+        if (path.includes('test-studio-001')) return true;
+        if (path.includes('studio_info.json')) return true;
+        return false;
+      });
+      
+      fs.readFileSync.mockImplementation((path) => {
+        if (path.includes('studio_info.json')) {
+          return JSON.stringify({
+            name: 'Test Studio',
+            location: 'London',
+            type: 'modern'
+          });
+        }
+        return Buffer.from('mock-image-data');
+      });
+      
+      fs.readdirSync.mockReturnValue([
+        'external_01_test_studio.png',
+        'internal_01_test_studio.png',
+        'working_01_test_studio.png',
+        'studio_info.json'
+      ]);
+      
+      const result = await processor.processStudioTestImages(mockStudio, studioTestDir);
+      
+      expect(result).toHaveProperty('external');
+      expect(result).toHaveProperty('internal');
+      expect(result).toHaveProperty('working');
+      expect(result.external).toHaveLength(1);
+      expect(result.internal).toHaveLength(1);
+      expect(result.working).toHaveLength(1);
     });
 
     test('should fallback to sample directory if type directory does not exist', async () => {

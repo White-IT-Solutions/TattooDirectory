@@ -1,0 +1,16 @@
+{
+  "name": "Rebel Tattoo",
+  "location": "Leeds",
+  "type": "bright contemporary",
+  "images": {
+    "internal": [
+      "internal_01_rebel_tattoo.png"
+    ],
+    "external": [
+      "external_01_rebel_tattoo.png"
+    ],
+    "working": [
+      "working_01_rebel_tattoo.png"
+    ]
+  }
+}

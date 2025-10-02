@@ -1,0 +1,16 @@
+{
+  "name": "Royal Sun Gallery",
+  "location": "Chester",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_royal_sun_gallery.png"
+    ],
+    "external": [
+      "external_01_royal_sun_gallery.png"
+    ],
+    "working": [
+      "working_01_royal_sun_gallery.png"
+    ]
+  }
+}

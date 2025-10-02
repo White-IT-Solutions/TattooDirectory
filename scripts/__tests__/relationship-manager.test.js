@@ -7,7 +7,7 @@
  * Tests relationship creation, validation, and consistency maintenance
  */
 
-const { FrontendSyncProcessor } = require('../frontend-sync-processor');
+const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../data-config');
 
 describe('ArtistStudioRelationshipManager', () => {

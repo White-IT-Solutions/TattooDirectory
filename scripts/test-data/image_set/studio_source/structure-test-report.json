@@ -1,0 +1,20 @@
+{
+  "testDate": "2025-10-02T12:41:09.619Z",
+  "structure": "studio-first",
+  "results": {
+    "totalStudios": 102,
+    "studiosWithMetadata": 10,
+    "studiosWithImages": 10,
+    "totalImages": 30,
+    "imagesByType": {
+      "external": 10,
+      "internal": 10,
+      "working": 10
+    },
+    "errors": []
+  },
+  "recommendations": [
+    "Some studios are missing metadata files (studio_info.json)",
+    "Some studios have no images - consider adding test images"
+  ]
+}

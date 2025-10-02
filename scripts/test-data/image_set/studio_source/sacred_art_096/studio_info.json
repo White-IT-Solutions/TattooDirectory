@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Art",
+  "location": "Portsmouth",
+  "type": "cozy boutique",
+  "images": {
+    "internal": [
+      "internal_01_sacred_art.png"
+    ],
+    "external": [
+      "external_01_sacred_art.png"
+    ],
+    "working": [
+      "working_01_sacred_art.png"
+    ]
+  }
+}

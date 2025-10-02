@@ -1,0 +1,16 @@
+{
+  "name": "Urban Gallery",
+  "location": "Cambridge",
+  "type": "high-end luxury",
+  "images": {
+    "internal": [
+      "internal_01_urban_gallery.png"
+    ],
+    "external": [
+      "external_01_urban_gallery.png"
+    ],
+    "working": [
+      "working_01_urban_gallery.png"
+    ]
+  }
+}

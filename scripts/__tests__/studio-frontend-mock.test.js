@@ -7,7 +7,7 @@
  * Tests mock data format, consistency, and frontend compatibility
  */
 
-const { FrontendSyncProcessor } = require('../frontend-sync-processor');
+const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../data-config');
 const fs = require('fs');
 const path = require('path');

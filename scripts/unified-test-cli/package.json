@@ -1,0 +1,36 @@
+{
+  "name": "unified-test-cli",
+  "version": "1.0.0",
+  "description": "Unified CLI interface for running all test suites with environment validation and data scenario management",
+  "main": "src/cli/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.0",
+    "ora": "^7.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "extensionsToTreatAsEsm": [
+      ".js"
+    ],
+    "globals": {
+      "jest": {
+        "useESM": true
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ const { spawn, exec } = require('child_process');
 const { promisify } = require('util');
 
 // Import the enhanced frontend-sync-processor
-const FrontendSyncProcessor = require('../frontend-sync-processor');
+const FrontendSyncProcessor = require('../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../data-config');
 
 const execAsync = promisify(exec);
@@ -98,7 +98,7 @@ class PerformanceTestResults {
   }
   
   saveResults() {
-    const resultsDir = path.join(__dirname, '../test-results');
+    const resultsDir = path.join(__dirname, '../../.metrics/performance');
     if (!fs.existsSync(resultsDir)) {
       fs.mkdirSync(resultsDir, { recursive: true });
     }
@@ -194,7 +194,7 @@ class PerformanceTestRunner {
    */
   loadBaseline() {
     try {
-      const baselinePath = path.join(__dirname, '../test-results/performance-baseline.json');
+      const baselinePath = path.join(__dirname, '../../.metrics/performance/performance-baseline.json');
       if (fs.existsSync(baselinePath)) {
         const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8'));
         console.log('📈 Loaded performance baseline from previous run');
@@ -210,7 +210,7 @@ class PerformanceTestRunner {
    * Save current results as new baseline
    */
   saveBaseline() {
-    const baselinePath = path.join(__dirname, '../test-results/performance-baseline.json');
+    const baselinePath = path.join(__dirname, '../../.metrics/performance/performance-baseline.json');
     const baselineData = {
       timestamp: new Date().toISOString(),
       results: this.results.results.current

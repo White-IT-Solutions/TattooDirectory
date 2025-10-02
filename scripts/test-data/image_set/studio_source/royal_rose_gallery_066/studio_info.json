@@ -1,0 +1,16 @@
+{
+  "name": "Royal Rose Gallery",
+  "location": "Glasgow",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_royal_rose_gallery.png"
+    ],
+    "external": [
+      "external_01_royal_rose_gallery.png"
+    ],
+    "working": [
+      "working_01_royal_rose_gallery.png"
+    ]
+  }
+}

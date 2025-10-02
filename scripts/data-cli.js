@@ -7,7 +7,7 @@
  * Supports command parsing, validation, help system, and progress indicators.
  */
 
-const { UnifiedDataManager } = require('./unified-data-manager');
+const { UnifiedDataManager } = require('./data-management/unified-data-manager');
 const { DATA_CONFIG } = require('./data-config');
 
 /**
@@ -2040,7 +2040,7 @@ class DataCLI {
           },
           { 
             action: 'Check required directories exist',
-            note: 'Ensure tests/Test_Data/ImageSet directory exists'
+            note: 'Ensure scripts/test-data/image_set/tattoo_source directory exists'
           },
           { 
             action: 'Verify file permissions',

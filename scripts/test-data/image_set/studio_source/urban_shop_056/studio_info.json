@@ -1,0 +1,16 @@
+{
+  "name": "Urban Shop",
+  "location": "Bristol",
+  "type": "street art inspired",
+  "images": {
+    "internal": [
+      "internal_01_urban_shop.png"
+    ],
+    "external": [
+      "external_01_urban_shop.png"
+    ],
+    "working": [
+      "working_01_urban_shop.png"
+    ]
+  }
+}

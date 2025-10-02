@@ -1,0 +1,16 @@
+{
+  "name": "Rose Gallery",
+  "location": "London",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_rose_gallery.png"
+    ],
+    "external": [
+      "external_01_rose_gallery.png"
+    ],
+    "working": [
+      "working_01_rose_gallery.png"
+    ]
+  }
+}

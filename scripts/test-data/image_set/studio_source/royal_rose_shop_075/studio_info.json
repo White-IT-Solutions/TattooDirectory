@@ -1,0 +1,16 @@
+{
+  "name": "Royal Rose Shop",
+  "location": "Norwich",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_royal_rose_shop.png"
+    ],
+    "external": [
+      "external_01_royal_rose_shop.png"
+    ],
+    "working": [
+      "working_01_royal_rose_shop.png"
+    ]
+  }
+}

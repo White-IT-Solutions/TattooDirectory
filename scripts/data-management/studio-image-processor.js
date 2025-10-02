@@ -97,7 +97,7 @@ class StudioImageProcessor {
 
   /**
    * Process studio images for a single studio
-   * Requirement 8.1: Generate studio exterior, interior, and gallery images
+   * Now uses studio-first structure from test data
    */
   async processStudioImages(studio) {
     console.log(`🖼️  Processing images for studio: ${studio.studioName} (${studio.studioId})`);
@@ -106,16 +106,26 @@ class StudioImageProcessor {
       // Ensure bucket exists and CORS is configured
       await this.ensureBucketAndCORS();
       
-      // Generate images for each type
-      const processedImages = {};
+      // Check if studio has test images in new structure
+      const studioTestDir = path.join(this.studioImageBasePath, studio.studioId);
+      const hasTestImages = fs.existsSync(studioTestDir);
       
-      for (const imageType of this.config.studio.generation.imageTypes) {
-        console.log(`📸 Processing ${imageType} images for ${studio.studioId}`);
-        
-        const typeImages = await this.processImageType(studio, imageType);
-        processedImages[imageType] = typeImages;
-        
-        console.log(`✅ Processed ${typeImages.length} ${imageType} images`);
+      let processedImages = {};
+      
+      if (hasTestImages) {
+        console.log(`📁 Found test images for ${studio.studioId}, processing from test data`);
+        processedImages = await this.processStudioTestImages(studio, studioTestDir);
+      } else {
+        console.log(`🎨 No test images found for ${studio.studioId}, generating new images`);
+        // Fallback to generation for studios without test data
+        for (const imageType of this.config.studio.generation.imageTypes) {
+          console.log(`📸 Generating ${imageType} images for ${studio.studioId}`);
+          
+          const typeImages = await this.processImageType(studio, imageType);
+          processedImages[imageType] = typeImages;
+          
+          console.log(`✅ Generated ${typeImages.length} ${imageType} images`);
+        }
       }
       
       // Update studio object with image information
@@ -145,6 +155,116 @@ class StudioImageProcessor {
         images: [],
         imagesByType: {}
       };
+    }
+  }
+
+  /**
+   * Process studio images from test data directory (studio-first structure)
+   */
+  async processStudioTestImages(studio, studioTestDir) {
+    const processedImages = {};
+    
+    // Read studio metadata if available
+    const studioInfoPath = path.join(studioTestDir, 'studio_info.json');
+    let studioInfo = null;
+    if (fs.existsSync(studioInfoPath)) {
+      studioInfo = JSON.parse(fs.readFileSync(studioInfoPath, 'utf8'));
+      console.log(`📋 Loaded studio metadata for ${studioInfo.name}`);
+    }
+    
+    // Get all image files in the studio directory
+    const imageFiles = fs.readdirSync(studioTestDir)
+      .filter(file => /\.(png|jpg|jpeg|webp)$/i.test(file))
+      .map(file => path.join(studioTestDir, file));
+    
+    console.log(`📸 Found ${imageFiles.length} test images for ${studio.studioId}`);
+    
+    // Categorize images by type based on filename patterns
+    const imagesByType = {
+      external: imageFiles.filter(file => path.basename(file).includes('external')),
+      internal: imageFiles.filter(file => path.basename(file).includes('internal')),
+      working: imageFiles.filter(file => path.basename(file).includes('working'))
+    };
+    
+    // Process each image type
+    for (const [imageType, typePaths] of Object.entries(imagesByType)) {
+      if (typePaths.length === 0) continue;
+      
+      console.log(`📸 Processing ${typePaths.length} ${imageType} images`);
+      processedImages[imageType] = [];
+      
+      for (const imagePath of typePaths) {
+        try {
+          const processedImage = await this.processTestImage(studio, imagePath, imageType);
+          if (processedImage) {
+            processedImages[imageType].push(processedImage);
+            this.stats.processed++;
+          }
+        } catch (error) {
+          console.error(`❌ Failed to process test image ${imagePath}:`, error.message);
+          this.stats.failed++;
+        }
+      }
+    }
+    
+    return processedImages;
+  }
+
+  /**
+   * Process a single test image file
+   */
+  async processTestImage(studio, imagePath, imageType) {
+    const filename = path.basename(imagePath);
+    const ext = path.extname(filename);
+    const baseName = path.basename(filename, ext);
+    
+    // Generate S3 key following the naming convention
+    const s3Key = `studios/${studio.studioId}/${imageType}/${baseName}${ext}`;
+    
+    console.log(`📤 Uploading ${filename} to ${s3Key}`);
+    
+    try {
+      // Read and upload the image
+      const imageBuffer = fs.readFileSync(imagePath);
+      
+      const uploadParams = {
+        Bucket: this.bucketName,
+        Key: s3Key,
+        Body: imageBuffer,
+        ContentType: this.getContentType(ext),
+        Metadata: {
+          studioId: studio.studioId,
+          imageType: imageType,
+          originalFilename: filename,
+          processedAt: new Date().toISOString()
+        }
+      };
+      
+      const result = await this.s3.upload(uploadParams).promise();
+      this.stats.uploaded++;
+      
+      // Generate thumbnail if needed
+      let thumbnailUrl = null;
+      if (this.config.studio.generation.generateThumbnails) {
+        thumbnailUrl = await this.generateThumbnail(imageBuffer, s3Key, studio.studioId);
+      }
+      
+      return {
+        url: result.Location,
+        s3Key: s3Key,
+        thumbnailUrl: thumbnailUrl,
+        filename: filename,
+        imageType: imageType,
+        metadata: {
+          size: imageBuffer.length,
+          uploadedAt: new Date().toISOString(),
+          source: 'test_data'
+        }
+      };
+      
+    } catch (error) {
+      console.error(`❌ Failed to upload ${filename}:`, error.message);
+      throw error;
     }
   }
 
@@ -203,25 +323,48 @@ class StudioImageProcessor {
   }
 
   /**
-   * Get source images for a specific type from the test data directory
+   * Get source images for a specific type from studio-first structure
+   * Scans all studio directories for images of the specified type
    */
   async getSourceImagesForType(imageType) {
-    const typeDir = path.join(this.studioImageBasePath, imageType);
+    const allImages = [];
     
-    // Check if specific type directory exists and has images
-    if (fs.existsSync(typeDir)) {
-      const typeImages = this.getImagesFromDirectory(typeDir, imageType);
-      if (typeImages.length > 0) {
-        return typeImages;
+    try {
+      // Get all studio directories
+      const studioDirectories = fs.readdirSync(this.studioImageBasePath, { withFileTypes: true })
+        .filter(entry => entry.isDirectory())
+        .map(entry => entry.name);
+      
+      // Scan each studio directory for images of the specified type
+      for (const studioDir of studioDirectories) {
+        const studioPath = path.join(this.studioImageBasePath, studioDir);
+        const imageFiles = fs.readdirSync(studioPath)
+          .filter(file => /\.(png|jpg|jpeg|webp)$/i.test(file))
+          .filter(file => file.includes(imageType)); // Filter by type in filename
+        
+        for (const filename of imageFiles) {
+          allImages.push({
+            filename,
+            path: path.join(studioPath, filename),
+            type: imageType,
+            studioId: studioDir
+          });
+        }
       }
-    }
-    
-    // Fallback to sample directory if type directory doesn't exist or has no images
-    const sampleDir = path.join(this.studioImageBasePath, 'sample');
-    if (!fs.existsSync(sampleDir)) {
+      
+      return allImages;
+      
+    } catch (error) {
+      console.warn(`⚠️  Could not scan studio directories for ${imageType} images:`, error.message);
+      
+      // Fallback to legacy sample directory if it exists
+      const sampleDir = path.join(this.studioImageBasePath, 'sample');
+      if (fs.existsSync(sampleDir)) {
+        return this.getImagesFromDirectory(sampleDir, imageType);
+      }
+      
       return [];
     }
-    return this.getImagesFromDirectory(sampleDir, imageType);
   }
 
   /**
@@ -689,6 +832,21 @@ class StudioImageProcessor {
       thumbnailsCreated: 0,
       errors: []
     };
+  }
+
+  /**
+   * Get content type for file extension
+   */
+  getContentType(ext) {
+    const contentTypes = {
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.webp': 'image/webp',
+      '.gif': 'image/gif'
+    };
+    
+    return contentTypes[ext.toLowerCase()] || 'application/octet-stream';
   }
 }
 

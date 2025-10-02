@@ -271,7 +271,7 @@ class PerformanceBenchmarks {
     async benchmarkResourceEfficiency() {
         console.log('\n💾 Benchmarking Resource Efficiency...');
         
-        const ResourceUsageMonitor = require('./resource-usage-monitor.js');
+        const ResourceUsageMonitor = require('../monitoring/resource-usage-monitor.js');
         const monitor = new ResourceUsageMonitor();
         
         // Collect metrics for 30 seconds

@@ -69,7 +69,7 @@ npm run setup-data --scenario london-focused --validate
 **What it does:**
 
 - Detects and starts required LocalStack services
-- Processes images from `tests/Test_Data/ImageSet/`
+- Processes images from `scripts/test-data/image_set/tattoo_source/`
 - Uploads images to S3 with CORS configuration
 - Seeds DynamoDB with artist and studio data
 - Indexes data in OpenSearch for search functionality
@@ -396,7 +396,7 @@ services: {
 
 // File paths (cross-platform)
 paths: {
-  imageSource: 'tests/Test_Data/ImageSet',
+  imageSource: 'scripts/test-data/image_set/tattoo_source',
   testData: 'scripts/test-data',
   frontendMock: 'frontend/src/app/data/mockArtistData.js',
   // Enhanced paths for data export/import

@@ -1,0 +1,16 @@
+{
+  "name": "Electric Dragon House",
+  "location": "Bath",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_electric_dragon_house.png"
+    ],
+    "external": [
+      "external_01_electric_dragon_house.png"
+    ],
+    "working": [
+      "working_01_electric_dragon_house.png"
+    ]
+  }
+}

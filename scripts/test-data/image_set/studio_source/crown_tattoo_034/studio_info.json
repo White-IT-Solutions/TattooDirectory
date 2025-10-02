@@ -1,0 +1,16 @@
+{
+  "name": "Crown Tattoo",
+  "location": "Oxford",
+  "type": "clean medical",
+  "images": {
+    "internal": [
+      "internal_01_crown_tattoo.png"
+    ],
+    "external": [
+      "external_01_crown_tattoo.png"
+    ],
+    "working": [
+      "working_01_crown_tattoo.png"
+    ]
+  }
+}

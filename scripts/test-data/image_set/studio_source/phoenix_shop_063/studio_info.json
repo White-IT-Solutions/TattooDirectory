@@ -1,0 +1,16 @@
+{
+  "name": "Phoenix Shop",
+  "location": "Manchester",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_phoenix_shop.png"
+    ],
+    "external": [
+      "external_01_phoenix_shop.png"
+    ],
+    "working": [
+      "working_01_phoenix_shop.png"
+    ]
+  }
+}

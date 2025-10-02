@@ -1,0 +1,16 @@
+{
+  "name": "Ink Collective",
+  "location": "Norwich",
+  "type": "cozy boutique",
+  "images": {
+    "internal": [
+      "internal_01_ink_collective.png"
+    ],
+    "external": [
+      "external_01_ink_collective.png"
+    ],
+    "working": [
+      "working_01_ink_collective.png"
+    ]
+  }
+}

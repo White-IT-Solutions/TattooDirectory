@@ -1,0 +1,16 @@
+{
+  "name": "Electric Collective",
+  "location": "Exeter",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_electric_collective.png"
+    ],
+    "external": [
+      "external_01_electric_collective.png"
+    ],
+    "working": [
+      "working_01_electric_collective.png"
+    ]
+  }
+}

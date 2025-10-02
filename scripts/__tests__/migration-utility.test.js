@@ -5,13 +5,13 @@
  * and provides accurate migration guidance.
  */
 
-const { MigrationUtility } = require('../migration-utility');
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { MigrationUtility } = require('../utilities/migration/migration-utility');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 const fs = require('fs');
 const path = require('path');
 
 // Mock dependencies
-jest.mock('../unified-data-manager');
+jest.mock('../data-management/unified-data-manager');
 jest.mock('fs');
 
 describe('MigrationUtility', () => {

@@ -116,7 +116,7 @@ npm run setup
 ```
 
 This will:
-1. Upload all images from `tests/Test_Data/ImageSet/` to LocalStack S3
+1. Upload all images from `scripts/test-data/image_set/tattoo_source/` to LocalStack S3
 2. Generate image URL mappings
 3. Update test data files with S3 URLs and new style IDs
 
@@ -208,8 +208,8 @@ docker-compose -f docker-compose.local.yml up localstack
 
 ### Permission Issues
 
-Check that the image files in `tests/Test_Data/ImageSet/` are readable and LocalStack has proper permissions.
+Check that the image files in `scripts/test-data/image_set/tattoo_source/` are readable and LocalStack has proper permissions.
 
 ### Missing Images
 
-If some style folders are missing images, the script will skip them and log warnings. Check the `tests/Test_Data/ImageSet/` directory structure.
+If some style folders are missing images, the script will skip them and log warnings. Check the `scripts/test-data/image_set/tattoo_source/` directory structure.

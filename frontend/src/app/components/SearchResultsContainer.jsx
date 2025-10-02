@@ -6,7 +6,7 @@ import SearchResultsDisplay from './SearchResultsDisplay';
 import SearchFeedbackSystem from './SearchFeedbackSystem';
 import SearchLoadingStates from './SearchLoadingStates';
 import searchController from '../lib/searchController';
-import { enhancedTattooStyles } from '../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles } from '../../lib/data/tattooStyles.js';
 import { cn } from '../../design-system/utils/cn';
 
 /**

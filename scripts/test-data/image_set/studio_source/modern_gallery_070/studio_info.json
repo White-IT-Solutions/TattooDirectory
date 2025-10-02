@@ -1,0 +1,16 @@
+{
+  "name": "Modern Gallery",
+  "location": "Birmingham",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_modern_gallery.png"
+    ],
+    "external": [
+      "external_01_modern_gallery.png"
+    ],
+    "working": [
+      "working_01_modern_gallery.png"
+    ]
+  }
+}
