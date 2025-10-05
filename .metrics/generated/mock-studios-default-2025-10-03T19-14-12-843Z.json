@@ -1,0 +1,335 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Electric Needle Studio",
+    "address": {
+      "street": "90 Grassmarket",
+      "city": "Edinburgh",
+      "postcode": "EH8 9YL",
+      "latitude": 55.95671935559881,
+      "longitude": -3.186220085543841
+    },
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 131 5111 217",
+      "email": "info@electricneedlestudio.com",
+      "website": "https://electricneedlestudio.com",
+      "instagram": "@electricneedlestudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-001",
+      "artist-005",
+      "artist-019"
+    ],
+    "rating": 4.6,
+    "reviewCount": 68,
+    "established": 2020,
+    "specialties": [
+      "fineline",
+      "japanese",
+      "blackwork",
+      "watercolour"
+    ],
+    "geohash": "czh5vy"
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Rebel Ink Studio",
+    "address": {
+      "street": "34 Gloucester Road",
+      "city": "Bristol",
+      "postcode": "BS1 1AA",
+      "latitude": 51.45417078708388,
+      "longitude": -2.5836940774860198
+    },
+    "locationDisplay": "Bristol, UK",
+    "contactInfo": {
+      "phone": "+44 151 5265 557",
+      "email": "info@rebelinkstudio.com",
+      "website": "https://rebelinkstudio.com",
+      "instagram": "@rebelinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-002",
+      "artist-012"
+    ],
+    "rating": 4.5,
+    "reviewCount": 53,
+    "established": 2009,
+    "specialties": [
+      "japanese",
+      "watercolour",
+      "minimalism",
+      "lettering"
+    ],
+    "geohash": "b6qbuj"
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Botanical Tattoo Collective",
+    "address": {
+      "street": "67 Mathew Street",
+      "city": "Liverpool",
+      "postcode": "L8 7NJ",
+      "latitude": 53.40998564075148,
+      "longitude": -2.993458886342001
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 161 1499 383",
+      "email": "info@botanicaltattoocollective.com",
+      "website": "https://botanicaltattoocollective.com",
+      "instagram": "@botanicaltattoocollectivestudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-003",
+      "artist-020"
+    ],
+    "rating": 4.4,
+    "reviewCount": 122,
+    "established": 2006,
+    "specialties": [
+      "minimalism",
+      "floral",
+      "tribal",
+      "dotwork",
+      "neo_traditional"
+    ],
+    "geohash": "4zj5rg"
+  },
+  {
+    "studioId": "studio-004",
+    "studioName": "Vibrant Ink Studio",
+    "address": {
+      "street": "56 Broad Street",
+      "city": "Birmingham",
+      "postcode": "B3 1JJ",
+      "latitude": 52.48271467682569,
+      "longitude": -1.8935086601831213
+    },
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 161 2259 991",
+      "email": "info@vibrantinkstudio.com",
+      "website": "https://vibrantinkstudio.com",
+      "instagram": "@vibrantinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-004",
+      "artist-009",
+      "artist-010"
+    ],
+    "rating": 4.6,
+    "reviewCount": 135,
+    "established": 2016,
+    "specialties": [
+      "floral",
+      "neo_traditional"
+    ],
+    "geohash": "f1bngw"
+  },
+  {
+    "studioId": "studio-005",
+    "studioName": "Ink & Steel Studio",
+    "address": {
+      "street": "89 Southside",
+      "city": "Glasgow",
+      "postcode": "G1 1AA",
+      "latitude": 55.868787828324095,
+      "longitude": -4.2562733313163115
+    },
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 151 1570 333",
+      "email": "info@inksteelstudio.com",
+      "website": "https://inksteelstudio.com",
+      "instagram": "@inksteelstudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-006",
+      "artist-007",
+      "artist-014"
+    ],
+    "rating": 4.9,
+    "reviewCount": 86,
+    "established": 2020,
+    "specialties": [
+      "geometric",
+      "realism",
+      "dotwork",
+      "biomechanical"
+    ],
+    "geohash": "ymqsjt"
+  },
+  {
+    "studioId": "studio-006",
+    "studioName": "Rebel Ink Studio",
+    "address": {
+      "street": "156 Camden Market",
+      "city": "London",
+      "postcode": "W1A 0AX",
+      "latitude": 51.51223823721483,
+      "longitude": -0.12976391439249807
+    },
+    "locationDisplay": "London, UK",
+    "contactInfo": {
+      "phone": "+44 141 1085 295",
+      "email": "info@rebelinkstudio.com",
+      "website": "https://rebelinkstudio.com",
+      "instagram": "@rebelinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-008",
+      "artist-013",
+      "artist-018"
+    ],
+    "rating": 4,
+    "reviewCount": 123,
+    "established": 2008,
+    "specialties": [
+      "realism",
+      "fineline",
+      "lettering",
+      "watercolour",
+      "tribal"
+    ],
+    "geohash": "kr4b8s"
+  },
+  {
+    "studioId": "studio-007",
+    "studioName": "Vibrant Ink Studio",
+    "address": {
+      "street": "89 Oxford Road",
+      "city": "Manchester",
+      "postcode": "M3 4CC",
+      "latitude": 53.48238131712083,
+      "longitude": -2.243042377110705
+    },
+    "locationDisplay": "Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 20 5160 010",
+      "email": "info@vibrantinkstudio.com",
+      "website": "https://vibrantinkstudio.com",
+      "instagram": "@vibrantinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-011"
+    ],
+    "rating": 4.5,
+    "reviewCount": 27,
+    "established": 2005,
+    "specialties": [
+      "realism",
+      "minimalism",
+      "lettering",
+      "japanese"
+    ],
+    "geohash": "1rynxp"
+  },
+  {
+    "studioId": "studio-008",
+    "studioName": "Ink & Steel Studio",
+    "address": {
+      "street": "45 Headrow",
+      "city": "Leeds",
+      "postcode": "LS2 7UE",
+      "latitude": 53.80182384068326,
+      "longitude": -1.5459851365698614
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 141 3785 704",
+      "email": "info@inksteelstudio.com",
+      "website": "https://inksteelstudio.com",
+      "instagram": "@inksteelstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-015",
+      "artist-016",
+      "artist-017"
+    ],
+    "rating": 5,
+    "reviewCount": 109,
+    "established": 2010,
+    "specialties": [
+      "traditional",
+      "blackwork",
+      "lettering",
+      "neo_traditional",
+      "geometric"
+    ],
+    "geohash": "p1uqsb"
+  }
+]

@@ -122,9 +122,9 @@ function getServiceEndpoints(environment) {
       region: process.env.AWS_DEFAULT_REGION || 'eu-west-2'
     },
     
-    // OpenSearch configuration
+    // OpenSearch configuration - using dedicated container
     opensearch: {
-      endpoint: localstackEndpoint,
+      endpoint: isDocker ? 'http://tattoo-directory-opensearch:9200' : 'http://localhost:4571',
       indexName: process.env.OPENSEARCH_INDEX || 'artists-local',
       domain: process.env.OPENSEARCH_DOMAIN || 'tattoo-directory'
     },

@@ -1,0 +1,43 @@
+{
+  "testSuites": [
+    {
+      "name": "example-suite",
+      "displayName": "Example Test Suite",
+      "description": "Template for creating new test suites",
+      "type": "unit",
+      "workspace": "example-workspace",
+      "command": "npm run test",
+      "requiredServices": [],
+      "dataScenario": null,
+      "timeout": 60000,
+      "canRunParallel": true,
+      "supportsCoverage": true,
+      "tags": ["example", "template"],
+      "environment": {
+        "NODE_ENV": "test",
+        "TEST_TIMEOUT": "60000"
+      },
+      "retries": 0,
+      "failFast": false,
+      "outputFormat": "console"
+    }
+  ],
+  "_comments": {
+    "name": "Unique identifier for the test suite (kebab-case)",
+    "displayName": "Human-readable name shown in CLI menus",
+    "description": "Brief description of what this suite tests",
+    "type": "Suite type: unit, integration, e2e, security, performance, contract",
+    "workspace": "npm workspace path relative to project root",
+    "command": "Command to execute the tests (run from workspace directory)",
+    "requiredServices": "Array of service names that must be running",
+    "dataScenario": "Name of data scenario to seed before tests (null for none)",
+    "timeout": "Test timeout in milliseconds",
+    "canRunParallel": "Whether this suite can run in parallel with others",
+    "supportsCoverage": "Whether this suite supports coverage reporting",
+    "tags": "Array of tags for filtering and categorization",
+    "environment": "Environment variables to set during test execution",
+    "retries": "Number of times to retry failed tests (0 = no retries)",
+    "failFast": "Whether to stop on first test failure",
+    "outputFormat": "Default output format: console, json, junit"
+  }
+}

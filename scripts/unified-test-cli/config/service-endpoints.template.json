@@ -1,0 +1,74 @@
+{
+  "services": {
+    "example-service": {
+      "name": "Example Service",
+      "description": "Example service configuration",
+      "url": "http://localhost:8080",
+      "healthEndpoint": "/health",
+      "timeout": 5000,
+      "retries": 3,
+      "suggestions": [
+        "Start service: npm run start:example",
+        "Check logs: npm run logs:example",
+        "Verify configuration: Check config files"
+      ]
+    }
+  },
+  "_documentation": {
+    "description": "Service endpoint configuration template for the Unified Test CLI",
+    "fields": {
+      "name": {
+        "type": "string",
+        "required": true,
+        "description": "Human-readable name for the service"
+      },
+      "description": {
+        "type": "string",
+        "required": false,
+        "description": "Brief description of the service"
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "Base URL for the service"
+      },
+      "healthEndpoint": {
+        "type": "string",
+        "required": true,
+        "description": "Health check endpoint path (appended to url)"
+      },
+      "timeout": {
+        "type": "number",
+        "required": false,
+        "default": 5000,
+        "description": "Request timeout in milliseconds"
+      },
+      "retries": {
+        "type": "number",
+        "required": false,
+        "default": 3,
+        "description": "Number of retry attempts for health checks"
+      },
+      "suggestions": {
+        "type": "array",
+        "required": false,
+        "default": [],
+        "description": "Helpful suggestions shown when service is unavailable"
+      }
+    },
+    "examples": {
+      "localstack": {
+        "url": "http://localhost:4566",
+        "healthEndpoint": "/_localstack/health"
+      },
+      "frontend": {
+        "url": "http://localhost:3000",
+        "healthEndpoint": "/"
+      },
+      "api": {
+        "url": "http://localhost:8000",
+        "healthEndpoint": "/health"
+      }
+    }
+  }
+}

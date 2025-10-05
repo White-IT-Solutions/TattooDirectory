@@ -19,10 +19,14 @@ export class TestDiscovery {
 
   /**
    * Discover all available test suites in the workspace
+   * @param {Object} options - Discovery options
+   * @param {boolean} options.silent - Suppress logging output
    * @returns {Array} Array of test suite definitions
    */
-  async discoverSuites() {
-    this.logger.info('Discovering test suites in workspace');
+  async discoverSuites(options = {}) {
+    if (!options.silent) {
+      this.logger.info('Discovering test suites in workspace');
+    }
 
     try {
       // Load test suite definitions from config
@@ -31,14 +35,18 @@ export class TestDiscovery {
       // Validate each suite exists and is executable
       const validSuites = [];
       for (const suite of configSuites) {
-        if (await this.validateSuite(suite)) {
+        if (await this.validateSuite(suite, options)) {
           validSuites.push(suite);
         } else {
-          this.logger.warn(`Skipping invalid test suite: ${suite.name}`);
+          if (!options.silent) {
+            this.logger.warn(`Skipping invalid test suite: ${suite.name}`);
+          }
         }
       }
 
-      this.logger.info(`Discovered ${validSuites.length} valid test suites`);
+      if (!options.silent) {
+        this.logger.info(`Discovered ${validSuites.length} valid test suites`);
+      }
       return validSuites;
     } catch (error) {
       this.logger.error('Failed to discover test suites', { error: error.message });
@@ -51,7 +59,7 @@ export class TestDiscovery {
    * @returns {Array} Array of test suite configurations
    */
   async loadConfigSuites() {
-    const configPath = path.join(process.cwd(), 'scripts/unified-test-cli/config/test-suites.json');
+    const configPath = this.config.getConfigPath('test-suites.json');
     
     if (!existsSync(configPath)) {
       throw new Error(`Test suites configuration not found at: ${configPath}`);
@@ -74,30 +82,42 @@ export class TestDiscovery {
   /**
    * Validate that a test suite exists and is executable
    * @param {Object} suite - Test suite definition
+   * @param {Object} options - Validation options
+   * @param {boolean} options.silent - Suppress logging output
    * @returns {boolean} True if suite is valid
    */
-  async validateSuite(suite) {
+  async validateSuite(suite, options = {}) {
     // Check required fields
     const requiredFields = ['name', 'command'];
     for (const field of requiredFields) {
       if (!suite[field]) {
-        this.logger.warn(`Test suite missing required field '${field}': ${suite.name}`);
+        if (!options.silent) {
+          this.logger.warn(`Test suite missing required field '${field}': ${suite.name}`);
+        }
         return false;
       }
     }
 
     // Check workspace exists if specified
     if (suite.workspace) {
-      const workspacePath = path.join(process.cwd(), suite.workspace);
+      // Get project root (go up from CLI directory to project root)
+      const projectRoot = process.cwd().includes('unified-test-cli') 
+        ? path.join(process.cwd(), '../..') 
+        : process.cwd();
+      const workspacePath = path.join(projectRoot, suite.workspace);
       if (!existsSync(workspacePath)) {
-        this.logger.warn(`Workspace not found for suite '${suite.name}': ${workspacePath}`);
+        if (!options.silent) {
+          this.logger.warn(`Workspace not found for suite '${suite.name}': ${workspacePath}`);
+        }
         return false;
       }
 
       // Check package.json exists in workspace
       const packageJsonPath = path.join(workspacePath, 'package.json');
       if (!existsSync(packageJsonPath)) {
-        this.logger.warn(`package.json not found in workspace for suite '${suite.name}': ${packageJsonPath}`);
+        if (!options.silent) {
+          this.logger.warn(`package.json not found in workspace for suite '${suite.name}': ${packageJsonPath}`);
+        }
         return false;
       }
     }

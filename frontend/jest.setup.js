@@ -168,8 +168,15 @@ console.warn = (...args) => {
 };
 
 console.error = (...args) => {
-  // Only show errors that are not related to React testing
-  if (!args[0]?.includes?.('Warning: ReactDOM.render is no longer supported')) {
-    originalConsoleError(...args);
+  // Filter out React testing warnings and DOM prop warnings
+  const message = args[0];
+  if (
+    message?.includes?.('Warning: ReactDOM.render is no longer supported') ||
+    message?.includes?.('React does not recognize the') ||
+    message?.includes?.('for a non-boolean attribute') ||
+    message?.includes?.('If you want to write it to the DOM')
+  ) {
+    return; // Suppress these warnings
   }
+  originalConsoleError(...args);
 };

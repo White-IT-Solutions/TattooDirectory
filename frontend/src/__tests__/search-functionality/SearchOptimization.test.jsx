@@ -199,7 +199,7 @@ describe('Search Performance and Accessibility Optimization', () => {
       it('should track operation timing', () => {
         const operationName = 'test-operation';
 
-        performanceMonitor.startTiming(operationName);
+        performanceMonitor.startMeasurement(operationName);
         
         // Simulate some work
         const start = Date.now();
@@ -207,18 +207,19 @@ describe('Search Performance and Accessibility Optimization', () => {
           // Busy wait for 10ms
         }
         
-        const duration = performanceMonitor.endTiming(operationName);
+        const measurement = performanceMonitor.endMeasurement(operationName);
+        const duration = measurement?.duration || 0;
 
         expect(duration).toBeGreaterThan(0);
         expect(performanceMonitor.getTiming(operationName)).toBe(duration);
       });
 
       it('should provide performance summary', () => {
-        performanceMonitor.startTiming('op1');
-        performanceMonitor.endTiming('op1');
+        performanceMonitor.startMeasurement('op1');
+        performanceMonitor.endMeasurement('op1');
         
-        performanceMonitor.startTiming('op2');
-        performanceMonitor.endTiming('op2');
+        performanceMonitor.startMeasurement('op2');
+        performanceMonitor.endMeasurement('op2');
 
         const summary = performanceMonitor.getSummary();
 
@@ -232,8 +233,8 @@ describe('Search Performance and Accessibility Optimization', () => {
         const observer = jest.fn();
         const unsubscribe = performanceMonitor.addObserver(observer);
 
-        performanceMonitor.startTiming('test');
-        performanceMonitor.endTiming('test');
+        performanceMonitor.startMeasurement('test');
+        performanceMonitor.endMeasurement('test');
 
         expect(observer).toHaveBeenCalledWith('test', expect.any(Number));
 

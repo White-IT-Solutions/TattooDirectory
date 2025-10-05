@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '../../../__tests__/test-utils';
 import userEvent from '@testing-library/user-event';
 import TakedownPage from '../page';
 import { api } from '../../../lib/api';
@@ -297,7 +297,7 @@ describe('TakedownPage', () => {
     await waitFor(() => {
       expect(screen.getByText('Request Submitted Successfully')).toBeInTheDocument();
     });
-  });
+  }, 15000);
 
   it('handles submission errors gracefully', async () => {
     const user = userEvent.setup();

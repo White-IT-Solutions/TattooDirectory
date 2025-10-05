@@ -146,7 +146,7 @@ export function createOpenSearchClient(options = {}) {
                 rejectUnauthorized: false
             },
             headers: {
-                'Host': 'search-tattoo-directory.eu-west-2.opensearch.localhost.localstack.cloud'
+                'Host': 'tattoo-directory-local.eu-west-2.opensearch.localstack'
             },
             ...options
         };

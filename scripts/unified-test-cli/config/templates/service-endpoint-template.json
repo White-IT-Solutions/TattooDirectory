@@ -1,0 +1,32 @@
+{
+  "services": {
+    "example-service": {
+      "url": "http://localhost:8080",
+      "healthEndpoint": "/health",
+      "timeout": 5000,
+      "retries": 3,
+      "retryDelay": 1000,
+      "headers": {
+        "User-Agent": "unified-test-cli/1.0.0"
+      },
+      "expectedStatus": 200,
+      "expectedResponse": {
+        "status": "healthy"
+      },
+      "critical": true,
+      "description": "Example service for template"
+    }
+  },
+  "_comments": {
+    "url": "Base URL for the service",
+    "healthEndpoint": "Path to health check endpoint",
+    "timeout": "Request timeout in milliseconds",
+    "retries": "Number of retry attempts for failed requests",
+    "retryDelay": "Delay between retry attempts in milliseconds",
+    "headers": "HTTP headers to include in health check requests",
+    "expectedStatus": "Expected HTTP status code for healthy service",
+    "expectedResponse": "Expected response body structure (optional)",
+    "critical": "Whether service is critical for test execution",
+    "description": "Human-readable description of the service"
+  }
+}

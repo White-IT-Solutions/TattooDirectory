@@ -300,6 +300,7 @@ async function getStylesFromDynamoDB() {
 
 // --- Helper Functions ---
 function getRequestId(event) {
+  if (!event) return 'unknown';
   return event.requestContext?.requestId || event.awsRequestId || 'unknown';
 }
 
@@ -322,19 +323,14 @@ function createErrorResponse(statusCode, title, detail, instance, type = null) {
 }
 
 function createSuccessResponse(data, pagination = null) {
-  const response = {
-    items: Array.isArray(data) ? data : [data],
-    total: Array.isArray(data) ? data.length : 1
-  };
-  
-  if (pagination) {
-    response.pagination = pagination;
-  }
+  // For single items, return the item directly
+  // For arrays, return the array directly
+  const responseData = Array.isArray(data) ? data : data;
   
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(response),
+    body: JSON.stringify(responseData),
   };
 }
 
@@ -346,8 +342,18 @@ async function handleSearchArtists(event, logger) {
     const style = queryParams.style;
     const location = queryParams.location;
 
-    // Allow fetching all artists when no search parameters are provided
+    // Validate that at least one search parameter is provided
     const isSearchRequest = !!(query || style || location);
+    
+    // Return 400 if no search parameters provided
+    if (!isSearchRequest) {
+      return createErrorResponse(
+        400,
+        "Bad Request",
+        "At least one search parameter is required (query, style, or location)",
+        getRequestId(event)
+      );
+    }
     
     console.log(
       "DEBUG: isSearchRequest =",
@@ -485,9 +491,9 @@ async function handleSearchArtists(event, logger) {
         const dynamoResult = await searchArtistsInDynamoDB(query, style, location, limit, from);
         artists = dynamoResult.artists.map(artist => ({
           artistId: artist.artistId,
-          name: artist.artistName,
+          artistartistName: artist.artistName,
           instagramHandle: artist.instagramHandle,
-          location: artist.locationDisplay,
+          locationDisplay: artist.locationDisplay,
           styles: artist.styles || [],
           specialties: artist.specialties || [],
           rating: artist.rating,
@@ -569,9 +575,9 @@ async function handleSearchArtists(event, logger) {
             const dynamoResult = await searchArtistsInDynamoDB(query, style, location, limit, from);
             artists = dynamoResult.artists.map(artist => ({
               artistId: artist.artistId,
-              name: artist.artistName,
+              artistName: artist.artistName,
               instagramHandle: artist.instagramHandle,
-              location: artist.locationDisplay,
+              locationDisplay: artist.locationDisplay,
               styles: artist.styles || [],
               specialties: artist.specialties || [],
               rating: artist.rating,
@@ -600,7 +606,7 @@ async function handleSearchArtists(event, logger) {
             logger.error("DynamoDB fallback also failed", {
               error: dynamoError.toString(),
             });
-            return createSuccessResponse([]);
+            return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
           }
         }
       } catch (error) {
@@ -614,9 +620,9 @@ async function handleSearchArtists(event, logger) {
           const dynamoResult = await searchArtistsInDynamoDB(query, style, location, limit, from);
           artists = dynamoResult.artists.map(artist => ({
             artistId: artist.artistId,
-            name: artist.artistName,
+            artistName: artist.artistName,
             instagramHandle: artist.instagramHandle,
-            location: artist.locationDisplay,
+            locationDisplay: artist.locationDisplay,
             styles: artist.styles || [],
             specialties: artist.specialties || [],
             rating: artist.rating,
@@ -645,7 +651,7 @@ async function handleSearchArtists(event, logger) {
           logger.error("DynamoDB fallback also failed", {
             error: dynamoError.toString(),
           });
-          return createSuccessResponse([]);
+          return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
         }
       }
     } else {
@@ -674,9 +680,9 @@ async function handleSearchArtists(event, logger) {
             const dynamoResult = await searchArtistsInDynamoDB(query, style, location, limit, from);
             artists = dynamoResult.artists.map(artist => ({
               artistId: artist.artistId,
-              name: artist.artistName,
+              artistName: artist.artistName,
               instagramHandle: artist.instagramHandle,
-              location: artist.locationDisplay,
+              locationDisplay: artist.locationDisplay,
               styles: artist.styles || [],
               specialties: artist.specialties || [],
               rating: artist.rating,
@@ -700,7 +706,7 @@ async function handleSearchArtists(event, logger) {
             logger.error("DynamoDB fallback also failed", {
               error: dynamoError.toString(),
             });
-            return createSuccessResponse([]);
+            return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
           }
         }
 
@@ -716,9 +722,9 @@ async function handleSearchArtists(event, logger) {
           const dynamoResult = await searchArtistsInDynamoDB(query, style, location, limit, from);
           artists = dynamoResult.artists.map(artist => ({
             artistId: artist.artistId,
-            name: artist.artistName,
+            artistName: artist.artistName,
             instagramHandle: artist.instagramHandle,
-            location: artist.locationDisplay,
+            locationDisplay: artist.locationDisplay,
             styles: artist.styles || [],
             specialties: artist.specialties || [],
             rating: artist.rating,
@@ -742,7 +748,7 @@ async function handleSearchArtists(event, logger) {
           logger.error("DynamoDB fallback also failed", {
             error: dynamoError.toString(),
           });
-          return createSuccessResponse([]);
+          return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
         }
       }
     }
@@ -773,7 +779,7 @@ async function handleSearchArtists(event, logger) {
           "Unexpected OpenSearch response structure, returning empty results",
           { result }
         );
-        return createSuccessResponse([]);
+        return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
       }
 
       // Transform the OpenSearch documents to match the expected API format
@@ -781,9 +787,9 @@ async function handleSearchArtists(event, logger) {
         const source = hit._source;
         return {
           artistId: source.artistId,
-          name: source.artistName, // Use artistName from OpenSearch
+          artistName: source.artistName, // Use artistName from OpenSearch
           instagramHandle: source.instagramHandle,
-          location: source.locationDisplay, // Use locationDisplay from OpenSearch
+          locationDisplay: source.locationDisplay, // Use locationDisplay from OpenSearch
           styles: source.styles || [],
           specialties: source.specialties || [],
           rating: source.rating,
@@ -1122,9 +1128,9 @@ async function handleGetArtist(event, logger) {
     const source = hits[0]._source;
     artist = {
       artistId: source.artistId,
-      name: source.artistName, // Use artistName from OpenSearch
+      artistName: source.artistName, // Use artistName from OpenSearch
       instagramHandle: source.instagramHandle,
-      location: source.locationDisplay, // Use locationDisplay from OpenSearch
+      locationDisplay: source.locationDisplay, // Use locationDisplay from OpenSearch
       styles: source.styles || [],
       specialties: source.specialties || [],
       rating: source.rating,
@@ -1251,7 +1257,7 @@ async function handleGetStyles(event, logger) {
             logger.error("DynamoDB fallback also failed for styles", {
               error: dynamoError.toString(),
             });
-            return createSuccessResponse([]);
+            return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
           }
         }
       } catch (error) {
@@ -1268,7 +1274,7 @@ async function handleGetStyles(event, logger) {
           logger.error("DynamoDB fallback also failed", {
             error: dynamoError.toString(),
           });
-          return createSuccessResponse([]);
+          return createErrorResponse(500, "Internal Server Error", "Search service is currently unavailable.", getRequestId(event));
         }
       }
     } else {
@@ -1388,8 +1394,19 @@ export const handler = async (event, context) => {
     logger = createLogger(context, event);
   }
 
+  // Debug logging for path matching
+  logger.info("Route processing", { 
+    path, 
+    method, 
+    rawPath: event.rawPath, 
+    eventPath: event.path,
+    isHealthPath: path === "/health",
+    pathLength: path.length,
+    pathChars: path.split('').map(c => c.charCodeAt(0))
+  });
+
   // Health check endpoint
-  if (path === "/health" && method === "GET") {
+  if ((path === "/health" || path === "/health/") && method === "GET") {
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },

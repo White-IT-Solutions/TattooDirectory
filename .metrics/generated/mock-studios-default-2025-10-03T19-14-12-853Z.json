@@ -1,0 +1,334 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Modern Ink Studio",
+    "address": {
+      "street": "56 Stokes Croft",
+      "city": "Bristol",
+      "postcode": "BS2 0SP",
+      "latitude": 51.45860497977705,
+      "longitude": -2.5895695926129716
+    },
+    "locationDisplay": "Bristol, UK",
+    "contactInfo": {
+      "phone": "+44 117 5059 886",
+      "email": "info@moderninkstudio.com",
+      "website": "https://moderninkstudio.com",
+      "instagram": "@moderninkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-001"
+    ],
+    "rating": 4.9,
+    "reviewCount": 82,
+    "established": 2008,
+    "specialties": [
+      "minimalism",
+      "tribal",
+      "lettering",
+      "floral"
+    ],
+    "geohash": "rhzgq1"
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Artisan Tattoo Co.",
+    "address": {
+      "street": "89 Southside",
+      "city": "Glasgow",
+      "postcode": "G2 3BZ",
+      "latitude": 55.867085789166616,
+      "longitude": -4.251359029108606
+    },
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 131 6153 532",
+      "email": "info@artisantattooco.com",
+      "website": "https://artisantattooco.com",
+      "instagram": "@artisantattoocostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-002",
+      "artist-013"
+    ],
+    "rating": 4.3,
+    "reviewCount": 78,
+    "established": 2008,
+    "specialties": [
+      "blackwork",
+      "floral",
+      "geometric",
+      "neo_traditional"
+    ],
+    "geohash": "fqcfup"
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Urban Canvas Studio",
+    "address": {
+      "street": "78 Shoreditch High Street",
+      "city": "London",
+      "postcode": "SW1A 1AA",
+      "latitude": 51.50558759484314,
+      "longitude": -0.12568627922500442
+    },
+    "locationDisplay": "London, UK",
+    "contactInfo": {
+      "phone": "+44 117 4098 837",
+      "email": "info@urbancanvasstudio.com",
+      "website": "https://urbancanvasstudio.com",
+      "instagram": "@urbancanvasstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-003",
+      "artist-004",
+      "artist-012"
+    ],
+    "rating": 4.4,
+    "reviewCount": 52,
+    "established": 2012,
+    "specialties": [
+      "watercolour",
+      "geometric"
+    ],
+    "geohash": "30fkyd"
+  },
+  {
+    "studioId": "studio-004",
+    "studioName": "Modern Ink Studio",
+    "address": {
+      "street": "90 Briggate",
+      "city": "Leeds",
+      "postcode": "LS2 7UE",
+      "latitude": 53.796769438273714,
+      "longitude": -1.54496225430336
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 151 9420 168",
+      "email": "info@moderninkstudio.com",
+      "website": "https://moderninkstudio.com",
+      "instagram": "@moderninkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-005",
+      "artist-007",
+      "artist-010"
+    ],
+    "rating": 4.9,
+    "reviewCount": 92,
+    "established": 2012,
+    "specialties": [
+      "minimalism",
+      "traditional",
+      "watercolour"
+    ],
+    "geohash": "ug93pm"
+  },
+  {
+    "studioId": "studio-005",
+    "studioName": "Rebel Ink Studio",
+    "address": {
+      "street": "67 Deansgate",
+      "city": "Manchester",
+      "postcode": "M3 4CC",
+      "latitude": 53.47778682847928,
+      "longitude": -2.237747768245578
+    },
+    "locationDisplay": "Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 161 7053 551",
+      "email": "info@rebelinkstudio.com",
+      "website": "https://rebelinkstudio.com",
+      "instagram": "@rebelinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-006",
+      "artist-014",
+      "artist-015",
+      "artist-017",
+      "artist-018"
+    ],
+    "rating": 4.9,
+    "reviewCount": 89,
+    "established": 2018,
+    "specialties": [
+      "minimalism",
+      "traditional",
+      "watercolour",
+      "floral",
+      "dotwork"
+    ],
+    "geohash": "fqd27v"
+  },
+  {
+    "studioId": "studio-006",
+    "studioName": "Urban Canvas Studio",
+    "address": {
+      "street": "90 Grassmarket",
+      "city": "Edinburgh",
+      "postcode": "EH2 2AD",
+      "latitude": 55.9554497234219,
+      "longitude": -3.191424334984637
+    },
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 113 5107 158",
+      "email": "info@urbancanvasstudio.com",
+      "website": "https://urbancanvasstudio.com",
+      "instagram": "@urbancanvasstudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-008",
+      "artist-011"
+    ],
+    "rating": 4.2,
+    "reviewCount": 139,
+    "established": 2015,
+    "specialties": [
+      "geometric",
+      "floral",
+      "watercolour",
+      "neo_traditional",
+      "biomechanical"
+    ],
+    "geohash": "kj9jpj"
+  },
+  {
+    "studioId": "studio-007",
+    "studioName": "Classic Ink Parlour",
+    "address": {
+      "street": "89 Hope Street",
+      "city": "Liverpool",
+      "postcode": "L1 1AA",
+      "latitude": 53.41192094385793,
+      "longitude": -2.988941183561319
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 131 3602 225",
+      "email": "info@classicinkparlour.com",
+      "website": "https://classicinkparlour.com",
+      "instagram": "@classicinkparlourstudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-009",
+      "artist-016",
+      "artist-019"
+    ],
+    "rating": 4.4,
+    "reviewCount": 58,
+    "established": 2009,
+    "specialties": [
+      "fineline",
+      "biomechanical",
+      "neo_traditional",
+      "blackwork"
+    ],
+    "geohash": "42dzrv"
+  },
+  {
+    "studioId": "studio-008",
+    "studioName": "Botanical Tattoo Collective",
+    "address": {
+      "street": "89 Hope Street",
+      "city": "Liverpool",
+      "postcode": "L2 2DX",
+      "latitude": 53.4107029479627,
+      "longitude": -2.988196319734807
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 151 2396 856",
+      "email": "info@botanicaltattoocollective.com",
+      "website": "https://botanicaltattoocollective.com",
+      "instagram": "@botanicaltattoocollectivestudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-020"
+    ],
+    "rating": 4.4,
+    "reviewCount": 99,
+    "established": 2009,
+    "specialties": [
+      "blackwork",
+      "geometric",
+      "neo_traditional",
+      "realism",
+      "floral"
+    ],
+    "geohash": "tbneum"
+  }
+]

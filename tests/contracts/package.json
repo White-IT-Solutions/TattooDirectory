@@ -1,0 +1,29 @@
+{
+  "name": "contract-tests",
+  "version": "1.0.0",
+  "description": "API contract validation and schema compliance tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env API_BASE_URL=http://localhost:9001 mocha '**/*.test.js' --timeout 90000 --reporter spec",
+    "test:contracts": "cross-env API_BASE_URL=http://localhost:9001 mocha --recursive --timeout 90000 --reporter spec",
+    "test:schema": "cross-env API_BASE_URL=http://localhost:9001 mocha schema/*.test.js --timeout 30000",
+    "test:breaking-changes": "cross-env API_BASE_URL=http://localhost:9001 mocha breaking-changes/*.test.js --timeout 30000",
+    "test:validation": "cross-env API_BASE_URL=http://localhost:9001 mocha validation/*.test.js --timeout 30000",
+    "test:direct": "mocha '**/*.test.js' --timeout 90000 --reporter spec"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "axios": "^1.6.0",
+    "chai": "^4.3.0",
+    "js-yaml": "^4.1.0",
+    "json-schema-diff": "^0.5.0",
+    "mocha": "^10.2.0",
+    "openapi-schema-validator": "^12.1.0",
+    "swagger-parser": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^10.0.0",
+    "cross-env": "^7.0.3"
+  }
+}

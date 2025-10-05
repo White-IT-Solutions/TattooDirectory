@@ -77,6 +77,39 @@ const TEST_SCENARIOS = {
   'full-dataset': {
     description: 'Complete test dataset with all styles',
     loadAll: true
+  },
+  'performance-test': {
+    description: 'Large dataset for performance testing (100+ artists, 40+ studios)',
+    loadAll: true,
+    generateLarge: true,
+    targetArtistCount: 100,
+    targetStudioCount: 40
+  },
+  'mega-dataset': {
+    description: 'Extra large dataset for stress testing (250+ artists, 100+ studios)',
+    loadAll: true,
+    generateLarge: true,
+    targetArtistCount: 250,
+    targetStudioCount: 100
+  },
+  'studio-diverse': {
+    description: 'Diverse studio types and specializations with varied artist assignments',
+    loadAll: true,
+    ensureStudioDiversity: true,
+    targetArtistCount: 8,
+    targetStudioCount: 5
+  },
+  'london-studios': {
+    description: 'London-focused studios and artists with proper postcodes',
+    filter: (item) => item.locationDisplay && item.locationDisplay.includes('London'),
+    minItems: 5,
+    targetStudioCount: 3
+  },
+  'high-rated-studios': {
+    description: 'High-rated studios and artists (4.5+ stars)',
+    filter: (item) => item.rating && item.rating >= 4.5,
+    minItems: 3,
+    targetStudioCount: 2
   }
 };
 
@@ -123,7 +156,7 @@ class DatabaseSeeder {
    * Wait for all required services to be ready
    */
   async waitForServices() {
-    console.log('⏳ Waiting for LocalStack services to be ready...');
+    console.log('⏳ Waiting for services to be ready...');
     
     await this.waitForDynamoDB();
     await this.waitForOpenSearch();
@@ -175,16 +208,18 @@ class DatabaseSeeder {
   makeOpenSearchRequest(method, path, data = null) {
     return new Promise((resolve, reject) => {
       const isContainer = this.config.environment.isDocker;
-      const hostname = isContainer ? 'localstack' : 'localhost';
+      
+      // Use dedicated OpenSearch container instead of LocalStack
+      const hostname = isContainer ? 'tattoo-directory-opensearch' : 'localhost';
+      const port = isContainer ? 9200 : 4571; // Internal port 9200, external port 4571
       
       const options = {
         hostname: hostname,
-        port: 4566,
+        port: port,
         path: path,
         method: method,
         headers: {
-          'Content-Type': 'application/json',
-          'Host': 'tattoo-directory-local.eu-west-2.opensearch.localstack'
+          'Content-Type': 'application/json'
         }
       };
 
@@ -304,11 +339,18 @@ class DatabaseSeeder {
 
     // Handle full dataset scenario
     if (scenario.loadAll) {
-      return {
+      let baseData = {
         artists: [...this.allData.artists],
         studios: [...this.allData.studios],
         styles: [...this.allData.styles]
       };
+      
+      // Handle large dataset generation for performance testing
+      if (scenario.generateLarge && scenario.targetArtistCount) {
+        baseData = this.generateLargeDataset(baseData, scenario);
+      }
+      
+      return baseData;
     }
 
     // Handle specific ID-based selection
@@ -396,6 +438,122 @@ class DatabaseSeeder {
         };
       }
     });
+  }
+
+  /**
+   * Generate large dataset for performance testing
+   */
+  generateLargeDataset(baseData, scenario) {
+    console.log(`🔢 Generating large dataset: ${scenario.targetArtistCount} artists, ${scenario.targetStudioCount || 'auto'} studios`);
+    
+    const targetArtistCount = scenario.targetArtistCount || 100;
+    const targetStudioCount = scenario.targetStudioCount || Math.ceil(targetArtistCount / 2.5);
+    
+    // Generate additional artists by duplicating and modifying existing ones
+    const generatedArtists = [...baseData.artists];
+    const baseArtistCount = baseData.artists.length;
+    
+    for (let i = baseArtistCount; i < targetArtistCount; i++) {
+      const baseArtist = baseData.artists[i % baseArtistCount];
+      const generatedArtist = this.generateVariantArtist(baseArtist, i);
+      generatedArtists.push(generatedArtist);
+    }
+    
+    // Generate additional studios
+    const generatedStudios = [...baseData.studios];
+    const baseStudioCount = baseData.studios.length;
+    
+    for (let i = baseStudioCount; i < targetStudioCount; i++) {
+      const baseStudio = baseData.studios[i % baseStudioCount];
+      const generatedStudio = this.generateVariantStudio(baseStudio, i);
+      generatedStudios.push(generatedStudio);
+    }
+    
+    console.log(`✅ Generated ${generatedArtists.length} artists and ${generatedStudios.length} studios`);
+    
+    return {
+      artists: generatedArtists,
+      studios: generatedStudios,
+      styles: baseData.styles
+    };
+  }
+
+  /**
+   * Generate a variant of an existing artist for performance testing
+   */
+  generateVariantArtist(baseArtist, index) {
+    const variant = JSON.parse(JSON.stringify(baseArtist)); // Deep clone
+    
+    // Generate unique ID
+    variant.artistId = `artist-${String(index + 1).padStart(3, '0')}`;
+    
+    // Modify name
+    const nameVariations = ['Alex', 'Sam', 'Jordan', 'Casey', 'Riley', 'Morgan', 'Avery', 'Quinn', 'Sage', 'River'];
+    const surnameVariations = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+    variant.name = `${nameVariations[index % nameVariations.length]} ${surnameVariations[Math.floor(index / nameVariations.length) % surnameVariations.length]}`;
+    
+    // Vary rating slightly
+    if (variant.rating) {
+      variant.rating = Math.max(3.0, Math.min(5.0, variant.rating + (Math.random() - 0.5) * 0.8));
+      variant.rating = Math.round(variant.rating * 10) / 10;
+    }
+    
+    // Vary pricing
+    if (variant.pricing) {
+      const multiplier = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+      variant.pricing.hourlyRate = Math.round(variant.pricing.hourlyRate * multiplier);
+      variant.pricing.minimumCharge = Math.round(variant.pricing.minimumCharge * multiplier);
+    }
+    
+    // Assign to a studio (distribute evenly)
+    const studioIndex = index % 40; // Assuming up to 40 studios for performance test
+    variant.studioId = `studio-${String(studioIndex + 1).padStart(3, '0')}`;
+    
+    return variant;
+  }
+
+  /**
+   * Generate a variant of an existing studio for performance testing
+   */
+  generateVariantStudio(baseStudio, index) {
+    const variant = JSON.parse(JSON.stringify(baseStudio)); // Deep clone
+    
+    // Generate unique ID
+    variant.studioId = `studio-${String(index + 1).padStart(3, '0')}`;
+    
+    // Modify studio name
+    const studioNames = ['Ink', 'Art', 'Tattoo', 'Studio', 'Gallery', 'Works', 'House', 'Parlour', 'Shop', 'Collective'];
+    const studioTypes = ['Studio', 'Gallery', 'Parlour', 'House', 'Works', 'Collective', 'Shop', 'Space', 'Lab', 'Hub'];
+    variant.studioName = `${studioNames[index % studioNames.length]} ${studioTypes[Math.floor(index / studioNames.length) % studioTypes.length]}`;
+    
+    // Vary location within UK cities
+    const ukCities = ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Bristol', 'Liverpool', 'Newcastle', 'Sheffield'];
+    const cityIndex = index % ukCities.length;
+    const city = ukCities[cityIndex];
+    
+    variant.address = `${Math.floor(Math.random() * 999) + 1} ${['High', 'Main', 'Church', 'King', 'Queen'][index % 5]} Street`;
+    variant.city = city;
+    variant.locationDisplay = `${variant.address}, ${city}`;
+    
+    // Generate realistic UK postcode for the city
+    const postcodes = {
+      'London': ['SW1A 1AA', 'E1 6AN', 'W1A 0AX', 'SE1 9SG', 'N1 9GU'],
+      'Manchester': ['M1 1AA', 'M2 3AE', 'M3 4FP', 'M4 1AQ', 'M13 9PL'],
+      'Birmingham': ['B1 1AA', 'B2 4QA', 'B3 1JJ', 'B4 6AT', 'B5 4RN'],
+      'Leeds': ['LS1 1AA', 'LS2 7UE', 'LS3 1LX', 'LS4 2AU', 'LS6 2UE'],
+      'Glasgow': ['G1 1AA', 'G2 3BZ', 'G3 6LP', 'G4 0QR', 'G12 8QQ']
+    };
+    
+    const cityPostcodes = postcodes[city] || ['XX1 1XX'];
+    variant.postcode = cityPostcodes[index % cityPostcodes.length];
+    
+    // Vary rating
+    if (variant.rating) {
+      variant.rating = Math.max(3.5, Math.min(5.0, variant.rating + (Math.random() - 0.5) * 0.6));
+      variant.rating = Math.round(variant.rating * 10) / 10;
+    }
+    
+    return variant;
   }
 
   /**

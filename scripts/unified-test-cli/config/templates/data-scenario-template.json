@@ -1,0 +1,31 @@
+{
+  "scenarios": [
+    {
+      "name": "example-scenario",
+      "description": "Template for creating new data scenarios",
+      "command": "node scripts/data-cli.js seed-scenario example-scenario",
+      "estimatedTime": 30000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean",
+      "validation": "node scripts/data-cli.js validate-data",
+      "parallel": false,
+      "cacheable": true,
+      "environment": {
+        "DATA_SCENARIO": "example-scenario",
+        "SEED_TIMEOUT": "30000"
+      }
+    }
+  ],
+  "_comments": {
+    "name": "Unique identifier for the data scenario (kebab-case)",
+    "description": "Brief description of what data this scenario provides",
+    "command": "Command to seed this scenario (run from project root)",
+    "estimatedTime": "Estimated time to seed scenario in milliseconds",
+    "dependencies": "Array of services required for seeding",
+    "cleanup": "Command to clean up scenario data (optional)",
+    "validation": "Command to validate scenario data (optional)",
+    "parallel": "Whether this scenario can be seeded in parallel",
+    "cacheable": "Whether scenario data can be cached between runs",
+    "environment": "Environment variables for seeding command"
+  }
+}

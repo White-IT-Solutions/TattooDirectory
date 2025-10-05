@@ -343,6 +343,7 @@ export default function AdvancedSearchInterface({ isOpen, onClose, onSearch }) {
                     placeholder="City, postcode, or area..."
                     value={searchCriteria.location}
                     onChange={(e) => updateCriteria("location", e.target.value)}
+                    data-testid="location-filter"
                   />
                 </div>
                 <div>

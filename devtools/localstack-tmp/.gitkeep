@@ -1,3 +1,0 @@
-# This file ensures the localstack-tmp directory is tracked in git
-# LocalStack temporary files will be created here during runtime
-# This directory stores Lambda execution artifacts and other temporary data

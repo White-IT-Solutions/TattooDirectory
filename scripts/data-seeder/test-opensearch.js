@@ -1,11 +1,11 @@
 const http = require("http");
 
-// Test different OpenSearch endpoint formats for LocalStack
+// Test different OpenSearch endpoint formats for dedicated OpenSearch container
 const endpoints = [
+  "http://localhost:4571",
+  "http://tattoo-directory-opensearch:9200",
   "http://localstack:4566",
   "http://localstack:4566/opensearch/tattoo-directory-local",
-  "http://localstack:4566/_plugin/opensearch/tattoo-directory-local",
-  "http://tattoo-directory-local.eu-west-2.opensearch.localstack:4566",
 ];
 
 async function testEndpoint(endpoint) {
@@ -15,7 +15,7 @@ async function testEndpoint(endpoint) {
     const url = new URL("/", endpoint);
     const options = {
       hostname: url.hostname,
-      port: url.port || 4566,
+      port: url.port || (url.hostname === 'tattoo-directory-opensearch' ? 9200 : 4566),
       path: url.pathname,
       method: "GET",
       headers: {

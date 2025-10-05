@@ -172,6 +172,7 @@ export default function ContactOptions({
             href={contact.href}
             target={isExternal ? '_blank' : undefined}
             rel={isExternal ? 'noopener noreferrer' : undefined}
+            data-testid={contact.type === 'instagram' ? 'instagram-link' : undefined}
           >
             {contact.icon}
             {showLabels && <span className="ml-1">{contact.value}</span>}
@@ -193,6 +194,7 @@ export default function ContactOptions({
             sizeClasses[size],
             variant === 'compact' && 'px-2 py-1'
           )}
+          data-testid={contact.type === 'instagram' ? 'instagram-link' : undefined}
         >
           {contact.icon}
           {showLabels && <span>{contact.value}</span>}

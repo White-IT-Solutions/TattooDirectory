@@ -6,22 +6,30 @@
  */
 
 import chalk from 'chalk';
-import inquirer from 'inquirer';
 import { TestDiscovery } from './test-discovery.js';
 import { ServiceValidator } from './service-validator.js';
 import { DataManager } from './data-manager.js';
-import { TestExecutor } from './test-executor.js';
+import { EnhancedTestExecutor } from './enhanced-test-executor.js';
+import { InteractiveMenu } from '../cli/interactive-menu.js';
 import { ParallelExecutor } from '../utils/parallel-executor.js';
 import { Logger } from '../utils/logger.js';
+import { CIDetector } from '../utils/ci-detector.js';
+import { ArtifactGenerator } from '../utils/artifact-generator.js';
+import ConsoleReporter from '../reporters/console-reporter.js';
+import JUnitReporter from '../reporters/junit-reporter.js';
+import { JSONReporter } from '../reporters/json-reporter.js';
 
-export class UnifiedTestCLI {
+class UnifiedTestCLI {
   constructor() {
     this.testDiscovery = new TestDiscovery();
     this.serviceValidator = new ServiceValidator();
     this.dataManager = new DataManager();
-    this.testExecutor = new TestExecutor();
+    this.testExecutor = new EnhancedTestExecutor();
+    this.interactiveMenu = new InteractiveMenu();
     this.parallelExecutor = new ParallelExecutor();
     this.logger = new Logger();
+    this.ciDetector = new CIDetector();
+    this.artifactGenerator = new ArtifactGenerator();
   }
 
   /**
@@ -30,9 +38,31 @@ export class UnifiedTestCLI {
    * @param {Object} options - CLI options
    */
   async run(suiteName, options = {}) {
-    this.logger.info('Starting Unified Test CLI', { suiteName, options });
+    this.logger.info('Starting Unified Test CLI');
 
     try {
+      // Detect CI environment and apply CI-specific configuration
+      const ciConfig = this.ciDetector.getCIConfig();
+      if (ciConfig.isCI) {
+        this.logger.info('CI environment detected', { 
+          provider: ciConfig.environment?.name,
+          nonInteractive: ciConfig.nonInteractive 
+        });
+        
+        // Apply CI defaults
+        options.ci = true;
+        options.nonInteractive = ciConfig.nonInteractive;
+        if (ciConfig.parallelDefault && !options.hasOwnProperty('parallel')) {
+          options.parallel = true;
+        }
+      }
+
+      // Initialize reporters based on environment and options
+      const reporters = this._initializeReporters(options, ciConfig);
+      
+      // Start reporting
+      await Promise.all(reporters.map(reporter => reporter.start()));
+
       // Discover available test suites
       const availableSuites = await this.testDiscovery.discoverSuites();
       
@@ -48,34 +78,128 @@ export class UnifiedTestCLI {
           throw new Error(`Test suite '${suiteName}' not found`);
         }
         suitesToRun = [suite];
-      } else if (options.ci) {
+      } else if (options.ci || options.nonInteractive) {
         // In CI mode, run all critical suites
         suitesToRun = availableSuites.filter(s => s.tags?.includes('critical'));
+        if (suitesToRun.length === 0) {
+          // Fallback to all suites if no critical suites found
+          suitesToRun = availableSuites;
+        }
       } else {
         // Interactive mode - show menu
-        suitesToRun = await this.showInteractiveMenu(availableSuites);
+        suitesToRun = await this.interactiveMenu.showSuiteSelectionMenu(availableSuites);
+        
+        // Handle case where user cancels or no suites selected
+        if (!suitesToRun || suitesToRun.length === 0) {
+          this.logger.info('No test suites selected');
+          return { success: true, results: [], message: 'No suites selected' };
+        }
+        
+        // Show execution options menu if suites were selected
+        if (suitesToRun.length > 0) {
+          const executionOptions = await this.interactiveMenu.showExecutionOptionsMenu(suitesToRun);
+          Object.assign(options, executionOptions);
+          
+          // Show confirmation menu
+          const proceed = await this.interactiveMenu.showConfirmationMenu(suitesToRun, options);
+          if (!proceed) {
+            this.logger.info('Test execution cancelled by user');
+            return;
+          }
+        }
       }
 
-      // Execute the selected test suites
-      if (options.parallel && suitesToRun.length > 1) {
-        await this.parallelExecutor.executeParallel(suitesToRun, {
-          maxConcurrency: parseInt(options.maxParallel) || 3,
-          scenario: options.scenario,
-          coverage: options.coverage
+      // Execute the selected test suites with reporting
+      let testResults;
+      if (options.parallel && suitesToRun && suitesToRun.length > 1) {
+        this.logger.info('Executing test suites in parallel', { 
+          suiteCount: suitesToRun.length,
+          maxConcurrency: options.maxParallel || 3
         });
-      } else {
-        for (const suite of suitesToRun) {
-          await this.testExecutor.executeSuite(suite, {
+        
+        testResults = await this._executeWithReporting(
+          () => this.parallelExecutor.executeParallel(suitesToRun, {
+            maxConcurrency: options.maxParallel || 3,
             scenario: options.scenario,
             coverage: options.coverage,
-            ci: options.ci
-          });
+            ci: options.ci,
+            reporters: reporters
+          }),
+          reporters
+        );
+      } else {
+        // Sequential execution
+        testResults = await this._executeWithReporting(
+          async () => {
+            const results = [];
+            for (const suite of suitesToRun) {
+              const result = await this.testExecutor.executeSuite(suite, {
+                scenario: options.scenario,
+                coverage: options.coverage,
+                ci: options.ci,
+                reporters: reporters
+              });
+              results.push(result);
+            }
+            return results;
+          },
+          reporters
+        );
+      }
+
+      // Generate final reports and artifacts
+      const reporterResults = await Promise.all(
+        reporters.map(async reporter => {
+          try {
+            return await reporter.summary();
+          } catch (error) {
+            this.logger.warn('Reporter failed to generate summary', { 
+              reporter: reporter.constructor.name,
+              error: error.message 
+            });
+            return { success: false, error: error.message };
+          }
+        })
+      );
+
+      // Generate CI/CD artifacts if in CI environment
+      if (ciConfig.isCI) {
+        await this.artifactGenerator.generateArtifacts(testResults, reporterResults);
+      }
+
+      // Check for failures and set appropriate exit code
+      const hasFailures = (testResults || []).some(r => r.status === 'failed') || 
+                         (reporterResults || []).some(r => !r.success);
+      
+      if (hasFailures) {
+        const exitCode = this.artifactGenerator.getExitCode({ 
+          success: false, 
+          failedTests: testResults.filter(r => r.status === 'failed').length 
+        });
+        
+        if (ciConfig.exitOnFailure) {
+          process.exit(exitCode);
+        } else {
+          throw new Error('Some test suites failed');
         }
       }
 
       this.logger.success('All test suites completed successfully');
+      
+      // Exit with success code in CI
+      if (ciConfig.isCI) {
+        process.exit(0);
+      }
+      
     } catch (error) {
       this.logger.error('CLI execution failed', { error: error.message });
+      
+      // Set appropriate exit code in CI
+      if (this.ciDetector.isCI()) {
+        const exitCode = this.artifactGenerator.getExitCode({ success: false });
+        process.exit(exitCode);
+      }
+      
       throw error;
     }
   }
@@ -86,7 +210,7 @@ export class UnifiedTestCLI {
    */
   async listSuites(options = {}) {
     try {
-      const suites = await this.testDiscovery.discoverSuites();
+      const suites = await this.testDiscovery.discoverSuites({ silent: options.json });
       
       if (options.json) {
         console.log(JSON.stringify(suites, null, 2));
@@ -148,46 +272,79 @@ export class UnifiedTestCLI {
   }
 
   /**
-   * Show interactive menu for test suite selection
-   * @param {Array} availableSuites - Available test suites
-   * @returns {Array} Selected test suites
+   * Initialize reporters based on options and CI configuration
+   * @param {Object} options - CLI options
+   * @param {Object} ciConfig - CI configuration
+   * @returns {Array} Array of initialized reporters
    */
-  async showInteractiveMenu(availableSuites) {
-    const choices = availableSuites.map(suite => ({
-      name: `${suite.displayName || suite.name} - ${suite.description || 'No description'}`,
-      value: suite,
-      short: suite.name
-    }));
-
-    choices.push(
-      { name: '─'.repeat(50), disabled: true },
-      { name: 'Run all suites', value: 'all' },
-      { name: 'Run critical suites only', value: 'critical' }
-    );
-
-    const { selectedSuites } = await inquirer.prompt([
-      {
-        type: 'checkbox',
-        name: 'selectedSuites',
-        message: 'Select test suites to run:',
-        choices,
-        validate: (input) => {
-          if (input.length === 0) {
-            return 'Please select at least one test suite';
-          }
-          return true;
-        }
-      }
-    ]);
-
-    // Handle special selections
-    if (selectedSuites.includes('all')) {
-      return availableSuites;
+  _initializeReporters(options, ciConfig) {
+    const reporters = [];
+    
+    // Always include console reporter (unless explicitly disabled)
+    if (!options.quiet) {
+      reporters.push(new ConsoleReporter({
+        verbose: options.verbose || ciConfig.isCI,
+        colors: !ciConfig.isCI || process.env.FORCE_COLOR === 'true'
+      }));
     }
-    if (selectedSuites.includes('critical')) {
-      return availableSuites.filter(s => s.tags?.includes('critical'));
+    
+    // Add JUnit reporter for CI environments or when explicitly requested
+    if (ciConfig.isCI || options.junit || ciConfig.outputFormats?.includes('junit')) {
+      const artifactPaths = this.ciDetector.getArtifactPaths();
+      reporters.push(new JUnitReporter({
+        outputDir: artifactPaths.testResults,
+        outputFile: 'junit.xml'
+      }));
     }
-
-    return selectedSuites.filter(s => typeof s === 'object');
+    
+    // Add JSON reporter for CI environments or when explicitly requested
+    if (ciConfig.isCI || options.json || ciConfig.outputFormats?.includes('json')) {
+      const artifactPaths = this.ciDetector.getArtifactPaths();
+      reporters.push(new JSONReporter({
+        outputDir: artifactPaths.testResults,
+        outputFile: 'results.json',
+        includeEnvironment: ciConfig.isCI
+      }));
+    }
+    
+    return reporters;
   }
+
+  /**
+   * Execute test suites with proper reporting integration
+   * @param {Function} executionFn - Function that executes the tests
+   * @param {Array} reporters - Array of reporters
+   * @returns {Array} Test results
+   */
+  async _executeWithReporting(executionFn, reporters) {
+    try {
+      // Execute tests
+      const results = await executionFn();
+      
+      // Report results to all reporters
+      if (Array.isArray(results)) {
+        results.forEach(result => {
+          reporters.forEach(reporter => {
+            if (typeof reporter.suiteComplete === 'function') {
+              reporter.suiteComplete(result);
+            }
+          });
+        });
+      }
+      
+      return results;
+    } catch (error) {
+      // Report error to all reporters
+      reporters.forEach(reporter => {
+        if (typeof reporter.error === 'function') {
+          reporter.error('Test execution failed', error);
+        }
+      });
+      throw error;
+    }
+  }
+
+
 }
+
+export { UnifiedTestCLI };

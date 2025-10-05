@@ -1,0 +1,39 @@
+{
+  "services": {
+    "localstack": {
+      "name": "LocalStack",
+      "url": "http://localhost:4566",
+      "healthEndpoint": "/_localstack/health",
+      "timeout": 5000,
+      "retries": 3
+    },
+    "frontend": {
+      "name": "Frontend Development Server",
+      "url": "http://localhost:3000",
+      "healthEndpoint": "/",
+      "timeout": 5000,
+      "retries": 2
+    },
+    "backend": {
+      "name": "Backend API",
+      "url": "http://localhost:9000",
+      "healthEndpoint": "/health",
+      "timeout": 5000,
+      "retries": 2
+    },
+    "database": {
+      "name": "DynamoDB Local",
+      "url": "http://localhost:4566",
+      "healthEndpoint": "/health",
+      "timeout": 5000,
+      "retries": 3
+    },
+    "search": {
+      "name": "OpenSearch Local",
+      "url": "http://localhost:4566",
+      "healthEndpoint": "/health",
+      "timeout": 5000,
+      "retries": 3
+    }
+  }
+}

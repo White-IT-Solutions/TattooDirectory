@@ -8,6 +8,10 @@
 import axios from 'axios';
 import { Logger } from '../utils/logger.js';
 import { Config } from '../utils/config.js';
+import { ServiceValidationError, ErrorRecovery } from '../utils/errors.js';
+
+// Re-export ServiceValidationError for convenience
+export { ServiceValidationError } from '../utils/errors.js';
 
 export class ServiceValidator {
   constructor() {
@@ -65,26 +69,43 @@ export class ServiceValidator {
     this.logger.debug(`Validating service: ${serviceName} at ${healthUrl}`);
 
     try {
+      const startTime = Date.now();
       const response = await axios.get(healthUrl, {
         timeout,
         validateStatus: (status) => status < 500 // Accept any status < 500 as healthy
       });
+      const responseTime = Date.now() - startTime;
 
       // Service-specific health checks
       const isHealthy = await this.checkServiceSpecificHealth(serviceName, response);
       
       return {
         status: isHealthy ? 'healthy' : 'unhealthy',
-        responseTime: response.headers['x-response-time'] || 'unknown',
-        statusCode: response.status
+        responseTime: `${responseTime}ms`,
+        statusCode: response.status,
+        url: healthUrl
       };
     } catch (error) {
+      const suggestions = this.generateSuggestions(serviceName);
+      
       if (error.code === 'ECONNREFUSED') {
-        throw new Error(`Service not running or not accessible at ${healthUrl}`);
+        throw new ServiceValidationError(
+          serviceName,
+          `Service not running or not accessible at ${healthUrl}`,
+          error
+        );
       } else if (error.code === 'ETIMEDOUT') {
-        throw new Error(`Service health check timed out after ${timeout}ms`);
+        throw new ServiceValidationError(
+          serviceName,
+          `Service health check timed out after ${timeout}ms`,
+          error
+        );
       } else {
-        throw new Error(`Health check failed: ${error.message}`);
+        throw new ServiceValidationError(
+          serviceName,
+          `Health check failed: ${error.message}`,
+          error
+        );
       }
     }
   }
@@ -102,19 +123,44 @@ export class ServiceValidator {
         if (response.data && typeof response.data === 'object') {
           const services = response.data.services || {};
           const requiredServices = ['dynamodb', 's3', 'opensearch'];
-          return requiredServices.every(service => 
+          const availableServices = requiredServices.filter(service => 
             services[service] === 'available' || services[service] === 'running'
           );
+          
+          this.logger.debug(`LocalStack services status: ${JSON.stringify(services)}`);
+          
+          if (availableServices.length !== requiredServices.length) {
+            const missingServices = requiredServices.filter(service => 
+              !availableServices.includes(service)
+            );
+            this.logger.warn(`Missing LocalStack services: ${missingServices.join(', ')}`);
+          }
+          
+          return availableServices.length === requiredServices.length;
         }
         return response.status === 200;
 
       case 'frontend':
-        // Frontend should return HTML or JSON
-        return response.status === 200 && response.data;
+        // Frontend should return HTML or JSON and be accessible
+        const isHealthy = response.status === 200 && response.data;
+        if (!isHealthy) {
+          this.logger.debug(`Frontend health check failed: status=${response.status}, hasData=${!!response.data}`);
+        }
+        return isHealthy;
 
       case 'backend':
-        // Backend Lambda should be accessible
-        return response.status === 200 || response.status === 404; // 404 is OK for Lambda
+        // Backend Lambda should be accessible (404 is acceptable for Lambda RIE)
+        const backendHealthy = response.status === 200 || response.status === 404;
+        if (!backendHealthy) {
+          this.logger.debug(`Backend health check failed: status=${response.status}`);
+        }
+        return backendHealthy;
+
+      case 'dynamodb':
+      case 'opensearch':
+      case 's3':
+        // AWS services via LocalStack should be accessible
+        return response.status === 200 || response.status === 404;
 
       default:
         return response.status === 200;
@@ -158,6 +204,37 @@ export class ServiceValidator {
   }
 
   /**
+   * Validate specific services required for a test suite
+   * @param {string} testSuite - Name of the test suite
+   * @returns {Object} Validation results for required services
+   */
+  async validateForTestSuite(testSuite) {
+    const requiredServices = this.getRequiredServicesForSuite(testSuite);
+    this.logger.info(`Validating services for ${testSuite}: ${requiredServices.join(', ')}`);
+    
+    return await this.validateEnvironment(requiredServices);
+  }
+
+  /**
+   * Get required services for a specific test suite
+   * @param {string} testSuite - Name of the test suite
+   * @returns {Array} Array of required service names
+   */
+  getRequiredServicesForSuite(testSuite) {
+    const serviceMap = {
+      'frontend-unit': [],
+      'backend-unit': ['localstack'],
+      'integration': ['localstack', 'frontend', 'backend'],
+      'e2e': ['localstack', 'frontend'],
+      'security': ['localstack', 'frontend', 'backend'],
+      'performance': ['localstack', 'frontend', 'backend'],
+      'contracts': ['localstack', 'backend']
+    };
+
+    return serviceMap[testSuite] || ['localstack'];
+  }
+
+  /**
    * Generate actionable suggestions for fixing service issues
    * @param {string} serviceName - Name of the service with issues
    * @returns {Array} Array of suggestion strings
@@ -168,26 +245,68 @@ export class ServiceValidator {
         'Start LocalStack: npm run local:start',
         'Check Docker: docker ps | grep localstack',
         'View logs: npm run local:logs:localstack',
-        'Reset LocalStack: npm run local:reset'
+        'Reset LocalStack: npm run local:reset',
+        'Verify Docker is running: docker --version'
       ],
       'frontend': [
         'Start frontend: npm run dev --workspace=frontend',
         'Check port 3000: netstat -an | findstr 3000',
         'View logs: Check frontend terminal output',
-        'Install dependencies: npm install --workspace=frontend'
+        'Install dependencies: npm install --workspace=frontend',
+        'Check Next.js config: Verify next.config.mjs'
       ],
       'backend': [
         'Start backend: npm run dev --workspace=backend',
         'Check LocalStack: Ensure LocalStack is running first',
         'View logs: Check backend terminal output',
-        'Deploy functions: npm run deploy --workspace=backend'
+        'Deploy functions: npm run deploy --workspace=backend',
+        'Verify Lambda functions: Check backend/src/handlers/'
+      ],
+      'dynamodb': [
+        'Start LocalStack: npm run local:start',
+        'Check DynamoDB: awslocal dynamodb list-tables',
+        'Initialize tables: npm run local:init',
+        'View LocalStack logs: npm run local:logs:localstack'
+      ],
+      'opensearch': [
+        'Start LocalStack: npm run local:start',
+        'Check OpenSearch: curl http://localhost:4571/_cluster/health',
+        'Initialize domain: npm run local:init',
+        'View OpenSearch logs: docker logs tattoo-directory-opensearch'
+      ],
+      's3': [
+        'Start LocalStack: npm run local:start',
+        'Check S3: awslocal s3 ls',
+        'Initialize buckets: npm run local:init',
+        'View LocalStack logs: npm run local:logs:localstack'
       ]
     };
 
     return suggestions[serviceName] || [
       `Check if ${serviceName} service is running`,
       `Review ${serviceName} configuration`,
-      `Check ${serviceName} logs for errors`
+      `Check ${serviceName} logs for errors`,
+      `Restart ${serviceName} service`
     ];
+  }
+
+  /**
+   * Get a summary of all service validation results
+   * @param {Object} results - Validation results from validateEnvironment
+   * @returns {Object} Summary with counts and overall status
+   */
+  getValidationSummary(results) {
+    const services = Object.keys(results);
+    const healthy = services.filter(name => results[name].status === 'healthy');
+    const unhealthy = services.filter(name => results[name].status !== 'healthy');
+    
+    return {
+      total: services.length,
+      healthy: healthy.length,
+      unhealthy: unhealthy.length,
+      healthyServices: healthy,
+      unhealthyServices: unhealthy,
+      allHealthy: unhealthy.length === 0
+    };
   }
 }

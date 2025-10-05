@@ -171,7 +171,10 @@ function buildDockerComposeCommand(action, additionalArgs = []) {
   const files = getDockerComposeFiles();
   const fileArgs = files.flatMap((file) => ["-f", file]);
 
-  return ["docker-compose", ...fileArgs, action, ...additionalArgs];
+  // Add profile for phase1 services (includes localstack)
+  const profileArgs = ["--profile", "phase1"];
+
+  return ["docker-compose", ...fileArgs, ...profileArgs, action, ...additionalArgs];
 }
 
 function executeCommand(command, args = [], options = {}) {
@@ -262,7 +265,7 @@ async function startEnvironment() {
 
   // Health check
   logInfo("Checking service health...");
-  executeCommand("node", ["scripts/health-check.js"]);
+  executeCommand("npm", ["run", "health-check"]);
 
   // Success message
   log("", "reset");

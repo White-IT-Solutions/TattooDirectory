@@ -15,7 +15,7 @@ const { spawn, exec } = require('child_process');
 const { promisify } = require('util');
 
 // Import the enhanced frontend-sync-processor
-const FrontendSyncProcessor = require('../data-management/frontend-sync-processor');
+const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
 const { DATA_CONFIG } = require('../data-config');
 
 const execAsync = promisify(exec);
@@ -80,16 +80,48 @@ class PerformanceTestResults {
   
   addResult(testName, result) {
     this.results.current[testName] = result;
-    this.results.summary.totalTests++;
     
-    if (result.passed) {
-      this.results.summary.passed++;
+    // Handle complex result objects (like memory-usage with multiple scenarios)
+    if (typeof result === 'object' && result !== null && !result.hasOwnProperty('passed')) {
+      // This is a complex result object with multiple sub-tests
+      let subTestsPassed = 0;
+      let subTestsFailed = 0;
+      let subTestsTotal = 0;
+      let totalWarnings = 0;
+      
+      Object.values(result).forEach(subResult => {
+        if (subResult && typeof subResult === 'object' && subResult.hasOwnProperty('passed')) {
+          subTestsTotal++;
+          if (subResult.passed) {
+            subTestsPassed++;
+          } else {
+            subTestsFailed++;
+          }
+          
+          if (subResult.warnings && subResult.warnings.length > 0) {
+            totalWarnings += subResult.warnings.length;
+          }
+        }
+      });
+      
+      this.results.summary.totalTests += subTestsTotal;
+      this.results.summary.passed += subTestsPassed;
+      this.results.summary.failed += subTestsFailed;
+      this.results.summary.warnings += totalWarnings;
+      
     } else {
-      this.results.summary.failed++;
-    }
-    
-    if (result.warnings && result.warnings.length > 0) {
-      this.results.summary.warnings += result.warnings.length;
+      // Simple result object with a single passed/failed status
+      this.results.summary.totalTests++;
+      
+      if (result.passed) {
+        this.results.summary.passed++;
+      } else {
+        this.results.summary.failed++;
+      }
+      
+      if (result.warnings && result.warnings.length > 0) {
+        this.results.summary.warnings += result.warnings.length;
+      }
     }
   }
   
@@ -289,7 +321,7 @@ class PerformanceTestRunner {
       console.log(`\n  Testing ${scenario.name} (${scenario.artistCount} artists)...`);
       
       const monitor = new MemoryMonitor();
-      monitor.start(50); // Sample every 50ms
+      monitor.start(10); // Sample every 10ms for faster operations
       
       const processor = new FrontendSyncProcessor(DATA_CONFIG);
       const startTime = performance.now();
@@ -302,6 +334,9 @@ class PerformanceTestRunner {
           validateData: true
         });
         
+        // Small delay to ensure memory samples are collected
+        await new Promise(resolve => setTimeout(resolve, 20));
+        
         const endTime = performance.now();
         const duration = endTime - startTime;
         const memoryStats = monitor.stop();
@@ -312,17 +347,22 @@ class PerformanceTestRunner {
           duration: duration,
           success: result.success,
           memoryStats: memoryStats,
-          passed: memoryStats.heapUsed.max < PERFORMANCE_CONFIG.thresholds.memoryLimit,
+          passed: memoryStats ? memoryStats.heapUsed.max < PERFORMANCE_CONFIG.thresholds.memoryLimit : false,
           warnings: []
         };
         
         // Check for memory warnings
-        if (memoryStats.heapUsed.max > PERFORMANCE_CONFIG.thresholds.memoryLimit * 0.8) {
+        if (memoryStats && memoryStats.heapUsed.max > PERFORMANCE_CONFIG.thresholds.memoryLimit * 0.8) {
           testResult.warnings.push(`High memory usage: ${(memoryStats.heapUsed.max / 1024 / 1024).toFixed(2)}MB`);
         }
         
         console.log(`    Duration: ${duration.toFixed(2)}ms`);
-        console.log(`    Peak memory: ${(memoryStats.heapUsed.max / 1024 / 1024).toFixed(2)}MB`);
+        if (memoryStats) {
+          console.log(`    Peak memory: ${(memoryStats.heapUsed.max / 1024 / 1024).toFixed(2)}MB`);
+        } else {
+          console.log(`    Peak memory: No data collected`);
+          testResult.warnings.push('No memory data collected');
+        }
         console.log(`    Status: ${testResult.passed ? '✅ PASS' : '❌ FAIL'}`);
         
         memoryResults[scenario.name] = testResult;

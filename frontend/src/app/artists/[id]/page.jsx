@@ -84,7 +84,7 @@ export default async function ArtistPage({ params }) {
   const portfolio = artist.portfolio || artist.portfolioImages || [];
 
   return (
-    <div className="min-h-screen bg-[var(--background-secondary)]">
+    <div className="min-h-screen bg-[var(--background-secondary)]" data-testid="artist-profile">
       <div className="flex flex-col lg:flex-row max-w-7xl mx-auto">
         {/* Enhanced Sidebar */}
         <aside className="w-full lg:w-96 lg:min-h-screen bg-[var(--background-primary)] lg:sticky lg:top-0">
@@ -295,6 +295,14 @@ export default async function ArtistPage({ params }) {
 
         {/* Enhanced Main Portfolio Section */}
         <main className="flex-1 p-6" data-testid="portfolio-images">
+          {/* Back to Search Button */}
+          <div className="mb-4">
+            <Link href="/artists">
+              <Button variant="secondary" size="sm" data-testid="back-to-search">
+                ← Back to Search
+              </Button>
+            </Link>
+          </div>
           <div className="max-w-6xl mx-auto">
             {/* Portfolio Header */}
             <div className="mb-6">

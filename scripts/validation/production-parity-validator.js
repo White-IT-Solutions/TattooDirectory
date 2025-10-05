@@ -99,7 +99,7 @@ class ProductionParityValidator {
                     encryption: false
                 },
                 opensearch: {
-                    endpoint: process.env.OPENSEARCH_ENDPOINT || 'http://localhost:4566',
+                    endpoint: process.env.OPENSEARCH_ENDPOINT || 'http://localhost:4571',
                     region: process.env.AWS_DEFAULT_REGION || 'eu-west-2',
                     domain: 'tattoo-search-local',
                     version: '2.3',

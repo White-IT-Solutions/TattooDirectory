@@ -331,7 +331,7 @@ AWS_DEFAULT_REGION=eu-west-2
 
 # Local Database Configuration
 DYNAMODB_TABLE_NAME=tattoo-directory-local
-OPENSEARCH_ENDPOINT=http://localhost:4566
+OPENSEARCH_ENDPOINT=http://localhost:4571
 
 # Port Configuration (Customize to avoid conflicts)
 FRONTEND_PORT=3000

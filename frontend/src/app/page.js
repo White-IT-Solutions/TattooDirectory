@@ -81,6 +81,9 @@ export default function Home() {
                   enableErrorHandling={true}
                   showSuggestions={true}
                   showPopularSearches={true}
+                  showSearchButton={true}
+                  inputTestId="search-input"
+                  buttonTestId="search-button"
                   progressSteps={[
                     'Validating search',
                     'Finding matches',

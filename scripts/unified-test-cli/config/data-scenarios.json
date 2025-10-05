@@ -1,0 +1,36 @@
+{
+  "scenarios": {
+    "minimal": {
+      "name": "minimal",
+      "description": "Basic dataset for fast tests",
+      "command": "node scripts/data-cli.js seed-scenario minimal",
+      "estimatedTime": 15000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    },
+    "full-dataset": {
+      "name": "full-dataset",
+      "description": "Complete dataset for frontend E2E testing",
+      "command": "node scripts/data-cli.js seed-scenario full-dataset",
+      "estimatedTime": 30000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    },
+    "performance-test": {
+      "name": "performance-test",
+      "description": "Large dataset for performance testing",
+      "command": "node scripts/data-cli.js seed-scenario performance-test",
+      "estimatedTime": 60000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    },
+    "search-basic": {
+      "name": "search-basic",
+      "description": "Search-optimized dataset for search functionality tests",
+      "command": "node scripts/data-cli.js seed-scenario search-basic",
+      "estimatedTime": 20000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "testSuites": [
+    {
+      "name": "frontend-unit",
+      "displayName": "Frontend Unit Tests",
+      "description": "React component and utility tests",
+      "type": "unit",
+      "workspace": "frontend",
+      "command": "npm test --workspace=frontend",
+      "timeout": 300000,
+      "retries": 2,
+      "canRunParallel": true,
+      "supportsCoverage": true,
+      "tags": ["unit", "frontend", "critical"]
+    },
+    {
+      "name": "backend-unit",
+      "displayName": "Backend Unit Tests",
+      "description": "Lambda function and service tests",
+      "type": "unit",
+      "workspace": "backend",
+      "command": "npm test",
+      "timeout": 300000,
+      "retries": 2,
+      "canRunParallel": true,
+      "supportsCoverage": true,
+      "tags": ["unit", "backend", "critical"]
+    },
+    {
+      "name": "e2e",
+      "displayName": "End-to-End Tests",
+      "description": "Full application integration tests",
+      "type": "e2e",
+      "workspace": "tests/e2e",
+      "command": "npm test --workspace=tattoo-directory-e2e-tests",
+      "requiredServices": ["localstack", "frontend", "backend"],
+      "dataScenario": null,
+      "timeout": 600000,
+      "retries": 1,
+      "canRunParallel": false,
+      "supportsCoverage": false,
+      "tags": ["e2e", "integration", "slow"]
+    },
+    {
+      "name": "security",
+      "displayName": "Security Tests",
+      "description": "Security vulnerability scanning",
+      "type": "security",
+      "command": "npm audit --audit-level=moderate",
+      "dataScenario": null,
+      "timeout": 180000,
+      "retries": 2,
+      "canRunParallel": true,
+      "supportsCoverage": false,
+      "tags": ["security", "audit"]
+    },
+    {
+      "name": "integration",
+      "displayName": "Integration Tests",
+      "description": "Cross-service integration tests",
+      "type": "integration",
+      "workspace": "tests/integration",
+      "command": "npm test --workspace=tattoo-directory-integration-tests",
+      "requiredServices": [],
+      "dataScenario": null,
+      "timeout": 300000,
+      "retries": 2,
+      "canRunParallel": true,
+      "supportsCoverage": true,
+      "tags": ["integration", "api", "critical"]
+    },
+    {
+      "name": "contracts",
+      "displayName": "Contract Tests",
+      "description": "API contract validation tests",
+      "type": "contract",
+      "workspace": "tests/contracts",
+      "command": "npm test --workspace=contract-tests",
+      "requiredServices": ["localstack", "backend"],
+      "dataScenario": null,
+      "timeout": 300000,
+      "retries": 2,
+      "canRunParallel": true,
+      "supportsCoverage": true,
+      "tags": ["contracts", "api", "validation"]
+    },
+    {
+      "name": "performance",
+      "displayName": "Performance Tests",
+      "description": "Load and performance testing",
+      "type": "performance",
+      "command": "node scripts/performance/run-performance-tests.js --quick",
+      "requiredServices": ["localstack"],
+      "dataScenario": null,
+      "timeout": 600000,
+      "retries": 1,
+      "canRunParallel": false,
+      "supportsCoverage": false,
+      "tags": ["performance", "load", "slow"]
+    }
+  ]
+}

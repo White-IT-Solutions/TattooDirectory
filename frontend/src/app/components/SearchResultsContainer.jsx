@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import SearchFeedbackSystem from './SearchFeedbackSystem';
 import SearchLoadingStates from './SearchLoadingStates';
-import searchController from '../lib/searchController';
+import { useSearch } from '../../hooks/useSearch';
 import { enhancedTattooStyles } from '../../lib/data/tattooStyles.js';
 import { cn } from '../../design-system/utils/cn';
 
@@ -34,6 +34,7 @@ export default function SearchResultsContainer({
   className
 }) {
   const router = useRouter();
+  const { results, loading, error, search } = useSearch();
   
   // Search state
   const [searchState, setSearchState] = useState({
@@ -96,20 +97,23 @@ export default function SearchResultsContainer({
     return suggestions.slice(0, 6);
   }, [searchQuery, searchState.results.length]);
 
+  // Update search state when hook results change
+  useEffect(() => {
+    setSearchState(prev => ({
+      ...prev,
+      results,
+      totalResults: results.length,
+      loading,
+      error,
+      currentPage: 1,
+      hasMore: results.length > resultsPerPage
+    }));
+  }, [results, loading, error, resultsPerPage]);
+
   // Execute search when parameters change
   useEffect(() => {
-    if (searchQuery || Object.keys(activeFilters).length > 0) {
-      executeSearch();
-    } else {
-      // Clear results when no search criteria
-      setSearchState(prev => ({
-        ...prev,
-        results: [],
-        totalResults: 0,
-        loading: false,
-        error: null
-      }));
-    }
+    // Always execute search, even with empty query to show all results
+    executeSearch();
   }, [searchQuery, activeFilters, sortBy]);
 
   // Execute search with loading states
@@ -130,11 +134,12 @@ export default function SearchResultsContainer({
         });
       }, 100);
 
-      // Execute search
-      const results = await searchController.executeSearch(searchQuery, {
-        ...activeFilters,
-        sortBy,
-        resultTypes: ['artist', 'studio', 'style']
+      // Execute search using the hook
+      await search({
+        query: searchQuery,
+        location: activeFilters.location,
+        style: activeFilters.styles?.[0], // Use first style for now
+        ...activeFilters
       });
 
       setLoadingStage('filtering');
@@ -146,25 +151,15 @@ export default function SearchResultsContainer({
       setLoadingStage('rendering');
       setLoadingProgress(100);
 
-      // Update state
-      setSearchState(prev => ({
-        ...prev,
-        results,
-        totalResults: results.length,
-        loading: false,
-        currentPage: 1,
-        hasMore: results.length > resultsPerPage
-      }));
-
       clearInterval(progressInterval);
       setLoadingProgress(0);
 
-    } catch (error) {
-      console.error('Search error:', error);
+    } catch (searchError) {
+      console.error('Search error:', searchError);
       setSearchState(prev => ({
         ...prev,
         loading: false,
-        error: error.message || 'Search failed. Please try again.'
+        error: searchError.message || 'Search failed. Please try again.'
       }));
     }
   };
@@ -263,7 +258,7 @@ export default function SearchResultsContainer({
   const totalPages = Math.ceil(searchState.totalResults / resultsPerPage);
 
   return (
-    <div className={cn("space-y-6", className)} id="search-results">
+    <div className={cn("space-y-6", className)} id="search-results" data-testid="search-results-container">
       {/* Loading state */}
       {searchState.loading && (
         <div className="space-y-6">
@@ -322,7 +317,7 @@ export default function SearchResultsContainer({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-8">
+            <div className="flex justify-center items-center gap-2 mt-8" data-testid="pagination">
               <button
                 onClick={() => handlePageChange(searchState.currentPage - 1)}
                 disabled={searchState.currentPage === 1}

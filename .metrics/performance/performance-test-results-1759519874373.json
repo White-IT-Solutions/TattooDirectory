@@ -1,0 +1,331 @@
+{
+  "timestamp": "2025-10-03T19:31:14.001Z",
+  "testSuite": "frontend-sync-processor-performance",
+  "results": {
+    "timestamp": "2025-10-03T19:31:14.006Z",
+    "testRun": "performance-test-1759519874006",
+    "baseline": null,
+    "current": {
+      "startup-time": {
+        "testName": "startup-time",
+        "avgTime": 2.5850666666666675,
+        "maxTime": 3.2730999999999995,
+        "minTime": 1.9378000000000029,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 2000,
+        "warnings": []
+      },
+      "memory-usage": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "duration": 33.8319,
+          "success": true,
+          "memoryStats": {
+            "samples": 1,
+            "heapUsed": {
+              "min": 5899496,
+              "max": 5899496,
+              "avg": 5899496,
+              "final": 5899496
+            },
+            "heapTotal": {
+              "min": 7663616,
+              "max": 7663616,
+              "avg": 7663616,
+              "final": 7663616
+            },
+            "rss": {
+              "min": 39337984,
+              "max": 39337984,
+              "avg": 39337984,
+              "final": 39337984
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "duration": 30.051600000000008,
+          "success": true,
+          "memoryStats": {
+            "samples": 1,
+            "heapUsed": {
+              "min": 6390864,
+              "max": 6390864,
+              "avg": 6390864,
+              "final": 6390864
+            },
+            "heapTotal": {
+              "min": 10285056,
+              "max": 10285056,
+              "avg": 10285056,
+              "final": 10285056
+            },
+            "rss": {
+              "min": 39780352,
+              "max": 39780352,
+              "avg": 39780352,
+              "final": 39780352
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "duration": 29.088800000000006,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 5682664,
+              "max": 5687824,
+              "avg": 5685244,
+              "final": 5687824
+            },
+            "heapTotal": {
+              "min": 10285056,
+              "max": 10285056,
+              "avg": 10285056,
+              "final": 10285056
+            },
+            "rss": {
+              "min": 41852928,
+              "max": 41861120,
+              "avg": 41857024,
+              "final": 41861120
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "duration": 44.827,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 8345592,
+              "max": 8346544,
+              "avg": 8346068,
+              "final": 8346544
+            },
+            "heapTotal": {
+              "min": 16314368,
+              "max": 16314368,
+              "avg": 16314368,
+              "final": 16314368
+            },
+            "rss": {
+              "min": 46362624,
+              "max": 46362624,
+              "avg": 46362624,
+              "final": 46362624
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "duration": 59.30139999999997,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 8252072,
+              "max": 12433776,
+              "avg": 10342924,
+              "final": 8252072
+            },
+            "heapTotal": {
+              "min": 28110848,
+              "max": 29421568,
+              "avg": 28766208,
+              "final": 29421568
+            },
+            "rss": {
+              "min": 56496128,
+              "max": 56578048,
+              "avg": 56537088,
+              "final": 56578048
+            }
+          },
+          "passed": true,
+          "warnings": []
+        }
+      },
+      "performance-regression": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "avgTime": 0.26329999999999626,
+          "maxTime": 0.32159999999998945,
+          "minTime": 0.23169999999998936,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 500,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "avgTime": 0.9127333333333544,
+          "maxTime": 1.202000000000055,
+          "minTime": 0.7674000000000092,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 2000,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "avgTime": 2.1363000000000056,
+          "maxTime": 2.795599999999979,
+          "minTime": 1.4471000000000345,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 5000,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "avgTime": 15.088966666666655,
+          "maxTime": 18.451599999999985,
+          "minTime": 11.752900000000011,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 15000,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "avgTime": 12.575700000000003,
+          "maxTime": 16.28989999999999,
+          "minTime": 10.054100000000005,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 30000,
+          "warnings": []
+        }
+      },
+      "concurrent-operations": {
+        "unified-data-manager": {
+          "component": "unified-data-manager",
+          "duration": 3.5978999999999814,
+          "baselineTime": 2000,
+          "overhead": -1996.4021,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "pipeline-engine": {
+          "component": "pipeline-engine",
+          "duration": 0.4082000000000221,
+          "baselineTime": 2000,
+          "overhead": -1999.5918,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "state-manager": {
+          "component": "state-manager",
+          "duration": 0.4567000000000121,
+          "baselineTime": 2000,
+          "overhead": -1999.5433,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "health-monitor": {
+          "component": "health-monitor",
+          "duration": 0.3934000000000424,
+          "baselineTime": 2000,
+          "overhead": -1999.6066,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "image-processor": {
+          "component": "image-processor",
+          "duration": 0.46910000000002583,
+          "baselineTime": 2000,
+          "overhead": -1999.5309,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        }
+      },
+      "enhanced-features": {
+        "business-data-generation": {
+          "feature": "business-data-generation",
+          "avgTime": 0.21210000000000187,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "performance-data-generation": {
+          "feature": "performance-data-generation",
+          "avgTime": 0.22210000000001173,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-validation": {
+          "feature": "data-validation",
+          "avgTime": 0.25703333333334893,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-export": {
+          "feature": "data-export",
+          "avgTime": 4.137700000000014,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "scenario-processing": {
+          "feature": "scenario-processing",
+          "avgTime": 0.43783333333332547,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        }
+      }
+    },
+    "comparisons": {
+      "startup-time": {
+        "status": "similar",
+        "message": "Performance change: 9.69%",
+        "percentChange": 9.688551950440024,
+        "currentTime": 2.5850666666666675,
+        "baselineTime": 2.356733333333331
+      }
+    },
+    "summary": {
+      "passed": 21,
+      "failed": 0,
+      "warnings": 0,
+      "totalTests": 21
+    }
+  },
+  "summary": {
+    "totalTests": 21,
+    "passed": 21,
+    "failed": 0,
+    "warnings": 0,
+    "duration": 367
+  }
+}

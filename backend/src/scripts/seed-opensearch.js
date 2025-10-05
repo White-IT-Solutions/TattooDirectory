@@ -38,9 +38,13 @@ function makeOpenSearchRequest(method, path, data = null) {
             }
         };
 
-        // For LocalStack, add the Host header for proper routing
+        // For LocalStack, use the correct path prefix for OpenSearch
         if (endpoint.includes('localhost') || endpoint.includes('localstack')) {
-            options.headers['Host'] = 'search-tattoo-directory.eu-west-2.opensearch.localhost.localstack.cloud';
+            // LocalStack routes OpenSearch requests differently
+            if (!path.startsWith('/_aws/opensearch/')) {
+                // For direct OpenSearch API calls, we need to create a domain first
+                // or use the direct ES API endpoint
+            }
         }
 
         if (data) {
@@ -79,10 +83,58 @@ function makeOpenSearchRequest(method, path, data = null) {
 }
 
 /**
+ * Create OpenSearch domain in LocalStack first
+ */
+async function createOpenSearchDomain() {
+    try {
+        const domainName = 'tattoo-directory';
+        
+        // Create OpenSearch domain using AWS API
+        const domainConfig = {
+            DomainName: domainName,
+            ElasticsearchVersion: '7.10',
+            ElasticsearchClusterConfig: {
+                InstanceType: 't3.small.elasticsearch',
+                InstanceCount: 1
+            },
+            EBSOptions: {
+                EBSEnabled: true,
+                VolumeType: 'gp2',
+                VolumeSize: 10
+            },
+            AccessPolicies: JSON.stringify({
+                Version: '2012-10-17',
+                Statement: [{
+                    Effect: 'Allow',
+                    Principal: { AWS: '*' },
+                    Action: 'es:*',
+                    Resource: `arn:aws:es:*:*:domain/${domainName}/*`
+                }]
+            })
+        };
+
+        // Use AWS SDK approach for LocalStack
+        const response = await makeOpenSearchRequest('POST', '/_aws/opensearch/domain', domainConfig);
+        logger.info(`Created OpenSearch domain: ${domainName}`);
+        
+        // Wait for domain to be ready
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        return domainName;
+    } catch (error) {
+        logger.warn('Failed to create OpenSearch domain, continuing with direct access', { error: error.toString() });
+        return null;
+    }
+}
+
+/**
  * Create OpenSearch index with proper mappings
  */
 async function createIndex(indexName) {
     try {
+        // First try to create OpenSearch domain for LocalStack
+        await createOpenSearchDomain();
+        
         // Check if index exists
         try {
             await makeOpenSearchRequest('HEAD', `/${indexName}`);

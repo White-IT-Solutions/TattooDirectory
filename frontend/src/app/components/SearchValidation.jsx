@@ -370,7 +370,15 @@ export function useSearchValidation(initialValue = '', type = 'general', debounc
   }, [value, type, debounceMs]);
 
   const updateValue = useCallback((newValue) => {
-    setValue(newValue);
+    // Handle functional updates properly
+    if (typeof newValue === 'function') {
+      setValue(prevValue => {
+        const result = newValue(prevValue);
+        return result;
+      });
+    } else {
+      setValue(newValue);
+    }
   }, []);
 
   const clearValue = useCallback(() => {

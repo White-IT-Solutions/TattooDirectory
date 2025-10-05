@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '../../../__tests__/test-utils';
 import { useParams } from 'next/navigation';
 import StudioProfilePage from '../[studioId]/page';
 import { mockStudios } from '../../data/mockStudioData';
@@ -95,7 +95,7 @@ describe('StudioProfilePage', () => {
       
       await waitFor(() => {
         expect(screen.getByText('Studio not found')).toBeInTheDocument();
-        expect(screen.getByText('Browse All Studios')).toBeInTheDocument();
+        expect(screen.getByText('Go Home')).toBeInTheDocument();
       });
     });
   });

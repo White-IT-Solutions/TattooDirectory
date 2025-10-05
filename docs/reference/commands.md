@@ -23,12 +23,15 @@ Various commands
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run local:start
 ```
+
 Expected output: All services started successfully
 Notes:
-- Includes frontend, backend, and LocalStack services
+
+- Includes frontend, backend, OpenSearch and LocalStack services
 
 ---
 
@@ -48,16 +51,126 @@ Notes:
 
 **Script:** `npm run local:stop && npm run local:start`
 
+**Description:** Restart the local development environment
+
+---
+
+### `local:proxy:start`
+
+**Script:** `node scripts/api-proxy-manager.js start`
+
+**Description:** Start the API proxy service for contract testing
+
+**Usage Examples:**
+
+```bash
+npm run local:proxy:start
+```
+
+**Notes:**
+- Starts HTTP-to-Lambda proxy on port 9001
+- Required for contract tests and REST API access
+- Automatically detects if already running
+
+---
+
+### `local:proxy:stop`
+
+**Script:** `node scripts/api-proxy-manager.js stop`
+
+**Description:** Stop the API proxy service
+
+---
+
+### `local:proxy:restart`
+
+**Script:** `node scripts/api-proxy-manager.js restart`
+
+**Description:** Restart the API proxy service
+
+---
+
+### `local:proxy:status`
+
+**Script:** `node scripts/api-proxy-manager.js status`
+
+**Description:** Check API proxy service status
+
+---
+
+### `local:start-with-proxy`
+
+**Script:** `npm run local:start && npm run local:proxy:start`
+
+**Description:** Start all services including the API proxy
+
+**Usage Examples:**
+
+```bash
+npm run local:start-with-proxy
+```
+
+**Notes:**
+- Recommended for contract test development
+- Starts all Docker services plus API proxy
+
+---
+
+### `local:stop-all`
+
+**Script:** `npm run local:proxy:stop && npm run local:stop`
+
+**Description:** Stop all services including the API proxy
+
+---
+
+### `test:cli:contracts`
+
+**Script:** `cross-env API_BASE_URL=http://localhost:9001 node scripts/unified-test-cli/src/cli/index.js run contracts`
+
+**Description:** Run contract tests with default API proxy URL
+
+**Usage Examples:**
+
+```bash
+npm run test:cli:contracts
+```
+
+**Notes:**
+- Uses API proxy by default (http://localhost:9001)
+- No need to set environment variables manually
+- Requires API proxy to be running
+
+---
+
+### `test:cli:contracts:direct`
+
+**Script:** `node scripts/unified-test-cli/src/cli/index.js run contracts`
+
+**Description:** Run contract tests without default environment variables
+
+**Usage Examples:**
+
+```bash
+# Use custom API URL
+API_BASE_URL=http://localhost:9000/2015-03-31/functions/function/invocations npm run test:cli:contracts:direct
+```
+
+**Script:** `npm run local:stop && npm run local:start`
+
 **Description:** Local development command
 
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run local:restart
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -75,11 +188,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run local:start:windows
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -97,11 +213,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run local:start:unix
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -119,11 +238,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run local:stop:windows
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -141,11 +263,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run local:stop:unix
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -229,11 +354,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run local:logs:viewer
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -251,11 +379,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run local:health
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -281,11 +412,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run local:reset
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -389,11 +523,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run local:monitor
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -411,11 +548,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run local:monitor:live
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -446,11 +586,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -469,11 +612,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed:clean
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -492,19 +638,25 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed:validate
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 **Validate data integrity:**
+
 ```bash
 npm run seed:validate
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -518,11 +670,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run config
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -548,11 +703,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run config:test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -566,11 +724,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run state
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -584,11 +745,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run state:reset
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -667,11 +831,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -690,11 +857,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:clean
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -713,11 +883,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:fresh
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -736,11 +909,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:minimal
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -760,11 +936,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:search-ready
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -784,11 +963,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:location-test
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -808,11 +990,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:style-test
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -832,11 +1017,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:performance-test
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -856,11 +1044,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-data:frontend-ready
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -879,11 +1070,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -902,11 +1096,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:minimal
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -926,11 +1123,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:search-basic
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -950,11 +1150,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:london-artists
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -974,11 +1177,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:high-rated
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -998,11 +1204,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:new-artists
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1022,11 +1231,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:booking-available
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1046,11 +1258,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:portfolio-rich
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1069,11 +1284,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:multi-style
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1093,11 +1311,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:pricing-range
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1117,11 +1338,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-scenario:full-dataset
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1140,11 +1364,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-data
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1163,11 +1390,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-data:consistency
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1186,11 +1416,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-data:images
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1209,11 +1442,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-data:studios
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1232,11 +1468,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-data:scenarios
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1255,11 +1494,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1278,11 +1520,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios:data
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1301,11 +1546,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios:relationships
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1324,11 +1572,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios:images
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1347,11 +1598,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios:addresses
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1370,11 +1624,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studios:consistency
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1393,11 +1650,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-studios
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1418,11 +1678,14 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-studios:force
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 ---
@@ -1443,19 +1706,25 @@ Notes:
 **Usage Examples:**
 
 **Basic data seeding:**
+
 ```bash
 npm run seed-studios:validate
 ```
+
 Expected output: Data seeded successfully
 Notes:
+
 - Ensure LocalStack is running before seeding data
 
 **Validate data integrity:**
+
 ```bash
 npm run seed-studios:validate
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1474,11 +1743,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-studios
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -1500,11 +1772,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-studios:preserve
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -1569,11 +1844,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run process-studio-images:validate
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1607,11 +1885,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run manage-studio-relationships:validate
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1674,11 +1955,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studio-data-e2e
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1701,11 +1985,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studio-data-e2e:verbose
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1728,11 +2015,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studio-data-e2e:save-report
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1757,11 +2047,14 @@ Notes:
 **Usage Examples:**
 
 **Validate data integrity:**
+
 ```bash
 npm run validate-studio-data-e2e:full
 ```
+
 Expected output: Validation completed with results
 Notes:
+
 - Check the output for any validation errors
 
 ---
@@ -1791,11 +2084,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -1851,11 +2147,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run reset-states
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -1881,11 +2180,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:frontend
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -1904,11 +2206,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:backend
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -1927,11 +2232,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:unit
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -1950,11 +2258,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:unit:frontend
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -1973,11 +2284,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:unit:backend
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -1996,11 +2310,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:unit:scripts
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2019,11 +2336,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:unit:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2044,11 +2364,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2069,11 +2392,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration:api
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2109,11 +2435,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration:setup
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2134,11 +2463,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration:cleanup
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2159,11 +2491,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2185,11 +2520,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2211,11 +2549,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:setup
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2237,11 +2578,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:workflows
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2259,11 +2603,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2281,11 +2628,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:visual
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2299,11 +2649,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:headless
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2317,11 +2670,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:debug
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2335,11 +2691,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:clean
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2358,11 +2717,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2381,11 +2743,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:unit
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2405,11 +2770,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2429,11 +2797,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:relationships
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2453,11 +2824,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:health
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2477,11 +2851,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:cli
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2516,11 +2893,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:frontend
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2541,11 +2921,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:studio:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -2580,11 +2963,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health:comprehensive
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2604,11 +2990,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health:quick
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2628,11 +3017,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health:relationships
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2652,11 +3044,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health:images
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2676,11 +3071,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run studio-health:addresses
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2739,11 +3137,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run debug:start
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -2777,11 +3178,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run logs:start
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -2801,11 +3205,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run logs:view
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -2825,11 +3232,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run logs:backend
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -2849,11 +3259,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run logs:frontend
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -2875,11 +3288,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run logs:errors
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -2909,19 +3325,25 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:health
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 **Check system health:**
+
 ```bash
 npm run monitor:health
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -2939,11 +3361,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:report
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -2961,11 +3386,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run monitor:reset
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -2983,11 +3411,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run performance:monitor
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -3007,11 +3438,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run performance:monitor:continuous
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -3031,11 +3465,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run performance:monitor:startup
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -3112,11 +3549,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run optimize:startup
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -3136,11 +3576,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run optimize:startup:benchmark
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -3226,11 +3669,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run performance:test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3296,11 +3742,14 @@ Notes:
 **Usage Examples:**
 
 **Reset data to clean state:**
+
 ```bash
 npm run monitor:config:reset
 ```
+
 Expected output: Data reset completed
 Notes:
+
 - This will remove all existing data
 
 ---
@@ -3319,11 +3768,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:dashboard
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -3341,19 +3793,25 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:health-advanced
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 **Check system health:**
+
 ```bash
 npm run monitor:health-advanced
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -3371,19 +3829,25 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:health-continuous
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 **Check system health:**
+
 ```bash
 npm run monitor:health-continuous
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -3402,11 +3866,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:environment
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -3425,11 +3892,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run monitor:environment-continuous
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -3447,11 +3917,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run alerts:test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3470,11 +3943,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:monitoring
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3494,11 +3970,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:hot-reload
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3531,11 +4010,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:debug-logger
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3554,11 +4036,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:error-tester
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3638,11 +4123,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:test-errors
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3661,11 +4149,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:list-scenarios
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3684,11 +4175,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:activate-error
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3708,11 +4202,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:deactivate-errors
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3731,11 +4228,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:debug-test
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3754,11 +4254,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:debug-export
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3778,11 +4281,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:advanced
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3802,11 +4308,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:advanced:stop
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3826,19 +4335,25 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:advanced:restart
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 **Start local environment:**
+
 ```bash
 npm run dev:advanced:restart
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -3858,11 +4373,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:advanced:status
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3882,11 +4400,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:advanced:health
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -3900,11 +4421,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:all
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3923,11 +4447,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3946,11 +4473,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:final-integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3971,11 +4501,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:frontend-sync-errors
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -3998,11 +4531,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:frontend-sync-errors:verbose
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4105,11 +4641,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run ci:test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4204,11 +4743,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:fix
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4226,11 +4768,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:configure
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4248,11 +4793,14 @@ Notes:
 **Usage Examples:**
 
 **Monitor system performance:**
+
 ```bash
 npm run security:monitor
 ```
+
 Expected output: Monitoring dashboard or metrics
 Notes:
+
 - Use Ctrl+C to stop monitoring
 
 ---
@@ -4270,11 +4818,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:report
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4292,11 +4843,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:template
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4314,11 +4868,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:sanitize
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4350,11 +4907,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run security:configure-access
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4368,11 +4928,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run local:start:secure
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -4407,11 +4970,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:consolidate
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4441,11 +5007,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:generate
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4464,11 +5033,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run docs:test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4487,11 +5059,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run docs:test-e2e
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4510,11 +5085,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:generate-foundation
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4547,11 +5125,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:fix-consolidated-links
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4569,11 +5150,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:pipeline
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4592,11 +5176,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:pipeline:dry-run
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4614,11 +5201,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:gap-analysis
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4638,11 +5228,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:fix-outdated
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4661,11 +5254,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:consolidate-duplicates
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4685,11 +5281,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:create-missing
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4708,11 +5307,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:file-mapping
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4731,11 +5333,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run docs:delete-duplicates
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4755,11 +5360,14 @@ Notes:
 **Usage Examples:**
 
 **Check system health:**
+
 ```bash
 npm run docs:health-summary
 ```
+
 Expected output: Health check results
 Notes:
+
 - Shows status of all services
 
 ---
@@ -4773,11 +5381,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -4798,11 +5409,14 @@ Notes:
 **Usage Examples:**
 
 **Start development server:**
+
 ```bash
 npm run dev:docker
 ```
+
 Expected output: Development server running on http://localhost:3000
 Notes:
+
 - Server will auto-reload on file changes
 
 ---
@@ -4816,11 +5430,14 @@ Notes:
 **Usage Examples:**
 
 **Build for production:**
+
 ```bash
 npm run build
 ```
+
 Expected output: Build completed successfully
 Notes:
+
 - Output will be in the build/dist directory
 
 ---
@@ -4840,11 +5457,14 @@ Notes:
 **Usage Examples:**
 
 **Build for production:**
+
 ```bash
 npm run build:analyze
 ```
+
 Expected output: Build completed successfully
 Notes:
+
 - Output will be in the build/dist directory
 
 ---
@@ -4858,11 +5478,14 @@ Notes:
 **Usage Examples:**
 
 **Start local environment:**
+
 ```bash
 npm run start
 ```
+
 Expected output: All services started successfully
 Notes:
+
 - Includes frontend, backend, and LocalStack services
 
 ---
@@ -4876,11 +5499,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run lint
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -4894,11 +5520,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4930,11 +5559,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4948,11 +5580,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -4971,11 +5606,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:integration:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5002,11 +5640,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:accessibility
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5024,11 +5665,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:visual
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5047,11 +5691,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:cross-page
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5065,11 +5712,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5088,11 +5738,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:headed
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5111,11 +5764,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:debug
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5134,11 +5790,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:ui
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5156,11 +5815,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:visual
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5174,11 +5836,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:accessibility
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5196,11 +5861,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:theme
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5214,11 +5882,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:responsive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5237,11 +5908,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:comprehensive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5260,11 +5934,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:portfolio
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5283,11 +5960,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:auth
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5306,11 +5986,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:search
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5329,11 +6012,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:errors
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5352,11 +6038,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:runner
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5378,11 +6067,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:all-coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5401,11 +6093,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:execution
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5425,11 +6120,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:orchestrator
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5450,11 +6148,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:full-suite
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5473,11 +6174,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5498,11 +6202,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:core
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5523,11 +6230,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:search
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5548,11 +6258,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:portfolio
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5573,11 +6286,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:auth
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5598,11 +6314,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:errors
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5623,11 +6342,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:execution
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5648,11 +6370,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:orchestrator
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5672,11 +6397,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:dark
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5697,11 +6425,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:mobile
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5722,11 +6453,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:headed
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5747,11 +6481,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:comprehensive:debug
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5769,11 +6506,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:e2e:report
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5791,11 +6531,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:ui-audit
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5814,11 +6557,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:ui-audit:visual
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5836,11 +6582,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:ui-audit:accessibility
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5859,11 +6608,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:ui-audit:theme
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5881,11 +6633,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:ui-audit:responsive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5903,11 +6658,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run ci:setup
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -5925,11 +6683,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run ci:test-integration
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5947,11 +6708,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run ci:test-config
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -5969,11 +6733,14 @@ Notes:
 **Usage Examples:**
 
 **Run command:**
+
 ```bash
 npm run ci:status
 ```
+
 Expected output: Command execution output
 Notes:
+
 - Check command documentation for specific usage
 
 ---
@@ -6032,11 +6799,14 @@ Notes:
 **Usage Examples:**
 
 **Build for production:**
+
 ```bash
 npm run fix:build
 ```
+
 Expected output: Build completed successfully
 Notes:
+
 - Output will be in the build/dist directory
 
 ---
@@ -6054,11 +6824,14 @@ Notes:
 **Usage Examples:**
 
 **Build for production:**
+
 ```bash
 npm run validate:build
 ```
+
 Expected output: Build completed successfully
 Notes:
+
 - Output will be in the build/dist directory
 
 ---
@@ -6076,11 +6849,14 @@ Notes:
 **Usage Examples:**
 
 **Deploy to environment:**
+
 ```bash
 npm run deploy:prep
 ```
+
 Expected output: Deployment completed
 Notes:
+
 - Ensure proper AWS credentials are configured
 
 ---
@@ -6098,11 +6874,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:theme
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -6116,11 +6895,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:responsive
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -6141,11 +6923,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---
@@ -6185,11 +6970,14 @@ Notes:
 **Usage Examples:**
 
 **Run tests:**
+
 ```bash
 npm run test:coverage
 ```
+
 Expected output: Test results with pass/fail status
 Notes:
+
 - Ensure test environment is properly set up
 
 ---

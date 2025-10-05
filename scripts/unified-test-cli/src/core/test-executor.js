@@ -10,6 +10,7 @@ import path from 'path';
 import { Logger } from '../utils/logger.js';
 import { ServiceValidator } from './service-validator.js';
 import { DataManager } from './data-manager.js';
+import { TestExecutionError, WorkspaceError, TimeoutError, ErrorRecovery } from '../utils/errors.js';
 
 export class TestExecutor {
   constructor() {
@@ -26,7 +27,7 @@ export class TestExecutor {
    */
   async executeSuite(suite, options = {}) {
     const startTime = Date.now();
-    this.logger.info(`Starting test suite execution: ${suite.name}`, { suite: suite.name, options });
+    this.logger.info(`Starting test suite execution: ${suite.name}`);
 
     let result = {
       suite: suite.name,
@@ -98,14 +99,27 @@ export class TestExecutor {
     if (suite.requiredServices && suite.requiredServices.length > 0) {
       const validationResults = await this.serviceValidator.validateEnvironment(suite.requiredServices);
       
-      const unhealthyServices = Object.entries(validationResults)
-        .filter(([, result]) => result.status !== 'healthy')
-        .map(([name, result]) => ({ name, ...result }));
+      if (validationResults) {
+        const unhealthyServices = Object.entries(validationResults)
+          .filter(([, result]) => result.status !== 'healthy')
+          .map(([name, result]) => ({ name, ...result }));
 
-      if (unhealthyServices.length > 0) {
-        const errorMessage = `Required services are not available: ${unhealthyServices.map(s => s.name).join(', ')}`;
-        this.logger.error(errorMessage, { unhealthyServices });
-        throw new Error(errorMessage);
+        if (unhealthyServices.length > 0) {
+          const errorMessage = `Required services are not available: ${unhealthyServices.map(s => s.name).join(', ')}`;
+          this.logger.error(errorMessage, { unhealthyServices });
+          
+          // Try to recover from service errors if enabled
+          const recoveryOptions = { autoRestart: false, timeout: 30000 };
+          for (const service of unhealthyServices) {
+            try {
+              await ErrorRecovery.recoverFromServiceError(service, recoveryOptions);
+            } catch (recoveryError) {
+              this.logger.warn(`Failed to recover service ${service.name}: ${recoveryError.message}`);
+            }
+          }
+          
+          throw new TestExecutionError(suite.name, 1, errorMessage, 'prerequisite-validation');
+        }
       }
     }
 
@@ -115,7 +129,7 @@ export class TestExecutor {
       try {
         await import('fs').then(fs => fs.promises.access(workspacePath));
       } catch (error) {
-        throw new Error(`Workspace not accessible: ${workspacePath}`);
+        throw new WorkspaceError(suite.workspace, `Workspace not accessible: ${workspacePath}`, 'access');
       }
     }
 
@@ -177,7 +191,27 @@ export class TestExecutor {
         }
       });
 
+
+
+      childProcess.on('error', (error) => {
+        this.logger.error('Test command execution error', { error: error.message });
+        reject(new TestExecutionError(suite.name, -1, error.message, 'command-execution'));
+      });
+
+      // Set timeout if specified
+      let timeoutId;
+      if (suite.timeout) {
+        timeoutId = setTimeout(() => {
+          childProcess.kill('SIGTERM');
+          reject(new TimeoutError('test-suite-execution', suite.timeout, { suite: suite.name }));
+        }, suite.timeout);
+      }
+
       childProcess.on('close', (exitCode) => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        
         const result = {
           exitCode,
           stdout: stdout.trim(),
@@ -194,19 +228,6 @@ export class TestExecutor {
           resolve(result); // Don't reject, let caller handle the failure
         }
       });
-
-      childProcess.on('error', (error) => {
-        this.logger.error('Test command execution error', { error: error.message });
-        reject(new Error(`Failed to execute test command: ${error.message}`));
-      });
-
-      // Set timeout if specified
-      if (suite.timeout) {
-        setTimeout(() => {
-          childProcess.kill('SIGTERM');
-          reject(new Error(`Test suite timed out after ${suite.timeout}ms`));
-        }, suite.timeout);
-      }
     });
   }
 
@@ -234,14 +255,35 @@ export class TestExecutor {
       }
 
       // Playwright output parsing
-      if (output.includes('passed') && output.includes('failed') && suiteType === 'e2e') {
+      if (suiteType === 'e2e') {
         const passedMatch = output.match(/(\d+)\s+passed/);
         const failedMatch = output.match(/(\d+)\s+failed/);
+        const totalMatch = output.match(/Running\s+(\d+)\s+tests/);
+        
         const passed = passedMatch ? parseInt(passedMatch[1]) : 0;
         const failed = failedMatch ? parseInt(failedMatch[1]) : 0;
+        const total = totalMatch ? parseInt(totalMatch[1]) : passed + failed;
         
         return {
-          total: passed + failed,
+          total,
+          passed,
+          failed,
+          skipped: 0
+        };
+      }
+
+      // Performance test output parsing
+      if (suiteType === 'performance' || output.includes('Performance Test Summary')) {
+        const passedMatch = output.match(/Tests passed:\s+(\d+)/);
+        const failedMatch = output.match(/Tests failed:\s+(\d+)/);
+        const totalMatch = output.match(/Total tests:\s+(\d+)/);
+        
+        const passed = passedMatch ? parseInt(passedMatch[1]) : 0;
+        const failed = failedMatch ? parseInt(failedMatch[1]) : 0;
+        const total = totalMatch ? parseInt(totalMatch[1]) : passed + failed;
+        
+        return {
+          total,
           passed,
           failed,
           skipped: 0
