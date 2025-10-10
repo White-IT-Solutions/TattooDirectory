@@ -1,5 +1,215 @@
 [
   {
+    "id": "mgkumk2odjvpgmlpxtp",
+    "timestamp": "2025-10-10T12:54:51.936Z",
+    "type": "setup",
+    "startTime": "2025-10-10T12:53:37.014Z",
+    "endTime": "2025-10-10T12:54:35.854Z",
+    "duration": 58840,
+    "success": true,
+    "results": {
+      "images": {
+        "processed": 1117,
+        "uploaded": 309,
+        "failed": 0
+      },
+      "database": {
+        "artists": 0,
+        "studios": 0,
+        "styles": 0
+      },
+      "opensearch": {
+        "documents": 0,
+        "indexed": 0
+      },
+      "frontend": {
+        "updated": false,
+        "artistCount": 0,
+        "enhancedCapabilities": false
+      }
+    },
+    "details": {
+      "frontendOnly": false,
+      "imagesOnly": true,
+      "force": false,
+      "scenario": null
+    }
+  },
+  {
+    "id": "mgkud2q1x0utchl71y",
+    "timestamp": "2025-10-10T12:47:29.545Z",
+    "type": "seed-scenario",
+    "startTime": "2025-10-10T12:46:35.931Z",
+    "endTime": "2025-10-10T12:47:15.682Z",
+    "duration": 39751,
+    "success": true,
+    "results": {
+      "scenario": "full-dataset",
+      "seeded": true,
+      "seedStats": {
+        "artists": {
+          "loaded": 150,
+          "failed": 0
+        },
+        "studios": {
+          "loaded": 50,
+          "failed": 0
+        },
+        "styles": {
+          "loaded": 23,
+          "failed": 0
+        },
+        "opensearch": {
+          "indexed": 200,
+          "failed": 0
+        },
+        "errors": []
+      },
+      "frontendUpdated": true,
+      "frontendStats": {
+        "generated": 150,
+        "updated": 1,
+        "failed": 0,
+        "errors": [],
+        "scenarios": {
+          "full-dataset": {
+            "artistCount": 150,
+            "timestamp": "2025-10-10T12:47:15.676Z"
+          }
+        },
+        "performance": {
+          "startTime": 1760100435662,
+          "endTime": 1760100435676,
+          "duration": 14,
+          "memoryUsage": 21305824
+        }
+      }
+    },
+    "details": {
+      "scenario": "full-dataset",
+      "config": {
+        "artistCount": 150,
+        "studioCount": 50,
+        "description": "Complete test dataset with all 23 styles, 50 studios, and comprehensive metadata - ensures each style has at least 5 artists",
+        "styles": [
+          "traditional",
+          "realism",
+          "blackwork",
+          "neo_traditional",
+          "fineline",
+          "minimalism",
+          "geometric",
+          "watercolour",
+          "tribal",
+          "dotwork",
+          "lettering",
+          "floral",
+          "surrealism",
+          "psychedelic",
+          "sketch",
+          "old_school",
+          "new_school",
+          "illustrative",
+          "japanese",
+          "biomechanical",
+          "portrait",
+          "ornamental",
+          "trash_polka"
+        ],
+        "studioSpecialties": [
+          "traditional",
+          "realism",
+          "blackwork",
+          "neo_traditional",
+          "fineline",
+          "minimalism",
+          "geometric",
+          "watercolour",
+          "tribal",
+          "dotwork",
+          "lettering",
+          "floral",
+          "surrealism",
+          "psychedelic",
+          "sketch",
+          "old_school",
+          "new_school",
+          "illustrative",
+          "japanese",
+          "biomechanical",
+          "portrait",
+          "ornamental",
+          "trash_polka"
+        ],
+        "ensureStudioDiversity": true,
+        "minPortfolioImages": 8,
+        "minStudioImages": 5,
+        "includeAllStyles": true,
+        "ensureStyleCoverage": true,
+        "minArtistsPerStyle": 5,
+        "comprehensiveMetadata": true,
+        "locations": [
+          "London",
+          "Manchester",
+          "Birmingham",
+          "Leeds",
+          "Glasgow",
+          "Edinburgh",
+          "Bristol",
+          "Liverpool",
+          "Newcastle",
+          "Sheffield"
+        ]
+      }
+    }
+  },
+  {
+    "id": "mgkubk05m112va89gni",
+    "timestamp": "2025-10-10T12:46:18.629Z",
+    "type": "setup",
+    "startTime": "2025-10-10T12:45:14.759Z",
+    "endTime": "2025-10-10T12:46:03.441Z",
+    "duration": 48682,
+    "success": true,
+    "results": {
+      "images": {
+        "processed": 1117,
+        "uploaded": 309,
+        "failed": 0
+      },
+      "database": {
+        "artists": 34,
+        "studios": 3,
+        "styles": 23
+      },
+      "opensearch": {
+        "documents": 37,
+        "indexed": 37
+      },
+      "frontend": {
+        "updated": true,
+        "artistCount": 8,
+        "studioCount": 5,
+        "generationTime": 5,
+        "memoryUsage": 30135480,
+        "validationErrors": 0,
+        "scenarios": {
+          "default": {
+            "artistCount": 8,
+            "timestamp": "2025-10-10T12:45:41.005Z"
+          }
+        },
+        "enhancedCapabilities": true
+      }
+    },
+    "details": {
+      "frontendOnly": false,
+      "imagesOnly": false,
+      "force": false,
+      "scenario": null
+    }
+  },
+  {
     "id": "mgi8wny9oisvuz4p38m",
     "timestamp": "2025-10-08T17:11:19.617Z",
     "type": "seed-scenario",
@@ -13195,71 +13405,6 @@
       "imagesOnly": false,
       "force": false,
       "scenario": null
-    }
-  },
-  {
-    "id": "mgds528nkvqnra6n5rc",
-    "timestamp": "2025-10-05T14:10:53.207Z",
-    "type": "reset",
-    "startTime": "2025-10-05T13:43:42.141Z",
-    "endTime": "2025-10-05T14:10:44.138Z",
-    "duration": 1621998,
-    "success": false,
-    "results": {
-      "error": "Another operation is already in progress: reset"
-    },
-    "details": {
-      "state": "fresh",
-      "config": {
-        "description": "Clean databases and seed with full dataset including studios",
-        "clearAll": true,
-        "seedFull": true,
-        "scenario": "full-dataset",
-        "includeStudios": true
-      }
-    }
-  },
-  {
-    "id": "mgds4wklf6dd8jrhyvu",
-    "timestamp": "2025-10-05T14:10:45.861Z",
-    "type": "reset",
-    "startTime": "2025-10-05T13:43:42.141Z",
-    "endTime": "2025-10-05T14:10:26.489Z",
-    "duration": 1604349,
-    "success": false,
-    "results": {
-      "error": "Another operation is already in progress: reset"
-    },
-    "details": {
-      "state": "fresh",
-      "config": {
-        "description": "Clean databases and seed with full dataset including studios",
-        "clearAll": true,
-        "seedFull": true,
-        "scenario": "full-dataset",
-        "includeStudios": true
-      }
-    }
-  },
-  {
-    "id": "mgdr30ijmxmwwixpab",
-    "timestamp": "2025-10-05T13:41:18.043Z",
-    "type": "reset",
-    "startTime": "2025-10-05T13:41:01.057Z",
-    "endTime": "2025-10-05T13:41:01.314Z",
-    "duration": 257,
-    "success": true,
-    "results": {
-      "cleared": false
-    },
-    "details": {
-      "state": "clean",
-      "config": {
-        "description": "Empty all databases but keep services running",
-        "clearAll": true,
-        "preserveServices": true,
-        "clearStudios": true
-      }
     }
   }
 ]

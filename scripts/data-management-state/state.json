@@ -1,22 +1,22 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-10-08T17:11:19.614Z",
+  "lastUpdated": "2025-10-10T12:54:51.933Z",
   "lastOperation": {
-    "type": "seed-scenario",
-    "timestamp": "2025-10-08T17:11:11.011Z",
+    "type": "setup",
+    "timestamp": "2025-10-10T12:54:35.855Z",
     "success": true
   },
   "currentScenario": "full-dataset",
   "currentResetState": null,
   "checksums": {
-    "lastCalculated": "2025-10-08T17:11:11.011Z",
-    "lastSaved": "2025-10-08T17:11:11.011Z"
+    "lastCalculated": "2025-10-10T12:54:35.855Z",
+    "lastSaved": "2025-10-10T12:54:35.855Z"
   },
   "operations": {
     "setup": {
       "status": "completed",
-      "lastRun": "2025-10-08T17:00:48.728Z",
-      "duration": 31819
+      "lastRun": "2025-10-10T12:54:35.855Z",
+      "duration": 58840
     },
     "reset": {
       "status": "completed",
@@ -52,16 +52,16 @@
     "frontend": {
       "updated": false,
       "artistCount": 0,
-      "studioCount": 6,
-      "generationTime": 4,
-      "memoryUsage": 30125792,
+      "studioCount": 5,
+      "generationTime": 5,
+      "memoryUsage": 30135480,
       "validationErrors": 0,
       "enhancedCapabilities": false,
       "lastScenario": null,
       "scenarios": {
         "default": {
           "artistCount": 8,
-          "timestamp": "2025-10-08T16:59:07.818Z"
+          "timestamp": "2025-10-10T12:45:41.005Z"
         }
       }
     }
