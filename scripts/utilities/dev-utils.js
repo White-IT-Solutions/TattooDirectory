@@ -187,7 +187,6 @@ const utils = {
       { name: 'API Documentation', url: 'http://localhost:8080', description: 'Swagger UI' },
       { name: 'Backend API', url: 'http://localhost:9000', description: 'Lambda RIE' },
       { name: 'LocalStack', url: 'http://localhost:4566', description: 'AWS services' },
-      { name: 'LocalStack UI', url: 'http://localhost:4566/_localstack/cockpit', description: 'Management interface' }
     ];
     
     urls.forEach(item => {

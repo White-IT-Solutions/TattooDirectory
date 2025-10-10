@@ -823,7 +823,6 @@ npm run local:report
 6. **Access the application**:
    - Frontend: http://localhost:3000
    - API Documentation: http://localhost:8080
-   - LocalStack UI: http://localhost:4566/_localstack/cockpit
 
 ## 7. Test Data Setup
 

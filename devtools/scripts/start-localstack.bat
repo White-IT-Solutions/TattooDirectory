@@ -166,7 +166,6 @@ call :get_current_phase
 echo ℹ️  LocalStack Status:
 echo   Phase: !CURRENT_PHASE!
 echo   Endpoint: http://localhost:4566
-echo   Web UI: http://localhost:4566/_localstack/cockpit
 
 REM Show running services
 docker ps --format "table {{.Names}}\t{{.Status}}" | findstr "tattoo-directory-localstack" >nul 2>&1

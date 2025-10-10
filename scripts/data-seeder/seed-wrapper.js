@@ -7,7 +7,7 @@
  * that directly call scripts/data-seeder/seed.js
  */
 
-const { legacySeedWrapper } = require('../backward-compatibility');
+const { legacySeedWrapper } = require('../utilities/migration/backward-compatibility');
 
 async function main() {
   const args = process.argv.slice(2);

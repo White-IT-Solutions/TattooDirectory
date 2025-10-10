@@ -30,7 +30,17 @@ const LazyImage = forwardRef(({
   priority = false,
   onLoad,
   onError,
-  ...props
+  // Extract non-DOM props to prevent React warnings
+  shadowLevel,
+  visualEffects,
+  animationLevel,
+  useDesignTokens,
+  respectReducedMotion,
+  optimizeImages,
+  loading: loadingProp,
+  lazy,
+  fill,
+  ...domProps
 }, ref) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -149,7 +159,7 @@ const LazyImage = forwardRef(({
         className
       )}
       style={containerStyle}
-      {...props}
+      {...domProps}
     >
       {/* Placeholder/Loading State */}
       {(!isLoaded || !isInView) && !hasError && (
@@ -195,6 +205,7 @@ const LazyImage = forwardRef(({
           )}
           sizes={sizes}
           loading={priority ? 'eager' : 'lazy'}
+          crossOrigin={currentSrc.startsWith('http') ? 'anonymous' : undefined}
         />
       )}
     </div>

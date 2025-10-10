@@ -839,6 +839,10 @@ Amazon ElastiCache for Redis would be introduced as a high-speed, in-memory cach
 
 Its role would be to cache frequently requested data, such as popular artist profiles and common search query results, that are otherwise stored in DynamoDB and OpenSearch. This would significantly reduce response times, decrease the read load on the primary data stores, and help ensure the system consistently meets its non-functional requirements for performance. 
 
+## **3.23 Amazon Route 53 & ACM**
+
+Amazon Route 53 and AWS Certificate Manager (ACM) work together to provide secure, custom domain routing for the application. Route 53 acts as the authoritative DNS service, hosting the custom domain and its records. It is configured to create alias records pointing the root domain (e.g., `yourdomain.com`) and subdomains (e.g., `www`, `api`) to the appropriate AWS resources like the CloudFront distribution and API Gateway. ACM provides the free, public SSL/TLS certificates required to serve traffic over HTTPS. The architecture leverages DNS validation, where ACM automatically generates validation records that are created in the Route 53 hosted zone, proving domain ownership and enabling a fully automated and secure setup for the application's custom domain.
+
 ---
 
 # 

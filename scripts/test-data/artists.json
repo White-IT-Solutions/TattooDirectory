@@ -963,5 +963,2502 @@
         "Horror Art Specialist"
       ]
     }
+  },
+  {
+    "artistId": "artist-011",
+    "artistName": "Yuki Tanaka",
+    "instagramHandle": "yukijapanese",
+    "geohash": "gcpvj2v",
+    "locationDisplay": "Soho, London, UK",
+    "latitude": 51.5142,
+    "longitude": -0.1347,
+    "styles": [
+      "japanese",
+      "traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-28.jpg",
+    "specialties": [
+      "koi-fish",
+      "dragons",
+      "cherry-blossoms",
+      "waves"
+    ],
+    "rating": 4.9,
+    "reviewCount": 203,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_130.png",
+        "description": "Traditional koi fish with waves",
+        "style": "japanese",
+        "tags": [
+          "koi",
+          "waves",
+          "traditional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_131.png",
+        "description": "Dragon sleeve with cherry blossoms",
+        "style": "japanese",
+        "tags": [
+          "dragon",
+          "sleeve",
+          "cherry-blossom"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_132.png",
+        "description": "Phoenix back piece",
+        "style": "japanese",
+        "tags": [
+          "phoenix",
+          "back-piece",
+          "mythical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_133.png",
+        "description": "Tiger with bamboo",
+        "style": "japanese",
+        "tags": [
+          "tiger",
+          "bamboo",
+          "nature"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_134.png",
+        "description": "Samurai warrior portrait",
+        "style": "japanese",
+        "tags": [
+          "samurai",
+          "warrior",
+          "historical"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@yukijapanese",
+      "website": "https://yukitanaka.tattoo",
+      "email": "yuki@yukitanaka.tattoo",
+      "phone": "+44 20 7946 3456"
+    },
+    "studioInfo": {
+      "studioName": "Rising Sun Tattoo",
+      "address": "34 Wardour Street, Soho, London W1D 6QT",
+      "postcode": "W1D 6QT"
+    },
+    "pricing": {
+      "hourlyRate": 180,
+      "minimumCharge": 150,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-04-15",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 16,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Traditional Japanese Techniques",
+        "Cultural Heritage"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-012",
+    "artistName": "Alex Morgan",
+    "instagramHandle": "alexbiomech",
+    "geohash": "gcw2j5w",
+    "locationDisplay": "Ancoats, Manchester, UK",
+    "latitude": 53.4856,
+    "longitude": -2.2302,
+    "styles": [
+      "biomechanical",
+      "realism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-41.jpg",
+    "specialties": [
+      "cybernetic-limbs",
+      "mechanical-hearts",
+      "gears",
+      "pistons"
+    ],
+    "rating": 4.7,
+    "reviewCount": 156,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_140.png",
+        "description": "Cybernetic arm enhancement",
+        "style": "biomechanical",
+        "tags": [
+          "cybernetic",
+          "arm",
+          "futuristic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_141.png",
+        "description": "Mechanical heart with gears",
+        "style": "biomechanical",
+        "tags": [
+          "heart",
+          "gears",
+          "mechanical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_142.png",
+        "description": "Robotic spine design",
+        "style": "biomechanical",
+        "tags": [
+          "spine",
+          "robotic",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_143.png",
+        "description": "Piston leg piece",
+        "style": "biomechanical",
+        "tags": [
+          "piston",
+          "leg",
+          "mechanical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_144.png",
+        "description": "Cyborg eye enhancement",
+        "style": "biomechanical",
+        "tags": [
+          "eye",
+          "cyborg",
+          "enhancement"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@alexbiomech",
+      "website": "https://alexmorgan.cyber",
+      "email": "alex@alexmorgan.cyber",
+      "phone": "+44 161 345 6789"
+    },
+    "studioInfo": {
+      "studioName": "Cyber Ink Manchester",
+      "address": "67 Great Ancoats Street, Ancoats, Manchester M4 5AB",
+      "postcode": "M4 5AB"
+    },
+    "pricing": {
+      "hourlyRate": 160,
+      "minimumCharge": 120,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-20",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 9,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "3D Shading Advanced",
+        "Sci-Fi Art"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-013",
+    "artistName": "Sophie Williams",
+    "instagramHandle": "sophieportraits",
+    "geohash": "gcqcr8x",
+    "locationDisplay": "Moseley, Birmingham, UK",
+    "latitude": 52.4503,
+    "longitude": -1.8856,
+    "styles": [
+      "portrait",
+      "realism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-67.jpg",
+    "specialties": [
+      "family-portraits",
+      "pet-portraits",
+      "celebrity-likenesses",
+      "memorial-pieces"
+    ],
+    "rating": 4.8,
+    "reviewCount": 189,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_150.png",
+        "description": "Realistic family portrait",
+        "style": "portrait",
+        "tags": [
+          "family",
+          "realistic",
+          "memorial"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_151.png",
+        "description": "Pet dog portrait",
+        "style": "portrait",
+        "tags": [
+          "pet",
+          "dog",
+          "lifelike"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_152.png",
+        "description": "Celebrity portrait piece",
+        "style": "portrait",
+        "tags": [
+          "celebrity",
+          "likeness",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_153.png",
+        "description": "Grandparent memorial portrait",
+        "style": "portrait",
+        "tags": [
+          "memorial",
+          "grandparent",
+          "emotional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_154.png",
+        "description": "Child portrait with soft shading",
+        "style": "portrait",
+        "tags": [
+          "child",
+          "soft",
+          "tender"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@sophieportraits",
+      "website": "https://sophiewilliams.portraits",
+      "email": "sophie@sophiewilliams.portraits",
+      "phone": "+44 121 678 9012"
+    },
+    "studioInfo": {
+      "studioName": "Portrait Perfect Studio",
+      "address": "123 Alcester Road, Moseley, Birmingham B13 8JP",
+      "postcode": "B13 8JP"
+    },
+    "pricing": {
+      "hourlyRate": 170,
+      "minimumCharge": 140,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-25",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 13,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Portrait Techniques Master",
+        "Grief Counseling Basics"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-014",
+    "artistName": "Maya Patel",
+    "instagramHandle": "mayaillustrative",
+    "geohash": "gcw7k9y",
+    "locationDisplay": "Headingley, Leeds, UK",
+    "latitude": 53.8198,
+    "longitude": -1.5767,
+    "styles": [
+      "illustrative",
+      "floral"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-52.jpg",
+    "specialties": [
+      "storybook-characters",
+      "fairy-tales",
+      "whimsical-scenes",
+      "botanical-art"
+    ],
+    "rating": 4.6,
+    "reviewCount": 134,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_160.png",
+        "description": "Storybook fairy illustration",
+        "style": "illustrative",
+        "tags": [
+          "fairy",
+          "storybook",
+          "whimsical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_161.png",
+        "description": "Botanical garden scene",
+        "style": "illustrative",
+        "tags": [
+          "botanical",
+          "garden",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_162.png",
+        "description": "Fantasy creature illustration",
+        "style": "illustrative",
+        "tags": [
+          "fantasy",
+          "creature",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_163.png",
+        "description": "Vintage book illustration style",
+        "style": "illustrative",
+        "tags": [
+          "vintage",
+          "book",
+          "classic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_164.png",
+        "description": "Floral border design",
+        "style": "illustrative",
+        "tags": [
+          "floral",
+          "border",
+          "decorative"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@mayaillustrative",
+      "website": "https://mayapatel.art",
+      "email": "maya@mayapatel.art",
+      "phone": "+44 113 456 7890"
+    },
+    "studioInfo": {
+      "studioName": "Storybook Ink Leeds",
+      "address": "45 Otley Road, Headingley, Leeds LS6 3AA",
+      "postcode": "LS6 3AA"
+    },
+    "pricing": {
+      "hourlyRate": 125,
+      "minimumCharge": 80,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-18",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 7,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Illustration Techniques",
+        "Children's Art Therapy"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-015",
+    "artistName": "Connor O'Brien",
+    "instagramHandle": "connorletter",
+    "geohash": "gcvwr1z",
+    "locationDisplay": "Leith, Edinburgh, UK",
+    "latitude": 55.9761,
+    "longitude": -3.1717,
+    "styles": [
+      "lettering",
+      "traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-63.jpg",
+    "specialties": [
+      "script-fonts",
+      "calligraphy",
+      "quotes",
+      "memorial-text"
+    ],
+    "rating": 4.5,
+    "reviewCount": 98,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_170.png",
+        "description": "Elegant script quote",
+        "style": "lettering",
+        "tags": [
+          "script",
+          "quote",
+          "elegant"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_171.png",
+        "description": "Gothic calligraphy design",
+        "style": "lettering",
+        "tags": [
+          "gothic",
+          "calligraphy",
+          "ornate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_172.png",
+        "description": "Memorial name with flourishes",
+        "style": "lettering",
+        "tags": [
+          "memorial",
+          "name",
+          "flourishes"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_173.png",
+        "description": "Modern typography design",
+        "style": "lettering",
+        "tags": [
+          "modern",
+          "typography",
+          "clean"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_174.png",
+        "description": "Vintage banner lettering",
+        "style": "lettering",
+        "tags": [
+          "vintage",
+          "banner",
+          "classic"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@connorletter",
+      "website": "https://connorobrien.type",
+      "email": "connor@connorobrien.type",
+      "phone": "+44 131 345 6789"
+    },
+    "studioInfo": {
+      "studioName": "Script & Ink Edinburgh",
+      "address": "78 Constitution Street, Leith, Edinburgh EH6 6RP",
+      "postcode": "EH6 6RP"
+    },
+    "pricing": {
+      "hourlyRate": 110,
+      "minimumCharge": 70,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-12",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 6,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Typography Design",
+        "Calligraphy Master"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-016",
+    "artistName": "Jasmine Clarke",
+    "instagramHandle": "jasmineornate",
+    "geohash": "gcpvj6a",
+    "locationDisplay": "Hackney, London, UK",
+    "latitude": 51.5454,
+    "longitude": -0.0553,
+    "styles": [
+      "ornamental",
+      "dotwork"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-38.jpg",
+    "specialties": [
+      "mandalas",
+      "lace-patterns",
+      "filigree",
+      "decorative-borders"
+    ],
+    "rating": 4.7,
+    "reviewCount": 167,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_180.png",
+        "description": "Intricate mandala chest piece",
+        "style": "ornamental",
+        "tags": [
+          "mandala",
+          "chest",
+          "intricate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_181.png",
+        "description": "Lace pattern shoulder design",
+        "style": "ornamental",
+        "tags": [
+          "lace",
+          "shoulder",
+          "delicate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_182.png",
+        "description": "Filigree wrist bracelet",
+        "style": "ornamental",
+        "tags": [
+          "filigree",
+          "wrist",
+          "bracelet"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_183.png",
+        "description": "Decorative frame design",
+        "style": "ornamental",
+        "tags": [
+          "frame",
+          "decorative",
+          "ornate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_184.png",
+        "description": "Sacred geometry pattern",
+        "style": "ornamental",
+        "tags": [
+          "sacred",
+          "geometry",
+          "spiritual"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@jasmineornate",
+      "website": "https://jasmineclarke.ornate",
+      "email": "jasmine@jasmineclarke.ornate",
+      "phone": "+44 20 7946 4567"
+    },
+    "studioInfo": {
+      "studioName": "Ornate Arts London",
+      "address": "89 Mare Street, Hackney, London E8 4RG",
+      "postcode": "E8 4RG"
+    },
+    "pricing": {
+      "hourlyRate": 140,
+      "minimumCharge": 100,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-05",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 8,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Sacred Geometry",
+        "Pattern Design"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-017",
+    "artistName": "Felix Schmidt",
+    "instagramHandle": "felixtrashpolka",
+    "geohash": "gcw2j7b",
+    "locationDisplay": "Castlefield, Manchester, UK",
+    "latitude": 53.4764,
+    "longitude": -2.2543,
+    "styles": [
+      "trash_polka",
+      "surrealism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-29.jpg",
+    "specialties": [
+      "collage-style",
+      "mixed-media",
+      "abstract-realism",
+      "chaotic-composition"
+    ],
+    "rating": 4.8,
+    "reviewCount": 145,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_190.png",
+        "description": "Trash polka portrait collage",
+        "style": "trash_polka",
+        "tags": [
+          "portrait",
+          "collage",
+          "chaotic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_191.png",
+        "description": "Mixed media abstract piece",
+        "style": "trash_polka",
+        "tags": [
+          "mixed-media",
+          "abstract",
+          "modern"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_192.png",
+        "description": "Photographic element integration",
+        "style": "trash_polka",
+        "tags": [
+          "photographic",
+          "integration",
+          "realistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_193.png",
+        "description": "Text and image fusion",
+        "style": "trash_polka",
+        "tags": [
+          "text",
+          "fusion",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_194.png",
+        "description": "Surreal trash polka composition",
+        "style": "trash_polka",
+        "tags": [
+          "surreal",
+          "composition",
+          "unique"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@felixtrashpolka",
+      "website": "https://felixschmidt.trash",
+      "email": "felix@felixschmidt.trash",
+      "phone": "+44 161 456 7890"
+    },
+    "studioInfo": {
+      "studioName": "Chaos Art Manchester",
+      "address": "34 Deansgate Mews, Castlefield, Manchester M3 4EN",
+      "postcode": "M3 4EN"
+    },
+    "pricing": {
+      "hourlyRate": 155,
+      "minimumCharge": 115,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-12",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 10,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Modern Art Techniques",
+        "German Trash Polka Certified"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-018",
+    "artistName": "Chloe Anderson",
+    "instagramHandle": "chloesketch",
+    "geohash": "gcqcr4c",
+    "locationDisplay": "Harborne, Birmingham, UK",
+    "latitude": 52.4584,
+    "longitude": -1.9626,
+    "styles": [
+      "sketch",
+      "minimalism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-44.jpg",
+    "specialties": [
+      "pencil-style",
+      "architectural-elements",
+      "artistic-studies",
+      "loose-lines"
+    ],
+    "rating": 4.4,
+    "reviewCount": 87,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_200.png",
+        "description": "Pencil sketch portrait",
+        "style": "sketch",
+        "tags": [
+          "pencil",
+          "portrait",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_201.png",
+        "description": "Architectural building sketch",
+        "style": "sketch",
+        "tags": [
+          "architecture",
+          "building",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_202.png",
+        "description": "Animal study sketch",
+        "style": "sketch",
+        "tags": [
+          "animal",
+          "study",
+          "loose"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_203.png",
+        "description": "Minimalist line drawing",
+        "style": "sketch",
+        "tags": [
+          "minimalist",
+          "line",
+          "simple"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/sketch/tattoo_204.png",
+        "description": "Unfinished sketch style",
+        "style": "sketch",
+        "tags": [
+          "unfinished",
+          "artistic",
+          "raw"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@chloesketch",
+      "website": "https://chloeanderson.sketch",
+      "email": "chloe@chloeanderson.sketch",
+      "phone": "+44 121 789 0123"
+    },
+    "studioInfo": {
+      "studioName": "Sketch Pad Studio",
+      "address": "56 High Street, Harborne, Birmingham B17 9NE",
+      "postcode": "B17 9NE"
+    },
+    "pricing": {
+      "hourlyRate": 105,
+      "minimumCharge": 65,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-08",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 5,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Fine Arts Degree",
+        "Sketch Techniques"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-019",
+    "artistName": "Ryan Murphy",
+    "instagramHandle": "ryanpsychedelic",
+    "geohash": "gcw7k2d",
+    "locationDisplay": "Hyde Park, Leeds, UK",
+    "latitude": 53.8067,
+    "longitude": -1.5656,
+    "styles": [
+      "psychedelic",
+      "new_school"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-56.jpg",
+    "specialties": [
+      "fractals",
+      "kaleidoscope-patterns",
+      "mushrooms",
+      "cosmic-elements"
+    ],
+    "rating": 4.6,
+    "reviewCount": 112,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_210.png",
+        "description": "Fractal mandala design",
+        "style": "psychedelic",
+        "tags": [
+          "fractal",
+          "mandala",
+          "trippy"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_211.png",
+        "description": "Kaleidoscope eye piece",
+        "style": "psychedelic",
+        "tags": [
+          "kaleidoscope",
+          "eye",
+          "colorful"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_212.png",
+        "description": "Mushroom forest scene",
+        "style": "psychedelic",
+        "tags": [
+          "mushroom",
+          "forest",
+          "magical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_213.png",
+        "description": "Cosmic galaxy swirl",
+        "style": "psychedelic",
+        "tags": [
+          "cosmic",
+          "galaxy",
+          "swirl"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_214.png",
+        "description": "Neon geometric patterns",
+        "style": "psychedelic",
+        "tags": [
+          "neon",
+          "geometric",
+          "vibrant"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@ryanpsychedelic",
+      "website": "https://ryanmurphy.trippy",
+      "email": "ryan@ryanmurphy.trippy",
+      "phone": "+44 113 567 8901"
+    },
+    "studioInfo": {
+      "studioName": "Cosmic Ink Leeds",
+      "address": "23 Brudenell Road, Hyde Park, Leeds LS6 1EG",
+      "postcode": "LS6 1EG"
+    },
+    "pricing": {
+      "hourlyRate": 130,
+      "minimumCharge": 90,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-22",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 7,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Color Theory Advanced",
+        "Psychedelic Art History"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-020",
+    "artistName": "Hannah Scott",
+    "instagramHandle": "hannaholdschool",
+    "geohash": "gcvwr5e",
+    "locationDisplay": "Stockbridge, Edinburgh, UK",
+    "latitude": 55.9578,
+    "longitude": -3.2089,
+    "styles": [
+      "old_school",
+      "traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-71.jpg",
+    "specialties": [
+      "sailors",
+      "pin-ups",
+      "ships",
+      "daggers"
+    ],
+    "rating": 4.7,
+    "reviewCount": 156,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_220.png",
+        "description": "Classic sailor tattoo",
+        "style": "old_school",
+        "tags": [
+          "sailor",
+          "classic",
+          "nautical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_221.png",
+        "description": "Pin-up girl design",
+        "style": "old_school",
+        "tags": [
+          "pin-up",
+          "vintage",
+          "classic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_222.png",
+        "description": "Ship with banner",
+        "style": "old_school",
+        "tags": [
+          "ship",
+          "banner",
+          "nautical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_223.png",
+        "description": "Dagger through heart",
+        "style": "old_school",
+        "tags": [
+          "dagger",
+          "heart",
+          "classic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_224.png",
+        "description": "Traditional rose design",
+        "style": "old_school",
+        "tags": [
+          "rose",
+          "traditional",
+          "timeless"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@hannaholdschool",
+      "website": "https://hannahscott.classic",
+      "email": "hannah@hannahscott.classic",
+      "phone": "+44 131 456 7890"
+    },
+    "studioInfo": {
+      "studioName": "Classic Ink Edinburgh",
+      "address": "12 Raeburn Place, Stockbridge, Edinburgh EH4 1HN",
+      "postcode": "EH4 1HN"
+    },
+    "pricing": {
+      "hourlyRate": 120,
+      "minimumCharge": 80,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-16",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 12,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Traditional Techniques",
+        "Vintage Art History"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-021",
+    "artistName": "Kai Nakamura",
+    "instagramHandle": "kaijapanese2",
+    "geohash": "gcpvj3f",
+    "locationDisplay": "Covent Garden, London, UK",
+    "latitude": 51.5118,
+    "longitude": -0.1226,
+    "styles": [
+      "japanese",
+      "biomechanical"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-33.jpg",
+    "specialties": [
+      "traditional-irezumi",
+      "tebori-technique",
+      "full-body-suits",
+      "cultural-authenticity"
+    ],
+    "rating": 4.9,
+    "reviewCount": 234,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_135.png",
+        "description": "Full back dragon piece",
+        "style": "japanese",
+        "tags": [
+          "dragon",
+          "back-piece",
+          "traditional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_136.png",
+        "description": "Koi sleeve with water",
+        "style": "japanese",
+        "tags": [
+          "koi",
+          "sleeve",
+          "water"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_137.png",
+        "description": "Hannya mask design",
+        "style": "japanese",
+        "tags": [
+          "hannya",
+          "mask",
+          "cultural"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_138.png",
+        "description": "Cherry blossom branch",
+        "style": "japanese",
+        "tags": [
+          "cherry-blossom",
+          "branch",
+          "delicate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_139.png",
+        "description": "Wind bar background",
+        "style": "japanese",
+        "tags": [
+          "wind-bar",
+          "background",
+          "traditional"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@kaijapanese2",
+      "website": "https://kainakamura.irezumi",
+      "email": "kai@kainakamura.irezumi",
+      "phone": "+44 20 7946 5678"
+    },
+    "studioInfo": {
+      "studioName": "Traditional Irezumi London",
+      "address": "67 Long Acre, Covent Garden, London WC2E 9JD",
+      "postcode": "WC2E 9JD"
+    },
+    "pricing": {
+      "hourlyRate": 200,
+      "minimumCharge": 180,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-06-01",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 20,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Traditional Tebori Master",
+        "Japanese Cultural Heritage"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-022",
+    "artistName": "Zara Ahmed",
+    "instagramHandle": "zarabiomech2",
+    "geohash": "gcw2j8g",
+    "locationDisplay": "Salford, Manchester, UK",
+    "latitude": 53.4875,
+    "longitude": -2.2901,
+    "styles": [
+      "biomechanical",
+      "portrait"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-48.jpg",
+    "specialties": [
+      "cyborg-portraits",
+      "mechanical-integration",
+      "sci-fi-realism",
+      "futuristic-design"
+    ],
+    "rating": 4.8,
+    "reviewCount": 178,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_145.png",
+        "description": "Cyborg face portrait",
+        "style": "biomechanical",
+        "tags": [
+          "cyborg",
+          "face",
+          "futuristic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_146.png",
+        "description": "Mechanical shoulder joint",
+        "style": "biomechanical",
+        "tags": [
+          "shoulder",
+          "joint",
+          "mechanical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_147.png",
+        "description": "Robotic hand design",
+        "style": "biomechanical",
+        "tags": [
+          "hand",
+          "robotic",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_148.png",
+        "description": "Cybernetic eye implant",
+        "style": "biomechanical",
+        "tags": [
+          "eye",
+          "implant",
+          "cybernetic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_149.png",
+        "description": "Mechanical spine fusion",
+        "style": "biomechanical",
+        "tags": [
+          "spine",
+          "fusion",
+          "complex"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@zarabiomech2",
+      "website": "https://zaraahmed.cyber",
+      "email": "zara@zaraahmed.cyber",
+      "phone": "+44 161 567 8901"
+    },
+    "studioInfo": {
+      "studioName": "Future Flesh Manchester",
+      "address": "89 Chapel Street, Salford, Manchester M3 5DF",
+      "postcode": "M3 5DF"
+    },
+    "pricing": {
+      "hourlyRate": 165,
+      "minimumCharge": 125,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-18",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 11,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "3D Art Techniques",
+        "Sci-Fi Design"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-023",
+    "artistName": "Oliver Hayes",
+    "instagramHandle": "oliverportraits2",
+    "geohash": "gcqcr9h",
+    "locationDisplay": "Edgbaston, Birmingham, UK",
+    "latitude": 52.4539,
+    "longitude": -1.9267,
+    "styles": [
+      "portrait",
+      "sketch"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-61.jpg",
+    "specialties": [
+      "black-grey-portraits",
+      "celebrity-likenesses",
+      "historical-figures",
+      "artistic-interpretation"
+    ],
+    "rating": 4.6,
+    "reviewCount": 143,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_155.png",
+        "description": "Black and grey portrait",
+        "style": "portrait",
+        "tags": [
+          "black-grey",
+          "portrait",
+          "realistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_156.png",
+        "description": "Historical figure portrait",
+        "style": "portrait",
+        "tags": [
+          "historical",
+          "figure",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_157.png",
+        "description": "Celebrity likeness piece",
+        "style": "portrait",
+        "tags": [
+          "celebrity",
+          "likeness",
+          "accurate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_158.png",
+        "description": "Artistic portrait interpretation",
+        "style": "portrait",
+        "tags": [
+          "artistic",
+          "interpretation",
+          "creative"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/portrait/tattoo_159.png",
+        "description": "Sketch-style portrait",
+        "style": "portrait",
+        "tags": [
+          "sketch",
+          "style",
+          "loose"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@oliverportraits2",
+      "website": "https://oliverhayes.portraits",
+      "email": "oliver@oliverhayes.portraits",
+      "phone": "+44 121 890 1234"
+    },
+    "studioInfo": {
+      "studioName": "Likeness Studio Birmingham",
+      "address": "45 Calthorpe Road, Edgbaston, Birmingham B15 1RP",
+      "postcode": "B15 1RP"
+    },
+    "pricing": {
+      "hourlyRate": 175,
+      "minimumCharge": 145,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-08",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 14,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Portrait Mastery",
+        "Fine Arts Background"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-024",
+    "artistName": "Aria Chen",
+    "instagramHandle": "ariaillustrative2",
+    "geohash": "gcw7k5i",
+    "locationDisplay": "Kirkstall, Leeds, UK",
+    "latitude": 53.8156,
+    "longitude": -1.6023,
+    "styles": [
+      "illustrative",
+      "watercolour"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-42.jpg",
+    "specialties": [
+      "children-book-style",
+      "fantasy-illustrations",
+      "nature-scenes",
+      "whimsical-characters"
+    ],
+    "rating": 4.5,
+    "reviewCount": 119,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_165.png",
+        "description": "Fantasy forest scene",
+        "style": "illustrative",
+        "tags": [
+          "fantasy",
+          "forest",
+          "magical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_166.png",
+        "description": "Children's book character",
+        "style": "illustrative",
+        "tags": [
+          "children",
+          "character",
+          "cute"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_167.png",
+        "description": "Watercolor illustration mix",
+        "style": "illustrative",
+        "tags": [
+          "watercolor",
+          "illustration",
+          "flowing"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_168.png",
+        "description": "Nature illustration piece",
+        "style": "illustrative",
+        "tags": [
+          "nature",
+          "illustration",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_169.png",
+        "description": "Whimsical creature design",
+        "style": "illustrative",
+        "tags": [
+          "whimsical",
+          "creature",
+          "imaginative"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@ariaillustrative2",
+      "website": "https://ariachen.illustrations",
+      "email": "aria@ariachen.illustrations",
+      "phone": "+44 113 678 9012"
+    },
+    "studioInfo": {
+      "studioName": "Whimsy Ink Leeds",
+      "address": "78 Kirkstall Road, Kirkstall, Leeds LS3 1LH",
+      "postcode": "LS3 1LH"
+    },
+    "pricing": {
+      "hourlyRate": 115,
+      "minimumCharge": 75,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-14",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 6,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Children's Illustration",
+        "Fantasy Art"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-025",
+    "artistName": "Liam Fraser",
+    "instagramHandle": "liamlettering2",
+    "geohash": "gcvwr7j",
+    "locationDisplay": "Morningside, Edinburgh, UK",
+    "latitude": 55.9312,
+    "longitude": -3.2067,
+    "styles": [
+      "lettering",
+      "ornamental"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-58.jpg",
+    "specialties": [
+      "gothic-lettering",
+      "modern-calligraphy",
+      "decorative-text",
+      "memorial-inscriptions"
+    ],
+    "rating": 4.6,
+    "reviewCount": 132,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_175.png",
+        "description": "Gothic script design",
+        "style": "lettering",
+        "tags": [
+          "gothic",
+          "script",
+          "ornate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_176.png",
+        "description": "Modern calligraphy piece",
+        "style": "lettering",
+        "tags": [
+          "modern",
+          "calligraphy",
+          "elegant"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_177.png",
+        "description": "Decorative text border",
+        "style": "lettering",
+        "tags": [
+          "decorative",
+          "border",
+          "ornamental"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_178.png",
+        "description": "Memorial inscription",
+        "style": "lettering",
+        "tags": [
+          "memorial",
+          "inscription",
+          "meaningful"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_179.png",
+        "description": "Ornate lettering design",
+        "style": "lettering",
+        "tags": [
+          "ornate",
+          "lettering",
+          "detailed"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@liamlettering2",
+      "website": "https://liamfraser.lettering",
+      "email": "liam@liamfraser.lettering",
+      "phone": "+44 131 567 8901"
+    },
+    "studioInfo": {
+      "studioName": "Calligraphy Ink Edinburgh",
+      "address": "23 Morningside Road, Morningside, Edinburgh EH10 4DR",
+      "postcode": "EH10 4DR"
+    },
+    "pricing": {
+      "hourlyRate": 115,
+      "minimumCharge": 75,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-20",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 8,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Calligraphy Master",
+        "Typography Design"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-026",
+    "artistName": "Max Weber",
+    "instagramHandle": "maxtrashpolka2",
+    "geohash": "gcw2j1l",
+    "locationDisplay": "Chorlton, Manchester, UK",
+    "latitude": 53.4423,
+    "longitude": -2.2723,
+    "styles": [
+      "trash_polka",
+      "sketch"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-47.jpg",
+    "specialties": [
+      "german-style",
+      "collage-art",
+      "photorealistic-elements",
+      "abstract-composition"
+    ],
+    "rating": 4.7,
+    "reviewCount": 164,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_195.png",
+        "description": "German trash polka style",
+        "style": "trash_polka",
+        "tags": [
+          "german",
+          "style",
+          "authentic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_196.png",
+        "description": "Collage art composition",
+        "style": "trash_polka",
+        "tags": [
+          "collage",
+          "art",
+          "mixed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_197.png",
+        "description": "Photorealistic integration",
+        "style": "trash_polka",
+        "tags": [
+          "photorealistic",
+          "integration",
+          "complex"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_198.png",
+        "description": "Abstract sketch elements",
+        "style": "trash_polka",
+        "tags": [
+          "abstract",
+          "sketch",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_199.png",
+        "description": "Red and black composition",
+        "style": "trash_polka",
+        "tags": [
+          "red",
+          "black",
+          "bold"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@maxtrashpolka2",
+      "website": "https://maxweber.trash",
+      "email": "max@maxweber.trash",
+      "phone": "+44 161 678 9012"
+    },
+    "studioInfo": {
+      "studioName": "Polka Ink Manchester",
+      "address": "67 Beech Road, Chorlton, Manchester M21 9EG",
+      "postcode": "M21 9EG"
+    },
+    "pricing": {
+      "hourlyRate": 150,
+      "minimumCharge": 110,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-14",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 9,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "German Trash Polka Certified",
+        "Mixed Media Art"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-027",
+    "artistName": "Ethan Davies",
+    "instagramHandle": "ethanpsychedelic2",
+    "geohash": "gcw7k6n",
+    "locationDisplay": "Roundhay, Leeds, UK",
+    "latitude": 53.8389,
+    "longitude": -1.5234,
+    "styles": [
+      "psychedelic",
+      "geometric"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-65.jpg",
+    "specialties": [
+      "optical-illusions",
+      "fractal-art",
+      "neon-colors",
+      "mind-bending-designs"
+    ],
+    "rating": 4.5,
+    "reviewCount": 128,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_215.png",
+        "description": "Optical illusion design",
+        "style": "psychedelic",
+        "tags": [
+          "optical",
+          "illusion",
+          "trippy"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_216.png",
+        "description": "Fractal art piece",
+        "style": "psychedelic",
+        "tags": [
+          "fractal",
+          "art",
+          "mathematical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_217.png",
+        "description": "Neon geometric patterns",
+        "style": "psychedelic",
+        "tags": [
+          "neon",
+          "geometric",
+          "bright"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_218.png",
+        "description": "Mind-bending composition",
+        "style": "psychedelic",
+        "tags": [
+          "mind-bending",
+          "composition",
+          "surreal"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/psychedelic/tattoo_219.png",
+        "description": "Kaleidoscope pattern work",
+        "style": "psychedelic",
+        "tags": [
+          "kaleidoscope",
+          "pattern",
+          "colorful"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@ethanpsychedelic2",
+      "website": "https://ethandavies.trippy",
+      "email": "ethan@ethandavies.trippy",
+      "phone": "+44 113 789 0123"
+    },
+    "studioInfo": {
+      "studioName": "Trippy Ink Leeds",
+      "address": "34 Street Lane, Roundhay, Leeds LS8 1AP",
+      "postcode": "LS8 1AP"
+    },
+    "pricing": {
+      "hourlyRate": 125,
+      "minimumCharge": 85,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-26",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 6,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Optical Art",
+        "Color Psychology"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-028",
+    "artistName": "Grace MacLeod",
+    "instagramHandle": "graceoldschool2",
+    "geohash": "gcvwr9o",
+    "locationDisplay": "Newington, Edinburgh, UK",
+    "latitude": 55.9467,
+    "longitude": -3.1856,
+    "styles": [
+      "old_school",
+      "neo_traditional"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-73.jpg",
+    "specialties": [
+      "vintage-americana",
+      "sailor-jerry-style",
+      "classic-motifs",
+      "bold-outlines"
+    ],
+    "rating": 4.6,
+    "reviewCount": 151,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_225.png",
+        "description": "Vintage americana design",
+        "style": "old_school",
+        "tags": [
+          "vintage",
+          "americana",
+          "classic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_226.png",
+        "description": "Sailor Jerry inspired",
+        "style": "old_school",
+        "tags": [
+          "sailor-jerry",
+          "inspired",
+          "traditional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_227.png",
+        "description": "Classic motif collection",
+        "style": "old_school",
+        "tags": [
+          "classic",
+          "motif",
+          "timeless"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_228.png",
+        "description": "Bold outline design",
+        "style": "old_school",
+        "tags": [
+          "bold",
+          "outline",
+          "strong"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_229.png",
+        "description": "Neo-traditional evolution",
+        "style": "old_school",
+        "tags": [
+          "neo-traditional",
+          "evolution",
+          "modern"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@graceoldschool2",
+      "website": "https://gracemacleod.vintage",
+      "email": "grace@gracemacleod.vintage",
+      "phone": "+44 131 678 9012"
+    },
+    "studioInfo": {
+      "studioName": "Vintage Ink Edinburgh",
+      "address": "56 South Clerk Street, Newington, Edinburgh EH8 9PS",
+      "postcode": "EH8 9PS"
+    },
+    "pricing": {
+      "hourlyRate": 118,
+      "minimumCharge": 78,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-19",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 11,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Traditional American",
+        "Vintage Art History"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-029",
+    "artistName": "Isla Robertson",
+    "instagramHandle": "islafine2",
+    "geohash": "gcqcr2m",
+    "locationDisplay": "Selly Oak, Birmingham, UK",
+    "latitude": 52.4412,
+    "longitude": -1.9367,
+    "styles": [
+      "fineline",
+      "minimalism"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-54.jpg",
+    "specialties": [
+      "delicate-lines",
+      "micro-tattoos",
+      "constellation-maps",
+      "botanical-details"
+    ],
+    "rating": 4.4,
+    "reviewCount": 96,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_230.png",
+        "description": "Delicate constellation map",
+        "style": "fineline",
+        "tags": [
+          "constellation",
+          "delicate",
+          "celestial"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_231.png",
+        "description": "Micro botanical design",
+        "style": "fineline",
+        "tags": [
+          "botanical",
+          "micro",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_232.png",
+        "description": "Fine line script",
+        "style": "fineline",
+        "tags": [
+          "script",
+          "fine",
+          "elegant"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_233.png",
+        "description": "Minimalist line art",
+        "style": "fineline",
+        "tags": [
+          "minimalist",
+          "line-art",
+          "simple"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_234.png",
+        "description": "Delicate floral details",
+        "style": "fineline",
+        "tags": [
+          "floral",
+          "delicate",
+          "nature"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@islafine2",
+      "website": "https://islarobertson.fineline",
+      "email": "isla@islarobertson.fineline",
+      "phone": "+44 121 901 2345"
+    },
+    "studioInfo": {
+      "studioName": "Fine Details Birmingham",
+      "address": "89 Bristol Road, Selly Oak, Birmingham B29 6AU",
+      "postcode": "B29 6AU"
+    },
+    "pricing": {
+      "hourlyRate": 95,
+      "minimumCharge": 55,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-06",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 4,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Fine Line Specialist",
+        "Micro Tattoo Techniques"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-030",
+    "artistName": "Leo Carter",
+    "instagramHandle": "leocartertattoos",
+    "geohash": "gcnq40v",
+    "locationDisplay": "Stokes Croft, Bristol, UK",
+    "latitude": 51.4633,
+    "longitude": -2.5921,
+    "styles": [
+      "old_school",
+      "neo_traditional",
+      "lettering"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-81.jpg",
+    "specialties": [
+      "americana",
+      "bold-lines",
+      "script",
+      "panthers"
+    ],
+    "rating": 4.7,
+    "reviewCount": 142,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_90.png",
+        "description": "Old school americana eagle",
+        "style": "old_school",
+        "tags": [
+          "eagle",
+          "americana",
+          "bold"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_91.png",
+        "description": "Classic sailor jerry panther",
+        "style": "old_school",
+        "tags": [
+          "panther",
+          "sailor-jerry",
+          "traditional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_29.png",
+        "description": "Neo-traditional ornate dagger",
+        "style": "neo_traditional",
+        "tags": [
+          "dagger",
+          "ornate",
+          "detailed"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_30.png",
+        "description": "Neo-traditional rose with thorns",
+        "style": "neo_traditional",
+        "tags": [
+          "rose",
+          "thorns",
+          "color"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_170.png",
+        "description": "Custom script lettering banner",
+        "style": "lettering",
+        "tags": [
+          "script",
+          "banner",
+          "custom"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@leocartertattoos",
+      "website": "https://leocarter.tattoo",
+      "email": "leo@leocarter.tattoo",
+      "phone": "+44 117 234 5678"
+    },
+    "studioInfo": {
+      "studioName": "Bristol Bold Ink",
+      "address": "12 Stokes Croft, Bristol BS1 3PR",
+      "postcode": "BS1 3PR"
+    },
+    "pricing": {
+      "hourlyRate": 125,
+      "minimumCharge": 80,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-01",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 9,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "First Aid"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-031",
+    "artistName": "Nina Singh",
+    "instagramHandle": "ninasingh_art",
+    "geohash": "gcpch8k",
+    "locationDisplay": "Baltic Triangle, Liverpool, UK",
+    "latitude": 53.395,
+    "longitude": -2.984,
+    "styles": [
+      "new_school",
+      "surrealism",
+      "illustrative"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-82.jpg",
+    "specialties": [
+      "cartoon",
+      "dream-like",
+      "vibrant-colors",
+      "fantasy"
+    ],
+    "rating": 4.8,
+    "reviewCount": 155,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_12.png",
+        "description": "New school cartoon character",
+        "style": "new_school",
+        "tags": [
+          "cartoon",
+          "character",
+          "vibrant"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_13.png",
+        "description": "New school graffiti style design",
+        "style": "new_school",
+        "tags": [
+          "graffiti",
+          "colorful",
+          "street-art"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_240.png",
+        "description": "Surreal melting clock composition",
+        "style": "surrealism",
+        "tags": [
+          "surreal",
+          "clock",
+          "artistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/surrealism/tattoo_241.png",
+        "description": "Dreamlike floating elements",
+        "style": "surrealism",
+        "tags": [
+          "dreamlike",
+          "floating",
+          "abstract"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/illustrative/tattoo_160.png",
+        "description": "Illustrative fantasy creature",
+        "style": "illustrative",
+        "tags": [
+          "fantasy",
+          "creature",
+          "storybook"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@ninasingh_art",
+      "website": "https://ninasingh.art",
+      "email": "nina@ninasingh.art",
+      "phone": "+44 151 345 6789"
+    },
+    "studioInfo": {
+      "studioName": "Baltic Art Collective",
+      "address": "45 Jamaica Street, Liverpool L1 0AF",
+      "postcode": "L1 0AF"
+    },
+    "pricing": {
+      "hourlyRate": 130,
+      "minimumCharge": 90,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-03-10",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 8,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Color Theory Advanced"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-032",
+    "artistName": "Oscar Ivanov",
+    "instagramHandle": "oscar.dots",
+    "geohash": "gcmfwhb",
+    "locationDisplay": "City Centre, Sheffield, UK",
+    "latitude": 53.381,
+    "longitude": -1.47,
+    "styles": [
+      "dotwork",
+      "ornamental",
+      "watercolour"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-83.jpg",
+    "specialties": [
+      "mandalas",
+      "geometric-patterns",
+      "abstract-watercolor",
+      "stippling"
+    ],
+    "rating": 4.6,
+    "reviewCount": 110,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_60.png",
+        "description": "Intricate dotwork mandala shoulder piece",
+        "style": "dotwork",
+        "tags": [
+          "mandala",
+          "shoulder",
+          "intricate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_61.png",
+        "description": "Dotwork geometric pattern",
+        "style": "dotwork",
+        "tags": [
+          "geometric",
+          "pattern",
+          "stippling"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_180.png",
+        "description": "Ornamental filigree design",
+        "style": "ornamental",
+        "tags": [
+          "filigree",
+          "decorative",
+          "ornate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/ornamental/tattoo_181.png",
+        "description": "Lace pattern ornamental work",
+        "style": "ornamental",
+        "tags": [
+          "lace",
+          "pattern",
+          "delicate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_28.png",
+        "description": "Abstract watercolour with geometric elements",
+        "style": "watercolour",
+        "tags": [
+          "abstract",
+          "geometric",
+          "flowing"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@oscar.dots",
+      "website": "https://oscarivanov.ink",
+      "email": "oscar@oscarivanov.ink",
+      "phone": "+44 114 456 7890"
+    },
+    "studioInfo": {
+      "studioName": "Steel City Ink",
+      "address": "77 Division Street, Sheffield S1 4GE",
+      "postcode": "S1 4GE"
+    },
+    "pricing": {
+      "hourlyRate": 115,
+      "minimumCharge": 70,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-02-28",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 6,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Sacred Geometry"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-033",
+    "artistName": "Fiona Gallagher",
+    "instagramHandle": "fionag_ink",
+    "geohash": "gce8s0k",
+    "locationDisplay": "Cathedral Quarter, Belfast, UK",
+    "latitude": 54.601,
+    "longitude": -5.926,
+    "styles": [
+      "japanese",
+      "floral",
+      "fineline"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-84.jpg",
+    "specialties": [
+      "irezumi",
+      "peonies",
+      "chrysanthemums",
+      "delicate-linework"
+    ],
+    "rating": 4.9,
+    "reviewCount": 189,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_130.png",
+        "description": "Traditional Japanese koi with waves",
+        "style": "japanese",
+        "tags": [
+          "koi",
+          "waves",
+          "traditional"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_131.png",
+        "description": "Japanese dragon with cherry blossoms",
+        "style": "japanese",
+        "tags": [
+          "dragon",
+          "cherry-blossom",
+          "irezumi"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_250.png",
+        "description": "Delicate peony bouquet",
+        "style": "floral",
+        "tags": [
+          "peony",
+          "bouquet",
+          "botanical"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_251.png",
+        "description": "Chrysanthemum floral arrangement",
+        "style": "floral",
+        "tags": [
+          "chrysanthemum",
+          "arrangement",
+          "delicate"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/fineline/tattoo_47.png",
+        "description": "Fine line floral wreath",
+        "style": "fineline",
+        "tags": [
+          "floral",
+          "wreath",
+          "delicate"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@fionag_ink",
+      "website": "https://fionagallagher.ink",
+      "email": "fiona@fionagallagher.ink",
+      "phone": "+44 28 9012 3456"
+    },
+    "studioInfo": {
+      "studioName": "Belfast Inkworks",
+      "address": "34 Donegall Street, Belfast BT1 2FG",
+      "postcode": "BT1 2FG"
+    },
+    "pricing": {
+      "hourlyRate": 140,
+      "minimumCharge": 100,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": false,
+      "nextAvailable": "2024-05-15",
+      "waitingList": true
+    },
+    "experience": {
+      "yearsActive": 11,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "Japanese Art History",
+        "Fine Line Specialist"
+      ]
+    }
+  },
+  {
+    "artistId": "artist-034",
+    "artistName": "Ben Carter",
+    "instagramHandle": "bencarter.trash",
+    "geohash": "gcmjgrg",
+    "locationDisplay": "City Centre, Cardiff, UK",
+    "latitude": 51.481,
+    "longitude": -3.179,
+    "styles": [
+      "trash_polka",
+      "blackwork"
+    ],
+    "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-85.jpg",
+    "specialties": [
+      "collage",
+      "abstract",
+      "red-and-black",
+      "photorealism-elements"
+    ],
+    "rating": 4.7,
+    "reviewCount": 133,
+    "portfolioImages": [
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_190.png",
+        "description": "Trash polka portrait collage",
+        "style": "trash_polka",
+        "tags": [
+          "portrait",
+          "collage",
+          "chaotic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_191.png",
+        "description": "Mixed media abstract composition",
+        "style": "trash_polka",
+        "tags": [
+          "mixed-media",
+          "abstract",
+          "red-black"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/trash_polka/tattoo_192.png",
+        "description": "Photographic element integration",
+        "style": "trash_polka",
+        "tags": [
+          "photographic",
+          "integration",
+          "realistic"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_141.png",
+        "description": "Solid blackwork geometric design",
+        "style": "blackwork",
+        "tags": [
+          "geometric",
+          "solid",
+          "bold"
+        ]
+      },
+      {
+        "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_64.png",
+        "description": "Blackwork pattern work",
+        "style": "blackwork",
+        "tags": [
+          "pattern",
+          "blackwork",
+          "intricate"
+        ]
+      }
+    ],
+    "contactInfo": {
+      "instagram": "@bencarter.trash",
+      "website": "https://bencarter.trash",
+      "email": "ben@bencarter.trash",
+      "phone": "+44 29 2012 3456"
+    },
+    "studioInfo": {
+      "studioName": "Cardiff Chaos Ink",
+      "address": "22 St Mary Street, Cardiff CF10 1FE",
+      "postcode": "CF10 1FE"
+    },
+    "pricing": {
+      "hourlyRate": 150,
+      "minimumCharge": 110,
+      "currency": "GBP"
+    },
+    "availability": {
+      "bookingOpen": true,
+      "nextAvailable": "2024-04-02",
+      "waitingList": false
+    },
+    "experience": {
+      "yearsActive": 9,
+      "apprenticeshipCompleted": true,
+      "certifications": [
+        "Bloodborne Pathogen",
+        "German Trash Polka Certified",
+        "Modern Art Techniques"
+      ]
+    }
   }
 ]

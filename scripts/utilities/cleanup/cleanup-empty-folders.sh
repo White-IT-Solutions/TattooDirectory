@@ -84,8 +84,8 @@ rm -rf "scripts\content-generation\generated_content\tattoos"
 echo "Removing: scripts\performance\.kiro"
 rm -rf "scripts\performance\.kiro"
 
-echo "Removing: scripts\performance\.kiro\data-management-state"
-rm -rf "scripts\performance\.kiro\data-management-state"
+echo "Removing: scripts\performance\data-management-state"
+rm -rf "scripts\performance\data-management-state"
 
 echo "Removing: scripts\performance\scripts"
 rm -rf "scripts\performance\scripts"

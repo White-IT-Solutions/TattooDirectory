@@ -1,4 +1,4 @@
-# Enhanced Data Management Guide
+## Enhanced Data Management Guide
 
 ## Overview
 
@@ -158,46 +158,48 @@ npm run frontend-sync studios
 
 ### Seed Scenarios
 
-Load specific enhanced test scenarios for targeted feature testing with comprehensive business data.
+Load specific enhanced test scenarios for targeted feature testing with comprehensive business data and studio relationships.
 
 ```bash
-# Enhanced scenarios with comprehensive business data
-npm run seed-scenario:minimal          # 3 artists with business data, quick testing
-npm run seed-scenario:search-basic     # 5 artists with ratings/pricing, traditional + realism styles
-npm run seed-scenario:london-artists   # 5 London-based artists with studio relationships
-npm run seed-scenario:london-artists   # 10 London artists with comprehensive studio data
-npm run seed-scenario:high-rated       # 3 artists with 4.5+ ratings and premium pricing
-npm run seed-scenario:new-artists      # 4 recently added artists with experience data
-npm run seed-scenario:booking-available # 6 artists with open booking slots and availability data
-npm run seed-scenario:portfolio-rich   # 4 artists with 8+ portfolio images and style metadata
-npm run seed-scenario:multi-style      # 3 artists with 3+ specializations and characteristics
-npm run seed-scenario:full-dataset    # 12 artists with diverse styles and enhanced metadata
-npm run seed-scenario:pricing-range    # 5 artists with detailed mid-range pricing data
-npm run seed-scenario:full-dataset     # 10 artists with all enhanced features
-npm run seed-scenario            # 0 artists for testing no-data states
-npm run seed-scenario:minimal           # 1 artist for minimal data display testing
-npm run local:reset # 50+ artists for performance testing
+# Enhanced scenarios with comprehensive business data and studio relationships
+npm run seed-scenario:minimal          # 3 artists, 2 studios with business data, quick testing
+npm run seed-scenario:search-basic     # 5 artists, 3 studios with ratings/pricing, traditional + realism styles
+npm run seed-scenario:london-artists   # 5 London-based artists, 3 London studios with relationships
+npm run seed-scenario:london-focused   # 10 London artists, 6 London studios with comprehensive data
+npm run seed-scenario:high-rated       # 3 artists, 2 studios with 4.5+ ratings and premium pricing
+npm run seed-scenario:new-artists      # 4 recently added artists, 2 new studios with experience data
+npm run seed-scenario:booking-available # 6 artists, 4 studios with open booking slots and availability data
+npm run seed-scenario:portfolio-rich   # 4 artists, 3 studios with 8+ portfolio images and style metadata
+npm run seed-scenario:multi-style      # 3 artists, 2 studios with 3+ specializations and characteristics
+npm run seed-scenario:style-diverse    # 12 artists, 8 studios with diverse styles and enhanced metadata
+npm run seed-scenario:pricing-range    # 5 artists, 3 studios with detailed mid-range pricing data
+npm run seed-scenario:full-dataset     # 150 artists, 50 studios, all 23 styles with comprehensive metadata (min 5 artists per style)
+npm run seed-scenario:studio-diverse   # 8 artists, 5 studios focusing on studio diversity and specializations
+npm run seed-scenario:empty            # 0 artists, 0 studios for testing no-data states
+npm run seed-scenario:single           # 1 artist, 1 studio for minimal data display testing
+npm run seed-scenario:performance-test # 100+ artists, 40+ studios for performance testing
 ```
 
 **Scenario Details:**
 
-| Scenario          | Artists | Focus                   | Best For                           | Enhanced Features                       |
-| ----------------- | ------- | ----------------------- | ---------------------------------- | --------------------------------------- |
-| minimal           | 3       | Quick testing           | Unit tests, basic functionality    | Business data, ratings, pricing         |
-| search-basic      | 5       | Search functionality    | Search feature development         | Ratings, pricing, style metadata        |
-| london-artists    | 5       | Location filtering      | Location-based features            | Studio relationships, geohash           |
-| london-focused    | 10      | Enhanced London testing | Comprehensive location features    | Full studio data, artist rosters        |
-| high-rated        | 3       | Rating systems          | Rating and review features         | 4.5+ ratings, premium pricing           |
-| new-artists       | 4       | Recent additions        | New artist workflows               | Experience data, certifications         |
-| booking-available | 6       | Booking systems         | Booking functionality              | Availability status, booking slots      |
-| portfolio-rich    | 4       | Image galleries         | Portfolio display features         | 8+ images, style metadata               |
-| multi-style       | 3       | Style diversity         | Style filtering and categorization | 3+ styles, characteristics              |
-| style-diverse     | 12      | Enhanced style testing  | Style filtering with metadata      | All styles, characteristics, difficulty |
-| pricing-range     | 5       | Pricing data            | Pricing and cost features          | Detailed pricing, currency, ranges      |
-| full-dataset      | 10      | Complete testing        | Integration tests, full workflows  | All enhanced features enabled           |
-| empty             | 0       | No-data states          | Empty state testing                | Error responses, fallback UI            |
-| single            | 1       | Minimal display         | Single result testing              | Complete business data profile          |
-| performance-test  | 50+     | Performance testing     | Load testing, pagination           | Optimized for size, performance data    |
+| Scenario          | Artists | Studios | Focus                   | Best For                           | Enhanced Features                       |
+| ----------------- | ------- | ------- | ----------------------- | ---------------------------------- | --------------------------------------- |
+| minimal           | 3       | 2       | Quick testing           | Unit tests, basic functionality    | Business data, ratings, pricing         |
+| search-basic      | 5       | 3       | Search functionality    | Search feature development         | Ratings, pricing, style metadata        |
+| london-artists    | 5       | 3       | Location filtering      | Location-based features            | Studio relationships, geohash           |
+| london-focused    | 10      | 6       | Enhanced London testing | Comprehensive location features    | Full studio data, artist rosters        |
+| high-rated        | 3       | 2       | Rating systems          | Rating and review features         | 4.5+ ratings, premium pricing           |
+| new-artists       | 4       | 2       | Recent additions        | New artist workflows               | Experience data, certifications         |
+| booking-available | 6       | 4       | Booking systems         | Booking functionality              | Availability status, booking slots      |
+| portfolio-rich    | 4       | 3       | Image galleries         | Portfolio display features         | 8+ images, style metadata               |
+| multi-style       | 3       | 2       | Style diversity         | Style filtering and categorization | 3+ styles, characteristics              |
+| style-diverse     | 12      | 8       | Enhanced style testing  | Style filtering with metadata      | All styles, characteristics, difficulty |
+| pricing-range     | 5       | 3       | Pricing data            | Pricing and cost features          | Detailed pricing, currency, ranges      |
+| full-dataset      | 150     | 50      | Complete testing        | Integration tests, full workflows  | All 23 styles, comprehensive metadata, min 5 per style |
+| studio-diverse    | 8       | 5       | Studio variety          | Studio-focused features            | Diverse studio types, specializations   |
+| empty             | 0       | 0       | No-data states          | Empty state testing                | Error responses, fallback UI            |
+| single            | 1       | 1       | Minimal display         | Single result testing              | Complete business data profile          |
+| performance-test  | 100+    | 40+     | Performance testing     | Load testing, pagination           | Optimized for size, performance data    |
 
 ### Health & Validation
 
@@ -214,12 +216,12 @@ npm run validate-data
 npm run data-status
 
 # Enhanced validation types
-npm run validate-data:consistency        # Cross-service data consistency and frontend-sync alignment
-npm run validate-data:images            # Image URL accessibility
-npm run validate-data:scenarios         # Enhanced scenario data integrity with business data
-npm run validate-data-data-data-data:frontend          # Frontend mock data structure and content validation
-npm run validate-data-data-data-data:business-data     # Business data validation (ratings, pricing, availability)
-npm run validate-studios:relationships # Artist-studio relationship validation
+npm run validate-data:consistency                   # Cross-service data consistency and frontend-sync alignment
+npm run validate-data:images                        # Image URL accessibility
+npm run validate-data:scenarios                     # Enhanced scenario data integrity with business data
+npm run validate-data-data-data-data:frontend       # Frontend mock data structure and content validation
+npm run validate-data-data-data-data:business-data  # Business data validation (ratings, pricing, availability)
+npm run validate-studios:relationships               # Artist-studio relationship validation
 ```
 
 **Health Check Output:**
@@ -666,7 +668,7 @@ npm run local:health
 npm run setup-data:force
 
 # Reset state tracking
-rm -rf .kiro/data-management-state
+rm -rf scripts/data-management-state
 npm run setup-data
 ```
 
@@ -943,6 +945,7 @@ The data management system consists of several utilities that work together to p
 Handles data import/export and backup/restore operations.
 
 #### Features
+
 - Export data from LocalStack to local files
 - Import data from local files to LocalStack
 - Create compressed backups in S3
@@ -993,18 +996,23 @@ Provides scenario-based data seeding for specific test cases.
 
 #### Available Scenarios
 
-| Scenario | Description | Use Case |
-|----------|-------------|----------|
-| `search-basic` | Basic search functionality testing | API endpoint testing |
-| `location-london` | London-based artists | Location filtering tests |
-| `style-traditional` | Traditional style artists | Style filtering tests |
-| `high-rating` | High-rated artists | Rating/quality tests |
-| `new-artists` | Recently joined artists | Timeline tests |
-| `booking-available` | Artists with open booking | Availability tests |
-| `portfolio-rich` | Artists with extensive portfolios | Image/portfolio tests |
-| `multi-style` | Artists with multiple styles | Complex filtering tests |
-| `pricing-range` | Artists with varied pricing | Price filtering tests |
-| `minimal` | Minimal dataset | Quick testing |
+| Scenario            | Artists | Studios | Description                                     | Use Case                 |
+| ------------------- | ------- | ------- | ----------------------------------------------- | ------------------------ |
+| `search-basic`      | 5       | 3       | Basic search functionality with studio data     | API endpoint testing     |
+| `london-artists`    | 5       | 3       | London-based artists and studios                | Location filtering tests |
+| `london-focused`    | 10      | 6       | Enhanced London testing with full studio data   | Comprehensive location   |
+| `style-diverse`     | 12      | 8       | All major styles with studio specializations    | Style filtering tests    |
+| `high-rated`        | 3       | 2       | High-rated artists and studios                  | Rating/quality tests     |
+| `new-artists`       | 4       | 2       | Recently joined artists and new studios         | Timeline tests           |
+| `booking-available` | 6       | 4       | Artists and studios with open booking           | Availability tests       |
+| `portfolio-rich`    | 4       | 3       | Artists with extensive portfolios, rich studios | Image/portfolio tests    |
+| `multi-style`       | 3       | 2       | Artists and studios with multiple styles        | Complex filtering tests  |
+| `pricing-range`     | 5       | 3       | Artists and studios with varied pricing         | Price filtering tests    |
+| `full-dataset`      | 150     | 50      | Complete dataset with all 23 styles (min 5 per style) | Integration testing      |
+| `studio-diverse`    | 8       | 5       | Focus on studio diversity and specializations   | Studio-focused features  |
+| `minimal`           | 3       | 2       | Minimal dataset with studio relationships       | Quick testing            |
+| `empty`             | 0       | 0       | Empty dataset for no-data state testing         | Error handling           |
+| `single`            | 1       | 1       | Single artist and studio for minimal testing    | Single result display    |
 
 #### Usage
 
@@ -1037,6 +1045,7 @@ node selective-seeder.js seed minimal
 Comprehensive data validation and consistency checking.
 
 #### Features
+
 - Validate test data files against schema
 - Validate database data integrity
 - Validate OpenSearch data consistency
@@ -1066,6 +1075,7 @@ node data-validator.js all
 #### Validation Rules
 
 **Artist Validation:**
+
 - Required fields: artistId, artistName, instagramHandle, styles, locationDisplay, geohash
 - Data types and ranges validation
 - Portfolio image URL validation
@@ -1073,12 +1083,14 @@ node data-validator.js all
 - Geographic coordinate validation
 
 **Studio Validation:**
+
 - Required fields: studioId, studioName, address, postcode, geohash
 - UK postcode format validation
 - Address format checks
 - Specialty validation
 
 **Style Validation:**
+
 - Required fields: styleId, styleName, description
 - Difficulty level validation
 - Popularity range checks
@@ -1089,16 +1101,19 @@ Quick environment resets and clean state management.
 
 #### Available Reset States
 
-| State | Description | Actions |
-|-------|-------------|---------|
-| `clean` | Complete clean state - no data | Clear all services |
-| `fresh` | Fresh start with full test dataset | Clear all + seed full |
-| `minimal` | Minimal dataset for quick testing | Clear + seed minimal |
-| `search-ready` | Dataset optimized for search testing | Clear + seed search scenario |
-| `location-test` | London-focused dataset | Clear + seed London data |
-| `style-test` | Traditional style focused dataset | Clear + seed traditional styles |
-| `performance-test` | Large dataset for performance testing | Clear + seed + duplicate 5x |
-| `backup-restore` | Reset to last backup state | Clear + restore latest backup |
+| State              | Description                                    | Actions                       |
+| ------------------ | ---------------------------------------------- | ----------------------------- |
+| `clean`            | Complete clean state - no data                 | Clear all services            |
+| `fresh`            | Fresh start with full test dataset (75+30)     | Clear all + seed full         |
+| `minimal`          | Minimal dataset for quick testing (3+2)        | Clear + seed minimal          |
+| `search-ready`     | Dataset optimized for search testing (5+3)     | Clear + seed search scenario  |
+| `location-test`    | London-focused dataset (10+6)                  | Clear + seed London data      |
+| `style-test`       | Enhanced style testing with metadata (12+8)    | Clear + seed style-diverse    |
+| `studio-test`      | Studio-focused testing with diversity (8+5)    | Clear + seed studio-diverse   |
+| `performance-test` | Large dataset for performance testing (100+40) | Clear + seed performance data |
+| `empty-test`       | Empty state for no-data testing (0+0)          | Clear all, no seeding         |
+| `single-test`      | Single artist and studio testing (1+1)         | Clear + seed single           |
+| `backup-restore`   | Reset to last backup state                     | Clear + restore latest backup |
 
 #### Usage
 
@@ -1242,11 +1257,13 @@ node data-manager.js restore "backup-20240115T103000000Z"
 ### Common Issues
 
 1. **LocalStack Connection Issues**
+
    - Ensure LocalStack is running and healthy
    - Check endpoint configuration (container vs host)
    - Verify AWS credentials are set to 'test'
 
 2. **Data Validation Failures**
+
    - Check test data files for schema compliance
    - Verify required fields are present
    - Ensure data types match expectations
@@ -1282,22 +1299,26 @@ node data-validator.js all
 ## Best Practices
 
 1. **Always validate after operations**
+
    ```bash
    node data-reset.js reset fresh
    node data-validator.js all
    ```
 
 2. **Create snapshots before major changes**
+
    ```bash
    node data-reset.js snapshot "before-major-test"
    ```
 
 3. **Use appropriate scenarios for testing**
+
    - Use `minimal` for quick unit tests
    - Use `search-basic` for API testing
    - Use `performance-test` for load testing
 
 4. **Regular backups**
+
    ```bash
    node data-manager.js backup "daily-$(date +%Y%m%d)"
    ```
@@ -1319,6 +1340,7 @@ node data-validator.js all
 Provides advanced data migration and transformation capabilities for upgrading test data schemas.
 
 #### Features
+
 - Schema migrations with version tracking
 - Data transformation and normalization
 - Rollback capabilities
@@ -1345,18 +1367,19 @@ node data-migration-utility.js rollback <migration-name>
 
 #### Available Migrations
 
-| Migration | Description | Version |
-|-----------|-------------|---------|
-| `add-missing-fields` | Add missing fields to existing artist records | 1.1.0 |
-| `normalize-locations` | Normalize location display formats | 1.2.0 |
-| `update-portfolio-structure` | Update portfolio image structure with metadata | 1.3.0 |
-| `add-social-media` | Add social media links structure | 1.4.0 |
+| Migration                    | Description                                    | Version |
+| ---------------------------- | ---------------------------------------------- | ------- |
+| `add-missing-fields`         | Add missing fields to existing artist records  | 1.1.0   |
+| `normalize-locations`        | Normalize location display formats             | 1.2.0   |
+| `update-portfolio-structure` | Update portfolio image structure with metadata | 1.3.0   |
+| `add-social-media`           | Add social media links structure               | 1.4.0   |
 
 ### 6. Data Monitoring Utility (`data-monitoring-utility.js`)
 
 Provides real-time monitoring and alerting for data management operations.
 
 #### Features
+
 - Real-time health monitoring
 - Performance metrics tracking
 - Alert system with severity levels
@@ -1396,6 +1419,7 @@ node data-monitoring-utility.js test-alerts
 Provides advanced data synchronization capabilities between different services.
 
 #### Features
+
 - Bidirectional sync between DynamoDB and OpenSearch
 - Conflict detection and resolution
 - Sync point creation and validation
@@ -1436,6 +1460,7 @@ node data-sync-utility.js validate-sync-point <file>
 Comprehensive test suite that validates all utilities work together correctly.
 
 #### Features
+
 - Test all utility help commands
 - Validate module loading and dependencies
 - Test error handling and edge cases

@@ -504,7 +504,30 @@ export const VisualEffectsIntegration = ({
   className = '',
   ...domProps 
 }) => {
-  // Non-DOM props are already extracted in function parameters
+  // Extract non-DOM props to prevent React warnings
+  const {
+    shadowLevel: _shadowLevel,
+    visualEffects: _visualEffects,
+    animationLevel: _animationLevel,
+    useDesignTokens: _useDesignTokens,
+    respectReducedMotion: _respectReducedMotion,
+    optimizeImages: _optimizeImages,
+    loading: _loading,
+    lazy: _lazy,
+    fill: _fill,
+    ...cleanDomProps
+  } = {
+    shadowLevel,
+    visualEffects,
+    animationLevel,
+    useDesignTokens,
+    respectReducedMotion,
+    optimizeImages,
+    loading,
+    lazy,
+    fill,
+    ...domProps
+  };
 
   // Convert shadowLevel to elevation for EnhancedCard
   const elevation = shadowLevel || 'surface';
@@ -513,7 +536,7 @@ export const VisualEffectsIntegration = ({
     <div 
       data-testid="visual-effects-container"
       className={`visual-effects-integration ${className}`}
-      {...domProps}
+      {...cleanDomProps}
     >
       <EnhancedCard elevation={elevation}>
         {children}

@@ -76,7 +76,7 @@ function getPlatformPaths(environment) {
     frontendStudioMockData: path.join(projectRoot, 'frontend', 'src', 'app', 'data', 'mockStudioData.js'),
     
     // State tracking directory
-    stateTrackingDir: path.join(projectRoot, '.kiro', 'data-management-state'),
+    stateTrackingDir: path.join(projectRoot, 'scripts', 'data-management-state'),
     
     // Configuration files
     envFile: path.join(projectRoot, 'devtools', '.env.local'),
@@ -262,11 +262,19 @@ const SCENARIOS = {
     studioSpecialties: ['traditional', 'realism']
   },
   'full-dataset': {
-    artistCount: 10,
-    studioCount: 6,
-    description: 'Complete test dataset with all styles and comprehensive studio data',
-    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour'],
-    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour']
+    artistCount: 150,
+    studioCount: 50,
+    description: 'Complete test dataset with all 23 styles, 50 studios, and comprehensive metadata - ensures each style has at least 5 artists',
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral', 'surrealism', 'psychedelic', 'sketch', 'old_school', 'new_school', 'illustrative', 'japanese', 'biomechanical', 'portrait', 'ornamental', 'trash_polka'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral', 'surrealism', 'psychedelic', 'sketch', 'old_school', 'new_school', 'illustrative', 'japanese', 'biomechanical', 'portrait', 'ornamental', 'trash_polka'],
+    ensureStudioDiversity: true,
+    minPortfolioImages: 8,
+    minStudioImages: 5,
+    includeAllStyles: true,
+    ensureStyleCoverage: true,
+    minArtistsPerStyle: 5,
+    comprehensiveMetadata: true,
+    locations: ['London', 'Manchester', 'Birmingham', 'Leeds', 'Glasgow', 'Edinburgh', 'Bristol', 'Liverpool', 'Newcastle', 'Sheffield']
   },
   'performance-test': {
     artistCount: 100,
@@ -316,6 +324,33 @@ const SCENARIOS = {
     minStudioRating: 4.5,
     styles: ['realism', 'traditional'],
     studioSpecialties: ['realism', 'traditional']
+  },
+  'style-diverse': {
+    artistCount: 12,
+    studioCount: 8,
+    description: 'Enhanced style testing with all major styles and metadata',
+    styles: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral'],
+    studioSpecialties: ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline', 'minimalism', 'geometric', 'watercolour', 'tribal', 'dotwork', 'lettering', 'floral'],
+    ensureStudioDiversity: true,
+    minStyles: 2,
+    minStudioSpecialties: 2,
+    includeStyleMetadata: true
+  },
+  'empty': {
+    artistCount: 0,
+    studioCount: 0,
+    description: 'Empty dataset for testing no-data states and error handling',
+    styles: [],
+    studioSpecialties: []
+  },
+  'single': {
+    artistCount: 1,
+    studioCount: 1,
+    description: 'Single artist and studio for minimal data display testing',
+    styles: ['traditional'],
+    studioSpecialties: ['traditional'],
+    minPortfolioImages: 5,
+    minStudioImages: 3
   }
 };
 
@@ -390,6 +425,24 @@ const RESET_STATES = {
     clearStudios: true,
     preserveArtists: true,
     scenario: 'studio-diverse'
+  },
+  'style-test': {
+    description: 'Style filtering testing data with enhanced metadata',
+    clearAll: true,
+    scenario: 'style-diverse',
+    includeStudios: true
+  },
+  'empty-test': {
+    description: 'Empty state for testing no-data scenarios',
+    clearAll: true,
+    scenario: 'empty',
+    includeStudios: true
+  },
+  'single-test': {
+    description: 'Single artist and studio for minimal testing',
+    clearAll: true,
+    scenario: 'single',
+    includeStudios: true
   }
 };
 
@@ -420,7 +473,10 @@ const VALIDATION_CONFIG = {
     minStudioImages: 3,              // Minimum images per studio
     maxStudioImages: 8,              // Maximum images per studio
     maxArtistsPerStudio: 8,          // Maximum artists per studio
-    minArtistsPerStudio: 1           // Minimum artists per studio
+    minArtistsPerStudio: 1,          // Minimum artists per studio
+    fullDatasetArtists: 150,         // Full dataset artist count
+    fullDatasetStudios: 50,          // Full dataset studio count
+    allStylesCount: 23               // Total number of tattoo styles
   },
   studio: {
     requiredFields: ['studioId', 'studioName', 'address', 'postcode', 'latitude', 'longitude', 'contactInfo', 'specialties'],
@@ -709,3 +765,6 @@ if (require.main === module) {
     });
   }
 }
+
+// Export the configuration instance for use by other modules
+module.exports = new DataConfiguration();

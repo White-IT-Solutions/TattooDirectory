@@ -271,7 +271,7 @@ npm run local:reset
 # Load specific test scenarios
 npm run seed-scenario:minimal          # Quick testing (3 artists, 2 studios)
 npm run seed-scenario:london-artists   # Location testing (5 London artists, 3 studios)
-npm run seed-scenario:full-dataset     # Complete testing (10 artists, 6 studios)
+npm run seed-scenario:full-dataset     # Complete testing (150 artists, 50 studios)
 
 # System health and validation
 npm run local:health                   # Check service connectivity

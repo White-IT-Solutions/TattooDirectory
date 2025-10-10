@@ -1,51 +1,45 @@
-import { useState, useEffect } from 'react';
-import { mockArtistData } from '../app/data/mockArtistData';
+import { useState, useCallback } from 'react';
+import { apiService } from '../lib/api-service';
 
 /**
- * Artist hook that provides individual artist data
- * Uses mock data for now, can be easily switched to real API
+ * Artist hook for fetching individual artist data
+ * Uses API service layer for environment-based switching
  */
-export const useArtist = (id) => {
+export const useArtist = () => {
   const [artist, setArtist] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchArtist = useCallback(async (id) => {
     if (!id) {
-      setLoading(false);
+      setError('Artist ID is required');
       return;
     }
 
-    const fetchArtist = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
-        // Find artist in mock data
-        const foundArtist = mockArtistData.find(artist => 
-          artist.artistId === id || 
-          artist.PK === id ||
-          artist.id === id
-        );
-        
-        if (!foundArtist) {
-          throw new Error(`Artist with ID ${id} not found`);
-        }
-        
-        setArtist(foundArtist);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load artist');
-        setArtist(null);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    setError(null);
+    setArtist(null);
+    
+    try {
+      const response = await apiService.getArtistById(id);
+      
+      if (!response.success) {
+        throw new Error(response.message || 'Failed to fetch artist');
       }
-    };
+      
+      setArtist(response.data.artist);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch artist');
+      setArtist(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    fetchArtist();
-  }, [id]);
+  const clearArtist = useCallback(() => {
+    setArtist(null);
+    setError(null);
+  }, []);
 
-  return { artist, loading, error };
+  return { artist, loading, error, fetchArtist, clearArtist };
 };

@@ -41,6 +41,11 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
       mode_block = true
       override   = true
     }
+
+    content_security_policy {
+      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: http://localhost:4566 https://via.placeholder.com https://cdn.jsdelivr.net https://avatars.githubusercontent.com https://i.pinimg.com https://loremflickr.com https://i.pravatar.cc https://picsum.photos https://maps.googleapis.com https://maps.gstatic.com; connect-src 'self' https://maps.googleapis.com https://maps.gstatic.com http://localhost:4566 http://localhost:9000 https://*.execute-api.eu-west-2.amazonaws.com; frame-ancestors 'none'; worker-src 'self' blob:; child-src 'self' blob:;"
+      override                = true
+    }
   }
 }
 
@@ -170,7 +175,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     ssl_support_method             = var.context.domain_name != "" ? "sni-only" : null
     minimum_protocol_version       = var.context.domain_name != "" ? "TLSv1.2_2021" : null
   }
-  
+
 
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-frontend-distribution"

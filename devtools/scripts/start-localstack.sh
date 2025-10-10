@@ -136,7 +136,6 @@ show_status() {
     print_info "LocalStack Status:"
     echo "  Phase: $phase"
     echo "  Endpoint: http://localhost:4566"
-    echo "  Web UI: http://localhost:4566/_localstack/cockpit"
     
     # Show running services
     if docker ps --format "table {{.Names}}\t{{.Status}}" | grep -q "tattoo-directory-localstack"; then

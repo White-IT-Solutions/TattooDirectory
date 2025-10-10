@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export const dynamic = 'force-dynamic';
+
 
 // Dynamic imports to avoid SSR issues
 const SearchResultsContainer = React.lazy(() => import("../components/SearchResultsContainer"));

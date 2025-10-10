@@ -16,7 +16,7 @@ const { STATE_MANAGER } = require('../utilities/state-manager');
 
 /**
  * Style mapping from folder names to styleIds
- * Preserves existing mapping including typo correction
+ * Updated to include all 23 styles from the current styles.json
  */
 const STYLE_MAPPING = {
   'watercolour': 'watercolour',
@@ -25,7 +25,7 @@ const STYLE_MAPPING = {
   'surrealism': 'surrealism',
   'sketch': 'sketch',
   'realism': 'realism',
-  'psychelic': 'psychedelic', // Note: folder has typo, corrected in mapping
+  'psychedelic': 'psychedelic',
   'old_school': 'old_school',
   'new_school': 'new_school',
   'neo_traditional': 'neo_traditional',
@@ -33,9 +33,15 @@ const STYLE_MAPPING = {
   'lettering': 'lettering',
   'geometric': 'geometric',
   'floral': 'floral',
-  'fine_line': 'fineline',
+  'fineline': 'fineline',
   'blackwork': 'blackwork',
-  'dotwork': 'dotwork'
+  'dotwork': 'dotwork',
+  'japanese': 'japanese',
+  'biomechanical': 'biomechanical',
+  'portrait': 'portrait',
+  'illustrative': 'illustrative',
+  'ornamental': 'ornamental',
+  'trash_polka': 'trash_polka'
 };
 
 /**

@@ -348,10 +348,19 @@ class FrontendSyncProcessor {
       }
     };
     
-    // Load existing test data for enhanced generation
-    this.loadTestData();
+    // Initialize test data as null - will be loaded lazily when needed
+    this.testData = null;
   }
   
+  /**
+   * Ensure test data is loaded (lazy loading)
+   */
+  ensureTestDataLoaded() {
+    if (this.testData === null) {
+      this.loadTestData();
+    }
+  }
+
   /**
    * Load existing test data for enhanced mock generation
    */
@@ -412,6 +421,9 @@ class FrontendSyncProcessor {
       exportToFile = false,
       validateData = true
     } = options;
+    
+    // Ensure test data is loaded when needed
+    this.ensureTestDataLoaded();
     
     this.stats.performance.startTime = Date.now();
     this.stats.performance.memoryUsage = process.memoryUsage().heapUsed;
@@ -540,8 +552,14 @@ class FrontendSyncProcessor {
       mockArtists.push(artist);
     }
     
+    // Apply style coverage if configured
+    let processedArtists = mockArtists;
+    if (scenarioConfig.ensureStyleCoverage) {
+      processedArtists = this.ensureStyleCoverage(mockArtists, scenarioConfig);
+    }
+    
     // Generate bidirectional artist-studio relationships
-    const relationshipData = this.generateArtistStudioRelationships(mockArtists);
+    const relationshipData = this.generateArtistStudioRelationships(processedArtists);
     
     // Store studio data for potential export
     this.generatedStudios = relationshipData.studios;
@@ -568,6 +586,12 @@ class FrontendSyncProcessor {
     for (let i = 0; i < artistCount; i++) {
       const artist = this.createMockArtist(i + 1, imageUrls, scenario);
       mockArtists.push(artist);
+    }
+    
+    // Apply style coverage if configured
+    const scenarioConfig = this.config.scenarios[scenario] || {};
+    if (scenarioConfig.ensureStyleCoverage) {
+      return this.ensureStyleCoverage(mockArtists, scenarioConfig);
     }
     
     return mockArtists;
@@ -754,8 +778,16 @@ class FrontendSyncProcessor {
     
     // Scenario-specific style selection
     if (scenario) {
-      const scenarioConfig = this.config.scenarios[scenario];
-      if (scenarioConfig && scenarioConfig.styles) {
+      let scenarioConfig;
+      
+      // Handle both scenario string and scenario config object
+      if (typeof scenario === 'string') {
+        scenarioConfig = this.config.scenarios[scenario];
+      } else if (typeof scenario === 'object' && scenario.styles) {
+        scenarioConfig = scenario;
+      }
+      
+      if (scenarioConfig && Array.isArray(scenarioConfig.styles) && scenarioConfig.styles.length > 0) {
         const scenarioStyles = scenarioConfig.styles;
         const styleCount = Math.min(3, scenarioStyles.length);
         return this.shuffleArray([...scenarioStyles]).slice(0, styleCount);
@@ -799,12 +831,13 @@ class FrontendSyncProcessor {
       return randomImage.url;
     }
     
-    // Generate placeholder URL
-    const endpoint = this.config.services.s3.endpoint;
-    const bucket = this.config.services.s3.bucketName;
-    const filename = `tattoo_${Math.floor(Math.random() * 150) + 1}.png`;
+    // Generate placeholder URL using a reliable image service
+    const imageId = Math.floor(Math.random() * 1000) + 1;
+    const width = 400;
+    const height = 300;
     
-    return `${endpoint}/${bucket}/styles/${style}/${filename}`;
+    // Use picsum.photos for reliable placeholder images
+    return `https://picsum.photos/${width}/${height}?random=${imageId}`;
   }
 
   /**
@@ -1845,7 +1878,7 @@ export const mockArtistData = ${JSON.stringify(mockData, null, 2)};
     ];
     
     // Scenario-specific style selection
-    if (scenarioConfig.styles && scenarioConfig.styles.length > 0) {
+    if (scenarioConfig.styles && Array.isArray(scenarioConfig.styles) && scenarioConfig.styles.length > 0) {
       const styleCount = Math.min(3, scenarioConfig.styles.length);
       return this.selectRandomChoices(scenarioConfig.styles, 1, styleCount);
     }
@@ -1921,6 +1954,324 @@ export const mockArtistData = ${JSON.stringify(mockData, null, 2)};
         error: error.message
       };
     }
+  }
+
+  /**
+   * Generate scenario-based data for database seeding
+   */
+  async generateScenarioData(scenarioName, options = {}) {
+    console.log(`🎯 Generating scenario data: ${scenarioName}`);
+    
+    // Get scenario configuration from DATA_CONFIG
+    const { DATA_CONFIG } = require('../data-config');
+    const scenarioConfig = DATA_CONFIG.getScenarioConfig(scenarioName);
+    
+    const {
+      artistCount = scenarioConfig.artistCount || 10,
+      studioCount = scenarioConfig.studioCount || 5,
+      styles = scenarioConfig.styles || ['traditional', 'realism'],
+      locations = scenarioConfig.locations || ['London'],
+      includeBusinessData = true,
+      validateData = true
+    } = options;
+
+    // Debug: Check what styles contains
+    console.log('🔍 Debug - styles variable:', Array.isArray(styles) ? 'is array' : 'is not array', styles);
+
+    try {
+      // Generate artists based on scenario requirements
+      const artists = [];
+      const studios = [];
+      const stylesData = [];
+
+      // Generate styles data first
+      for (const style of styles) {
+        const styleName = style.charAt(0).toUpperCase() + style.slice(1).replace('_', ' ');
+        stylesData.push({
+          styleId: style,
+          styleName: styleName,
+          description: `${styleName} tattoo style with distinctive characteristics and techniques`,
+          characteristics: [
+            "distinctive-technique",
+            "artistic-expression",
+            "cultural-significance",
+            "visual-impact"
+          ],
+          popularMotifs: [
+            "traditional-designs",
+            "modern-interpretations",
+            "cultural-symbols",
+            "artistic-elements"
+          ],
+          colorPalette: ["black", "traditional-colors", "modern-palette"],
+          difficulty: ["beginner", "intermediate", "advanced"][Math.floor(Math.random() * 3)],
+          timeOrigin: "Traditional",
+          aliases: [style.replace('_', '-'), styleName.toLowerCase()]
+        });
+      }
+
+      // Generate studios first
+      for (let i = 0; i < studioCount; i++) {
+        const studioId = `studio-${String(i + 1).padStart(3, '0')}`;
+        const location = locations[i % locations.length];
+        const locationData = MOCK_LOCATIONS.find(loc => loc.city === location) || MOCK_LOCATIONS[0];
+        const studioName = MOCK_STUDIOS[i % MOCK_STUDIOS.length];
+        
+        const studioData = this.generateStudioData(studioId, studioName, locationData, []);
+        
+        // Create studio object with the correct schema for database seeding
+        const studio = {
+          studioId: studioData.studioId,
+          studioName: studioData.studioName,
+          address: `${studioData.address.street}, ${studioData.address.city}`,
+          postcode: studioData.address.postcode,
+          latitude: studioData.address.latitude,
+          longitude: studioData.address.longitude,
+          geohash: this.generateGeohash(studioData.address.latitude, studioData.address.longitude),
+          locationDisplay: studioData.locationDisplay,
+          contactInfo: studioData.contactInfo,
+          openingHours: studioData.openingHours,
+          artists: studioData.artists,
+          rating: studioData.rating,
+          reviewCount: studioData.reviewCount,
+          established: studioData.established,
+          specialties: studioData.specialties
+        };
+        
+        studios.push(studio);
+      }
+
+      // Generate artists and assign them to studios
+      for (let i = 0; i < artistCount; i++) {
+        const artistId = `artist-${String(i + 1).padStart(3, '0')}`;
+        const artistName = ARTIST_NAMES[i % ARTIST_NAMES.length];
+        const location = locations[i % locations.length];
+        const locationData = MOCK_LOCATIONS.find(loc => loc.city === location) || MOCK_LOCATIONS[0];
+        
+        // Assign artist to a studio
+        const studioIndex = i % studioCount;
+        const assignedStudio = studios[studioIndex];
+        
+        // Select styles for this artist
+        const artistStyles = Array.isArray(styles) ? 
+          this.selectRandomStylesFromArray(styles, Math.min(3, styles.length)) :
+          ['traditional', 'realism'].slice(0, 2);
+        
+        const artist = {
+          artistId,
+          artistName,
+          instagramHandle: `@${artistName.toLowerCase().replace(' ', '')}tattoos`,
+          geohash: this.generateGeohash(locationData.latitude, locationData.longitude),
+          locationDisplay: `${locationData.city}, UK`,
+          latitude: locationData.latitude + (Math.random() - 0.5) * 0.01,
+          longitude: locationData.longitude + (Math.random() - 0.5) * 0.01,
+          styles: artistStyles,
+          studioId: assignedStudio.studioId,
+          studioName: assignedStudio.studioName,
+          portfolioImages: this.generatePortfolioImages(styles),
+          rating: Math.round((3.5 + Math.random() * 1.5) * 10) / 10,
+          reviewCount: Math.floor(Math.random() * 200) + 20,
+          experience: {
+            yearsActive: Math.floor(Math.random() * 15) + 1,
+            apprenticeshipCompleted: true,
+            certifications: ['Health & Safety', 'Bloodborne Pathogens']
+          },
+          pricing: {
+            currency: 'GBP',
+            hourlyRate: Math.floor(Math.random() * 150) + 80,
+            minimumCharge: Math.floor(Math.random() * 200) + 100,
+            consultationFee: Math.floor(Math.random() * 50) + 25
+          },
+          availability: {
+            bookingOpen: Math.random() > 0.3,
+            nextAvailable: this.generateNextAvailableDate(),
+            bookingMethod: ['instagram', 'email', 'phone'][Math.floor(Math.random() * 3)]
+          },
+          contactInfo: {
+            email: `${artistName.toLowerCase().replace(' ', '.')}@${assignedStudio.studioName.toLowerCase().replace(/[^a-z]/g, '')}.com`,
+            phone: this.generatePhoneNumber(),
+            instagram: `@${artistName.toLowerCase().replace(' ', '')}tattoos`
+          },
+          bio: this.generateBio(artistStyles[0]),
+          specializations: artistStyles.slice(0, 2),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+
+        artists.push(artist);
+        
+        // Add artist to studio's artist list
+        if (!assignedStudio.artists) {
+          assignedStudio.artists = [];
+        }
+        assignedStudio.artists.push(artistId);
+      }
+
+      console.log(`✅ Generated ${artists.length} artists, ${studios.length} studios, ${stylesData.length} styles`);
+
+      return {
+        success: true,
+        artists,
+        studios,
+        styles: stylesData,
+        counts: {
+          artists: artists.length,
+          studios: studios.length,
+          styles: stylesData.length
+        }
+      };
+
+    } catch (error) {
+      console.error(`❌ Failed to generate scenario data:`, error.message);
+      return {
+        success: false,
+        error: error.message,
+        artists: [],
+        studios: [],
+        styles: []
+      };
+    }
+  }
+
+  /**
+   * Select random styles from available styles array
+   */
+  selectRandomStylesFromArray(availableStyles, count) {
+    // Ensure availableStyles is an array
+    if (!Array.isArray(availableStyles)) {
+      console.warn('⚠️  availableStyles is not an array:', typeof availableStyles, availableStyles);
+      return ['traditional', 'realism'].slice(0, count || 2);
+    }
+    
+    const shuffled = [...availableStyles].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  /**
+   * Ensure style coverage - guarantees each style gets minimum number of artists
+   */
+  ensureStyleCoverage(artists, scenarioConfig) {
+    if (!scenarioConfig.ensureStyleCoverage || !scenarioConfig.minArtistsPerStyle) {
+      return artists;
+    }
+
+    const styles = scenarioConfig.styles || [];
+    const minArtistsPerStyle = scenarioConfig.minArtistsPerStyle;
+    
+    // Count current style distribution
+    const styleCounts = {};
+    styles.forEach(style => styleCounts[style] = 0);
+    
+    artists.forEach(artist => {
+      if (artist.styles && Array.isArray(artist.styles)) {
+        artist.styles.forEach(style => {
+          if (styleCounts.hasOwnProperty(style)) {
+            styleCounts[style]++;
+          }
+        });
+      }
+    });
+
+    // Find styles that need more artists
+    const underrepresentedStyles = [];
+    Object.entries(styleCounts).forEach(([style, count]) => {
+      if (count < minArtistsPerStyle) {
+        for (let i = 0; i < minArtistsPerStyle - count; i++) {
+          underrepresentedStyles.push(style);
+        }
+      }
+    });
+
+    // Assign underrepresented styles to artists that don't have them yet
+    let styleIndex = 0;
+    for (let i = 0; i < artists.length && styleIndex < underrepresentedStyles.length; i++) {
+      const artist = artists[i];
+      const neededStyle = underrepresentedStyles[styleIndex];
+      
+      // Only add if artist doesn't already have this style
+      if (!artist.styles.includes(neededStyle)) {
+        // Replace one of the artist's styles or add if they have less than 3
+        if (artist.styles.length < 3) {
+          artist.styles.push(neededStyle);
+        } else {
+          // Replace the last style to maintain variety
+          artist.styles[artist.styles.length - 1] = neededStyle;
+        }
+        
+        // Update bio to reflect new primary style if needed
+        if (artist.styles[0] === neededStyle) {
+          artist.bio = this.generateBio(neededStyle);
+        }
+        
+        styleIndex++;
+      }
+    }
+
+    console.log(`✅ Style coverage ensured: ${styles.length} styles with minimum ${minArtistsPerStyle} artists each`);
+    return artists;
+  }
+
+  /**
+   * Generate a simple geohash for location
+   */
+  generateGeohash(lat, lng) {
+    return `${lat.toFixed(4)}${lng.toFixed(4)}`.replace(/[.-]/g, '');
+  }
+
+  /**
+   * Generate portfolio images (legacy function for count-based generation)
+   */
+  generatePortfolioImagesLegacy(count) {
+    const images = [];
+    const styles = ['traditional', 'realism', 'blackwork', 'neo_traditional', 'fineline'];
+    
+    for (let i = 0; i < count; i++) {
+      const style = styles[i % styles.length];
+      const imageNumber = Math.floor(Math.random() * 150) + 1;
+      
+      images.push({
+        url: `http://localhost:4566/tattoo-images/styles/${style}/tattoo_${imageNumber}.png`,
+        description: `${style.charAt(0).toUpperCase() + style.slice(1)} style tattoo featuring detailed artwork`,
+        style: style
+      });
+    }
+    return images;
+  }
+
+  /**
+   * Generate next available date
+   */
+  generateNextAvailableDate() {
+    const now = new Date();
+    const daysToAdd = Math.floor(Math.random() * 30) + 1;
+    const nextDate = new Date(now.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+    return nextDate.toISOString().split('T')[0];
+  }
+
+  /**
+   * Generate UK phone number
+   */
+  generatePhoneNumber() {
+    const areaCode = ['020', '0121', '0161', '0113', '0151'][Math.floor(Math.random() * 5)];
+    const number = Math.floor(Math.random() * 9000000) + 1000000;
+    return `${areaCode} ${number}`;
+  }
+
+  /**
+   * Generate bio based on style
+   */
+  generateBio(primaryStyle) {
+    const bios = {
+      traditional: 'Traditional tattoo artist specializing in bold lines and classic designs',
+      realism: 'Realism specialist creating lifelike portraits and detailed artwork',
+      geometric: 'Geometric and sacred geometry expert with precision and balance',
+      blackwork: 'Blackwork specialist focusing on bold, dark designs',
+      watercolour: 'Watercolor tattoo artist bringing vibrant, flowing designs to life',
+      fineline: 'Fine line specialist creating delicate, detailed artwork',
+      minimalism: 'Minimalist tattoo artist focusing on clean, simple designs'
+    };
+    
+    return bios[primaryStyle] || 'Professional tattoo artist with expertise in multiple styles';
   }
 }
 

@@ -90,7 +90,7 @@ const faqData = [
   },
 ];
 
-export const dynamic = 'force-dynamic';
+
 
 export default function FAQPage() {
   const [searchTerm, setSearchTerm] = useState("");

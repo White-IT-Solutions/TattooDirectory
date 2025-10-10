@@ -34,7 +34,7 @@ import {
   InfiniteScrollLoader
 } from '../../design-system/components/ui/Skeleton';
 
-export const dynamic = 'force-dynamic';
+
 
 export default function DesignTestPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);

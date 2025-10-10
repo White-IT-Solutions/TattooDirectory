@@ -322,5 +322,136 @@
     "difficulty": "advanced",
     "timeOrigin": "ancient",
     "aliases": ["stippling", "pointillism"]
+  },
+  {
+    "styleId": "japanese",
+    "styleName": "Japanese",
+    "description": "Traditional Japanese tattoo style featuring bold imagery, wind bars, and cultural motifs",
+    "characteristics": [
+      "bold-imagery",
+      "wind-bars",
+      "cultural-motifs",
+      "flowing-composition"
+    ],
+    "popularMotifs": [
+      "koi-fish",
+      "dragons",
+      "cherry-blossoms",
+      "waves",
+      "tigers",
+      "phoenixes"
+    ],
+    "colorPalette": ["traditional-colors", "red", "blue", "black", "gold"],
+    "difficulty": "advanced",
+    "timeOrigin": "ancient",
+    "aliases": ["irezumi", "tebori", "oriental"]
+  },
+  {
+    "styleId": "biomechanical",
+    "styleName": "Biomechanical",
+    "description": "Futuristic tattoo style blending organic and mechanical elements",
+    "characteristics": [
+      "mechanical-elements",
+      "organic-fusion",
+      "3d-appearance",
+      "futuristic"
+    ],
+    "popularMotifs": [
+      "gears",
+      "pistons",
+      "cybernetic-limbs",
+      "robotic-parts",
+      "mechanical-hearts"
+    ],
+    "colorPalette": ["metallic-tones", "black", "grey", "silver", "copper"],
+    "difficulty": "advanced",
+    "timeOrigin": "1980s",
+    "aliases": ["cyber", "mechanical", "robotic"]
+  },
+  {
+    "styleId": "portrait",
+    "styleName": "Portrait",
+    "description": "Realistic representation of faces and figures with detailed facial features",
+    "characteristics": [
+      "facial-features",
+      "realistic-proportions",
+      "detailed-shading",
+      "lifelike-expression"
+    ],
+    "popularMotifs": [
+      "family-members",
+      "celebrities",
+      "historical-figures",
+      "pets",
+      "self-portraits"
+    ],
+    "colorPalette": ["black-and-grey", "realistic-skin-tones", "full-color"],
+    "difficulty": "advanced",
+    "timeOrigin": "1970s",
+    "aliases": ["portraiture", "face-tattoo", "realistic-portrait"]
+  },
+  {
+    "styleId": "illustrative",
+    "styleName": "Illustrative",
+    "description": "Artistic tattoo style resembling book illustrations with clean lines and artistic flair",
+    "characteristics": [
+      "illustration-style",
+      "artistic-flair",
+      "clean-lines",
+      "storybook-quality"
+    ],
+    "popularMotifs": [
+      "storybook-characters",
+      "fairy-tales",
+      "artistic-interpretations",
+      "whimsical-scenes"
+    ],
+    "colorPalette": ["artistic-colors", "muted-tones", "selective-color"],
+    "difficulty": "advanced",
+    "timeOrigin": "1990s",
+    "aliases": ["artistic", "storybook", "illustration"]
+  },
+  {
+    "styleId": "ornamental",
+    "styleName": "Ornamental",
+    "description": "Decorative tattoo style featuring intricate patterns and ornate designs",
+    "characteristics": [
+      "decorative-patterns",
+      "ornate-designs",
+      "symmetrical",
+      "detailed-work"
+    ],
+    "popularMotifs": [
+      "mandalas",
+      "lace-patterns",
+      "filigree",
+      "decorative-borders",
+      "ornate-frames"
+    ],
+    "colorPalette": ["black", "minimal-color", "gold-accents"],
+    "difficulty": "advanced",
+    "timeOrigin": "ancient",
+    "aliases": ["decorative", "ornate", "pattern-work"]
+  },
+  {
+    "styleId": "trash_polka",
+    "styleName": "Trash Polka",
+    "description": "German tattoo style combining realistic and abstract elements with red and black colors",
+    "characteristics": [
+      "realistic-abstract-mix",
+      "collage-style",
+      "chaotic-composition",
+      "modern-art"
+    ],
+    "popularMotifs": [
+      "mixed-media-elements",
+      "text-integration",
+      "photographic-elements",
+      "abstract-shapes"
+    ],
+    "colorPalette": ["red", "black", "minimal-other-colors"],
+    "difficulty": "advanced",
+    "timeOrigin": "1990s",
+    "aliases": ["realistic-trash", "collage-style", "german-style"]
   }
 ]

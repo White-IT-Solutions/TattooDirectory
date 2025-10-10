@@ -30,16 +30,23 @@ export const getEnvironment = () => {
 export const getApiUrl = () => {
   const environment = getEnvironment();
   
+  // Debug logging to help troubleshoot configuration issues
+  if (typeof window !== 'undefined') {
+    console.log('Config Debug:', {
+      environment,
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+      NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,
+      NODE_ENV: process.env.NODE_ENV,
+      hostname: window.location.hostname
+    });
+  }
+  
   // Local development with Docker backend
   if (environment === 'local') {
-    // Check if we're running in Docker (backend service available)
-    if (typeof window === 'undefined' || process.env.NEXT_PUBLIC_API_URL) {
-      // Server-side or explicit API URL set (Docker environment)
-      return process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080/2015-03-31/functions/function/invocations';
-    } else {
-      // Client-side local development (direct Lambda RIE access)
-      return 'http://localhost:9000/2015-03-31/functions/function/invocations';
-    }
+    // Use CORS proxy for local development (port 9001)
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9001';
+    console.log('Using API URL:', apiUrl);
+    return apiUrl;
   }
   
   // Environment-specific URLs
@@ -68,6 +75,10 @@ export const getApiUrl = () => {
  */
 export const isUsingLambdaRIE = () => {
   const apiUrl = getApiUrl();
+  // If using the proxy server (port 9001), use regular REST calls
+  if (apiUrl.includes('localhost:9001')) {
+    return false;
+  }
   return apiUrl.includes('/2015-03-31/functions/function/invocations');
 };
 

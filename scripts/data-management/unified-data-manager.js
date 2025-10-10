@@ -8,11 +8,12 @@
  * and health checking while maintaining all existing functionality.
  */
 
-const { DATA_CONFIG } = require('../data-config');
+const DATA_CONFIG = require('../data-config');
 const { DataPipeline, OPERATION_TYPES } = require('./pipeline-engine');
 const { STATE_MANAGER } = require('../utilities/state-manager');
 const { HealthMonitor } = require('../utilities/health-monitor');
 const { ImageProcessor } = require('./image-processor');
+const { StudioImageProcessor } = require('./studio-image-processor');
 const { DatabaseSeeder } = require('./database-seeder');
 const { FrontendSyncProcessor } = require('./frontend-sync-processor');
 
@@ -30,6 +31,7 @@ class UnifiedDataManager {
     
     // Initialize processors with dependency injection
     this.imageProcessor = dependencies.imageProcessor || new ImageProcessor(config);
+    this.studioImageProcessor = dependencies.studioImageProcessor || new StudioImageProcessor(config);
     this.databaseSeeder = dependencies.databaseSeeder || new DatabaseSeeder(config);
     this.frontendSyncProcessor = dependencies.frontendSyncProcessor || new FrontendSyncProcessor(config);
     

@@ -204,20 +204,22 @@ const EnhancedArtistListing = ({
  */
 export const useArtistListing = ({
   searchQuery = {},
-  apiEndpoint = '/api/artists',
   pageSize = 20
 }) => {
   const [totalCount, setTotalCount] = useState(0);
   const [filters, setFilters] = useState(searchQuery);
 
   const fetchArtists = useCallback(async (page = 1) => {
-    const params = new URLSearchParams({
+    // Use the API service instead of direct fetch
+    const { apiService } = await import('../../../../lib/api-service');
+    
+    const searchParams = {
+      ...filters,
       page: page.toString(),
-      limit: pageSize.toString(),
-      ...filters
-    });
+      limit: pageSize.toString()
+    };
 
-    const response = await fetch(`${apiEndpoint}?${params}`);
+    const response = await apiService.searchArtists(searchParams);
     
     if (!response.ok) {
       throw new Error(`Failed to fetch artists: ${response.statusText}`);

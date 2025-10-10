@@ -813,6 +813,118 @@ class StudioImageProcessor {
   }
 
   /**
+   * Process all studio images from the test data directory
+   * This method scans the studio_source directory and processes all available studios
+   */
+  async processAllStudioImages(options = {}) {
+    const { force = false, onProgress = null } = options;
+    
+    console.log('🏢 Processing all studio images from test data...');
+    
+    try {
+      // Ensure bucket exists and is configured
+      await this.ensureBucketAndCORS();
+      
+      // Get all studio directories from the test data
+      const studioSourcePath = this.studioImageBasePath;
+      if (!fs.existsSync(studioSourcePath)) {
+        throw new Error(`Studio source directory not found: ${studioSourcePath}`);
+      }
+      
+      const studioDirs = fs.readdirSync(studioSourcePath, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+      
+      console.log(`📁 Found ${studioDirs.length} studio directories`);
+      
+      const results = {
+        success: true,
+        processedStudios: [],
+        stats: {
+          processed: 0,
+          uploaded: 0,
+          failed: 0,
+          skipped: 0
+        }
+      };
+      
+      // Process each studio directory
+      for (let i = 0; i < studioDirs.length; i++) {
+        const studioDir = studioDirs[i];
+        const studioPath = path.join(studioSourcePath, studioDir);
+        
+        if (onProgress) {
+          onProgress({
+            percentage: (i / studioDirs.length) * 100,
+            current: i + 1,
+            total: studioDirs.length,
+            currentStudio: studioDir
+          });
+        }
+        
+        console.log(`🏢 Processing studio: ${studioDir} (${i + 1}/${studioDirs.length})`);
+        
+        try {
+          // Create a studio object from the directory name
+          const studio = {
+            studioId: studioDir,
+            studioName: studioDir.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+          };
+          
+          // Process images for this studio
+          const studioResult = await this.processStudioTestImages(studio, studioPath);
+          
+          results.processedStudios.push({
+            studioId: studio.studioId,
+            studioName: studio.studioName,
+            images: studioResult
+          });
+          
+          // Update stats
+          if (studioResult) {
+            const imageCount = Object.values(studioResult).flat().length;
+            results.stats.processed += imageCount;
+            results.stats.uploaded += imageCount; // Assuming all processed images are uploaded
+          }
+          
+          console.log(`✅ Processed studio: ${studio.studioName}`);
+          
+        } catch (error) {
+          console.error(`❌ Failed to process studio ${studioDir}:`, error.message);
+          results.stats.failed++;
+          this.stats.errors.push({
+            type: 'studio_processing_error',
+            studio: studioDir,
+            message: error.message,
+            timestamp: new Date().toISOString()
+          });
+        }
+      }
+      
+      if (onProgress) {
+        onProgress({ percentage: 100, current: studioDirs.length, total: studioDirs.length });
+      }
+      
+      // Update overall stats
+      this.stats.processed += results.stats.processed;
+      this.stats.uploaded += results.stats.uploaded;
+      this.stats.failed += results.stats.failed;
+      
+      console.log(`✅ Studio image processing completed: ${results.stats.processed} processed, ${results.stats.uploaded} uploaded, ${results.stats.failed} failed`);
+      
+      return results;
+      
+    } catch (error) {
+      console.error('❌ Studio image processing failed:', error.message);
+      return {
+        success: false,
+        error: error.message,
+        stats: { processed: 0, uploaded: 0, failed: 0 }
+      };
+    }
+  }
+
+  /**
    * Get processing statistics
    */
   getStats() {

@@ -4,34 +4,140 @@ This document provides a comprehensive reference for all npm scripts and CLI com
 
 ## Table of Contents
 
+- [Data Management Commands](#data-management-commands)
+- [Local Development Commands](#local-development-commands)
+- [Reset Commands](#reset-commands)
+- [API Proxy Commands](#api-proxy-commands)
 - [All Commands](#all-commands)
 
-## All Commands
+## Data Management Commands
 
-Various commands
+### Recommended Workflow
+
+For consistent data management, follow this workflow:
+
+```bash
+# 1. Start from clean state
+npm run reset-data:clean
+
+# 2. Load complete dataset (recommended)
+npm run seed-scenario:full-dataset
+
+# 3. Check data consistency
+npm run data-status
+```
+
+### `setup-data`
+
+**Script:** `node scripts/data-cli.js setup-data`
+
+**Description:** Set up all data and services for development with enhanced mock data generation
+
+**Usage Examples:**
+
+```bash
+# Basic setup with incremental processing
+npm run setup-data
+
+# Force full processing (ignores incremental changes)
+npm run setup-data:force
+
+# Frontend-only mode (no AWS services required)
+npm run setup-data:frontend-only
+
+# Images-only processing (does NOT clear databases)
+npm run setup-data:images-only
+```
+
+**Notes:**
+
+- Creates S3 bucket if missing
+- Seeds DynamoDB and OpenSearch with test data
+- Generates enhanced frontend mock data
+- Uses incremental processing by default (only processes changed files)
+- **Important**: For consistent data, use `seed-scenario:full-dataset` instead
+
+---
+
+## Reset Commands
+
+Understanding the difference between reset commands:
+
+### `local:reset`
+
+**Script:** `npm run local:clean && npm run local:start`
+
+**Description:** **Infrastructure reset** - Stops all Docker containers, removes volumes (deletes all data), and restarts the entire local environment
+
+**What it does:**
+
+- Stops all Docker containers
+- **Removes Docker volumes** (deletes all database data)
+- Cleans up Docker resources
+- Restarts all services from scratch
+
+**Use when:**
+
+- Docker containers are corrupted
+- Need to completely reset the infrastructure
+- LocalStack is behaving unexpectedly
+- Want to start completely fresh
+
+---
+
+### `reset-data:clean`
+
+**Script:** `node scripts/data-cli.js reset-data clean`
+
+**Description:** **Data-only reset** - Empties databases but keeps services running
+
+**What it does:**
+
+- **Keeps Docker containers running**
+- Clears DynamoDB tables
+- Clears OpenSearch indices
+- Does NOT restart services
+- Does NOT remove Docker volumes
+
+**Use when:**
+
+- Want to clear data but keep services running
+- Testing different data scenarios
+- Services are working fine, just need clean data
+- Faster than full infrastructure reset
+
+---
+
+### Quick Comparison
+
+| Command            | Services      | Data        | Docker Containers | Use Case              |
+| ------------------ | ------------- | ----------- | ----------------- | --------------------- |
+| `local:reset`      | Restarts All  | Deletes All | Stops & Restarts  | Infrastructure issues |
+| `reset-data:clean` | Keeps Running | Clears Only | Keeps Running     | Data testing          |
+
+## Local Development Commands
 
 ### `local:start`
 
 **Script:** `node scripts/deployment/platform-launcher.js start`
 
-**Description:** Local development command
-
-**Parameters:**
-
-- `l` (optional): short-flag parameter
+**Description:** Start the complete local development environment
 
 **Usage Examples:**
-
-**Start local environment:**
 
 ```bash
 npm run local:start
 ```
 
-Expected output: All services started successfully
-Notes:
+**What it starts:**
 
-- Includes frontend, backend, OpenSearch and LocalStack services
+- LocalStack (AWS services emulation)
+- OpenSearch (search engine)
+- Backend Lambda RIE (API handler)
+- Frontend development server
+- Swagger UI documentation
+
+**Expected output:** All services started successfully
 
 ---
 
@@ -39,11 +145,12 @@ Notes:
 
 **Script:** `node scripts/deployment/platform-launcher.js stop`
 
-**Description:** Local development command
+**Description:** Stop the local development environment
 
-**Parameters:**
+**Options:**
 
-- `l` (optional): short-flag parameter
+- `--volumes` - Also remove Docker volumes (deletes data)
+- `--images` - Also remove Docker images
 
 ---
 
@@ -55,11 +162,25 @@ Notes:
 
 ---
 
+### `local:clean`
+
+**Script:** `node scripts/deployment/platform-launcher.js clean`
+
+**Description:** Stop environment and remove all data (volumes)
+
+**Equivalent to:** `npm run local:stop --volumes`
+
+---
+
+## API Proxy Commands
+
+The API proxy enables REST API access to Lambda functions during development.
+
 ### `local:proxy:start`
 
 **Script:** `node scripts/api-proxy-manager.js start`
 
-**Description:** Start the API proxy service for contract testing
+**Description:** Start the API proxy service
 
 **Usage Examples:**
 
@@ -67,10 +188,18 @@ Notes:
 npm run local:proxy:start
 ```
 
-**Notes:**
+**What it does:**
+
 - Starts HTTP-to-Lambda proxy on port 9001
-- Required for contract tests and REST API access
-- Automatically detects if already running
+- Handles CORS preflight requests
+- Forwards API calls to Lambda RIE (port 9000)
+- Provides mock responses when Lambda unavailable
+
+**Required for:**
+
+- Contract testing
+- REST API access from frontend
+- API testing with curl/Postman
 
 ---
 
@@ -96,6 +225,22 @@ npm run local:proxy:start
 
 **Description:** Check API proxy service status
 
+**Output shows:**
+
+- Proxy running status
+- Port availability
+- Lambda RIE connectivity
+
+---
+
+### `local:start-with-proxy`
+
+**Script:** `npm run local:start && npm run local:proxy:start`
+
+**Description:** Start full environment including API proxy
+
+**Recommended for:** Full-stack development with API testing
+
 ---
 
 ### `local:start-with-proxy`
@@ -111,6 +256,7 @@ npm run local:start-with-proxy
 ```
 
 **Notes:**
+
 - Recommended for contract test development
 - Starts all Docker services plus API proxy
 
@@ -137,6 +283,7 @@ npm run test:cli:contracts
 ```
 
 **Notes:**
+
 - Uses API proxy by default (http://localhost:9001)
 - No need to set environment variables manually
 - Requires API proxy to be running

@@ -2,7 +2,7 @@
 
 import React, { Suspense } from 'react';
 
-export const dynamic = 'force-dynamic';
+
 
 // Import the enhanced Studios page
 const EnhancedStudiosPage = React.lazy(() => import('./EnhancedStudiosPage'));

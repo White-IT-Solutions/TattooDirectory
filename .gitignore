@@ -60,3 +60,4 @@ temp/
 # Kiro settings (keep steering rules but ignore other settings)
 .kiro/settings/
 docs/WIP
+docs/interview-preparation

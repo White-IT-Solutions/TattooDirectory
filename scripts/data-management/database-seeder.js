@@ -25,15 +25,15 @@ const { validateArtistData, validateStudioData, validateStyleData } = require('.
  */
 const TEST_SCENARIOS = {
   minimal: {
-    description: 'Minimal dataset for quick testing',
-    artists: ['artist-001', 'artist-002'],
-    studios: ['studio-001'],
+    description: 'Quick testing with minimal data including studios',
+    artists: ['artist-001', 'artist-002', 'artist-003'],
+    studios: ['studio-001', 'studio-002'],
     styles: ['traditional', 'realism']
   },
   'search-basic': {
-    description: 'Basic search functionality testing',
-    artists: ['artist-001', 'artist-002', 'artist-003'],
-    studios: ['studio-001', 'studio-002'],
+    description: 'Basic search functionality testing with studios',
+    artists: ['artist-001', 'artist-002', 'artist-003', 'artist-004', 'artist-005'],
+    studios: ['studio-001', 'studio-002', 'studio-003'],
     styles: ['traditional', 'realism', 'blackwork']
   },
   'london-artists': {
@@ -75,8 +75,11 @@ const TEST_SCENARIOS = {
     ensurePricingVariety: true
   },
   'full-dataset': {
-    description: 'Complete test dataset with all styles',
-    loadAll: true
+    description: 'Complete test dataset with all 23 styles, 50 studios, and comprehensive metadata - ensures each style has at least 5 artists (150 artists)',
+    loadAll: true,
+    generateLarge: true,
+    targetArtistCount: 150,
+    targetStudioCount: 50
   },
   'performance-test': {
     description: 'Large dataset for performance testing (100+ artists, 40+ studios)',
@@ -326,6 +329,54 @@ class DatabaseSeeder {
   }
 
   /**
+   * Generate scenario-based data using the frontend sync processor
+   */
+  async generateScenarioData(scenarioName) {
+    console.log(`🎯 Generating data for scenario: ${scenarioName}`);
+    
+    // Get scenario configuration from TEST_SCENARIOS
+    const scenario = TEST_SCENARIOS[scenarioName];
+    if (!scenario) {
+      throw new Error(`Unknown scenario: ${scenarioName}. Available scenarios: ${Object.keys(TEST_SCENARIOS).join(', ')}`);
+    }
+
+    // Import the frontend sync processor for data generation
+    const { FrontendSyncProcessor } = require('./frontend-sync-processor');
+    const frontendProcessor = new FrontendSyncProcessor(this.config);
+    
+    try {
+      // Generate data based on scenario configuration from DATA_CONFIG
+      const generatedData = await frontendProcessor.generateScenarioData(scenarioName, {
+        artistCount: scenario.artistCount || 10,
+        studioCount: scenario.studioCount || 5,
+        styles: scenario.styles || ['traditional', 'realism'],
+        locations: scenario.locations || ['London'],
+        includeBusinessData: true,
+        validateData: true
+      });
+      
+      if (generatedData.success) {
+        this.allData = {
+          artists: generatedData.artists || [],
+          studios: generatedData.studios || [],
+          styles: generatedData.styles || []
+        };
+        
+        console.log(`✅ Generated ${this.allData.artists.length} artists, ${this.allData.studios.length} studios, ${this.allData.styles.length} styles`);
+        return true;
+      } else {
+        throw new Error(`Failed to generate scenario data: ${generatedData.error}`);
+      }
+    } catch (error) {
+      console.error(`❌ Failed to generate scenario data:`, error.message);
+      // Fall back to static data loading
+      console.log('📊 Falling back to static test data...');
+      await this.loadAllTestData();
+      return false;
+    }
+  }
+
+  /**
    * Filter data for a specific scenario
    */
   filterDataForScenario(scenario) {
@@ -565,6 +616,9 @@ class DatabaseSeeder {
     try {
       await this.loadAllTestData();
       
+      // Ensure DynamoDB table exists
+      await this.recreateTable();
+      
       // Setup OpenSearch index first
       await this.setupOpenSearchIndex();
       
@@ -576,6 +630,12 @@ class DatabaseSeeder {
       // Index in OpenSearch
       await this.indexArtistsInOpenSearch(this.allData.artists);
       await this.indexStudiosInOpenSearch(this.allData.studios);
+      
+      // Setup bidirectional relationships
+      await this.setupBidirectionalRelationships();
+      
+      // Fix image URLs to ensure all portfolio images are accessible
+      await this.fixArtistImageUrls();
       
       return {
         success: true,
@@ -604,6 +664,7 @@ class DatabaseSeeder {
   async seedScenario(scenarioName) {
     console.log(`🎯 Seeding scenario: ${scenarioName}`);
     
+    // Get scenario configuration from TEST_SCENARIOS
     const scenario = TEST_SCENARIOS[scenarioName];
     if (!scenario) {
       throw new Error(`Unknown scenario: ${scenarioName}. Available scenarios: ${Object.keys(TEST_SCENARIOS).join(', ')}`);
@@ -612,31 +673,49 @@ class DatabaseSeeder {
     console.log(`📋 ${scenario.description}`);
     
     try {
-      await this.loadAllTestData();
+      // Try to generate scenario-based data first
+      const generatedData = await this.generateScenarioData(scenarioName);
       
-      // Load scenario-specific studio data if available
-      const scenarioStudioData = await this.loadScenarioStudioData(scenarioName);
-      if (scenarioStudioData) {
-        // Replace default studio data with scenario-specific data
-        this.allData.studios = scenarioStudioData;
-        console.log(`🏢 Using scenario-specific studio data for '${scenarioName}'`);
+      if (!generatedData) {
+        // Fall back to static data approach
+        await this.loadAllTestData();
+        
+        // Load scenario-specific studio data if available
+        const scenarioStudioData = await this.loadScenarioStudioData(scenarioName);
+        if (scenarioStudioData) {
+          // Replace default studio data with scenario-specific data
+          this.allData.studios = scenarioStudioData;
+          console.log(`🏢 Using scenario-specific studio data for '${scenarioName}'`);
+        }
+        
+        // Filter static data for the scenario
+        const filteredData = this.filterDataForScenario(scenario);
+        this.allData = filteredData;
       }
       
-      const filteredData = this.filterDataForScenario(scenario);
+      // Ensure DynamoDB table exists
+      await this.recreateTable();
       
       // Setup OpenSearch index first
       await this.setupOpenSearchIndex();
       
-      // Seed filtered data
-      await this.seedStyles(filteredData.styles);
-      await this.seedStudios(filteredData.studios);
-      await this.seedArtists(filteredData.artists);
+      // Seed the data (either generated or filtered static data)
+      await this.seedStyles(this.allData.styles);
+      await this.seedStudios(this.allData.studios);
+      await this.seedArtists(this.allData.artists);
       
       // Index in OpenSearch
-      await this.indexArtistsInOpenSearch(filteredData.artists);
-      await this.indexStudiosInOpenSearch(filteredData.studios);
+      await this.indexArtistsInOpenSearch(this.allData.artists);
+      await this.indexStudiosInOpenSearch(this.allData.studios);
+      
+      // Setup bidirectional relationships
+      await this.setupBidirectionalRelationships();
+      
+      // Fix image URLs to ensure all portfolio images are accessible
+      await this.fixArtistImageUrls();
       
       console.log(`✅ Scenario '${scenarioName}' seeded successfully`);
+      console.log(`📊 Final counts: ${this.allData.artists.length} artists, ${this.allData.studios.length} studios, ${this.allData.styles.length} styles`);
       
       return {
         success: true,
@@ -660,6 +739,75 @@ class DatabaseSeeder {
         stats: this.stats
       };
     }
+  }
+
+  /**
+   * Put item with retry logic and conditional writes to prevent duplicates
+   */
+  async putItemWithRetry(item, maxRetries = 3, delay = 1000, allowOverwrite = false) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const putParams = {
+          TableName: this.tableName,
+          Item: item
+        };
+        
+        // Add conditional expression to prevent duplicates unless overwrite is allowed
+        if (!allowOverwrite) {
+          putParams.ConditionExpression = "attribute_not_exists(PK)";
+        }
+        
+        await this.dynamodb.put(putParams).promise();
+        return; // Success
+      } catch (error) {
+        // Handle conditional check failure (item already exists)
+        if (error.code === 'ConditionalCheckFailedException') {
+          console.log(`   Item already exists, skipping: ${item.PK}`);
+          return; // Skip this item, it's already there
+        }
+        
+        // Handle LocalStack internal failures with retry
+        if (error.code === 'InternalFailure' && attempt < maxRetries) {
+          console.log(`   Retry ${attempt}/${maxRetries} after LocalStack internal failure...`);
+          await new Promise(resolve => setTimeout(resolve, delay * attempt));
+          continue;
+        }
+        
+        throw error; // Re-throw if not retryable or max retries reached
+      }
+    }
+  }
+
+  /**
+   * Batch process items with rate limiting to prevent LocalStack overload
+   */
+  async processBatch(items, processor, batchSize = 3, delayBetweenBatches = 2000) {
+    const results = { success: 0, failed: 0, errors: [] };
+    
+    for (let i = 0; i < items.length; i += batchSize) {
+      const batch = items.slice(i, i + batchSize);
+      console.log(`   Processing batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(items.length/batchSize)} (${batch.length} items)`);
+      
+      // Process batch items in parallel but with limited concurrency
+      const batchPromises = batch.map(async (item) => {
+        try {
+          await processor(item);
+          results.success++;
+        } catch (error) {
+          results.failed++;
+          results.errors.push({ item: item.artistId || item.studioId || item.styleId, error: error.message });
+        }
+      });
+      
+      await Promise.all(batchPromises);
+      
+      // Delay between batches to prevent overwhelming LocalStack
+      if (i + batchSize < items.length) {
+        await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
+      }
+    }
+    
+    return results;
   }
 
   /**
@@ -703,22 +851,26 @@ class DatabaseSeeder {
           updatedAt: new Date().toISOString()
         };
         
-        await this.dynamodb.put({
-          TableName: this.tableName,
-          Item: item
-        }).promise();
+        await this.putItemWithRetry(item);
         
         console.log(`✅ Seeded artist: ${artist.artistName}`);
         this.stats.artists.loaded++;
         
+        // Small delay to prevent overwhelming LocalStack
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
       } catch (error) {
         console.error(`❌ Failed to seed artist ${artist.artistName}:`, error.message);
+        console.error(`   Table: ${this.tableName}`);
+        console.error(`   Error code: ${error.code}`);
+        console.error(`   Error details:`, error);
         this.stats.artists.failed++;
         this.stats.errors.push({
           type: 'seeding_error',
           dataType: 'artist',
           id: artist.artistId,
           message: error.message,
+          code: error.code,
           timestamp: new Date().toISOString()
         });
       }
@@ -764,22 +916,26 @@ class DatabaseSeeder {
           updatedAt: new Date().toISOString()
         };
         
-        await this.dynamodb.put({
-          TableName: this.tableName,
-          Item: item
-        }).promise();
+        await this.putItemWithRetry(item);
         
         console.log(`✅ Seeded studio: ${studio.studioName}`);
         this.stats.studios.loaded++;
         
+        // Small delay to prevent overwhelming LocalStack
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
       } catch (error) {
         console.error(`❌ Failed to seed studio ${studio.studioName}:`, error.message);
+        console.error(`   Table: ${this.tableName}`);
+        console.error(`   Error code: ${error.code}`);
+        console.error(`   Error details:`, error);
         this.stats.studios.failed++;
         this.stats.errors.push({
           type: 'seeding_error',
           dataType: 'studio',
           id: studio.studioId,
           message: error.message,
+          code: error.code,
           timestamp: new Date().toISOString()
         });
       }
@@ -890,22 +1046,26 @@ class DatabaseSeeder {
           updatedAt: new Date().toISOString()
         };
         
-        await this.dynamodb.put({
-          TableName: this.tableName,
-          Item: item
-        }).promise();
+        await this.putItemWithRetry(item);
         
         console.log(`✅ Seeded style: ${style.styleName}`);
         this.stats.styles.loaded++;
         
+        // Small delay to prevent overwhelming LocalStack
+        await new Promise(resolve => setTimeout(resolve, 50));
+        
       } catch (error) {
         console.error(`❌ Failed to seed style ${style.styleName}:`, error.message);
+        console.error(`   Table: ${this.tableName}`);
+        console.error(`   Error code: ${error.code}`);
+        console.error(`   Error details:`, error);
         this.stats.styles.failed++;
         this.stats.errors.push({
           type: 'seeding_error',
           dataType: 'style',
           id: style.styleId,
           message: error.message,
+          code: error.code,
           timestamp: new Date().toISOString()
         });
       }
@@ -919,12 +1079,35 @@ class DatabaseSeeder {
     console.log('🔍 Setting up OpenSearch index...');
     
     try {
-      // Delete existing index if it exists
+      // Check if index exists first
+      let indexExists = false;
       try {
-        await this.makeOpenSearchRequest('DELETE', `/${this.opensearchIndex}`);
-        console.log('📋 Deleted existing OpenSearch index');
+        await this.makeOpenSearchRequest('HEAD', `/${this.opensearchIndex}`);
+        indexExists = true;
+        console.log('📋 OpenSearch index already exists');
+        
+        // Check if the mapping has portfolioImages field correctly mapped
+        try {
+          const mapping = await this.makeOpenSearchRequest('GET', `/${this.opensearchIndex}/_mapping`);
+          const properties = mapping[this.opensearchIndex]?.mappings?.properties;
+          
+          if (!properties?.portfolioImages || properties.portfolioImages.type !== 'nested') {
+            console.log('📋 Index mapping is outdated, recreating with correct portfolioImages mapping');
+            // Delete the existing index
+            await this.makeOpenSearchRequest('DELETE', `/${this.opensearchIndex}`);
+            indexExists = false;
+          } else {
+            console.log('📋 Index mapping is correct, skipping creation');
+            return;
+          }
+        } catch (mappingError) {
+          console.log('📋 Could not check mapping, recreating index');
+          await this.makeOpenSearchRequest('DELETE', `/${this.opensearchIndex}`);
+          indexExists = false;
+        }
       } catch (error) {
-        // Index doesn't exist, which is fine
+        // Index doesn't exist, we'll create it
+        console.log('📋 OpenSearch index does not exist, creating new one');
       }
 
       // Create index with mapping for both artists and studios
@@ -976,6 +1159,15 @@ class DatabaseSeeder {
                 apprenticeshipCompleted: { type: 'boolean' }
               }
             },
+            portfolioImages: { 
+              type: 'nested',
+              properties: {
+                description: { type: 'text', analyzer: 'standard' },
+                style: { type: 'keyword' },
+                url: { type: 'keyword' },
+                tags: { type: 'keyword' }
+              }
+            }, // Array of portfolio image objects
             
             // Studio-specific fields
             studioId: { type: 'keyword' },
@@ -1122,6 +1314,128 @@ class DatabaseSeeder {
       console.log('✅ OpenSearch index refreshed for studios');
     } catch (error) {
       console.error('❌ Failed to refresh OpenSearch index:', error.message);
+    }
+  }
+
+  /**
+   * Recreate DynamoDB table to ensure clean state
+   */
+  async recreateTable() {
+    console.log(`🔄 Recreating DynamoDB table to ensure clean state...`);
+    
+    try {
+      // Delete the table if it exists
+      try {
+        await this.dynamodbClient.deleteTable({ TableName: this.tableName }).promise();
+        console.log(`🗑️  Deleted existing table: ${this.tableName}`);
+        
+        // Wait for table to be deleted
+        await this.dynamodbClient.waitFor('tableNotExists', { TableName: this.tableName }).promise();
+        console.log(`⏳ Table deletion confirmed`);
+      } catch (error) {
+        if (error.code !== 'ResourceNotFoundException') {
+          throw error;
+        }
+        console.log(`📋 Table ${this.tableName} does not exist, creating new one`);
+      }
+      
+      // Create the table with the correct schema
+      const tableParams = {
+        TableName: this.tableName,
+        KeySchema: [
+          { AttributeName: 'PK', KeyType: 'HASH' },
+          { AttributeName: 'SK', KeyType: 'RANGE' }
+        ],
+        AttributeDefinitions: [
+          { AttributeName: 'PK', AttributeType: 'S' },
+          { AttributeName: 'SK', AttributeType: 'S' }
+        ],
+        BillingMode: 'PAY_PER_REQUEST'
+      };
+      
+      await this.dynamodbClient.createTable(tableParams).promise();
+      console.log(`🆕 Created new table: ${this.tableName}`);
+      
+      // Wait for table to be active
+      await this.dynamodbClient.waitFor('tableExists', { TableName: this.tableName }).promise();
+      console.log(`✅ Table is ready for use`);
+      
+    } catch (error) {
+      console.error(`❌ Failed to recreate table:`, error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Clear specific data types from DynamoDB table (fallback method)
+   */
+  async clearDataByType(dataType) {
+    console.log(`🗑️  Clearing ${dataType} data...`);
+    
+    const prefixMap = {
+      'artists': 'ARTIST#',
+      'studios': 'STUDIO#', 
+      'styles': 'STYLE#'
+    };
+    
+    const prefix = prefixMap[dataType];
+    if (!prefix) {
+      throw new Error(`Unknown data type: ${dataType}`);
+    }
+    
+    try {
+      // Scan for items with the specific prefix
+      const scanResult = await this.dynamodb.scan({
+        TableName: this.tableName,
+        FilterExpression: 'begins_with(PK, :prefix)',
+        ExpressionAttributeValues: {
+          ':prefix': prefix
+        },
+        ProjectionExpression: 'PK, SK'
+      }).promise();
+      
+      if (scanResult.Items.length === 0) {
+        console.log(`📋 No ${dataType} data found to clear`);
+        return;
+      }
+      
+      // Remove duplicates based on PK+SK combination
+      const uniqueItems = [];
+      const seenKeys = new Set();
+      
+      for (const item of scanResult.Items) {
+        const keyString = `${item.PK}#${item.SK}`;
+        if (!seenKeys.has(keyString)) {
+          seenKeys.add(keyString);
+          uniqueItems.push(item);
+        }
+      }
+      
+      console.log(`🔍 Found ${scanResult.Items.length} items, ${uniqueItems.length} unique keys`);
+      
+      // Delete items in batches
+      const batchSize = 25; // DynamoDB batch write limit
+      for (let i = 0; i < uniqueItems.length; i += batchSize) {
+        const batch = uniqueItems.slice(i, i + batchSize);
+        const deleteRequests = batch.map(item => ({
+          DeleteRequest: {
+            Key: { PK: item.PK, SK: item.SK }
+          }
+        }));
+        
+        await this.dynamodb.batchWrite({
+          RequestItems: {
+            [this.tableName]: deleteRequests
+          }
+        }).promise();
+        
+        console.log(`🗑️  Deleted batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(uniqueItems.length/batchSize)} (${batch.length} items)`);
+      }
+      
+      console.log(`✅ Cleared ${uniqueItems.length} ${dataType} items`);
+    } catch (error) {
+      console.error(`❌ Failed to clear ${dataType} data:`, error.message);
+      throw error;
     }
   }
 
@@ -1531,6 +1845,286 @@ class DatabaseSeeder {
         errors: [error.message],
         artistsWithStudios: 0,
         totalStudios: 0
+      };
+    }
+  }
+
+  /**
+   * Setup bidirectional studio-artist relationships
+   * Ensures all artists with studioInfo have proper tattooStudio references
+   * and all studios have correct artist lists
+   */
+  async setupBidirectionalRelationships() {
+    console.log('🔗 Setting up bidirectional studio-artist relationships...');
+    
+    try {
+      // Get all artists and studios
+      const [artistsResult, studiosResult] = await Promise.all([
+        this.dynamodb.scan({
+          TableName: this.tableName,
+          FilterExpression: "begins_with(PK, :artistPrefix)",
+          ExpressionAttributeValues: { ":artistPrefix": "ARTIST#" },
+        }).promise(),
+        
+        this.dynamodb.scan({
+          TableName: this.tableName,
+          FilterExpression: "begins_with(PK, :studioPrefix)",
+          ExpressionAttributeValues: { ":studioPrefix": "STUDIO#" },
+        }).promise()
+      ]);
+
+      const artists = artistsResult.Items;
+      const studios = studiosResult.Items;
+      
+      // Create studio name to studio mapping
+      const studioNameToStudio = {};
+      studios.forEach(studio => {
+        if (studio.studioName) {
+          studioNameToStudio[studio.studioName] = studio;
+        }
+      });
+
+      // Build artist-to-studio mappings
+      const studioArtistMappings = {}; // studioId -> [artistIds]
+      const artistStudioMappings = {}; // artistId -> studioId
+      let matchedArtists = 0;
+
+      artists.forEach(artist => {
+        const studioName = artist.studioInfo?.studioName;
+        
+        if (studioName && studioNameToStudio[studioName]) {
+          const studio = studioNameToStudio[studioName];
+          const studioId = studio.studioId;
+          
+          // Add to mappings
+          if (!studioArtistMappings[studioId]) {
+            studioArtistMappings[studioId] = [];
+          }
+          studioArtistMappings[studioId].push(artist.artistId);
+          artistStudioMappings[artist.artistId] = studioId;
+          matchedArtists++;
+        }
+      });
+
+      console.log(`   Found ${matchedArtists} artists with matching studios`);
+
+      // Update artists with proper studio references
+      let updatedArtists = 0;
+      for (const artist of artists) {
+        const studioId = artistStudioMappings[artist.artistId];
+        
+        if (studioId) {
+          const studio = studioNameToStudio[artist.studioInfo.studioName];
+          
+          // Create proper studio reference
+          const studioReference = {
+            studioId: studioId,
+            studioName: studio.studioName,
+            address: studio.address,
+            postcode: studio.postcode
+          };
+
+          // Update artist with tattooStudio reference (for seeder compatibility)
+          await this.dynamodb.update({
+            TableName: this.tableName,
+            Key: { PK: artist.PK, SK: artist.SK },
+            UpdateExpression: "SET tattooStudio = :studioRef, updatedAt = :updatedAt",
+            ExpressionAttributeValues: {
+              ":studioRef": studioReference,
+              ":updatedAt": new Date().toISOString(),
+            },
+          }).promise();
+
+          updatedArtists++;
+        }
+      }
+
+      // Update studios with artist lists
+      let updatedStudios = 0;
+      for (const studio of studios) {
+        const expectedArtists = studioArtistMappings[studio.studioId] || [];
+        const currentArtists = studio.artists || [];
+
+        // Check if update is needed
+        const needsUpdate = 
+          expectedArtists.length !== currentArtists.length ||
+          !expectedArtists.every(artistId => currentArtists.includes(artistId));
+
+        if (needsUpdate) {
+          await this.dynamodb.update({
+            TableName: this.tableName,
+            Key: { PK: studio.PK, SK: studio.SK },
+            UpdateExpression: "SET artists = :artists, artistCount = :count, updatedAt = :updatedAt",
+            ExpressionAttributeValues: {
+              ":artists": expectedArtists,
+              ":count": expectedArtists.length,
+              ":updatedAt": new Date().toISOString(),
+            },
+          }).promise();
+
+          updatedStudios++;
+        }
+      }
+
+      console.log(`   ✅ Updated ${updatedArtists} artists and ${updatedStudios} studios with bidirectional relationships`);
+      
+      return {
+        success: true,
+        updatedArtists,
+        updatedStudios,
+        matchedArtists
+      };
+      
+    } catch (error) {
+      console.error('❌ Failed to setup bidirectional relationships:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Fix artist image URLs to use valid S3 images
+   * Replaces invalid numbered tattoo files with actual available images
+   */
+  async fixArtistImageUrls() {
+    console.log('🖼️  Fixing artist image URLs...');
+    
+    try {
+      // Get all available images from S3
+      const s3 = new AWS.S3();
+      const bucketName = this.config.services.s3.bucketName;
+      
+      let allObjects = [];
+      let continuationToken = null;
+      
+      do {
+        const params = {
+          Bucket: bucketName,
+          MaxKeys: 1000
+        };
+        
+        if (continuationToken) {
+          params.ContinuationToken = continuationToken;
+        }
+        
+        const result = await s3.listObjectsV2(params).promise();
+        allObjects = allObjects.concat(result.Contents || []);
+        continuationToken = result.NextContinuationToken;
+        
+      } while (continuationToken);
+
+      // Group images by style
+      const imagesByStyle = {};
+      allObjects.forEach(obj => {
+        const key = obj.Key;
+        const parts = key.split('/');
+        
+        if (parts.length >= 2 && parts[0] === 'styles') {
+          const style = parts[1];
+          if (!imagesByStyle[style]) {
+            imagesByStyle[style] = [];
+          }
+          imagesByStyle[style].push(`http://localhost:4566/tattoo-directory-images/${key}`);
+        }
+      });
+
+      // Get all artists
+      const artistsResult = await this.dynamodb.scan({
+        TableName: this.tableName,
+        FilterExpression: "begins_with(PK, :artistPrefix)",
+        ExpressionAttributeValues: {
+          ":artistPrefix": "ARTIST#",
+        },
+      }).promise();
+
+      const artists = artistsResult.Items;
+      let updatedArtists = 0;
+      let totalImagesFixed = 0;
+
+      for (const artist of artists) {
+        if (!artist.portfolioImages || !Array.isArray(artist.portfolioImages)) {
+          continue;
+        }
+
+        let needsUpdate = false;
+        const updatedPortfolioImages = [];
+
+        for (const image of artist.portfolioImages) {
+          const imageUrl = typeof image === 'string' ? image : image.url;
+          
+          // Check if this is a numbered tattoo file that might not exist
+          const urlParts = imageUrl.split('/');
+          const filename = urlParts[urlParts.length - 1];
+          
+          if (filename.startsWith('tattoo_') && filename.endsWith('.png')) {
+            // Find a replacement image from the artist's primary style
+            let replacementUrl = null;
+            
+            const primaryStyle = artist.styles?.[0];
+            if (primaryStyle && imagesByStyle[primaryStyle]) {
+              const availableImages = imagesByStyle[primaryStyle];
+              const imageIndex = updatedPortfolioImages.length % availableImages.length;
+              replacementUrl = availableImages[imageIndex];
+            }
+            
+            // Fallback to any available style if primary style not found
+            if (!replacementUrl) {
+              const availableStyles = Object.keys(imagesByStyle);
+              if (availableStyles.length > 0) {
+                const fallbackStyle = availableStyles[0];
+                const availableImages = imagesByStyle[fallbackStyle];
+                const imageIndex = updatedPortfolioImages.length % availableImages.length;
+                replacementUrl = availableImages[imageIndex];
+              }
+            }
+
+            if (replacementUrl) {
+              const updatedImage = typeof image === 'string' 
+                ? replacementUrl
+                : { ...image, url: replacementUrl };
+              
+              updatedPortfolioImages.push(updatedImage);
+              needsUpdate = true;
+              totalImagesFixed++;
+            } else {
+              updatedPortfolioImages.push(image);
+            }
+          } else {
+            updatedPortfolioImages.push(image);
+          }
+        }
+
+        // Update the artist if needed
+        if (needsUpdate) {
+          await this.dynamodb.update({
+            TableName: this.tableName,
+            Key: { PK: artist.PK, SK: artist.SK },
+            UpdateExpression: "SET portfolioImages = :images, updatedAt = :updatedAt",
+            ExpressionAttributeValues: {
+              ":images": updatedPortfolioImages,
+              ":updatedAt": new Date().toISOString(),
+            },
+          }).promise();
+
+          updatedArtists++;
+        }
+      }
+
+      console.log(`   ✅ Fixed ${totalImagesFixed} images for ${updatedArtists} artists`);
+      
+      return {
+        success: true,
+        updatedArtists,
+        totalImagesFixed
+      };
+      
+    } catch (error) {
+      console.error('❌ Failed to fix image URLs:', error.message);
+      return {
+        success: false,
+        error: error.message
       };
     }
   }

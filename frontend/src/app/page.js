@@ -14,19 +14,21 @@ import {
 } from '../design-system/components/ui';
 import { PageWrapper } from '../design-system/components/layout';
 import ArtistCard from './components/ArtistCard';
-import { mockArtistData } from './data/mockArtistData';
 import { ArtistCardSkeleton } from '../design-system/components/ui/Skeleton/ArtistCardSkeleton';
 import SearchFeedbackIntegration from '../design-system/components/feedback/SearchFeedbackIntegration/SearchFeedbackIntegration';
+import { useFeaturedArtists } from '../hooks/useFeaturedArtists';
+import { useArtistsStats } from '../hooks/useArtistsStats';
 
-export const dynamic = 'force-dynamic';
+
 
 export default function Home() {
   const router = useRouter();
   
-  // Get featured artists (first 6 with high ratings)
-  const featuredArtists = mockArtistData
-    .filter(artist => artist.rating >= 4.2)
-    .slice(0, 6);
+  // Fetch featured artists from API
+  const { artists: featuredArtists, loading: artistsLoading, error: artistsError } = useFeaturedArtists();
+  
+  // Fetch stats data from API
+  const { stats, loading: statsLoading, error: statsError } = useArtistsStats();
 
   // Handle search from home page
   const handleSearch = async (query, options) => {
@@ -112,7 +114,7 @@ export default function Home() {
             <Card elevation="medium" padding="md" className="text-center">
               <CardContent>
                 <div className="text-[var(--typography-heading-2-size)] font-[var(--typography-heading-2-weight)] text-[var(--interactive-primary)] mb-2">
-                  {mockArtistData.length}+
+                  {statsLoading ? '...' : `${stats.totalArtists}+`}
                 </div>
                 <div className="text-[var(--typography-body-size)] text-[var(--text-secondary)]">
                   Verified Artists
@@ -123,7 +125,7 @@ export default function Home() {
             <Card elevation="medium" padding="md" className="text-center">
               <CardContent>
                 <div className="text-[var(--typography-heading-2-size)] font-[var(--typography-heading-2-weight)] text-[var(--interactive-primary)] mb-2">
-                  {[...new Set(mockArtistData.flatMap(artist => artist.styles))].length}+
+                  {statsLoading ? '...' : `${stats.totalStyles}+`}
                 </div>
                 <div className="text-[var(--typography-body-size)] text-[var(--text-secondary)]">
                   Tattoo Styles
@@ -134,7 +136,7 @@ export default function Home() {
             <Card elevation="medium" padding="md" className="text-center">
               <CardContent>
                 <div className="text-[var(--typography-heading-2-size)] font-[var(--typography-heading-2-weight)] text-[var(--interactive-primary)] mb-2">
-                  {[...new Set(mockArtistData.map(artist => artist.locationDisplay?.split(',')[1]?.trim() || 'UK'))].length}+
+                  {statsLoading ? '...' : `${stats.totalCities}+`}
                 </div>
                 <div className="text-[var(--typography-body-size)] text-[var(--text-secondary)]">
                   UK Cities
@@ -157,19 +159,37 @@ export default function Home() {
             </p>
           </div>
 
-          <Suspense fallback={
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {artistsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {Array.from({ length: 6 }).map((_, i) => (
                 <ArtistCardSkeleton key={i} />
               ))}
             </div>
-          }>
+          ) : artistsError ? (
+            <div className="text-center py-8">
+              <p className="text-[var(--feedback-error)] mb-4">
+                Unable to load featured artists at the moment.
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.reload()}
+              >
+                Try Again
+              </Button>
+            </div>
+          ) : featuredArtists.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {featuredArtists.map((artist) => (
                 <ArtistCard key={artist.artistId} artist={artist} />
               ))}
             </div>
-          </Suspense>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-[var(--text-secondary)]">
+                No featured artists available at the moment.
+              </p>
+            </div>
+          )}
 
           <div className="text-center">
             <Link href="/artists">
@@ -198,25 +218,25 @@ export default function Home() {
               { 
                 style: 'Traditional', 
                 description: 'Bold lines and classic imagery',
-                count: mockArtistData.filter(a => a.styles.includes('traditional')).length,
+                count: statsLoading ? 0 : stats.allArtists.filter(a => a.styles?.includes('traditional')).length,
                 color: 'var(--interactive-primary)'
               },
               { 
                 style: 'Realism', 
                 description: 'Photorealistic and detailed work',
-                count: mockArtistData.filter(a => a.styles.includes('realism')).length,
+                count: statsLoading ? 0 : stats.allArtists.filter(a => a.styles?.includes('realism')).length,
                 color: 'var(--interactive-accent)'
               },
               { 
                 style: 'Geometric', 
                 description: 'Precise patterns and sacred geometry',
-                count: mockArtistData.filter(a => a.styles.includes('geometric')).length,
+                count: statsLoading ? 0 : stats.allArtists.filter(a => a.styles?.includes('geometric')).length,
                 color: 'var(--feedback-success)'
               },
               { 
                 style: 'Watercolour', 
                 description: 'Flowing colors and artistic flair',
-                count: mockArtistData.filter(a => a.styles.includes('watercolour')).length,
+                count: statsLoading ? 0 : stats.allArtists.filter(a => a.styles?.includes('watercolour')).length,
                 color: 'var(--feedback-warning)'
               }
             ].map((styleInfo) => (

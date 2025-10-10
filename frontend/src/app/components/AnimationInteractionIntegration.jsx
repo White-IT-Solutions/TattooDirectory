@@ -464,10 +464,18 @@ export const FullyAnimatedCard = ({
 /**
  * Main Animation Integration Component
  */
-export const AnimationInteractionIntegration = ({ children, className, ...props }) => {
+export const AnimationInteractionIntegration = ({ 
+  children, 
+  className,
+  // Extract non-DOM props to prevent React warnings
+  enableMicroInteractions,
+  animationLevel,
+  respectReducedMotion,
+  ...domProps 
+}) => {
   return (
     <MotionWrapper>
-      <SmoothScrollContainer className={cn('min-h-screen', className)} {...props}>
+      <SmoothScrollContainer className={cn('min-h-screen', className)} {...domProps}>
         <PageTransitionManager transitionType="fade" duration={300}>
           {children}
         </PageTransitionManager>

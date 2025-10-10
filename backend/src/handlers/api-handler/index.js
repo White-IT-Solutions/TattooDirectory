@@ -206,52 +206,30 @@ async function getArtistFromDynamoDB(artistId) {
   const tableName = getTableName();
   
   try {
-    // Try with METADATA SK first (LLD specification)
-    let getParams = {
+    // Use Query instead of multiple GetItem calls for better performance
+    const queryParams = {
       TableName: tableName,
-      Key: marshall({
-        PK: `ARTIST#${artistId}`,
-        SK: "METADATA"
-      })
+      KeyConditionExpression: "PK = :pk",
+      ExpressionAttributeValues: marshall({
+        ":pk": `ARTIST#${artistId}`
+      }),
+      Limit: 5 // Should only need 1-3 items max
     };
 
-    let result = await client.send(new GetItemCommand(getParams));
+    const result = await client.send(new QueryCommand(queryParams));
     
-    if (result.Item) {
-      return unmarshall(result.Item);
-    }
-
-    // Try with PROFILE SK (legacy test data format)
-    getParams = {
-      TableName: tableName,
-      Key: marshall({
-        PK: `ARTIST#${artistId}`,
-        SK: "PROFILE"
-      })
-    };
-
-    result = await client.send(new GetItemCommand(getParams));
-    
-    if (result.Item) {
-      return unmarshall(result.Item);
-    }
-
-    // Try with ARTIST# SK format (alternative format)
-    getParams = {
-      TableName: tableName,
-      Key: marshall({
-        PK: `ARTIST#${artistId}`,
-        SK: `ARTIST#${artistId}`
-      })
-    };
-
-    result = await client.send(new GetItemCommand(getParams));
-    
-    if (!result.Item) {
+    if (!result.Items || result.Items.length === 0) {
       return null;
     }
 
-    return unmarshall(result.Item);
+    // Find the main artist record (prefer METADATA, then PROFILE, then ARTIST#)
+    const items = result.Items.map(item => unmarshall(item));
+    
+    let artistRecord = items.find(item => item.SK === "METADATA") ||
+                      items.find(item => item.SK === "PROFILE") ||
+                      items.find(item => item.SK === `ARTIST#${artistId}`);
+
+    return artistRecord || null;
   } catch (error) {
     throw new Error(`DynamoDB fallback get artist failed: ${error.message}`);
   }
@@ -304,6 +282,16 @@ function getRequestId(event) {
   return event.requestContext?.requestId || event.awsRequestId || 'unknown';
 }
 
+// --- CORS Headers Helper ---
+function getCorsHeaders() {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+    "Access-Control-Max-Age": "86400", // 24 hours
+  };
+}
+
 // --- RFC 9457 Error Response Helper ---
 function createErrorResponse(statusCode, title, detail, instance, type = null) {
   const errorType =
@@ -311,7 +299,10 @@ function createErrorResponse(statusCode, title, detail, instance, type = null) {
 
   return {
     statusCode,
-    headers: { "Content-Type": "application/problem+json" },
+    headers: { 
+      "Content-Type": "application/problem+json",
+      ...getCorsHeaders()
+    },
     body: JSON.stringify({
       type: errorType,
       title,
@@ -329,8 +320,20 @@ function createSuccessResponse(data, pagination = null) {
   
   return {
     statusCode: 200,
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      ...getCorsHeaders()
+    },
     body: JSON.stringify(responseData),
+  };
+}
+
+// --- CORS Preflight Handler ---
+function handleOptionsRequest() {
+  return {
+    statusCode: 200,
+    headers: getCorsHeaders(),
+    body: "",
   };
 }
 
@@ -1353,7 +1356,10 @@ export const handler = async (event, context) => {
       console.error('Invalid event received:', typeof event);
       return {
         statusCode: 400,
-        headers: { "Content-Type": "application/problem+json" },
+        headers: { 
+          "Content-Type": "application/problem+json",
+          ...getCorsHeaders()
+        },
         body: JSON.stringify({
           type: "https://api.tattoodirectory.com/docs/errors#400",
           title: "Bad Request",
@@ -1375,7 +1381,10 @@ export const handler = async (event, context) => {
     console.error('Handler initialization error:', initError);
     return {
       statusCode: 500,
-      headers: { "Content-Type": "application/problem+json" },
+      headers: { 
+        "Content-Type": "application/problem+json",
+        ...getCorsHeaders()
+      },
       body: JSON.stringify({
         type: "https://api.tattoodirectory.com/docs/errors#500",
         title: "Internal Server Error",
@@ -1394,6 +1403,12 @@ export const handler = async (event, context) => {
     logger = createLogger(context, event);
   }
 
+  // Handle CORS preflight requests FIRST (before any path matching)
+  if (method === "OPTIONS") {
+    logger.info("Handling CORS preflight request", { path });
+    return handleOptionsRequest();
+  }
+
   // Debug logging for path matching
   logger.info("Route processing", { 
     path, 
@@ -1409,7 +1424,10 @@ export const handler = async (event, context) => {
   if ((path === "/health" || path === "/health/") && method === "GET") {
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...getCorsHeaders()
+      },
       body: JSON.stringify({ status: "healthy", timestamp: new Date().toISOString() }),
     };
   }

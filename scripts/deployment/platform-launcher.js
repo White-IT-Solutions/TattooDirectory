@@ -275,7 +275,6 @@ async function startEnvironment() {
   log("📚 API Docs:     http://localhost:8080", "cyan");
   log("🔧 Backend API:  http://localhost:9000", "cyan");
   log("☁️  LocalStack:   http://localhost:4566", "cyan");
-  log("📊 LocalStack UI: http://localhost:4566/_localstack/cockpit", "cyan");
   log("", "reset");
   log("📝 Useful commands:", "bright");
   log("   npm run local:logs    - View all service logs");

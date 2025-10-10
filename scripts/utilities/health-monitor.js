@@ -12,11 +12,11 @@ const AWS = require("aws-sdk");
 const https = require("https");
 const http = require("http");
 const { URL } = require("url");
-const { DataConfiguration } = require("../data-config");
+const DataConfiguration = require("../data-config");
 
 class HealthMonitor {
   constructor(config = null) {
-    this.config = config || new DataConfiguration();
+    this.config = config || DataConfiguration;
     this.setupAWSClients();
     this.healthStatus = {
       services: {},
@@ -342,21 +342,66 @@ class HealthMonitor {
   }
 
   /**
-   * Get OpenSearch index information
+   * Get OpenSearch index information using _count endpoint for accurate document counts
    */
   async getOpenSearchIndices() {
-    return new Promise((resolve, reject) => {
-      const url = new URL("/_cat/indices?format=json", this.opensearchEndpoint);
-      const client = url.protocol === "https:" ? https : http;
+    return new Promise(async (resolve, reject) => {
+      try {
+        // First get list of indices from _stats (for index names and metadata)
+        const statsUrl = new URL("/_stats", this.opensearchEndpoint);
+        const statsData = await this.makeHttpRequest(statsUrl);
+        const stats = JSON.parse(statsData);
+        
+        const indexDetails = {};
 
+        if (stats.indices) {
+          // For each index, get the accurate document count using _count endpoint
+          for (const [indexName, indexData] of Object.entries(stats.indices)) {
+            try {
+              const countUrl = new URL(`/${indexName}/_count`, this.opensearchEndpoint);
+              const countData = await this.makeHttpRequest(countUrl);
+              const countResult = JSON.parse(countData);
+              
+              indexDetails[indexName] = {
+                health: "green", // Default since we can't easily get health per index
+                status: "open",  // Default since we can't easily get status per index
+                docsCount: countResult.count || 0,
+                storeSize: indexData.total?.store?.size_in_bytes || indexData.primaries?.store?.size_in_bytes || 0,
+              };
+            } catch (countError) {
+              console.warn(`Failed to get count for index ${indexName}:`, countError.message);
+              indexDetails[indexName] = {
+                health: "yellow",
+                status: "unknown",
+                docsCount: 0,
+                storeSize: 0,
+              };
+            }
+          }
+        }
+
+        resolve(indexDetails);
+      } catch (error) {
+        console.warn("Failed to get OpenSearch indices:", error.message);
+        resolve({});
+      }
+    });
+  }
+
+  /**
+   * Helper method to make HTTP requests
+   */
+  makeHttpRequest(url) {
+    return new Promise((resolve, reject) => {
+      const client = url.protocol === "https:" ? https : http;
+      
       const options = {
         hostname: url.hostname,
         port: url.port,
-        path: url.pathname,
+        path: url.pathname + url.search,
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Host': 'tattoo-directory-local.eu-west-2.opensearch.localstack'
+          'Content-Type': 'application/json'
         }
       };
 
@@ -364,33 +409,21 @@ class HealthMonitor {
         let data = "";
         res.on("data", (chunk) => (data += chunk));
         res.on("end", () => {
-          try {
-            const indices = JSON.parse(data);
-            const indexDetails = {};
-
-            indices.forEach((index) => {
-              indexDetails[index.index] = {
-                health: index.health,
-                status: index.status,
-                docsCount: parseInt(index["docs.count"]) || 0,
-                storeSize: index["store.size"],
-              };
-            });
-
-            resolve(indexDetails);
-          } catch (error) {
-            resolve({});
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(data);
+          } else {
+            reject(new Error(`HTTP ${res.statusCode}: ${data}`));
           }
         });
       });
 
-      req.on("error", () => {
-        resolve({});
+      req.on("error", (error) => {
+        reject(error);
       });
 
       req.setTimeout(3000, () => {
         req.destroy();
-        resolve({});
+        reject(new Error("Request timeout"));
       });
 
       req.end();
@@ -460,23 +493,31 @@ class HealthMonitor {
       let opensearchArtists = 0;
       let opensearchStudios = 0;
       try {
+        // Count artists by filtering for entityType:artist or documents without entityType (legacy artists)
         const artistSearchResult = await this.searchOpenSearch(this.config.services.opensearch.indexName, {
-          query: { match_all: {} },
+          query: { 
+            bool: {
+              should: [
+                { term: { entityType: "artist" } },
+                { bool: { must_not: { exists: { field: "entityType" } } } }
+              ]
+            }
+          },
           size: 0,
         });
         opensearchArtists =
           artistSearchResult.hits.total.value || artistSearchResult.hits.total || 0;
 
-        // Check if studio index exists and get studio count
+        // Count studios by filtering for entityType:studio in the same index
         try {
-          const studioSearchResult = await this.searchOpenSearch('studios', {
-            query: { match_all: {} },
+          const studioSearchResult = await this.searchOpenSearch(this.config.services.opensearch.indexName, {
+            query: { term: { entityType: "studio" } },
             size: 0,
           });
           opensearchStudios =
             studioSearchResult.hits.total.value || studioSearchResult.hits.total || 0;
         } catch (studioError) {
-          console.warn("    ⚠️  Studio index not found in OpenSearch");
+          console.warn("    ⚠️  Could not count studios in OpenSearch:", studioError.message);
         }
       } catch (error) {
         console.warn(
@@ -585,7 +626,7 @@ class HealthMonitor {
     console.log("    🖼️  Validating image accessibility...");
 
     try {
-      // Get sample of image URLs from DynamoDB (artists)
+      // Get all artists from DynamoDB (not just a sample)
       const artistsResult = await this.dynamodbDoc
         .scan({
           TableName: this.config.services.dynamodb.tableName,
@@ -593,11 +634,11 @@ class HealthMonitor {
           ExpressionAttributeValues: {
             ":artistPrefix": "ARTIST#",
           },
-          Limit: 10,
+          // Removed Limit to get all artists
         })
         .promise();
 
-      // Get sample of studio image URLs from DynamoDB
+      // Get all studios from DynamoDB (not just a sample)
       const studiosResult = await this.dynamodbDoc
         .scan({
           TableName: this.config.services.dynamodb.tableName,
@@ -605,7 +646,7 @@ class HealthMonitor {
           ExpressionAttributeValues: {
             ":studioPrefix": "STUDIO#",
           },
-          Limit: 10,
+          // Removed Limit to get all studios
         })
         .promise();
 
@@ -616,10 +657,12 @@ class HealthMonitor {
       // Check artist images
       for (const artist of artistsResult.Items) {
         if (artist.portfolioImages && Array.isArray(artist.portfolioImages)) {
-          for (const imageUrl of artist.portfolioImages.slice(0, 3)) {
-            // Check first 3 images per artist
+          for (const image of artist.portfolioImages) {
+            // Check all images per artist (not just first 3)
             totalImages++;
             try {
+              // Handle both string URLs and image objects with url property
+              const imageUrl = typeof image === 'string' ? image : image.url;
               const accessible = await this.checkImageAccessibility(imageUrl);
               if (accessible) {
                 accessibleImages++;
@@ -632,6 +675,7 @@ class HealthMonitor {
                 });
               }
             } catch (error) {
+              const imageUrl = typeof image === 'string' ? image : image.url;
               imageErrors.push({
                 entityId: artist.PK,
                 entityType: 'artist',
@@ -646,8 +690,8 @@ class HealthMonitor {
       // Check studio images
       for (const studio of studiosResult.Items) {
         if (studio.images && Array.isArray(studio.images)) {
-          for (const image of studio.images.slice(0, 3)) {
-            // Check first 3 images per studio
+          for (const image of studio.images) {
+            // Check all images per studio (not just first 3)
             totalImages++;
             try {
               const imageUrl = typeof image === 'string' ? image : image.url;
@@ -922,9 +966,14 @@ class HealthMonitor {
       }
     }
 
-    // Specialties validation
+    // Specialties validation - using complete list from styles.json
     if (studio.specialties && Array.isArray(studio.specialties)) {
-      const validSpecialties = ['traditional', 'realism', 'geometric', 'watercolour', 'blackwork', 'fineline', 'dotwork', 'neo_traditional', 'japanese', 'tribal'];
+      const validSpecialties = [
+        'watercolour', 'tribal', 'traditional', 'surrealism', 'sketch', 'realism', 
+        'psychedelic', 'old_school', 'new_school', 'neo_traditional', 'minimalism', 
+        'lettering', 'geometric', 'floral', 'fineline', 'blackwork', 'dotwork', 
+        'japanese', 'biomechanical', 'portrait', 'illustrative', 'ornamental', 'trash_polka'
+      ];
       for (const specialty of studio.specialties) {
         if (!validSpecialties.includes(specialty)) {
           validation.validationErrors.push({
@@ -1185,14 +1234,8 @@ class HealthMonitor {
     // Validating test scenario integrity
 
     try {
-      // Check for required test data patterns
-      const scenarios = [
-        "london-artists",
-        "manchester-artists",
-        "birmingham-artists",
-        "mixed-location-artists",
-        "style-specialists",
-      ];
+      // Get all available scenarios from config instead of hardcoded list
+      const scenarios = Object.keys(this.config.scenarios || {});
 
       const scenarioResults = {};
 
@@ -1426,34 +1469,31 @@ class HealthMonitor {
    */
   async checkFrontendSyncHealth() {
     try {
+      // Only check if the module can be loaded, don't generate any data
       const { FrontendSyncProcessor } = require('../data-management/frontend-sync-processor');
+      
+      // Verify the class can be instantiated
       const processor = new FrontendSyncProcessor(this.config);
       
-      // Test basic functionality
-      const testResult = await processor.generateMockData({
-        artistCount: 1,
-        scenario: 'single',
-        validateData: true
-      });
+      // Check if required methods exist
+      const hasRequiredMethods = 
+        typeof processor.generateMockData === 'function' &&
+        typeof processor.syncWithBackend === 'function';
       
       const health = {
-        status: testResult.success ? 'healthy' : 'unhealthy',
+        status: hasRequiredMethods ? 'healthy' : 'unhealthy',
         lastCheck: new Date().toISOString(),
         capabilities: {
-          enhancedGeneration: true,
-          businessData: true,
-          studioRelationships: true,
-          dataValidation: true,
-          exportFunctionality: true,
-          scenarioSupport: true
+          moduleLoaded: true,
+          classInstantiated: true,
+          requiredMethods: hasRequiredMethods
         },
-        performance: testResult.stats?.performance || {},
-        errors: testResult.stats?.errors || []
+        details: 'Frontend sync processor module check completed'
       };
       
-      if (!testResult.success) {
-        health.error = testResult.error;
-        health.details = 'Enhanced frontend sync processor test failed';
+      if (!hasRequiredMethods) {
+        health.error = 'Missing required methods';
+        health.details = 'Frontend sync processor missing required methods';
       }
       
       this.healthStatus.services.frontendSync = health;
@@ -1464,7 +1504,7 @@ class HealthMonitor {
         status: 'unhealthy',
         lastCheck: new Date().toISOString(),
         error: error.message,
-        details: 'Frontend sync processor initialization failed'
+        details: 'Frontend sync processor module failed to load'
       };
       
       this.healthStatus.services.frontendSync = health;

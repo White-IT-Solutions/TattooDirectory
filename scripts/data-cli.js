@@ -8,7 +8,7 @@
  */
 
 const { UnifiedDataManager } = require('./data-management/unified-data-manager');
-const { DATA_CONFIG } = require('./data-config');
+const DATA_CONFIG = require('./data-config');
 
 /**
  * CLI color constants for better user experience
@@ -103,7 +103,7 @@ const COMMANDS = {
       { flag: 'multi-style', description: 'Artists with multiple style specializations and characteristics (3 artists)' },
       { flag: 'style-diverse', description: 'Diverse styles for filtering tests with enhanced metadata (12 artists)' },
       { flag: 'pricing-range', description: 'Mid-range pricing testing with detailed pricing data (5 artists)' },
-      { flag: 'full-dataset', description: 'Complete test dataset with all enhanced features (10 artists)' },
+      { flag: 'full-dataset', description: 'Complete test dataset with all enhanced features (150 artists, ensures 5+ per style)' },
       { flag: 'empty', description: 'Empty results for testing no-data states (0 artists)' },
       { flag: 'single', description: 'Single result for minimal data display testing (1 artist)' },
       { flag: 'performance-test', description: 'Large dataset for performance testing (50+ artists)' }

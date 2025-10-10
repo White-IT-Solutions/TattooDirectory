@@ -9,9 +9,10 @@
  */
 
 const EventEmitter = require('events');
-const { DATA_CONFIG } = require('../data-config');
+const DATA_CONFIG = require('../data-config');
 const { STATE_MANAGER } = require('../utilities/state-manager');
 const { ImageProcessor } = require('./image-processor');
+const { StudioImageProcessor } = require('./studio-image-processor');
 const { DatabaseSeeder } = require('./database-seeder');
 const { FrontendSyncProcessor } = require('./frontend-sync-processor');
 const { ErrorHandler, ERROR_TYPES, RECOVERY_STRATEGIES } = require('../utilities/error-handler');
@@ -115,6 +116,7 @@ class DataPipeline extends EventEmitter {
     
     // Initialize processors
     this.imageProcessor = new ImageProcessor(config);
+    this.studioImageProcessor = new StudioImageProcessor(config);
     this.databaseSeeder = new DatabaseSeeder(config);
     this.frontendSyncProcessor = new FrontendSyncProcessor(config);
     
@@ -140,6 +142,7 @@ class DataPipeline extends EventEmitter {
     // Store current scenario and count for use in stages
     this.currentScenario = scenario;
     this.currentCount = count;
+    this.forceAll = forceAll; // Store force flag for use in stages
     
     // Always include prerequisite validation and change detection
     const requiredStages = [
@@ -507,16 +510,81 @@ class DataPipeline extends EventEmitter {
   }
 
   /**
-   * Stage implementation: Process images
+   * Stage implementation: Process images (both style and studio images)
    */
   async _processImages(progressCallback) {
-    return await this.imageProcessor.processImages({
-      onProgress: (progress) => {
-        if (progressCallback) {
-          progressCallback(progress.percentage || 0, 100, 'Processing images');
-        }
+    console.log('🖼️  Processing both style and studio images...');
+    
+    const results = {
+      success: true,
+      styleImages: null,
+      studioImages: null,
+      stats: {
+        processed: 0,
+        uploaded: 0,
+        failed: 0
       }
-    });
+    };
+
+    try {
+      // Process style images
+      console.log('📁 Processing style images...');
+      if (progressCallback) {
+        progressCallback(25, 100, 'Processing style images');
+      }
+      
+      const styleResult = await this.imageProcessor.processImages({
+        force: this.forceAll,
+        onProgress: (progress) => {
+          if (progressCallback) {
+            progressCallback(25 + (progress.percentage || 0) * 0.35, 100, 'Processing style images');
+          }
+        }
+      });
+      
+      results.styleImages = styleResult;
+      if (styleResult.stats) {
+        results.stats.processed += styleResult.stats.processed || 0;
+        results.stats.uploaded += styleResult.stats.uploaded || 0;
+        results.stats.failed += styleResult.stats.failed || 0;
+      }
+
+      // Process studio images
+      console.log('🏢 Processing studio images...');
+      if (progressCallback) {
+        progressCallback(60, 100, 'Processing studio images');
+      }
+      
+      const studioResult = await this.studioImageProcessor.processAllStudioImages({
+        force: this.forceAll,
+        onProgress: (progress) => {
+          if (progressCallback) {
+            progressCallback(60 + (progress.percentage || 0) * 0.35, 100, 'Processing studio images');
+          }
+        }
+      });
+      
+      results.studioImages = studioResult;
+      if (studioResult.stats) {
+        results.stats.processed += studioResult.stats.processed || 0;
+        results.stats.uploaded += studioResult.stats.uploaded || 0;
+        results.stats.failed += studioResult.stats.failed || 0;
+      }
+
+      if (progressCallback) {
+        progressCallback(100, 100, 'Image processing completed');
+      }
+
+      console.log(`✅ Image processing completed: ${results.stats.processed} processed, ${results.stats.uploaded} uploaded, ${results.stats.failed} failed`);
+      
+      return results;
+
+    } catch (error) {
+      console.error('❌ Image processing failed:', error.message);
+      results.success = false;
+      results.error = error.message;
+      return results;
+    }
   }
 
   /**
@@ -528,7 +596,14 @@ class DataPipeline extends EventEmitter {
       progressCallback(1, 1, 'Seeding database');
     }
     
-    return await this.databaseSeeder.seedAllData();
+    // Use scenario-based seeding if a scenario is specified, otherwise use full dataset
+    if (this.currentScenario) {
+      console.log(`🎯 Using scenario-based seeding: ${this.currentScenario}`);
+      return await this.databaseSeeder.seedScenario(this.currentScenario);
+    } else {
+      console.log('🌱 Using full dataset seeding');
+      return await this.databaseSeeder.seedAllData();
+    }
   }
 
   /**

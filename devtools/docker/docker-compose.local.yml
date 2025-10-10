@@ -120,7 +120,7 @@ services:
       
       # Enhanced Service Endpoints (internal container communication)
       - DYNAMODB_ENDPOINT=${DYNAMODB_INTERNAL_ENDPOINT:-http://localstack:4566}
-      - OPENSEARCH_ENDPOINT=${OPENSEARCH_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_INTERNAL_ENDPOINT:-http://tattoo-directory-opensearch:9200}
       - S3_ENDPOINT=${S3_INTERNAL_ENDPOINT:-http://localstack:4566}
       - LAMBDA_ENDPOINT=${LAMBDA_INTERNAL_ENDPOINT:-http://localstack:4566}
       - LOGS_ENDPOINT=${LOGS_INTERNAL_ENDPOINT:-http://localstack:4566}
@@ -171,10 +171,12 @@ services:
       - ../../.env.local
     environment:
       - NEXT_PUBLIC_ENVIRONMENT=local
-      - NEXT_PUBLIC_API_URL=http://backend:8080/2015-03-31/functions/function/invocations
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:9001}
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
       - ENABLE_DEBUG=${ENABLE_FRONTEND_DEBUG:-false}
+      # Debug environment variables
+      - DEBUG_CONFIG=true
     depends_on:
       backend:
         condition: service_started

@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { DATA_CONFIG } = require('../data-config');
+const DATA_CONFIG = require('../data-config');
 
 /**
  * StateManager class with file checksum calculation and change detection

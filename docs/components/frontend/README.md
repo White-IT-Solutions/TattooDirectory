@@ -123,8 +123,8 @@ NEXT_PUBLIC_ENVIRONMENT=local|development|production
 # Local development (mock data mode)
 # Leave NEXT_PUBLIC_API_URL unset to use mock data
 
-# Local development (with backend)
-NEXT_PUBLIC_API_URL=http://localhost:9000/2015-03-31/functions/function/invocations
+# Local development (with backend via CORS proxy)
+NEXT_PUBLIC_API_URL=http://localhost:9001
 
 # Development environment
 NEXT_PUBLIC_API_URL_DEV=https://dev-api.tattoo-directory.co.uk

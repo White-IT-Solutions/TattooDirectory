@@ -143,7 +143,7 @@ const versionHistory = [
   },
 ];
 
-export const dynamic = 'force-dynamic';
+
 
 export default function TermsPage() {
   const [activeSection, setActiveSection] = useState("");

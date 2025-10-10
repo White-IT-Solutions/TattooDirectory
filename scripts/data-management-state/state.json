@@ -1,0 +1,95 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2025-10-08T17:11:19.614Z",
+  "lastOperation": {
+    "type": "seed-scenario",
+    "timestamp": "2025-10-08T17:11:11.011Z",
+    "success": true
+  },
+  "currentScenario": "full-dataset",
+  "currentResetState": null,
+  "checksums": {
+    "lastCalculated": "2025-10-08T17:11:11.011Z",
+    "lastSaved": "2025-10-08T17:11:11.011Z"
+  },
+  "operations": {
+    "setup": {
+      "status": "completed",
+      "lastRun": "2025-10-08T17:00:48.728Z",
+      "duration": 31819
+    },
+    "reset": {
+      "status": "completed",
+      "lastRun": "2025-10-08T17:10:12.131Z",
+      "duration": 1542
+    },
+    "seed": {
+      "status": "not_started",
+      "lastRun": null,
+      "duration": null
+    },
+    "validation": {
+      "status": "not_started",
+      "lastRun": null,
+      "duration": null
+    }
+  },
+  "results": {
+    "images": {
+      "processed": 1117,
+      "uploaded": 309,
+      "failed": 0
+    },
+    "database": {
+      "artists": 0,
+      "studios": 0,
+      "styles": 0
+    },
+    "opensearch": {
+      "documents": 0,
+      "indexed": 0
+    },
+    "frontend": {
+      "updated": false,
+      "artistCount": 0,
+      "studioCount": 6,
+      "generationTime": 4,
+      "memoryUsage": 30125792,
+      "validationErrors": 0,
+      "enhancedCapabilities": false,
+      "lastScenario": null,
+      "scenarios": {
+        "default": {
+          "artistCount": 8,
+          "timestamp": "2025-10-08T16:59:07.818Z"
+        }
+      }
+    }
+  },
+  "services": {
+    "localstack": {
+      "status": "unknown",
+      "lastChecked": null
+    },
+    "dynamodb": {
+      "status": "unknown",
+      "lastChecked": null,
+      "tableName": null
+    },
+    "opensearch": {
+      "status": "unknown",
+      "lastChecked": null,
+      "indexName": null
+    },
+    "s3": {
+      "status": "unknown",
+      "lastChecked": null,
+      "bucketName": null
+    }
+  },
+  "configuration": {
+    "platform": "win32",
+    "nodeVersion": "v21.7.1",
+    "configHash": "-r75hhs"
+  }
+}

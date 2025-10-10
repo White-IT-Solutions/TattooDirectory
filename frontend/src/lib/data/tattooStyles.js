@@ -14,7 +14,7 @@ export const enhancedTattooStyles = {
     timeOrigin: "1900s-1950s",
     aliases: ["Traditional", "American Traditional", "Sailor Jerry"],
     popularity: 95,
-    image: "https://images.pexels.com/photos/1993189/pexels-photo-1993189.jpeg"
+    image: "https://picsum.photos/400/300?random=1"
   },
   
   "traditional": {
@@ -28,7 +28,7 @@ export const enhancedTattooStyles = {
     timeOrigin: "Ancient-Present",
     aliases: ["Classic", "Conventional"],
     popularity: 88,
-    image: "https://images.pexels.com/photos/19021390/pexels-photo-19021390.jpeg"
+    image: "https://picsum.photos/400/300?random=2"
   },
 
   "new_school": {
