@@ -246,6 +246,8 @@
   --text-subtle: #a8a9a9;
   --text-inverse: #ebebeb;
   --text-disabled: #a8a9a9;
+  --text-link: #f007f0;
+
 
   /* Border Colors */
   --border-primary: #bfc0c0;

@@ -1,18 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
+import {
+  enhancedTattooStyles,
+  difficultyLevels,
+  searchStylesByAlias,
+} from "../../lib/data/tattooStyles.js";
 import { mockArtistData as mockArtists } from "../data/mockArtistData";
 import Badge from "../../design-system/components/ui/Badge/Badge";
 import Tag from "../../design-system/components/ui/Tag/Tag";
 import { debounce } from "../../lib/performance-utils";
-import { 
-  ariaLiveRegion, 
-  keyboardNavigation, 
+import { Info } from "lucide-react";
+import {
+  ariaLiveRegion,
+  keyboardNavigation,
   touchAccessibility,
-  ScreenReaderUtils 
+  ScreenReaderUtils,
 } from "../../lib/accessibility-utils";
+
+// Import tooltip components directly
+import Tooltip from "../../design-system/components/ui/Tooltip/Tooltip";
 
 // Get styles that exist in our artist data
 const AVAILABLE_STYLES = [
@@ -21,44 +35,40 @@ const AVAILABLE_STYLES = [
 
 // Filter enhanced styles to only include those we have artists for
 const getAvailableEnhancedStyles = () => {
-  return Object.values(enhancedTattooStyles).filter(style => 
+  return Object.values(enhancedTattooStyles).filter((style) =>
     AVAILABLE_STYLES.includes(style.id)
   );
 };
 
 // Tooltip component for style descriptions
-const StyleTooltip = ({ style, isVisible, position }) => {
-  if (!isVisible) return null;
-
+const StyleTooltipContent = ({ style }) => {
   return (
-    <div 
-      className="absolute z-50 w-80 p-4 bg-white rounded-lg shadow-xl border border-neutral-200"
-      style={{
-        left: position.x,
-        top: position.y,
-        transform: 'translateY(-100%)'
-      }}
-    >
+    <div className="max-w-xs text-left p-4 bg-white rounded-lg shadow-xl border border-neutral-200">
       <div className="space-y-3">
         <div>
-          <h4 className="font-semibold text-lg text-primary-600 mb-1">{style.name}</h4>
-          <p className="text-sm text-neutral-700 leading-relaxed">{style.description}</p>
+          <h4 className="font-semibold text-lg text-primary-600 mb-1">
+            {style.name}
+          </h4>
+          <p className="text-sm text-neutral-700 leading-relaxed">
+            {style.description}
+          </p>
         </div>
-        
+
         <div>
-          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Difficulty</span>
+          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+            Difficulty
+          </span>
           <div className="mt-1">
-            <Badge 
-              variant={difficultyLevels[style.difficulty].color}
-              size="sm"
-            >
+            <Badge variant={difficultyLevels[style.difficulty].color} size="sm">
               {difficultyLevels[style.difficulty].label}
             </Badge>
           </div>
         </div>
 
         <div>
-          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Characteristics</span>
+          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+            Characteristics
+          </span>
           <div className="flex flex-wrap gap-1 mt-1">
             {style.characteristics.slice(0, 4).map((char, index) => (
               <Tag key={index} variant="secondary" size="sm">
@@ -69,49 +79,23 @@ const StyleTooltip = ({ style, isVisible, position }) => {
         </div>
 
         <div>
-          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Popular Motifs</span>
+          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+            Popular Motifs
+          </span>
           <div className="text-sm text-neutral-600 mt-1">
             {style.popularMotifs.slice(0, 3).join(", ")}
           </div>
         </div>
 
         <div>
-          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Time Origin</span>
-          <div className="text-sm text-neutral-600 mt-1">{style.timeOrigin}</div>
+          <span className="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+            Time Origin
+          </span>
+          <div className="text-sm text-neutral-600 mt-1">
+            {style.timeOrigin}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-// Popularity indicator component
-const PopularityIndicator = ({ popularity }) => {
-  const getPopularityLevel = (score) => {
-    if (score >= 85) return { label: "Very Popular", color: "success", dots: 5 };
-    if (score >= 70) return { label: "Popular", color: "accent", dots: 4 };
-    if (score >= 55) return { label: "Moderate", color: "warning", dots: 3 };
-    if (score >= 40) return { label: "Niche", color: "secondary", dots: 2 };
-    return { label: "Rare", color: "neutral", dots: 1 };
-  };
-
-  const level = getPopularityLevel(popularity);
-
-  return (
-    <div className="flex items-center gap-1" title={`${level.label} (${popularity}% popularity)`}>
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          className={`w-1.5 h-1.5 rounded-full ${
-            i < level.dots 
-              ? level.color === 'success' ? 'bg-success-500' :
-                level.color === 'accent' ? 'bg-accent-500' :
-                level.color === 'warning' ? 'bg-warning-500' :
-                level.color === 'secondary' ? 'bg-neutral-400' :
-                'bg-neutral-300'
-              : 'bg-neutral-200'
-          }`}
-        />
-      ))}
     </div>
   );
 };
@@ -119,14 +103,14 @@ const PopularityIndicator = ({ popularity }) => {
 export default function EnhancedStyleFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  // Memoize available styles to prevent infinite loops
-  const availableEnhancedStyles = useMemo(() => getAvailableEnhancedStyles(), []);
-  
+
+  const availableEnhancedStyles = useMemo(
+    () => getAvailableEnhancedStyles(),
+    []
+  );
+
   const [selected, setSelected] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [hoveredStyle, setHoveredStyle] = useState(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [filteredStyles, setFilteredStyles] = useState(availableEnhancedStyles);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [isKeyboardMode, setIsKeyboardMode] = useState(false);
@@ -137,14 +121,15 @@ export default function EnhancedStyleFilter() {
   useEffect(() => {
     const styleParams = searchParams.get("styles");
     const newSelected = styleParams ? styleParams.split(",") : [];
-    
-    // Only update if the selection has actually changed to prevent infinite loops
-    setSelected(prevSelected => {
+
+    setSelected((prevSelected) => {
       const prevSorted = [...prevSelected].sort();
       const newSorted = [...newSelected].sort();
-      
-      if (prevSorted.length !== newSorted.length || 
-          !prevSorted.every((style, index) => style === newSorted[index])) {
+
+      if (
+        prevSorted.length !== newSorted.length ||
+        !prevSorted.every((style, index) => style === newSorted[index])
+      ) {
         return newSelected;
       }
       return prevSelected;
@@ -157,7 +142,7 @@ export default function EnhancedStyleFilter() {
       return availableEnhancedStyles;
     } else {
       const searchResults = searchStylesByAlias(searchQuery);
-      return searchResults.filter(style => 
+      return searchResults.filter((style) =>
         AVAILABLE_STYLES.includes(style.id)
       );
     }
@@ -177,35 +162,45 @@ export default function EnhancedStyleFilter() {
     setFilteredStyles(memoizedFilteredStyles);
   }, [memoizedFilteredStyles]);
 
-  const updateSearchParams = useCallback((newSelected) => {
-    if (newSelected.length > 0) {
-      router.push(`/artists?styles=${newSelected.join(",")}`);
-    } else {
-      router.push('/artists');
-    }
-  }, [router]);
+  const updateSearchParams = useCallback(
+    (newSelected) => {
+      if (newSelected.length > 0) {
+        router.push(`/artists?styles=${newSelected.join(",")}`);
+      } else {
+        router.push("/artists");
+      }
+    },
+    [router]
+  );
 
-  const toggleStyle = useCallback((styleId) => {
-    const newSelected = selected.includes(styleId)
-      ? selected.filter((s) => s !== styleId)
-      : [...selected, styleId];
-    
-    updateSearchParams(newSelected);
-    
-    // Announce filter change to screen readers
-    const style = enhancedTattooStyles[styleId];
-    const isAdded = !selected.includes(styleId);
-    ariaLiveRegion.announceFilterChange('Style', style?.name || styleId, isAdded);
-  }, [selected, updateSearchParams]);
+  const toggleStyle = useCallback(
+    (styleId) => {
+      const newSelected = selected.includes(styleId)
+        ? selected.filter((s) => s !== styleId)
+        : [...selected, styleId];
+
+      updateSearchParams(newSelected);
+
+      // Announce filter change to screen readers
+      const style = enhancedTattooStyles[styleId];
+      const isAdded = !selected.includes(styleId);
+      ariaLiveRegion.announceFilterChange(
+        "Style",
+        style?.name || styleId,
+        isAdded
+      );
+    },
+    [selected, updateSearchParams]
+  );
 
   const clearAll = useCallback(() => {
     setSearchQuery("");
     setFocusedIndex(-1);
     updateSearchParams([]);
-    
+
     // Announce clearing to screen readers
-    ariaLiveRegion.announce('All style filters cleared', 'polite');
-    
+    ariaLiveRegion.announce("All style filters cleared", "polite");
+
     // Focus search input after clearing
     if (searchInputRef.current) {
       searchInputRef.current.focus();
@@ -215,12 +210,12 @@ export default function EnhancedStyleFilter() {
   // Touch accessibility setup
   useEffect(() => {
     const cleanupFunctions = [];
-    
+
     // Ensure all style buttons meet touch target requirements
-    styleButtonsRef.current.forEach(button => {
+    styleButtonsRef.current.forEach((button) => {
       if (button) {
         touchAccessibility.ensureTouchTarget(button, 44);
-        
+
         // Add touch handlers for better mobile experience
         const cleanup = touchAccessibility.addTouchHandlers(button, {
           onTap: (event) => {
@@ -228,77 +223,78 @@ export default function EnhancedStyleFilter() {
             if (styleId) {
               toggleStyle(styleId);
             }
-          }
+          },
         });
-        
+
         cleanupFunctions.push(cleanup);
       }
     });
-    
+
     return () => {
-      cleanupFunctions.forEach(cleanup => cleanup());
+      cleanupFunctions.forEach((cleanup) => cleanup());
     };
   }, [filteredStyles, toggleStyle]);
 
   // Enhanced keyboard navigation
-  const handleKeyDown = useCallback((event, styleId, index) => {
-    setIsKeyboardMode(true);
-    
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      toggleStyle(styleId);
-    } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-      event.preventDefault();
-      
-      const newIndex = keyboardNavigation.handleArrowNavigation(
-        event, 
-        styleButtonsRef.current.filter(Boolean), 
-        index,
-        { 
-          orientation: 'grid', 
-          columns: 5, // Adjust based on grid layout
-          wrap: true 
-        }
-      );
-      
-      setFocusedIndex(newIndex);
-    }
-  }, [toggleStyle]);
+  const handleKeyDown = useCallback(
+    (event, styleId, index) => {
+      setIsKeyboardMode(true);
+
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleStyle(styleId);
+      } else if (
+        [
+          "ArrowUp",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "Home",
+          "End",
+        ].includes(event.key)
+      ) {
+        event.preventDefault();
+
+        const newIndex = keyboardNavigation.handleArrowNavigation(
+          event,
+          styleButtonsRef.current.filter(Boolean),
+          index,
+          {
+            orientation: "grid",
+            columns: 5, // Adjust based on grid layout
+            wrap: true,
+          }
+        );
+
+        setFocusedIndex(newIndex);
+      }
+    },
+    [toggleStyle]
+  );
 
   // Handle search input keyboard navigation
-  const handleSearchKeyDown = useCallback((event) => {
-    if (event.key === 'ArrowDown' && filteredStyles.length > 0) {
-      event.preventDefault();
-      setFocusedIndex(0);
-      if (styleButtonsRef.current[0]) {
-        styleButtonsRef.current[0].focus();
+  const handleSearchKeyDown = useCallback(
+    (event) => {
+      if (event.key === "ArrowDown" && filteredStyles.length > 0) {
+        event.preventDefault();
+        setFocusedIndex(0);
+        if (styleButtonsRef.current[0]) {
+          styleButtonsRef.current[0].focus();
+        }
+      } else if (event.key === "Escape") {
+        setSearchQuery("");
+        debouncedSetSearchQuery("");
       }
-    } else if (event.key === 'Escape') {
-      setSearchQuery("");
-      debouncedSetSearchQuery("");
-    }
-  }, [filteredStyles.length, debouncedSetSearchQuery]);
-
-  // Handle mouse interactions (disable keyboard mode)
-  const handleMouseEnter = useCallback((style, event) => {
-    setIsKeyboardMode(false);
-    
-    const rect = event.currentTarget.getBoundingClientRect();
-    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 };
-    
-    setTooltipPosition({
-      x: rect.left - containerRect.left,
-      y: rect.top - containerRect.top - 10
-    });
-    setHoveredStyle(style);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setHoveredStyle(null);
-  }, []);
+    },
+    [filteredStyles.length, debouncedSetSearchQuery]
+  );
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4" data-testid="style-filter" ref={containerRef}>
+    <div
+      className="w-full max-w-4xl mx-auto p-4"
+      data-testid="style-filter"
+      ref={containerRef}
+    >
       {/* Header with search and clear */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-white">Filter by Tattoo Style</h3>
@@ -321,7 +317,8 @@ export default function EnhancedStyleFilter() {
               aria-haspopup="listbox"
             />
             <div id="search-help" className="sr-only">
-              Type to search for tattoo styles. Use arrow keys to navigate results.
+              Type to search for tattoo styles. Use arrow keys to navigate
+              results.
             </div>
             {searchQuery && (
               <button
@@ -332,7 +329,7 @@ export default function EnhancedStyleFilter() {
               </button>
             )}
           </div>
-          
+
           {(selected.length > 0 || searchQuery) && (
             <button
               onClick={clearAll}
@@ -369,7 +366,7 @@ export default function EnhancedStyleFilter() {
 
       {/* Style grid */}
       <div className="relative">
-        <div 
+        <div
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
           role="listbox"
           aria-label="Tattoo style filters"
@@ -379,27 +376,33 @@ export default function EnhancedStyleFilter() {
             const isSelected = selected.includes(style.id);
             const isFocused = focusedIndex === index;
             const ariaLabel = ScreenReaderUtils.createFilterLabel(
-              'Style', 
-              style.name, 
+              "Style",
+              style.name,
               isSelected,
               null // Could add count if available
             );
-            
+
             return (
               <button
                 key={style.id}
-                ref={el => styleButtonsRef.current[index] = el}
                 type="button"
                 onClick={() => toggleStyle(style.id)}
-                onMouseEnter={(e) => handleMouseEnter(style, e)}
-                onMouseLeave={handleMouseLeave}
                 onKeyDown={(e) => handleKeyDown(e, style.id, index)}
+                ref={(el) => (styleButtonsRef.current[index] = el)}
                 onFocus={() => setFocusedIndex(index)}
                 className={`
                   group relative flex flex-col items-stretch w-full h-20 md:h-24 rounded-xl overflow-hidden
                   bg-neutral-900 transition-all duration-200 ease-out touch-target
-                  ${isSelected ? "ring-2 ring-accent-500 shadow-lg shadow-accent-500/25" : ""}
-                  ${isFocused && isKeyboardMode ? "ring-2 ring-white ring-offset-2 ring-offset-neutral-900" : ""}
+                  ${
+                    isSelected
+                      ? "ring-2 ring-accent-500 shadow-lg shadow-accent-500/25"
+                      : ""
+                  }
+                  ${
+                    isFocused && isKeyboardMode
+                      ? "ring-2 ring-white ring-offset-2 ring-offset-neutral-900"
+                      : ""
+                  }
                   hover:scale-105 hover:shadow-xl hover:shadow-accent-500/20
                   focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-neutral-900
                   @media (prefers-reduced-motion: reduce) {
@@ -430,16 +433,35 @@ export default function EnhancedStyleFilter() {
                 )}
 
                 {/* Content overlay */}
-                <div className="relative z-10 flex flex-col justify-between h-full p-2">
+                <div className="relative z-10 flex flex-col justify-between items-start h-full p-2 w-full">
                   {/* Top section with difficulty badge and popularity */}
                   <div className="flex justify-between items-start">
-                    <Badge 
+                    <Badge
                       variant={difficultyLevels[style.difficulty].color}
                       size="sm"
                     >
                       {difficultyLevels[style.difficulty].label}
                     </Badge>
-                    <PopularityIndicator popularity={style.popularity} />
+                    <Tooltip
+                      content={<StyleTooltipContent style={style} />}
+                      position="top"
+                      delay={300}
+                    >
+                      <div
+                        className="p-1 rounded-full bg-black/30 hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
+                        onClick={(e) => e.stopPropagation()} // Prevent click from toggling style
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.stopPropagation(); // Prevent style toggle
+                          }
+                        }}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`More info about ${style.name}`}
+                      >
+                        <Info className="w-3 h-3 text-white" />
+                      </div>
+                    </Tooltip>
                   </div>
 
                   {/* Bottom section with style name */}
@@ -449,34 +471,18 @@ export default function EnhancedStyleFilter() {
                     </span>
                   </div>
                 </div>
-
-                {/* Characteristics tags (visible on hover) */}
-                <div className="absolute inset-x-2 bottom-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
-                  <div className="flex flex-wrap gap-1">
-                    {style.characteristics.slice(0, 2).map((char, index) => (
-                      <Tag key={index} variant="secondary" size="sm">
-                        {char}
-                      </Tag>
-                    ))}
-                  </div>
-                </div>
               </button>
             );
           })}
         </div>
-
-        {/* Tooltip */}
-        <StyleTooltip 
-          style={hoveredStyle} 
-          isVisible={!!hoveredStyle} 
-          position={tooltipPosition}
-        />
       </div>
 
       {/* No results message */}
       {filteredStyles.length === 0 && searchQuery && (
         <div className="text-center py-8">
-          <p className="text-neutral-400 mb-2">No styles found for &quot;{searchQuery}&quot;</p>
+          <p className="text-neutral-400 mb-2">
+            No styles found for &quot;{searchQuery}&quot;
+          </p>
           <button
             onClick={() => setSearchQuery("")}
             className="text-accent-500 hover:text-accent-400 text-sm"
@@ -489,7 +495,10 @@ export default function EnhancedStyleFilter() {
       {/* Style count and search info */}
       <div className="mt-4 text-sm text-neutral-400 text-center">
         {searchQuery ? (
-          <span>Showing {filteredStyles.length} styles matching &quot;{searchQuery}&quot;</span>
+          <span>
+            Showing {filteredStyles.length} styles matching &quot;{searchQuery}
+            &quot;
+          </span>
         ) : (
           <span>Showing {filteredStyles.length} available tattoo styles</span>
         )}

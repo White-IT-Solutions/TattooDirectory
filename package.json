@@ -297,5 +297,8 @@
     "tests/integration",
     "tests/e2e",
     "tests/contracts"
-  ]
+  ],
+  "dependencies": {
+    "lucide-react": "^0.545.0"
+  }
 }
