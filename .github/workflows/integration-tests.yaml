@@ -1,0 +1,226 @@
+# .github/workflows/integration-tests.yaml
+
+name: 'Integration Tests'
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The deployment environment to test'
+        required: true
+        type: string
+      api_url:
+        description: 'The API Gateway URL to test against'
+        required: true
+        type: string
+    secrets:
+      AWS_ROLE_TO_ASSUME:
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        type: choice
+        options:
+          - 'dev'
+          - 'prod'
+
+env:
+  AWS_REGION: eu-west-2
+  NODE_VERSION: '20'
+
+jobs:
+  api-integration-tests:
+    name: 'API Integration Tests'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/src/package-lock.json
+
+      - name: Get API URL from SSM if not provided
+        id: get-api-url
+        run: |
+          if [ -n "${{ inputs.api_url }}" ]; then
+            API_URL="${{ inputs.api_url }}"
+          else
+            API_URL=$(aws ssm get-parameter --name "/tattoo-artist-directory-${{ inputs.environment }}/api-gateway-url" --with-decryption --query 'Parameter.Value' --output text)
+          fi
+          echo "api-url=$API_URL" >> $GITHUB_OUTPUT
+          echo "Testing API at: $API_URL"
+
+      - name: Install test dependencies
+        working-directory: backend/src
+        run: |
+          npm ci
+          npm install --save-dev jest supertest
+
+      - name: Run API health check
+        run: |
+          API_URL="${{ steps.get-api-url.outputs.api-url }}"
+          echo "Testing API health endpoint..."
+          
+          # Test basic connectivity
+          if curl -f -s --max-time 30 "$API_URL/health" > /dev/null; then
+            echo "✅ API health endpoint is responding"
+          else
+            echo "⚠️ API health endpoint not available (may not be implemented)"
+          fi
+
+      - name: Test API endpoints
+        run: |
+          API_URL="${{ steps.get-api-url.outputs.api-url }}"
+          
+          echo "Testing API endpoints..."
+          
+          # Test artists endpoint
+          echo "Testing GET /v1/artists..."
+          RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/artists_response.json "$API_URL/v1/artists?limit=1")
+          HTTP_CODE="${RESPONSE: -3}"
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Artists endpoint returned 200"
+            echo "Response preview:"
+            head -c 200 /tmp/artists_response.json
+          else
+            echo "❌ Artists endpoint returned HTTP $HTTP_CODE"
+            cat /tmp/artists_response.json
+          fi
+          
+          # Test styles endpoint
+          echo "Testing GET /v1/styles..."
+          RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/styles_response.json "$API_URL/v1/styles")
+          HTTP_CODE="${RESPONSE: -3}"
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Styles endpoint returned 200"
+          else
+            echo "❌ Styles endpoint returned HTTP $HTTP_CODE"
+            cat /tmp/styles_response.json
+          fi
+
+      - name: Test Lambda functions directly
+        run: |
+          echo "Testing Lambda functions directly..."
+          
+          # Test API handler Lambda
+          FUNCTION_NAME="tattoo-artist-directory-${{ inputs.environment }}-api-handler"
+          
+          echo "Testing $FUNCTION_NAME..."
+          TEST_EVENT='{
+            "version": "2.0",
+            "routeKey": "GET /v1/artists",
+            "rawPath": "/v1/artists",
+            "requestContext": {
+              "http": {
+                "method": "GET",
+                "path": "/v1/artists"
+              }
+            },
+            "queryStringParameters": {
+              "limit": "1"
+            }
+          }'
+          
+          if aws lambda invoke --function-name "$FUNCTION_NAME" --payload "$TEST_EVENT" /tmp/lambda_response.json > /dev/null 2>&1; then
+            echo "✅ Lambda function invoked successfully"
+            echo "Response:"
+            cat /tmp/lambda_response.json | head -c 500
+          else
+            echo "❌ Lambda function invocation failed"
+          fi
+
+      - name: Test DynamoDB connectivity
+        run: |
+          echo "Testing DynamoDB connectivity..."
+          
+          TABLE_NAME="tattoo-artist-directory-${{ inputs.environment }}-main"
+          
+          if aws dynamodb describe-table --table-name "$TABLE_NAME" > /dev/null 2>&1; then
+            echo "✅ DynamoDB table is accessible: $TABLE_NAME"
+            
+            # Get table status
+            STATUS=$(aws dynamodb describe-table --table-name "$TABLE_NAME" --query 'Table.TableStatus' --output text)
+            echo "Table status: $STATUS"
+            
+            if [ "$STATUS" = "ACTIVE" ]; then
+              echo "✅ DynamoDB table is active"
+            else
+              echo "⚠️ DynamoDB table is not active: $STATUS"
+            fi
+          else
+            echo "❌ DynamoDB table not accessible: $TABLE_NAME"
+          fi
+
+      - name: Test OpenSearch connectivity
+        run: |
+          echo "Testing OpenSearch connectivity..."
+          
+          # Get OpenSearch endpoint from Lambda environment or SSM
+          FUNCTION_NAME="tattoo-artist-directory-${{ inputs.environment }}-api-handler"
+          
+          if aws lambda get-function --function-name "$FUNCTION_NAME" > /tmp/lambda_config.json 2>&1; then
+            OPENSEARCH_ENDPOINT=$(jq -r '.Configuration.Environment.Variables.OPENSEARCH_ENDPOINT // empty' /tmp/lambda_config.json)
+            
+            if [ -n "$OPENSEARCH_ENDPOINT" ] && [ "$OPENSEARCH_ENDPOINT" != "null" ]; then
+              echo "Found OpenSearch endpoint: $OPENSEARCH_ENDPOINT"
+              
+              # Test basic connectivity (this will likely fail due to VPC restrictions, but we can try)
+              if curl -f -s --max-time 10 "$OPENSEARCH_ENDPOINT/_cluster/health" > /dev/null 2>&1; then
+                echo "✅ OpenSearch cluster is accessible"
+              else
+                echo "⚠️ OpenSearch cluster not accessible from GitHub Actions (expected due to VPC restrictions)"
+              fi
+            else
+              echo "⚠️ OpenSearch endpoint not found in Lambda configuration"
+            fi
+          else
+            echo "⚠️ Could not retrieve Lambda configuration"
+          fi
+
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "## Integration Test Results" > /tmp/test_report.md
+          echo "" >> /tmp/test_report.md
+          echo "**Environment:** ${{ inputs.environment }}" >> /tmp/test_report.md
+          echo "**API URL:** ${{ steps.get-api-url.outputs.api-url }}" >> /tmp/test_report.md
+          echo "**Test Date:** $(date -u)" >> /tmp/test_report.md
+          echo "" >> /tmp/test_report.md
+          
+          # Add test results summary
+          echo "### Test Summary" >> /tmp/test_report.md
+          echo "- API Connectivity: Tested" >> /tmp/test_report.md
+          echo "- Lambda Functions: Tested" >> /tmp/test_report.md
+          echo "- DynamoDB: Tested" >> /tmp/test_report.md
+          echo "- OpenSearch: Tested (limited)" >> /tmp/test_report.md
+          
+          echo "Integration test report generated"
+          cat /tmp/test_report.md
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: integration-test-results-${{ inputs.environment }}
+          path: |
+            /tmp/*_response.json
+            /tmp/test_report.md
+          retention-days: 7

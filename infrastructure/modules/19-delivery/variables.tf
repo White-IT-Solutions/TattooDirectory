@@ -65,25 +65,27 @@ variable "access_logs_bucket_domain_name" {
   type        = string
 }
 
+# Route 53 Domain Names
+variable "api_custom_domain_name" {
+  description = "Custom domain name for API Gateway (if configured)"
+  type        = string
+  default     = ""
+}
 
-# variable "api_gateway_id" {
-#   description = "ID of the API Gateway"
-#   type        = string
-# }
+variable "api_custom_domain_zone_id" {
+  description = "Hosted zone ID for API Gateway custom domain"
+  type        = string
+  default     = ""
+}
 
-# variable "api_gateway_endpoint" {
-#   description = "Endpoint URL of the API Gateway"
-#   type        = string
-# }
-
-
-# variable "waf_web_acl_arn" {
-#   description = "ARN of the WAF Web ACL for CloudFront"
-#   type        = string
-# }
-
-# variable "cloudfront_certificate_arn" {
-#   description = "ARN of the ACM certificate for CloudFront"
-#   type        = string
-#   default     = null
-# }
+# Certificate validation inputs
+variable "certificate_domain_validation_options" {
+  description = "Domain validation options from ACM certificate"
+  type = list(object({
+    domain_name           = string
+    resource_record_name  = string
+    resource_record_type  = string
+    resource_record_value = string
+  }))
+  default = []
+}

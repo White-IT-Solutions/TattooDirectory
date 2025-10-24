@@ -32,13 +32,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: = 1.12.2
+          terraform_version: 1.8.5
 
       - name: Terraform Init
+        working-directory: infrastructure/environments/prod
         run: terraform init -backend-config="key=prod/terraform.tfstate"
 
       - name: Terraform Destroy
+        working-directory: infrastructure/environments/prod
         run: |
           echo "Executing terraform destroy for the 'prod' environment."
           echo "Resources with 'prevent_destroy = true' will be preserved."
-          terraform destroy -auto-approve -var-file="environments/prod/main.tfvars"
+          terraform destroy -auto-approve -var-file="auto.tfvars"

@@ -67,8 +67,8 @@ resource "aws_apigatewayv2_stage" "main" {
 
   default_route_settings {
     detailed_metrics_enabled = var.context.enable_advanced_monitoring
-    throttling_burst_limit   = var.context.environment == "prod" ? 5000 : 100
-    throttling_rate_limit    = var.context.environment == "prod" ? 2000 : 50
+    throttling_burst_limit   = var.context.environment == "prod" ? 200 : 100   # Reduced from 5000 to 200
+    throttling_rate_limit    = var.context.environment == "prod" ? 100 : 50    # Reduced from 2000 to 100
   }
 
   tags = merge(var.context.common_tags, {
@@ -204,6 +204,28 @@ resource "aws_apigatewayv2_api_mapping" "main" {
   api_id      = aws_apigatewayv2_api.main.id
   domain_name = aws_apigatewayv2_domain_name.main[0].id
   stage       = aws_apigatewayv2_stage.main.id
+}
+
+# =============================================================================
+# USAGE PLANS FOR ENHANCED RATE LIMITING
+# =============================================================================
+
+resource "aws_api_gateway_usage_plan" "enhanced_public" {
+  name = "${var.context.name_prefix}-enhanced-public-usage"
+
+  throttle_settings {
+    rate_limit  = var.context.environment == "prod" ? 50 : 25    # Requests per second
+    burst_limit = var.context.environment == "prod" ? 100 : 50   # Burst capacity
+  }
+
+  quota_settings {
+    limit  = var.context.environment == "prod" ? 5000 : 2500     # Daily limit
+    period = "DAY"
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-enhanced-public-usage"
+  })
 }
 
 # =============================================================================

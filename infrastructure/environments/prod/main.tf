@@ -168,6 +168,32 @@ resource "aws_ssm_parameter" "lambda_artifacts_bucket_name" {
   })
 }
 
+resource "aws_ssm_parameter" "frontend_bucket_name" {
+  provider = aws.infra_primary
+
+  name        = "/${local.context.name_prefix}/frontend-bucket-name"
+  type        = "String"
+  value       = module.app_storage.frontend_bucket_id
+  description = "The name of the S3 bucket used to host the frontend application."
+
+  tags = merge(local.context.common_tags, {
+    Name = "${local.context.name_prefix}-frontend-bucket-name"
+  })
+}
+
+resource "aws_ssm_parameter" "cloudfront_distribution_id" {
+  provider = aws.infra_primary
+
+  name        = "/${local.context.name_prefix}/cloudfront-distribution-id"
+  type        = "String"
+  value       = module.delivery.cloudfront_distribution_id
+  description = "The CloudFront distribution ID for the frontend."
+
+  tags = merge(local.context.common_tags, {
+    Name = "${local.context.name_prefix}-cloudfront-distribution-id"
+  })
+}
+
 # ------------------------------------------------------------------------------
 # Search Layer
 # Contains OpenSearch resources
@@ -260,14 +286,14 @@ module "compute" {
   scraper_image_tag     = var.scraper_image_tag
 
   # Lambda S3 artifact keys (can be overridden by environment variables from CI/CD)
-  lambda_api_handler_s3_key              = var.lambda_api_handler_s3_key
-  lambda_dynamodb_sync_s3_key            = var.lambda_dynamodb_sync_s3_key
-  lambda_discover_studios_s3_key         = var.lambda_discover_studios_s3_key
-  lambda_find_artists_s3_key             = var.lambda_find_artists_s3_key
-  lambda_queue_scraping_s3_key           = var.lambda_queue_scraping_s3_key
-  lambda_rotate_nat_gateway_eip_s3_key   = var.lambda_rotate_nat_gateway_eip_s3_key
-  lambda_secret_rotation_s3_key          = var.lambda_secret_rotation_s3_key
-  lambda_deployment_version              = var.lambda_deployment_version
+  lambda_api_handler_s3_key            = var.lambda_api_handler_s3_key
+  lambda_dynamodb_sync_s3_key          = var.lambda_dynamodb_sync_s3_key
+  lambda_discover_studios_s3_key       = var.lambda_discover_studios_s3_key
+  lambda_find_artists_s3_key           = var.lambda_find_artists_s3_key
+  lambda_queue_scraping_s3_key         = var.lambda_queue_scraping_s3_key
+  lambda_rotate_nat_gateway_eip_s3_key = var.lambda_rotate_nat_gateway_eip_s3_key
+  lambda_secret_rotation_s3_key        = var.lambda_secret_rotation_s3_key
+  lambda_deployment_version            = var.lambda_deployment_version
 
   providers = {
     aws = aws.infra_primary
@@ -437,10 +463,14 @@ module "delivery" {
   cloudfront_certificate_arn     = module.networking.cloudfront_certificate_arn
   access_logs_bucket_domain_name = module.log_storage.access_logs_bucket_domain_name
 
+  # Certificate Domain Validation
+  certificate_domain_validation_options = module.networking.certificate_domain_validation_options
+
   # This module is deployed to the Infra Account.
   # The provider determines which account manages the CloudFront distribution.
   providers = {
-    aws = aws.infra_primary
+    aws           = aws.infra_primary
+    aws.us_east_1 = aws.infra_us_east_1
   }
 }
 
@@ -552,9 +582,9 @@ resource "aws_iam_policy" "github_actions_cicd" {
         }
       },
       {
-        Sid      = "AllowS3FrontendDeployment"
-        Effect   = "Allow"
-        Action   = [
+        Sid    = "AllowS3FrontendDeployment"
+        Effect = "Allow"
+        Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",

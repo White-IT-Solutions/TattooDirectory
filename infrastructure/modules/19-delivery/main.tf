@@ -49,6 +49,98 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
   }
 }
 
+# =============================================================================
+# ROUTE 53 DNS CONFIGURATION
+# =============================================================================
+
+# Route 53 Hosted Zone
+resource "aws_route53_zone" "main" {
+  count = var.context.domain_name != "" ? 1 : 0
+  name  = var.context.domain_name
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-hosted-zone"
+  })
+}
+
+# Certificate validation records
+resource "aws_route53_record" "cert_validation" {
+  for_each = var.context.domain_name != "" ? {
+    for dvo in var.certificate_domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  } : {}
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = aws_route53_zone.main[0].zone_id
+}
+
+# Certificate validation
+resource "aws_acm_certificate_validation" "cloudfront" {
+  count = var.context.domain_name != "" ? 1 : 0
+
+  provider = aws.us_east_1
+
+  certificate_arn         = var.cloudfront_certificate_arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+
+  timeouts {
+    create = "5m"
+  }
+}
+
+# CloudFront A record (apex domain)
+resource "aws_route53_record" "root" {
+  count   = var.context.domain_name != "" ? 1 : 0
+  zone_id = aws_route53_zone.main[0].zone_id
+  name    = var.context.domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.frontend.domain_name
+    zone_id                = aws_cloudfront_distribution.frontend.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# WWW redirect
+resource "aws_route53_record" "www" {
+  count   = var.context.domain_name != "" ? 1 : 0
+  zone_id = aws_route53_zone.main[0].zone_id
+  name    = "www.${var.context.domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.frontend.domain_name
+    zone_id                = aws_cloudfront_distribution.frontend.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# API subdomain (if API Gateway has custom domain)
+resource "aws_route53_record" "api" {
+  count   = var.context.domain_name != "" && var.api_custom_domain_name != "" ? 1 : 0
+  zone_id = aws_route53_zone.main[0].zone_id
+  name    = "api.${var.context.domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = var.api_custom_domain_name
+    zone_id                = var.api_custom_domain_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# =============================================================================
+# CLOUDFRONT POLICIES AND DATA SOURCES
+# =============================================================================
+
 # Data sources for managed CloudFront policies
 data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
@@ -171,7 +263,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 
   viewer_certificate {
     cloudfront_default_certificate = var.context.domain_name == ""
-    acm_certificate_arn            = var.context.domain_name != "" ? var.cloudfront_certificate_arn : null
+    acm_certificate_arn            = var.context.domain_name != "" ? aws_acm_certificate_validation.cloudfront[0].certificate_arn : null
     ssl_support_method             = var.context.domain_name != "" ? "sni-only" : null
     minimum_protocol_version       = var.context.domain_name != "" ? "TLSv1.2_2021" : null
   }

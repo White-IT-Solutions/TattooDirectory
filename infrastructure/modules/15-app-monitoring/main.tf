@@ -118,6 +118,50 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_latency" {
   })
 }
 
+# Enhanced Security Monitoring - High Request Rate
+resource "aws_cloudwatch_metric_alarm" "high_request_rate" {
+  alarm_name          = "${var.context.name_prefix}-high-request-rate"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "Count"
+  namespace           = "AWS/ApiGatewayV2"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "1000"
+  alarm_description   = "This metric monitors API Gateway request rate for potential DDoS attacks"
+  alarm_actions       = [aws_sns_topic.critical_alerts.arn]
+
+  dimensions = {
+    ApiId = var.api_gateway_id
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-high-request-rate"
+  })
+}
+
+# Enhanced Security Monitoring - Throttling Events
+resource "aws_cloudwatch_metric_alarm" "api_throttling_events" {
+  alarm_name          = "${var.context.name_prefix}-api-throttling"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ThrottleCount"
+  namespace           = "AWS/ApiGatewayV2"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "10"
+  alarm_description   = "This metric monitors API Gateway throttling events"
+  alarm_actions       = [aws_sns_topic.warning_alerts.arn]
+
+  dimensions = {
+    ApiId = var.api_gateway_id
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-api-throttling"
+  })
+}
+
 # =============================================================================
 # CLOUDWATCH ALARMS - LAMBDA FUNCTIONS
 # =============================================================================
@@ -278,6 +322,56 @@ resource "aws_cloudwatch_dashboard" "main" {
     ecs_cluster_name        = var.ecs_cluster_name
     step_functions_name     = var.step_functions_state_machine_name
     infra_account_id        = var.context.infra_account_id
+  })
+}
+
+# Security-focused dashboard
+resource "aws_cloudwatch_dashboard" "security" {
+  dashboard_name = "${var.context.name_prefix}-security"
+
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            ["AWS/ApiGatewayV2", "Count", "ApiId", var.api_gateway_id],
+            [".", "4XXError", ".", "."],
+            [".", "5XXError", ".", "."],
+            [".", "ThrottleCount", ".", "."]
+          ]
+          view    = "timeSeries"
+          stacked = false
+          region  = var.context.aws_region
+          title   = "API Gateway Security Metrics"
+          period  = 300
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            ["AWS/WAFV2", "AllowedRequests", "WebACL", "${var.context.name_prefix}-enhanced-frontend-waf", "Region", "CloudFront", "Rule", "ALL"],
+            [".", "BlockedRequests", ".", ".", ".", ".", ".", "."]
+          ]
+          view    = "timeSeries"
+          stacked = false
+          region  = "us-east-1"
+          title   = "WAF Security Metrics"
+          period  = 300
+        }
+      }
+    ]
   })
 }
 

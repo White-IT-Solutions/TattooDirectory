@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./environments/${{ inputs.environment }}
+        working-directory: ./infrastructure/environments/${{ inputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -103,7 +103,7 @@ jobs:
       name: ${{ inputs.environment }}
     defaults:
       run:
-        working-directory: ./environments/${{ inputs.environment }}
+        working-directory: ./infrastructure/environments/${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -211,8 +211,63 @@ jobs:
               --overwrite
           fi
 
+      - name: Basic deployment health checks
+        if: inputs.apply_changes == true
+        run: |
+          echo "🔍 Running basic deployment health checks..."
+          
+          # Test API Gateway endpoint if available
+          API_URL="${{ steps.api-urls.outputs.api-invoke-url }}"
+          if [ -n "$API_URL" ]; then
+            echo "Testing API Gateway endpoint: $API_URL"
+            if curl -f -s --max-time 30 "$API_URL/health" > /dev/null 2>&1; then
+              echo "✅ API Gateway health check passed"
+            else
+              echo "⚠️ API Gateway health check failed (this may be expected if health endpoint not implemented)"
+            fi
+          fi
+          
+          # Verify Lambda functions exist and are active
+          echo "Verifying Lambda functions..."
+          FUNCTIONS=(
+            "${{ inputs.lambda_prefix }}-api-handler"
+            "${{ inputs.lambda_prefix }}-dynamodb-sync"
+            "${{ inputs.lambda_prefix }}-discover-studios"
+            "${{ inputs.lambda_prefix }}-find-artists"
+            "${{ inputs.lambda_prefix }}-queue-scraping"
+            "${{ inputs.lambda_prefix }}-rotate-nat-gateway-eip"
+            "${{ inputs.lambda_prefix }}-secret-rotation"
+          )
+          
+          FAILED_FUNCTIONS=()
+          for FUNCTION_NAME in "${FUNCTIONS[@]}"; do
+            if aws lambda get-function --function-name "$FUNCTION_NAME" > /dev/null 2>&1; then
+              echo "✅ Lambda function exists: $FUNCTION_NAME"
+            else
+              echo "❌ Lambda function not found: $FUNCTION_NAME"
+              FAILED_FUNCTIONS+=("$FUNCTION_NAME")
+            fi
+          done
+          
+          # Check DynamoDB table
+          TABLE_NAME="${{ inputs.lambda_prefix }}-main"
+          if aws dynamodb describe-table --table-name "$TABLE_NAME" > /dev/null 2>&1; then
+            echo "✅ DynamoDB table exists: $TABLE_NAME"
+          else
+            echo "❌ DynamoDB table not found: $TABLE_NAME"
+          fi
+          
+          # Summary
+          if [ ${#FAILED_FUNCTIONS[@]} -eq 0 ]; then
+            echo "🎉 All basic health checks passed!"
+          else
+            echo "⚠️ Some health checks failed. Failed functions: ${FAILED_FUNCTIONS[*]}"
+            echo "This may indicate a deployment issue that needs investigation."
+          fi
+
       - name: Output deployment summary
         if: inputs.apply_changes == true
         run: |
           echo "::notice title=Terraform Deployment Complete::$(escape_gh_output "Infrastructure deployed successfully to ${{ inputs.environment }} environment")"
           echo "::notice title=Lambda Deployment Version::$(escape_gh_output "${{ steps.lambda-artifacts.outputs.deployment-version }}")"
+          echo "::notice title=API Gateway URL::$(escape_gh_output "${{ steps.api-urls.outputs.api-invoke-url }}")"

@@ -184,6 +184,124 @@ resource "aws_wafv2_web_acl" "enhanced_frontend" {
     }
   }
 
+  # Enhanced IP-based rate limiting for suspicious activity
+  rule {
+    name     = "SuspiciousIPRateLimitRule"
+    priority = 8
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit                 = 100 # Lower threshold for suspicious IPs
+        aggregate_key_type    = "IP"
+        evaluation_window_sec = 300 # 5 minutes
+        scope_down_statement {
+          or_statement {
+            statement {
+              byte_match_statement {
+                search_string = "bot"
+                field_to_match {
+                  single_header {
+                    name = "user-agent"
+                  }
+                }
+                text_transformation {
+                  type     = "LOWERCASE"
+                  priority = 0
+                }
+                positional_constraint = "CONTAINS"
+              }
+            }
+            statement {
+              byte_match_statement {
+                search_string = "crawler"
+                field_to_match {
+                  single_header {
+                    name = "user-agent"
+                  }
+                }
+                text_transformation {
+                  type     = "LOWERCASE"
+                  priority = 0
+                }
+                positional_constraint = "CONTAINS"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "SuspiciousIPRateLimit"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Block requests with suspicious patterns
+  rule {
+    name     = "BlockSuspiciousPatterns"
+    priority = 9
+
+    action {
+      block {}
+    }
+
+    statement {
+      or_statement {
+        statement {
+          byte_match_statement {
+            search_string = "../"
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              type     = "URL_DECODE"
+              priority = 1
+            }
+            positional_constraint = "CONTAINS"
+          }
+        }
+        statement {
+          byte_match_statement {
+            search_string = "<script"
+            field_to_match {
+              all_query_arguments {}
+            }
+            text_transformation {
+              type     = "LOWERCASE"
+              priority = 1
+            }
+            positional_constraint = "CONTAINS"
+          }
+        }
+        statement {
+          byte_match_statement {
+            search_string = "union select"
+            field_to_match {
+              all_query_arguments {}
+            }
+            text_transformation {
+              type     = "LOWERCASE"
+              priority = 1
+            }
+            positional_constraint = "CONTAINS"
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "SuspiciousPatterns"
+      sampled_requests_enabled   = true
+    }
+  }
+
   tags = merge(var.context.common_tags, {
     Name = "${var.context.name_prefix}-enhanced-frontend-waf"
   })
