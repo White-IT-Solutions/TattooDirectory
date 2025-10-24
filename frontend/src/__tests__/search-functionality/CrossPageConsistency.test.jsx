@@ -19,7 +19,7 @@ import EnhancedStyleFilter from '../../app/components/EnhancedStyleFilter';
 import SearchResultsDisplay from '../../app/components/SearchResultsDisplay';
 
 // Import standardized style model
-import { enhancedTattooStyles, difficultyLevels } from '../../app/data/testdata/enhancedtattoostyles';
+import { enhancedTattooStyles, difficultyLevels } from '../../lib/data/tattooStyles.js';
 
 // Mock Next.js components
 jest.mock('next/image', () => {

@@ -1,0 +1,16 @@
+{
+  "name": "Modern Skull Art",
+  "location": "Chester",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_modern_skull_art.png"
+    ],
+    "external": [
+      "external_01_modern_skull_art.png"
+    ],
+    "working": [
+      "working_01_modern_skull_art.png"
+    ]
+  }
+}

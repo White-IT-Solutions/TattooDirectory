@@ -1,0 +1,280 @@
+# .github/workflows/deployment-notifications.yaml
+
+name: 'Deployment Notifications'
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The deployment environment'
+        required: true
+        type: string
+      deployment_status:
+        description: 'The deployment status (success, failure, started)'
+        required: true
+        type: string
+      deployment_url:
+        description: 'The deployment URL'
+        required: false
+        type: string
+      api_url:
+        description: 'The API URL'
+        required: false
+        type: string
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: false
+      TEAMS_WEBHOOK_URL:
+        required: false
+
+jobs:
+  notify:
+    name: 'Send Deployment Notifications'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Prepare notification data
+        id: prepare
+        run: |
+          # Determine status emoji and color
+          case "${{ inputs.deployment_status }}" in
+            "success")
+              echo "emoji=✅" >> $GITHUB_OUTPUT
+              echo "color=good" >> $GITHUB_OUTPUT
+              echo "status_text=Success" >> $GITHUB_OUTPUT
+              ;;
+            "failure")
+              echo "emoji=❌" >> $GITHUB_OUTPUT
+              echo "color=danger" >> $GITHUB_OUTPUT
+              echo "status_text=Failed" >> $GITHUB_OUTPUT
+              ;;
+            "started")
+              echo "emoji=🚀" >> $GITHUB_OUTPUT
+              echo "color=warning" >> $GITHUB_OUTPUT
+              echo "status_text=Started" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "emoji=ℹ️" >> $GITHUB_OUTPUT
+              echo "color=#439FE0" >> $GITHUB_OUTPUT
+              echo "status_text=Unknown" >> $GITHUB_OUTPUT
+              ;;
+          esac
+          
+          # Format timestamp
+          echo "timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+          
+          # Prepare URLs
+          WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "workflow_url=$WORKFLOW_URL" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        if: secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          PAYLOAD=$(cat << EOF
+          {
+            "text": "${{ steps.prepare.outputs.emoji }} Deployment ${{ steps.prepare.outputs.status_text }}",
+            "attachments": [
+              {
+                "color": "${{ steps.prepare.outputs.color }}",
+                "fields": [
+                  {
+                    "title": "Environment",
+                    "value": "${{ inputs.environment }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Status",
+                    "value": "${{ steps.prepare.outputs.status_text }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Repository",
+                    "value": "${{ github.repository }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Branch",
+                    "value": "${{ github.ref_name }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Commit",
+                    "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+                  },
+                  {
+                    "title": "Triggered by",
+                    "value": "${{ github.actor }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Timestamp",
+                    "value": "${{ steps.prepare.outputs.timestamp }}",
+                    "short": true
+                  }
+                ],
+                "actions": [
+                  {
+                    "type": "button",
+                    "text": "View Workflow",
+                    "url": "${{ steps.prepare.outputs.workflow_url }}"
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          )
+          
+          # Add deployment URL if provided
+          if [ -n "${{ inputs.deployment_url }}" ]; then
+            PAYLOAD=$(echo "$PAYLOAD" | jq '.attachments[0].actions += [{"type": "button", "text": "View Deployment", "url": "${{ inputs.deployment_url }}"}]')
+          fi
+          
+          # Add API URL if provided
+          if [ -n "${{ inputs.api_url }}" ]; then
+            PAYLOAD=$(echo "$PAYLOAD" | jq '.attachments[0].actions += [{"type": "button", "text": "View API", "url": "${{ inputs.api_url }}"}]')
+          fi
+          
+          curl -X POST -H 'Content-type: application/json' \
+            --data "$PAYLOAD" \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+      - name: Send Teams notification
+        if: secrets.TEAMS_WEBHOOK_URL != ''
+        run: |
+          PAYLOAD=$(cat << EOF
+          {
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "themeColor": "${{ steps.prepare.outputs.color }}",
+            "summary": "Deployment ${{ steps.prepare.outputs.status_text }}",
+            "sections": [
+              {
+                "activityTitle": "${{ steps.prepare.outputs.emoji }} Deployment ${{ steps.prepare.outputs.status_text }}",
+                "activitySubtitle": "${{ github.repository }} - ${{ inputs.environment }}",
+                "facts": [
+                  {
+                    "name": "Environment",
+                    "value": "${{ inputs.environment }}"
+                  },
+                  {
+                    "name": "Status",
+                    "value": "${{ steps.prepare.outputs.status_text }}"
+                  },
+                  {
+                    "name": "Branch",
+                    "value": "${{ github.ref_name }}"
+                  },
+                  {
+                    "name": "Commit",
+                    "value": "${{ github.sha }}"
+                  },
+                  {
+                    "name": "Triggered by",
+                    "value": "${{ github.actor }}"
+                  },
+                  {
+                    "name": "Timestamp",
+                    "value": "${{ steps.prepare.outputs.timestamp }}"
+                  }
+                ],
+                "markdown": true
+              }
+            ],
+            "potentialAction": [
+              {
+                "@type": "OpenUri",
+                "name": "View Workflow",
+                "targets": [
+                  {
+                    "os": "default",
+                    "uri": "${{ steps.prepare.outputs.workflow_url }}"
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          )
+          
+          # Add deployment URL if provided
+          if [ -n "${{ inputs.deployment_url }}" ]; then
+            PAYLOAD=$(echo "$PAYLOAD" | jq '.potentialAction += [{"@type": "OpenUri", "name": "View Deployment", "targets": [{"os": "default", "uri": "${{ inputs.deployment_url }}"}]}]')
+          fi
+          
+          # Add API URL if provided
+          if [ -n "${{ inputs.api_url }}" ]; then
+            PAYLOAD=$(echo "$PAYLOAD" | jq '.potentialAction += [{"@type": "OpenUri", "name": "View API", "targets": [{"os": "default", "uri": "${{ inputs.api_url }}"}]}]')
+          fi
+          
+          curl -X POST -H 'Content-type: application/json' \
+            --data "$PAYLOAD" \
+            "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
+      - name: Create GitHub deployment status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deploymentStatus = '${{ inputs.deployment_status }}';
+            const environment = '${{ inputs.environment }}';
+            
+            if (deploymentStatus === 'started') {
+              // Create deployment
+              const deployment = await github.rest.repos.createDeployment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: context.sha,
+                environment: environment,
+                description: `Deploying to ${environment}`,
+                auto_merge: false,
+                required_contexts: []
+              });
+              
+              // Create deployment status
+              await github.rest.repos.createDeploymentStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: deployment.data.id,
+                state: 'in_progress',
+                description: `Deployment to ${environment} started`,
+                environment_url: '${{ inputs.deployment_url }}' || undefined
+              });
+            } else if (deploymentStatus === 'success' || deploymentStatus === 'failure') {
+              // Get latest deployment for this environment
+              const deployments = await github.rest.repos.listDeployments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                environment: environment,
+                per_page: 1
+              });
+              
+              if (deployments.data.length > 0) {
+                const deploymentId = deployments.data[0].id;
+                const state = deploymentStatus === 'success' ? 'success' : 'failure';
+                
+                await github.rest.repos.createDeploymentStatus({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: deploymentId,
+                  state: state,
+                  description: `Deployment to ${environment} ${deploymentStatus}`,
+                  environment_url: '${{ inputs.deployment_url }}' || undefined
+                });
+              }
+            }
+
+      - name: Log notification sent
+        run: |
+          echo "Deployment notification sent:"
+          echo "  Environment: ${{ inputs.environment }}"
+          echo "  Status: ${{ inputs.deployment_status }}"
+          echo "  Timestamp: ${{ steps.prepare.outputs.timestamp }}"
+          echo "  Workflow: ${{ steps.prepare.outputs.workflow_url }}"
+          
+          if [ -n "${{ inputs.deployment_url }}" ]; then
+            echo "  Deployment URL: ${{ inputs.deployment_url }}"
+          fi
+          
+          if [ -n "${{ inputs.api_url }}" ]; then
+            echo "  API URL: ${{ inputs.api_url }}"
+          fi

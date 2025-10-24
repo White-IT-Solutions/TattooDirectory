@@ -1,0 +1,16 @@
+{
+  "name": "Electric Dragon Collective",
+  "location": "Brighton",
+  "type": "bright contemporary",
+  "images": {
+    "internal": [
+      "internal_01_electric_dragon_collective.png"
+    ],
+    "external": [
+      "external_01_electric_dragon_collective.png"
+    ],
+    "working": [
+      "working_01_electric_dragon_collective.png"
+    ]
+  }
+}

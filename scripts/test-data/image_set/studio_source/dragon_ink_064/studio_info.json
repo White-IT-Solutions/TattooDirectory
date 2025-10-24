@@ -1,0 +1,16 @@
+{
+  "name": "Dragon Ink",
+  "location": "Cardiff",
+  "type": "street art inspired",
+  "images": {
+    "internal": [
+      "internal_01_dragon_ink.png"
+    ],
+    "external": [
+      "external_01_dragon_ink.png"
+    ],
+    "working": [
+      "working_01_dragon_ink.png"
+    ]
+  }
+}

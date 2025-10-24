@@ -1,0 +1,233 @@
+{
+  "timestamp": "2025-10-03T19:13:47.990Z",
+  "testSuite": "frontend-sync-processor-performance",
+  "results": {
+    "timestamp": "2025-10-03T19:13:47.995Z",
+    "testRun": "performance-test-1759518827995",
+    "baseline": null,
+    "current": {
+      "startup-time": {
+        "testName": "startup-time",
+        "avgTime": 2.5199999999999982,
+        "maxTime": 3.0137,
+        "minTime": 1.5422999999999973,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 2000,
+        "warnings": []
+      },
+      "memory-usage": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "duration": 5.455600000000004,
+          "success": true,
+          "memoryStats": null,
+          "passed": false,
+          "warnings": [
+            "No memory data collected"
+          ]
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "duration": 3.181899999999999,
+          "success": true,
+          "memoryStats": null,
+          "passed": false,
+          "warnings": [
+            "No memory data collected"
+          ]
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "duration": 6.479799999999997,
+          "success": true,
+          "memoryStats": null,
+          "passed": false,
+          "warnings": [
+            "No memory data collected"
+          ]
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "duration": 25.421300000000002,
+          "success": true,
+          "memoryStats": null,
+          "passed": false,
+          "warnings": [
+            "No memory data collected"
+          ]
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "duration": 32.092,
+          "success": true,
+          "memoryStats": null,
+          "passed": false,
+          "warnings": [
+            "No memory data collected"
+          ]
+        }
+      },
+      "performance-regression": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "avgTime": 0.3795333333333417,
+          "maxTime": 0.4065999999999974,
+          "minTime": 0.34490000000002397,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 500,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "avgTime": 1.1633666666666613,
+          "maxTime": 1.406000000000006,
+          "minTime": 0.8257999999999868,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 2000,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "avgTime": 2.805200000000004,
+          "maxTime": 4.548299999999983,
+          "minTime": 1.7408000000000072,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 5000,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "avgTime": 10.584766666666676,
+          "maxTime": 11.152900000000017,
+          "minTime": 9.887700000000024,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 15000,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "avgTime": 18.935233333333343,
+          "maxTime": 25.730800000000016,
+          "minTime": 14.20490000000001,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 30000,
+          "warnings": []
+        }
+      },
+      "concurrent-operations": {
+        "unified-data-manager": {
+          "component": "unified-data-manager",
+          "duration": 0.5738999999999805,
+          "baselineTime": 2000,
+          "overhead": -1999.4261000000001,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "pipeline-engine": {
+          "component": "pipeline-engine",
+          "duration": 0.44299999999998363,
+          "baselineTime": 2000,
+          "overhead": -1999.557,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "state-manager": {
+          "component": "state-manager",
+          "duration": 0.42619999999999436,
+          "baselineTime": 2000,
+          "overhead": -1999.5738000000001,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "health-monitor": {
+          "component": "health-monitor",
+          "duration": 0.6552999999999543,
+          "baselineTime": 2000,
+          "overhead": -1999.3447,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "image-processor": {
+          "component": "image-processor",
+          "duration": 5.352800000000002,
+          "baselineTime": 2000,
+          "overhead": -1994.6471999999999,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        }
+      },
+      "enhanced-features": {
+        "business-data-generation": {
+          "feature": "business-data-generation",
+          "avgTime": 0.35253333333330755,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "performance-data-generation": {
+          "feature": "performance-data-generation",
+          "avgTime": 0.3291666666666515,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-validation": {
+          "feature": "data-validation",
+          "avgTime": 0.42209999999998143,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-export": {
+          "feature": "data-export",
+          "avgTime": 4.562866666666669,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "scenario-processing": {
+          "feature": "scenario-processing",
+          "avgTime": 0.5474999999999758,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        }
+      }
+    },
+    "comparisons": {},
+    "summary": {
+      "passed": 1,
+      "failed": 4,
+      "warnings": 0,
+      "totalTests": 5
+    }
+  },
+  "summary": {
+    "totalTests": 5,
+    "passed": 1,
+    "failed": 4,
+    "warnings": 0,
+    "duration": 257
+  }
+}

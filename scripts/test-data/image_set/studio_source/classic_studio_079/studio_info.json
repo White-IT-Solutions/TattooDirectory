@@ -1,0 +1,16 @@
+{
+  "name": "Classic Studio",
+  "location": "Cardiff",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_classic_studio.png"
+    ],
+    "external": [
+      "external_01_classic_studio.png"
+    ],
+    "working": [
+      "working_01_classic_studio.png"
+    ]
+  }
+}

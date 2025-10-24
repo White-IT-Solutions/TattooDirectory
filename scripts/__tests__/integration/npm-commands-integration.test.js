@@ -6,13 +6,13 @@
  * Requirements: 14.7, 14.8, 14.9
  */
 
-const { UnifiedDataManager } = require('../../unified-data-manager');
-const { STATE_MANAGER } = require('../../state-manager');
+const { UnifiedDataManager } = require('../../data-management/unified-data-manager');
+const { STATE_MANAGER } = require('../../utilities/state-manager');
 const { DATA_CONFIG } = require('../../data-config');
 
 // Mock external dependencies
-jest.mock('../../image-processor');
-jest.mock('../../database-seeder');
+jest.mock('../../data-management/image-processor');
+jest.mock('../../data-management/database-seeder');
 
 describe('NPM Commands Integration Tests', () => {
   let unifiedManager;

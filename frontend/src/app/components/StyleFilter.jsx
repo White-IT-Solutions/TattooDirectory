@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { styleImages } from "../data/testData/tattooStyles";
+import { enhancedTattooStyles } from '../../lib/data/tattooStyles.js';
 import { mockArtistData as mockArtists } from "../data/mockArtistData";
 
 //decide how style options for the filter are going to be handled. A list of common styles (originally done this way), was updated to include only styles that the artists in data have.
@@ -76,26 +76,25 @@ export default function TattooStyleFilter() {
                 focus:outline-none
               `}
                 style={{ minWidth: 0 }}
-                title={style}
+                title={enhancedTattooStyles[style]?.description || style}
                 data-testid={`style-button-${style.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                {styleImages[style] ? (
+                {enhancedTattooStyles[style]?.image ? (
                   <>
                     <img
-                      src={styleImages[style]}
-                      alt={style}
+                      src={enhancedTattooStyles[style].image}
+                      alt={enhancedTattooStyles[style].name || style}
                       className="absolute inset-0 w-full h-full object-cover opacity-60"
                       draggable={false}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20" />
                     <span className="relative z-10 text-white text-xs md:text-sm font-semibold px-2 py-1 rounded">
-                      {style}
+                      {enhancedTattooStyles[style]?.name || style}
                     </span>
                   </>
                 ) : (
                   <span className="relative z-10 text-white text-xs md:text-sm font-semibold px-2 py-1 rounded">
-                    {style}
-                    {/*need images for all of these, decide if style name will always be included */}
+                    {enhancedTattooStyles[style]?.name || style}
                   </span>
                 )}
               </button>

@@ -1,0 +1,364 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Artisan Tattoo Co.",
+    "address": {
+      "street": "89 Southside",
+      "city": "Glasgow",
+      "postcode": "G2 3BZ",
+      "latitude": 55.86645623065775,
+      "longitude": -4.250444594693644
+    },
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 131 7268 860",
+      "email": "info@artisantattooco.com",
+      "website": "https://artisantattooco.com",
+      "instagram": "@artisantattoocostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-001",
+      "artist-005",
+      "artist-013"
+    ],
+    "rating": 4.1,
+    "reviewCount": 94,
+    "established": 2012,
+    "specialties": [
+      "biomechanical",
+      "lettering",
+      "watercolour",
+      "minimalism",
+      "blackwork"
+    ],
+    "geohash": "45jjry"
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Vibrant Ink Studio",
+    "address": {
+      "street": "12 Digbeth",
+      "city": "Birmingham",
+      "postcode": "B3 1JJ",
+      "latitude": 52.48333390579595,
+      "longitude": -1.887743172846991
+    },
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 161 4366 738",
+      "email": "info@vibrantinkstudio.com",
+      "website": "https://vibrantinkstudio.com",
+      "instagram": "@vibrantinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-002",
+      "artist-008",
+      "artist-011"
+    ],
+    "rating": 4.5,
+    "reviewCount": 112,
+    "established": 2017,
+    "specialties": [
+      "traditional",
+      "floral"
+    ],
+    "geohash": "6pk8wv"
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Electric Needle Studio",
+    "address": {
+      "street": "67 Deansgate",
+      "city": "Manchester",
+      "postcode": "M2 3BB",
+      "latitude": 53.48204657429601,
+      "longitude": -2.239023388627171
+    },
+    "locationDisplay": "Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 117 9626 210",
+      "email": "info@electricneedlestudio.com",
+      "website": "https://electricneedlestudio.com",
+      "instagram": "@electricneedlestudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-003",
+      "artist-009"
+    ],
+    "rating": 4.5,
+    "reviewCount": 117,
+    "established": 2012,
+    "specialties": [
+      "dotwork",
+      "minimalism"
+    ],
+    "geohash": "3rmvn1"
+  },
+  {
+    "studioId": "studio-004",
+    "studioName": "Botanical Tattoo Collective",
+    "address": {
+      "street": "89 Hope Street",
+      "city": "Liverpool",
+      "postcode": "L2 2DX",
+      "latitude": 53.41006760887324,
+      "longitude": -2.9911142310835284
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 113 3033 861",
+      "email": "info@botanicaltattoocollective.com",
+      "website": "https://botanicaltattoocollective.com",
+      "instagram": "@botanicaltattoocollectivestudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-004",
+      "artist-006",
+      "artist-007"
+    ],
+    "rating": 4.9,
+    "reviewCount": 22,
+    "established": 2011,
+    "specialties": [
+      "japanese",
+      "geometric",
+      "realism"
+    ],
+    "geohash": "pwxywm"
+  },
+  {
+    "studioId": "studio-005",
+    "studioName": "Ink & Steel Studio",
+    "address": {
+      "street": "45 Headrow",
+      "city": "Leeds",
+      "postcode": "LS1 1AA",
+      "latitude": 53.79980236081084,
+      "longitude": -1.5480674139904682
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 113 4353 550",
+      "email": "info@inksteelstudio.com",
+      "website": "https://inksteelstudio.com",
+      "instagram": "@inksteelstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-010",
+      "artist-014",
+      "artist-015"
+    ],
+    "rating": 4.5,
+    "reviewCount": 95,
+    "established": 2017,
+    "specialties": [
+      "geometric",
+      "biomechanical"
+    ],
+    "geohash": "644581"
+  },
+  {
+    "studioId": "studio-006",
+    "studioName": "Classic Ink Parlour",
+    "address": {
+      "street": "12 Park Street",
+      "city": "Bristol",
+      "postcode": "BS2 0SP",
+      "latitude": 51.45313137102959,
+      "longitude": -2.5902841420033083
+    },
+    "locationDisplay": "Bristol, UK",
+    "contactInfo": {
+      "phone": "+44 113 7767 661",
+      "email": "info@classicinkparlour.com",
+      "website": "https://classicinkparlour.com",
+      "instagram": "@classicinkparlourstudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-012",
+      "artist-016"
+    ],
+    "rating": 4.9,
+    "reviewCount": 36,
+    "established": 2007,
+    "specialties": [
+      "tribal",
+      "traditional",
+      "biomechanical",
+      "japanese"
+    ],
+    "geohash": "yqy8f8"
+  },
+  {
+    "studioId": "studio-007",
+    "studioName": "Classic Ink Parlour",
+    "address": {
+      "street": "156 Camden Market",
+      "city": "London",
+      "postcode": "EC1A 1BB",
+      "latitude": 51.51211158729108,
+      "longitude": -0.12420693553393487
+    },
+    "locationDisplay": "London, UK",
+    "contactInfo": {
+      "phone": "+44 117 2873 310",
+      "email": "info@classicinkparlour.com",
+      "website": "https://classicinkparlour.com",
+      "instagram": "@classicinkparlourstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-017",
+      "artist-018"
+    ],
+    "rating": 4.8,
+    "reviewCount": 39,
+    "established": 2009,
+    "specialties": [
+      "tribal",
+      "geometric"
+    ],
+    "geohash": "byyd1k"
+  },
+  {
+    "studioId": "studio-008",
+    "studioName": "Sacred Art Tattoos",
+    "address": {
+      "street": "90 Grassmarket",
+      "city": "Edinburgh",
+      "postcode": "EH2 2AD",
+      "latitude": 55.95607823331563,
+      "longitude": -3.1881795200620444
+    },
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 121 6421 865",
+      "email": "info@sacredarttattoos.com",
+      "website": "https://sacredarttattoos.com",
+      "instagram": "@sacredarttattoosstudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-019"
+    ],
+    "rating": 4.8,
+    "reviewCount": 95,
+    "established": 2008,
+    "specialties": [
+      "japanese",
+      "realism",
+      "floral",
+      "tribal",
+      "blackwork"
+    ],
+    "geohash": "yqcnbe"
+  },
+  {
+    "studioId": "studio-009",
+    "studioName": "Modern Ink Studio",
+    "address": {
+      "street": "45 Headrow",
+      "city": "Leeds",
+      "postcode": "LS6 2AS",
+      "latitude": 53.79612652498946,
+      "longitude": -1.5486522935207119
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 141 1249 657",
+      "email": "info@moderninkstudio.com",
+      "website": "https://moderninkstudio.com",
+      "instagram": "@moderninkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-020"
+    ],
+    "rating": 4,
+    "reviewCount": 40,
+    "established": 2015,
+    "specialties": [
+      "blackwork",
+      "tribal"
+    ],
+    "geohash": "2fbq5r"
+  }
+]

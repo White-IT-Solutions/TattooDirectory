@@ -1,0 +1,16 @@
+{
+  "name": "Rebel Ink",
+  "location": "Nottingham",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_rebel_ink.png"
+    ],
+    "external": [
+      "external_01_rebel_ink.png"
+    ],
+    "working": [
+      "working_01_rebel_ink.png"
+    ]
+  }
+}

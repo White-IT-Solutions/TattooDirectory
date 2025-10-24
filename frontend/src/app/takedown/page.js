@@ -544,7 +544,7 @@ function TakedownRequestForm() {
 }
 
 // Main page component with toast provider
-export const dynamic = 'force-dynamic';
+
 
 export default function TakedownPage() {
   return (

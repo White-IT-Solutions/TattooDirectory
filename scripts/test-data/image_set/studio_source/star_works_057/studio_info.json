@@ -1,0 +1,16 @@
+{
+  "name": "Star Works",
+  "location": "Newcastle",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_star_works.png"
+    ],
+    "external": [
+      "external_01_star_works.png"
+    ],
+    "working": [
+      "working_01_star_works.png"
+    ]
+  }
+}

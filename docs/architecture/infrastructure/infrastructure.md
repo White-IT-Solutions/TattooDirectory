@@ -7,44 +7,54 @@ This directory contains comprehensive documentation for all Terraform modules us
 The infrastructure is organized into 19 specialized modules that work together to create a complete serverless application platform:
 
 ### Foundation Modules (01-03)
+
 - **[01-foundation](./01-foundation.md)**: Core foundational resources including KMS keys, random values, and code signing
 - **[03-audit-foundation](./03-audit-foundation.md)**: Audit account foundation with encryption keys for centralized logging
 
 ### Security & Logging (04-07)
+
 - **[04-central-logging](./04-central-logging.md)**: Centralized logging infrastructure with Kinesis Firehose for WAF logs
 - **[05-networking](./05-networking.md)**: VPC, subnets, security groups, NAT gateways, and VPC endpoints
 - **[06-central-security](./06-central-security.md)**: GuardDuty, Security Hub, and IAM Access Analyzer for organization-wide security
 - **[07-app-security](./07-app-security.md)**: Application secrets management and WAF protection
 
 ### Data & Storage (08-10)
+
 - **[08-log-storage](./08-log-storage.md)**: Centralized S3 buckets for audit logs with cross-region replication
 - **[09-app-storage](./09-app-storage.md)**: DynamoDB tables and S3 buckets for application data and frontend hosting
 - **[10-search](./10-search.md)**: OpenSearch cluster for full-text search and filtering capabilities
 
 ### Compute & API (11-13)
+
 - **[11-iam](./11-iam.md)**: IAM roles and policies for all application components
 - **[12-compute](./12-compute.md)**: Lambda functions, ECS Fargate, and Step Functions for serverless compute
 - **[13-api](./13-api.md)**: API Gateway HTTP API with CORS, throttling, and custom domain support
 
 ### Monitoring & Operations (14-16)
+
 - **[14-security-monitoring](./14-security-monitoring.md)**: Security-focused monitoring, alerting, and Log Insights queries
 - **[15-app-monitoring](./15-app-monitoring.md)**: Application performance monitoring, dashboards, and operational alerts
 - **[16-backup](./16-backup.md)**: Automated backup and disaster recovery with cross-region replication
 
 ### Governance & Delivery (17, 19)
+
 - **[17-governance](./17-governance.md)**: AWS Config compliance monitoring, CloudTrail audit logging, and automated remediation
 - **[19-delivery](./19-delivery.md)**: CloudFront distribution for global content delivery and API integration
 
 ## Architecture Overview
 
 ### Multi-Account Strategy
+
 The infrastructure spans multiple AWS accounts for security and compliance:
+
 - **Infrastructure Account**: Main application resources (Lambda, DynamoDB, API Gateway)
 - **Security Account**: Centralized security monitoring (GuardDuty, Security Hub)
 - **Audit Account**: Centralized logging and backup storage
 
 ### Serverless Architecture
+
 The platform uses a fully serverless architecture:
+
 - **Compute**: AWS Lambda and ECS Fargate
 - **Storage**: DynamoDB (NoSQL) and S3 (object storage)
 - **Search**: Amazon OpenSearch for full-text search
@@ -52,37 +62,238 @@ The platform uses a fully serverless architecture:
 - **CDN**: CloudFront for global content delivery
 
 ### Security-First Design
+
 Security is built into every layer:
+
 - **Encryption**: Customer-managed KMS keys for all data
 - **Network**: VPC with private subnets and security groups
 - **Access**: IAM roles with least-privilege permissions
 - **Monitoring**: Comprehensive security monitoring and alerting
 - **Compliance**: Automated compliance checking with AWS Config
 
-## Module Dependencies
+## Infrastructure as Code Architecture
 
-### Dependency Flow
+### Terraform Module Dependency Flow
+
+```mermaid
+graph TD
+    %% Foundation Layer
+    subgraph "Foundation Layer"
+        F01[01-foundation<br/>KMS Keys, Code Signing]
+        F03[03-audit-foundation<br/>Audit Account Setup]
+    end
+
+    %% Security & Networking Layer
+    subgraph "Security & Networking Layer"
+        S04[04-central-logging<br/>Kinesis Firehose]
+        S05[05-networking<br/>VPC, Subnets, NAT]
+        S06[06-central-security<br/>GuardDuty, Security Hub]
+        S07[07-app-security<br/>WAF, Secrets Manager]
+    end
+
+    %% Data & Storage Layer
+    subgraph "Data & Storage Layer"
+        D08[08-log-storage<br/>S3 Audit Buckets]
+        D09[09-app-storage<br/>DynamoDB, S3 App Data]
+        D10[10-search<br/>OpenSearch Cluster]
+    end
+
+    %% Compute & API Layer
+    subgraph "Compute & API Layer"
+        C11[11-iam<br/>Roles & Policies]
+        C12[12-compute<br/>Lambda, ECS, Step Functions]
+        C13[13-api<br/>API Gateway HTTP API]
+    end
+
+    %% Operations Layer
+    subgraph "Operations Layer"
+        O14[14-security-monitoring<br/>Security Alerts]
+        O15[15-app-monitoring<br/>Performance Dashboards]
+        O16[16-backup<br/>Disaster Recovery]
+        O17[17-governance<br/>Config, CloudTrail]
+        O19[19-delivery<br/>CloudFront CDN]
+    end
+
+    %% Dependencies
+    F01 --> F03
+    F01 --> S04
+    F01 --> S05
+    F01 --> S06
+    F01 --> S07
+    F01 --> D08
+    F01 --> D09
+    F01 --> D10
+    F01 --> C11
+
+    F03 --> D08
+    S05 --> D10
+    S05 --> C12
+    S07 --> C12
+    C11 --> C12
+    C11 --> C13
+    D09 --> C12
+    D10 --> C12
+    C12 --> C13
+
+    S04 --> O14
+    S06 --> O14
+    D09 --> O15
+    C12 --> O15
+    C13 --> O15
+    D09 --> O16
+    F01 --> O17
+    C13 --> O19
+
+    %% Styling
+    classDef foundation fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef security fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef data fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef compute fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef operations fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class F01,F03 foundation
+    class S04,S05,S06,S07 security
+    class D08,D09,D10 data
+    class C11,C12,C13 compute
+    class O14,O15,O16,O17,O19 operations
 ```
-01-foundation (base)
-├── 03-audit-foundation
-├── 04-central-logging
-├── 05-networking
-├── 06-central-security
-├── 07-app-security
-├── 08-log-storage
-├── 09-app-storage
-├── 10-search
-├── 11-iam
-├── 12-compute
-├── 13-api
-├── 14-security-monitoring
-├── 15-app-monitoring
-├── 16-backup
-├── 17-governance
-└── 19-delivery
+
+### Multi-Account Architecture Flow
+
+```mermaid
+graph LR
+    subgraph "Infrastructure Account"
+        subgraph "Application Stack"
+            API[API Gateway]
+            LAMBDA[Lambda Functions]
+            DDB[DynamoDB]
+            OS[OpenSearch]
+            S3APP[S3 App Data]
+        end
+
+        subgraph "Frontend Stack"
+            CF[CloudFront]
+            S3WEB[S3 Website]
+        end
+    end
+
+    subgraph "Security Account"
+        GD[GuardDuty]
+        SH[Security Hub]
+        IAA[IAM Access Analyzer]
+    end
+
+    subgraph "Audit Account"
+        CT[CloudTrail]
+        CW[CloudWatch Logs]
+        S3AUDIT[S3 Audit Buckets]
+        BACKUP[Backup Vaults]
+    end
+
+    %% Data Flow
+    API --> LAMBDA
+    LAMBDA --> DDB
+    LAMBDA --> OS
+    LAMBDA --> S3APP
+    CF --> S3WEB
+    CF --> API
+
+    %% Security Monitoring
+    LAMBDA -.-> GD
+    API -.-> GD
+    DDB -.-> GD
+
+    GD --> SH
+    IAA --> SH
+
+    %% Audit Flow
+    API -.-> CT
+    LAMBDA -.-> CT
+    DDB -.-> CT
+
+    CT --> CW
+    CW --> S3AUDIT
+    DDB -.-> BACKUP
+    S3APP -.-> BACKUP
+
+    %% Styling
+    classDef infra fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef security fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef audit fill:#f1f8e9,stroke:#388e3c,stroke-width:2px
+
+    class API,LAMBDA,DDB,OS,S3APP,CF,S3WEB infra
+    class GD,SH,IAA security
+    class CT,CW,S3AUDIT,BACKUP audit
+```
+
+### Deployment Pipeline Flow
+
+```mermaid
+graph TD
+    START([Start Deployment]) --> VALIDATE{Validate<br/>Configuration}
+
+    VALIDATE -->|Valid| PHASE1[Phase 1: Foundation]
+    VALIDATE -->|Invalid| ERROR([Configuration Error])
+
+    PHASE1 --> F01_DEPLOY[Deploy 01-foundation]
+    F01_DEPLOY --> F03_DEPLOY[Deploy 03-audit-foundation]
+
+    F03_DEPLOY --> PHASE2[Phase 2: Security & Networking]
+    PHASE2 --> PARALLEL1{Deploy in Parallel}
+
+    PARALLEL1 --> S04_DEPLOY[04-central-logging]
+    PARALLEL1 --> S05_DEPLOY[05-networking]
+    PARALLEL1 --> S06_DEPLOY[06-central-security]
+    PARALLEL1 --> S07_DEPLOY[07-app-security]
+
+    S04_DEPLOY --> SYNC1[Wait for Completion]
+    S05_DEPLOY --> SYNC1
+    S06_DEPLOY --> SYNC1
+    S07_DEPLOY --> SYNC1
+
+    SYNC1 --> PHASE3[Phase 3: Data & Storage]
+    PHASE3 --> PARALLEL2{Deploy in Parallel}
+
+    PARALLEL2 --> D08_DEPLOY[08-log-storage]
+    PARALLEL2 --> D09_DEPLOY[09-app-storage]
+    PARALLEL2 --> D10_DEPLOY[10-search]
+
+    D08_DEPLOY --> SYNC2[Wait for Completion]
+    D09_DEPLOY --> SYNC2
+    D10_DEPLOY --> SYNC2
+
+    SYNC2 --> PHASE4[Phase 4: Compute & API]
+    PHASE4 --> C11_DEPLOY[11-iam]
+    C11_DEPLOY --> C12_DEPLOY[12-compute]
+    C12_DEPLOY --> C13_DEPLOY[13-api]
+
+    C13_DEPLOY --> PHASE5[Phase 5: Operations]
+    PHASE5 --> PARALLEL3{Deploy in Parallel}
+
+    PARALLEL3 --> O14_DEPLOY[14-security-monitoring]
+    PARALLEL3 --> O15_DEPLOY[15-app-monitoring]
+    PARALLEL3 --> O16_DEPLOY[16-backup]
+    PARALLEL3 --> O17_DEPLOY[17-governance]
+    PARALLEL3 --> O19_DEPLOY[19-delivery]
+
+    O14_DEPLOY --> COMPLETE([Deployment Complete])
+    O15_DEPLOY --> COMPLETE
+    O16_DEPLOY --> COMPLETE
+    O17_DEPLOY --> COMPLETE
+    O19_DEPLOY --> COMPLETE
+
+    %% Styling
+    classDef phase fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    classDef deploy fill:#e0f2f1,stroke:#00695c,stroke-width:2px
+    classDef control fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+
+    class PHASE1,PHASE2,PHASE3,PHASE4,PHASE5 phase
+    class F01_DEPLOY,F03_DEPLOY,S04_DEPLOY,S05_DEPLOY,S06_DEPLOY,S07_DEPLOY,D08_DEPLOY,D09_DEPLOY,D10_DEPLOY,C11_DEPLOY,C12_DEPLOY,C13_DEPLOY,O14_DEPLOY,O15_DEPLOY,O16_DEPLOY,O17_DEPLOY,O19_DEPLOY deploy
+    class VALIDATE,PARALLEL1,PARALLEL2,PARALLEL3,SYNC1,SYNC2 control
 ```
 
 ### Key Integration Points
+
 - **Foundation modules** provide KMS keys and basic resources used by all other modules
 - **Networking module** provides VPC infrastructure used by compute and data modules
 - **IAM module** provides roles and policies used by all application modules
@@ -92,11 +303,13 @@ Security is built into every layer:
 ## Environment-Specific Behavior
 
 ### Development Environment
+
 - **Cost Optimized**: Single NAT gateway, smaller instance sizes
 - **Simplified**: Reduced redundancy and backup frequency
 - **Faster Iteration**: Auto-deploy enabled, shorter retention periods
 
 ### Production Environment
+
 - **High Availability**: Multi-AZ deployment, dedicated master nodes
 - **Enhanced Security**: Code signing, vault locks, extended retention
 - **Disaster Recovery**: Cross-region replication, comprehensive backup
@@ -104,6 +317,7 @@ Security is built into every layer:
 ## Key Features by Module
 
 ### Data Processing Pipeline
+
 1. **Web Scraping**: ECS Fargate tasks discover studios and artists
 2. **Data Storage**: DynamoDB stores structured data with single-table design
 3. **Search Indexing**: Lambda functions sync data to OpenSearch
@@ -111,6 +325,7 @@ Security is built into every layer:
 5. **Global Delivery**: CloudFront serves content globally
 
 ### Security & Compliance
+
 1. **Threat Detection**: GuardDuty monitors for security threats
 2. **Compliance Monitoring**: Config rules ensure compliance
 3. **Audit Logging**: CloudTrail logs all API activities
@@ -118,6 +333,7 @@ Security is built into every layer:
 5. **Automated Remediation**: Config remediation fixes violations
 
 ### Monitoring & Operations
+
 1. **Application Monitoring**: CloudWatch monitors performance
 2. **Security Monitoring**: Specialized security alerting
 3. **Backup & Recovery**: Automated backup with cross-region replication
@@ -126,12 +342,14 @@ Security is built into every layer:
 ## Cost Optimization Strategies
 
 ### Development Cost Savings
+
 - Single NAT gateway instead of multi-AZ
 - Smaller instance types for OpenSearch and Lambda
 - Reduced backup frequency and retention
 - Single-region deployment
 
 ### Production Optimizations
+
 - Reserved instances for predictable workloads
 - Lifecycle policies for S3 storage optimization
 - VPC endpoints to reduce NAT gateway costs
@@ -140,6 +358,7 @@ Security is built into every layer:
 ## Security Best Practices
 
 ### Defense in Depth
+
 - **Network**: VPC, security groups, NACLs
 - **Application**: WAF, input validation, rate limiting
 - **Data**: Encryption at rest and in transit
@@ -147,6 +366,7 @@ Security is built into every layer:
 - **Monitoring**: Real-time threat detection and alerting
 
 ### Compliance Framework
+
 - **AWS Config**: Continuous compliance monitoring
 - **CloudTrail**: Comprehensive audit logging
 - **GuardDuty**: Threat detection and response
@@ -156,11 +376,13 @@ Security is built into every layer:
 ## Getting Started
 
 ### Prerequisites
+
 - AWS CLI configured with appropriate permissions
 - Terraform >= 1.0 installed
 - Understanding of AWS services and Terraform
 
 ### Deployment Order
+
 1. Deploy foundation modules (01, 03)
 2. Deploy networking and security (04-07)
 3. Deploy storage and data (08-10)
@@ -168,7 +390,9 @@ Security is built into every layer:
 5. Deploy monitoring and operations (14-17, 19)
 
 ### Configuration
+
 Each module accepts a `context` variable containing shared configuration:
+
 - Environment settings (dev/prod)
 - AWS account IDs and regions
 - Common tags and naming conventions
@@ -177,16 +401,19 @@ Each module accepts a `context` variable containing shared configuration:
 ## Support and Maintenance
 
 ### Documentation Updates
+
 - Module documentation should be updated when resources change
 - Include new features, dependencies, and integration points
 - Update cost implications and operational considerations
 
 ### Module Versioning
+
 - Use semantic versioning for module releases
 - Test changes in development environment first
 - Maintain backward compatibility when possible
 
 ### Monitoring and Alerting
+
 - Each module includes relevant CloudWatch metrics
 - Alarms configured for operational and security events
 - Integration with centralized notification systems
@@ -197,7 +424,3 @@ Each module accepts a `context` variable containing shared configuration:
 - [Terraform Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html)
 - [AWS Security Best Practices](https://aws.amazon.com/architecture/security-identity-compliance/)
 - [Project Documentation](../README.md)
-
----
-
-*This documentation is maintained as part of the Tattoo Artist Directory MVP infrastructure. For questions or updates, please refer to the project repository.*

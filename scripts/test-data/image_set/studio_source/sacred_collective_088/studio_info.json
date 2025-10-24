@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Collective",
+  "location": "Nottingham",
+  "type": "futuristic modern",
+  "images": {
+    "internal": [
+      "internal_01_sacred_collective.png"
+    ],
+    "external": [
+      "external_01_sacred_collective.png"
+    ],
+    "working": [
+      "working_01_sacred_collective.png"
+    ]
+  }
+}

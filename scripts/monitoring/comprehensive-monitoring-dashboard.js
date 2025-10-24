@@ -17,7 +17,7 @@ const socketIo = require('socket.io');
 const path = require('path');
 const fs = require('fs').promises;
 
-const HealthMonitor = require('./health-monitor');
+const HealthMonitor = require('../utilities/health-monitor');
 const AlertSystem = require('./alert-system');
 const EnvironmentHealthValidator = require('./environment-health-validator');
 

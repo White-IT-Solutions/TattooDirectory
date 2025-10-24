@@ -1,0 +1,16 @@
+{
+  "name": "Urban Art",
+  "location": "York",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_urban_art.png"
+    ],
+    "external": [
+      "external_01_urban_art.png"
+    ],
+    "working": [
+      "working_01_urban_art.png"
+    ]
+  }
+}

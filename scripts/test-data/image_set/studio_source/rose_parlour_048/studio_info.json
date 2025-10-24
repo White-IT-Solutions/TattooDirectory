@@ -1,0 +1,16 @@
+{
+  "name": "Rose Parlour",
+  "location": "Bath",
+  "type": "clean medical",
+  "images": {
+    "internal": [
+      "internal_01_rose_parlour.png"
+    ],
+    "external": [
+      "external_01_rose_parlour.png"
+    ],
+    "working": [
+      "working_01_rose_parlour.png"
+    ]
+  }
+}

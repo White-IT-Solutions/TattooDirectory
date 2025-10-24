@@ -1,0 +1,223 @@
+{
+  "timestamp": "2025-10-03T19:12:56.850Z",
+  "testSuite": "frontend-sync-processor-performance",
+  "results": {
+    "timestamp": "2025-10-03T19:12:56.854Z",
+    "testRun": "performance-test-1759518776854",
+    "baseline": null,
+    "current": {
+      "startup-time": {
+        "testName": "startup-time",
+        "avgTime": 2.073833333333335,
+        "maxTime": 2.4920000000000044,
+        "minTime": 1.2852999999999994,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 2000,
+        "warnings": []
+      },
+      "memory-usage": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "error": "Cannot read properties of null (reading 'heapUsed')",
+          "passed": false,
+          "warnings": [
+            "Test failed: Cannot read properties of null (reading 'heapUsed')"
+          ]
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "error": "Cannot read properties of null (reading 'heapUsed')",
+          "passed": false,
+          "warnings": [
+            "Test failed: Cannot read properties of null (reading 'heapUsed')"
+          ]
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "error": "Cannot read properties of null (reading 'heapUsed')",
+          "passed": false,
+          "warnings": [
+            "Test failed: Cannot read properties of null (reading 'heapUsed')"
+          ]
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "error": "Cannot read properties of null (reading 'heapUsed')",
+          "passed": false,
+          "warnings": [
+            "Test failed: Cannot read properties of null (reading 'heapUsed')"
+          ]
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "error": "Cannot read properties of null (reading 'heapUsed')",
+          "passed": false,
+          "warnings": [
+            "Test failed: Cannot read properties of null (reading 'heapUsed')"
+          ]
+        }
+      },
+      "performance-regression": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "avgTime": 0.40593333333332754,
+          "maxTime": 0.5004999999999882,
+          "minTime": 0.347999999999999,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 500,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "avgTime": 1.055133333333335,
+          "maxTime": 1.167500000000004,
+          "minTime": 0.9966000000000008,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 2000,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "avgTime": 2.203333333333338,
+          "maxTime": 3.4517999999999915,
+          "minTime": 1.4747000000000128,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 5000,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "avgTime": 10.577733333333336,
+          "maxTime": 11.726100000000002,
+          "minTime": 8.479700000000008,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 15000,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "avgTime": 17.778766666666673,
+          "maxTime": 22.46610000000001,
+          "minTime": 13.86699999999999,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 30000,
+          "warnings": []
+        }
+      },
+      "concurrent-operations": {
+        "unified-data-manager": {
+          "component": "unified-data-manager",
+          "duration": 0.5126999999999953,
+          "baselineTime": 2000,
+          "overhead": -1999.4873,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "pipeline-engine": {
+          "component": "pipeline-engine",
+          "duration": 0.4461000000000013,
+          "baselineTime": 2000,
+          "overhead": -1999.5538999999999,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "state-manager": {
+          "component": "state-manager",
+          "duration": 0.37050000000002115,
+          "baselineTime": 2000,
+          "overhead": -1999.6295,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "health-monitor": {
+          "component": "health-monitor",
+          "duration": 0.5027000000000044,
+          "baselineTime": 2000,
+          "overhead": -1999.4973,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "image-processor": {
+          "component": "image-processor",
+          "duration": 4.461999999999989,
+          "baselineTime": 2000,
+          "overhead": -1995.538,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        }
+      },
+      "enhanced-features": {
+        "business-data-generation": {
+          "feature": "business-data-generation",
+          "avgTime": 0.23556666666665174,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "performance-data-generation": {
+          "feature": "performance-data-generation",
+          "avgTime": 0.2325333333333314,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-validation": {
+          "feature": "data-validation",
+          "avgTime": 0.22233333333334335,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-export": {
+          "feature": "data-export",
+          "avgTime": 4.14136666666667,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "scenario-processing": {
+          "feature": "scenario-processing",
+          "avgTime": 0.34206666666667235,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        }
+      }
+    },
+    "comparisons": {},
+    "summary": {
+      "passed": 1,
+      "failed": 4,
+      "warnings": 0,
+      "totalTests": 5
+    }
+  },
+  "summary": {
+    "totalTests": 5,
+    "passed": 1,
+    "failed": 4,
+    "warnings": 0,
+    "duration": 226
+  }
+}

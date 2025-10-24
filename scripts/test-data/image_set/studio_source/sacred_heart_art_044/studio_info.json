@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Heart Art",
+  "location": "Cardiff",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_sacred_heart_art.png"
+    ],
+    "external": [
+      "external_01_sacred_heart_art.png"
+    ],
+    "working": [
+      "working_01_sacred_heart_art.png"
+    ]
+  }
+}

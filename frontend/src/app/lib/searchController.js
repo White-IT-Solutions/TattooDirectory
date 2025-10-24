@@ -3,7 +3,7 @@
  * Central coordinator for all search functionality across pages
  */
 
-import { enhancedTattooStyles, searchStylesByAlias } from "../data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 
 // Import mock data with fallbacks for testing
 let mockArtistData, mockStudioData;

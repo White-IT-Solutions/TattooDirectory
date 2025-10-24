@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { ImageProcessor, STYLE_MAPPING } = require('../image-processor');
+const { ImageProcessor, STYLE_MAPPING } = require('../data-management/image-processor');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock AWS SDK
@@ -28,7 +28,7 @@ jest.mock('aws-sdk', () => ({
 
 // Mock file system operations
 jest.mock('fs');
-jest.mock('../state-manager', () => ({
+jest.mock('../utilities/state-manager', () => ({
   STATE_MANAGER: {
     detectChanges: jest.fn()
   }

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import StudioSearch from '../StudioSearch';
 
 // Mock enhanced tattoo styles data
-jest.mock('../../../../../app/data/testData/enhancedTattooStyles', () => ({
+jest.mock('../../../../../lib/data/tattooStyles.js', () => ({
   enhancedTattooStyles: {
     'traditional': {
       id: 'traditional',

@@ -1,0 +1,16 @@
+{
+  "name": "Rose House",
+  "location": "Canterbury",
+  "type": "cozy boutique",
+  "images": {
+    "internal": [
+      "internal_01_rose_house.png"
+    ],
+    "external": [
+      "external_01_rose_house.png"
+    ],
+    "working": [
+      "working_01_rose_house.png"
+    ]
+  }
+}

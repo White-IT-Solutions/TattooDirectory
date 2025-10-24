@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSearchController, SearchQuery } from "../../lib/useSearchController";
@@ -311,6 +311,10 @@ export default function EnhancedStudiosPage() {
   const [searchProgress, setSearchProgress] = useState(0);
   const [searchStep, setSearchStep] = useState(0);
   const [saveSearchName, setSaveSearchName] = useState("");
+  
+  // Refs to track previous values to prevent loops
+  const prevSearchTextRef = useRef("");
+  const prevAdvancedFiltersRef = useRef({});
 
   // Search progress steps
   const searchSteps = [
@@ -323,23 +327,45 @@ export default function EnhancedStudiosPage() {
   // Initialize search from URL parameters
   useEffect(() => {
     const query = SearchQuery.fromURLSearchParams(searchParams);
-    setSearchText(query.text || "");
+    const newText = query.text || "";
     
-    // Set advanced filters from query
-    setAdvancedFilters({
+    // Only update searchText if it has actually changed to prevent infinite loops
+    if (prevSearchTextRef.current !== newText) {
+      prevSearchTextRef.current = newText;
+      setSearchText(newText);
+    }
+    
+    // Set advanced filters from query only if they've changed
+    const newAdvancedFilters = {
       studioSize: query.studioSize,
       establishmentYear: query.establishmentYear,
       services: query.services,
       rating: query.rating,
       location: query.location,
       radius: query.radius
-    });
+    };
+    
+    // Only update if filters have actually changed
+    const filtersChanged = JSON.stringify(prevAdvancedFiltersRef.current) !== JSON.stringify(newAdvancedFilters);
+    if (filtersChanged) {
+      prevAdvancedFiltersRef.current = newAdvancedFilters;
+      setAdvancedFilters(newAdvancedFilters);
+    }
 
     // Execute search if there are parameters
     if (query.hasFilters()) {
       executeSearchWithProgress(query);
     }
   }, [searchParams]);
+
+  // Update refs when values change from user input
+  useEffect(() => {
+    prevSearchTextRef.current = searchText;
+  }, [searchText]);
+
+  useEffect(() => {
+    prevAdvancedFiltersRef.current = advancedFilters;
+  }, [advancedFilters]);
 
   // Generate autocomplete suggestions for studios
   const generateSuggestions = useCallback((text) => {

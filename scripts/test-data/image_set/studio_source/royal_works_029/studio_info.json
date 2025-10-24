@@ -1,0 +1,16 @@
+{
+  "name": "Royal Works",
+  "location": "Canterbury",
+  "type": "classic traditional",
+  "images": {
+    "internal": [
+      "internal_01_royal_works.png"
+    ],
+    "external": [
+      "external_01_royal_works.png"
+    ],
+    "working": [
+      "working_01_royal_works.png"
+    ]
+  }
+}

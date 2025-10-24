@@ -5,11 +5,11 @@
  */
 
 const { DataCLI, COMMANDS, COLORS, SYMBOLS } = require('../data-cli');
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock dependencies
-jest.mock('../unified-data-manager');
+jest.mock('../data-management/unified-data-manager');
 jest.mock('../data-config');
 
 describe('DataCLI', () => {

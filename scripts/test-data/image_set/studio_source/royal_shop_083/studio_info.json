@@ -1,0 +1,16 @@
+{
+  "name": "Royal Shop",
+  "location": "York",
+  "type": "urban loft",
+  "images": {
+    "internal": [
+      "internal_01_royal_shop.png"
+    ],
+    "external": [
+      "external_01_royal_shop.png"
+    ],
+    "working": [
+      "working_01_royal_shop.png"
+    ]
+  }
+}

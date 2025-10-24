@@ -185,7 +185,7 @@ const privacySections = [
   }
 ];
 
-export const dynamic = 'force-dynamic';
+
 
 export default function PrivacyPolicyPage() {
   const [activeSection, setActiveSection] = useState(null);

@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from 'react';
-import { createStandardizedComponent } from '../utils/design-system-utils';
+import { createStandardizedComponent, filterDOMProps } from '../utils/design-system-utils';
 import { cn } from '../utils/cn';
 
 /**
@@ -22,10 +22,13 @@ export function withStandardizedDesignSystem(WrappedComponent, componentType, de
   const StandardizedComponent = forwardRef((props, ref) => {
     const standardizedProps = useStandardizedConfig(props);
     
+    // Filter out design system props to prevent React warnings
+    const domProps = filterDOMProps(standardizedProps);
+    
     return (
       <WrappedComponent
         ref={ref}
-        {...standardizedProps}
+        {...domProps}
       />
     );
   });
@@ -48,11 +51,14 @@ export const StandardizedComponent = forwardRef(({
   const useStandardizedConfig = createStandardizedComponent(componentType);
   const standardizedProps = useStandardizedConfig(props);
   
+  // Filter out design system props to prevent React warnings
+  const domProps = filterDOMProps(standardizedProps);
+  
   return (
     <Component
       ref={ref}
       className={cn(standardizedProps.className, className)}
-      {...standardizedProps}
+      {...domProps}
     >
       {children}
     </Component>

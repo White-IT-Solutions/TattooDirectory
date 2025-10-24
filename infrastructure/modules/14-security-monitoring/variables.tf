@@ -67,3 +67,16 @@ variable "cloudtrail_log_group_name" {
   type        = string
   default     = ""
 }
+
+# WAF monitoring configuration
+variable "enable_waf_monitoring" {
+  description = "Enable WAF security monitoring"
+  type        = bool
+  default     = true
+}
+
+variable "waf_web_acl_name" {
+  description = "Name of the WAF Web ACL for monitoring"
+  type        = string
+  default     = ""
+}

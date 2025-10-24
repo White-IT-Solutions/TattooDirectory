@@ -30,18 +30,14 @@ export function createTestDynamoDBClient() {
  * Create OpenSearch client for testing
  */
 export function createTestOpenSearchClient() {
+    console.log(`Creating OpenSearch client with endpoint: ${testConfig.opensearch.endpoint}`);
+    
     return new OpenSearchClient({
         node: testConfig.opensearch.endpoint,
-        auth: {
-            username: 'admin',
-            password: 'admin'
-        },
         ssl: {
             rejectUnauthorized: false
-        },
-        headers: {
-            'Host': 'tattoo-directory-local.eu-west-2.opensearch.localstack'
         }
+        // Removed auth and Host header as they may cause issues with LocalStack/direct OpenSearch
     });
 }
 

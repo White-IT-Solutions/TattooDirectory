@@ -49,7 +49,7 @@ const config = {
     '**/dist/**',
     '**/build/**',
     '**/.kiro/consolidated_data_tooling/**',
-    '**/.kiro/data-management-state/**',
+    '**/scripts/data-management-state/**',
     '**/.kiro/data_tooling/**'
   ],
 

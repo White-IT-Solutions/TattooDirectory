@@ -1,0 +1,370 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Electric Needle Studio",
+    "address": {
+      "street": "56 Broad Street",
+      "city": "Birmingham",
+      "postcode": "B3 1JJ",
+      "latitude": 52.48728784027765,
+      "longitude": -1.8932662652494208
+    },
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 117 1750 068",
+      "email": "info@electricneedlestudio.com",
+      "website": "https://electricneedlestudio.com",
+      "instagram": "@electricneedlestudiostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-001",
+      "artist-012",
+      "artist-017"
+    ],
+    "rating": 4.7,
+    "reviewCount": 74,
+    "established": 2018,
+    "specialties": [
+      "fineline",
+      "biomechanical",
+      "floral",
+      "japanese"
+    ],
+    "geohash": "3t7u9j"
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Electric Needle Studio",
+    "address": {
+      "street": "67 West End",
+      "city": "Glasgow",
+      "postcode": "G1 1AA",
+      "latitude": 55.868262027606285,
+      "longitude": -4.25575675079813
+    },
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 20 8755 133",
+      "email": "info@electricneedlestudio.com",
+      "website": "https://electricneedlestudio.com",
+      "instagram": "@electricneedlestudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-002",
+      "artist-004",
+      "artist-008"
+    ],
+    "rating": 4,
+    "reviewCount": 21,
+    "established": 2006,
+    "specialties": [
+      "floral",
+      "dotwork",
+      "traditional",
+      "biomechanical",
+      "fineline"
+    ],
+    "geohash": "msg3zn"
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Urban Canvas Studio",
+    "address": {
+      "street": "45 Rose Street",
+      "city": "Edinburgh",
+      "postcode": "EH8 9YL",
+      "latitude": 55.958246645403825,
+      "longitude": -3.1899915400868513
+    },
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 117 9633 606",
+      "email": "info@urbancanvasstudio.com",
+      "website": "https://urbancanvasstudio.com",
+      "instagram": "@urbancanvasstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-003",
+      "artist-009"
+    ],
+    "rating": 4.8,
+    "reviewCount": 96,
+    "established": 2012,
+    "specialties": [
+      "blackwork",
+      "watercolour",
+      "dotwork",
+      "lettering",
+      "realism"
+    ],
+    "geohash": "qs4tt4"
+  },
+  {
+    "studioId": "studio-004",
+    "studioName": "Botanical Tattoo Collective",
+    "address": {
+      "street": "67 Mathew Street",
+      "city": "Liverpool",
+      "postcode": "L1 1AA",
+      "latitude": 53.40359810256804,
+      "longitude": -2.99613224769753
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 141 5946 558",
+      "email": "info@botanicaltattoocollective.com",
+      "website": "https://botanicaltattoocollective.com",
+      "instagram": "@botanicaltattoocollectivestudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-005",
+      "artist-007",
+      "artist-014",
+      "artist-019",
+      "artist-020"
+    ],
+    "rating": 4.8,
+    "reviewCount": 145,
+    "established": 2008,
+    "specialties": [
+      "fineline",
+      "geometric",
+      "minimalism"
+    ],
+    "geohash": "9hcx7j"
+  },
+  {
+    "studioId": "studio-005",
+    "studioName": "Artisan Tattoo Co.",
+    "address": {
+      "street": "67 Deansgate",
+      "city": "Manchester",
+      "postcode": "M3 4CC",
+      "latitude": 53.48111980782234,
+      "longitude": -2.2464104041314408
+    },
+    "locationDisplay": "Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 20 7538 424",
+      "email": "info@artisantattooco.com",
+      "website": "https://artisantattooco.com",
+      "instagram": "@artisantattoocostudio"
+    },
+    "openingHours": {
+      "monday": "10:00-18:00",
+      "tuesday": "10:00-18:00",
+      "wednesday": "10:00-18:00",
+      "thursday": "10:00-20:00",
+      "friday": "10:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-16:00"
+    },
+    "artists": [
+      "artist-006",
+      "artist-011"
+    ],
+    "rating": 4.8,
+    "reviewCount": 142,
+    "established": 2014,
+    "specialties": [
+      "tribal",
+      "realism",
+      "traditional",
+      "biomechanical"
+    ],
+    "geohash": "mrsshk"
+  },
+  {
+    "studioId": "studio-006",
+    "studioName": "Electric Needle Studio",
+    "address": {
+      "street": "90 Briggate",
+      "city": "Leeds",
+      "postcode": "LS2 7UE",
+      "latitude": 53.803031698339716,
+      "longitude": -1.5494406885922716
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 131 5991 931",
+      "email": "info@electricneedlestudio.com",
+      "website": "https://electricneedlestudio.com",
+      "instagram": "@electricneedlestudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-010",
+      "artist-016"
+    ],
+    "rating": 4.7,
+    "reviewCount": 130,
+    "established": 2013,
+    "specialties": [
+      "fineline",
+      "minimalism"
+    ],
+    "geohash": "7gt2sc"
+  },
+  {
+    "studioId": "studio-007",
+    "studioName": "Sacred Art Tattoos",
+    "address": {
+      "street": "34 Gloucester Road",
+      "city": "Bristol",
+      "postcode": "BS8 1TH",
+      "latitude": 51.45295918482575,
+      "longitude": -2.586933070207427
+    },
+    "locationDisplay": "Bristol, UK",
+    "contactInfo": {
+      "phone": "+44 131 6304 544",
+      "email": "info@sacredarttattoos.com",
+      "website": "https://sacredarttattoos.com",
+      "instagram": "@sacredarttattoosstudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-013"
+    ],
+    "rating": 4.1,
+    "reviewCount": 103,
+    "established": 2016,
+    "specialties": [
+      "japanese",
+      "geometric",
+      "blackwork"
+    ],
+    "geohash": "m6rkgg"
+  },
+  {
+    "studioId": "studio-008",
+    "studioName": "Rebel Ink Studio",
+    "address": {
+      "street": "78 Shoreditch High Street",
+      "city": "London",
+      "postcode": "W1A 0AX",
+      "latitude": 51.50255070667944,
+      "longitude": -0.13195824086332938
+    },
+    "locationDisplay": "London, UK",
+    "contactInfo": {
+      "phone": "+44 131 3702 360",
+      "email": "info@rebelinkstudio.com",
+      "website": "https://rebelinkstudio.com",
+      "instagram": "@rebelinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-015"
+    ],
+    "rating": 4.4,
+    "reviewCount": 51,
+    "established": 2007,
+    "specialties": [
+      "geometric",
+      "tribal",
+      "fineline",
+      "floral",
+      "realism"
+    ],
+    "geohash": "01w88w"
+  },
+  {
+    "studioId": "studio-009",
+    "studioName": "Urban Canvas Studio",
+    "address": {
+      "street": "12 Digbeth",
+      "city": "Birmingham",
+      "postcode": "B2 4QA",
+      "latitude": 52.481291457887615,
+      "longitude": -1.8928197290240205
+    },
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 20 8750 739",
+      "email": "info@urbancanvasstudio.com",
+      "website": "https://urbancanvasstudio.com",
+      "instagram": "@urbancanvasstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-018"
+    ],
+    "rating": 4.1,
+    "reviewCount": 37,
+    "established": 2011,
+    "specialties": [
+      "biomechanical",
+      "japanese"
+    ],
+    "geohash": "wtspjz"
+  }
+]

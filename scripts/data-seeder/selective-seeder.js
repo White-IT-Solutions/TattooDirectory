@@ -418,11 +418,16 @@ class SelectiveSeeder {
     console.log('🔍 Setting up OpenSearch index...');
     
     try {
-      // Delete existing index if it exists
+      // Check if index exists first
+      let indexExists = false;
       try {
-        await this.makeOpenSearchRequest('DELETE', `/${OPENSEARCH_INDEX}`);
+        await this.makeOpenSearchRequest('HEAD', `/${OPENSEARCH_INDEX}`);
+        indexExists = true;
+        console.log('📋 OpenSearch index already exists, skipping creation');
+        return; // Don't recreate if it already exists
       } catch (error) {
-        // Index doesn't exist, which is fine
+        // Index doesn't exist, we'll create it
+        console.log('📋 OpenSearch index does not exist, creating new one');
       }
 
       // Create index with mapping

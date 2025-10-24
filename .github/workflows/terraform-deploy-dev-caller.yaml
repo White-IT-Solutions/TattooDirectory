@@ -8,11 +8,47 @@ on:
       - release-dev
 
 jobs:
-  call-reusable-workflow:
+  deploy-infrastructure:
     uses: ./.github/workflows/terraform-reusable-deploy.yml
     with:
       environment: dev
       tf_state_key: dev/terraform.tfstate
+      tf_var_file: auto.tfvars
+      ssm_prefix: /tattoo-artist-directory-dev
+      lambda_prefix: tattoo-artist-directory-dev
+      kms_key_alias: alias/tattoo-artist-directory-dev-main
+      apply_changes: true
     secrets:
       # Pass the AWS role from the 'dev' environment secrets
-      AWS_ROLE_TO_ASSUME_DEV: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+
+  notify-deployment-started:
+    uses: ./.github/workflows/deployment-notifications.yaml
+    with:
+      environment: dev
+      deployment_status: started
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+
+  integration-tests:
+    needs: deploy-infrastructure
+    uses: ./.github/workflows/integration-tests.yaml
+    with:
+      environment: dev
+      api_url: "" # Will be retrieved from SSM
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+
+  notify-deployment-result:
+    needs: [deploy-infrastructure, integration-tests]
+    if: always()
+    uses: ./.github/workflows/deployment-notifications.yaml
+    with:
+      environment: dev
+      deployment_status: ${{ needs.deploy-infrastructure.result == 'success' && needs.integration-tests.result == 'success' && 'success' || 'failure' }}
+      deployment_url: "https://dev.tattoo-directory.com" # Update with actual URL
+      api_url: "https://api-dev.tattoo-directory.com" # Update with actual URL
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}

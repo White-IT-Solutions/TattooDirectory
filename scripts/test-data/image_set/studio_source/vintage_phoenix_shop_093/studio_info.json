@@ -1,0 +1,16 @@
+{
+  "name": "Vintage Phoenix Shop",
+  "location": "Leeds",
+  "type": "street art inspired",
+  "images": {
+    "internal": [
+      "internal_01_vintage_phoenix_shop.png"
+    ],
+    "external": [
+      "external_01_vintage_phoenix_shop.png"
+    ],
+    "working": [
+      "working_01_vintage_phoenix_shop.png"
+    ]
+  }
+}

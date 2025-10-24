@@ -1,0 +1,16 @@
+{
+  "name": "Classic Collective",
+  "location": "Newcastle",
+  "type": "high-end luxury",
+  "images": {
+    "internal": [
+      "internal_01_classic_collective.png"
+    ],
+    "external": [
+      "external_01_classic_collective.png"
+    ],
+    "working": [
+      "working_01_classic_collective.png"
+    ]
+  }
+}

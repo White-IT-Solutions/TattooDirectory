@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-10-10T12:54:35.855Z",
+  "files": {
+    "dataConfig": {
+      "path": "C:\\dev\\Tattoo_MVP\\scripts\\data-config.js",
+      "checksum": "7258d8d175dc7fa6119ca44c656d17ac75c3e43a2be4fe4ac2f241d48807895d",
+      "lastModified": "2025-10-07T12:04:43.873Z"
+    },
+    "packageJson": {
+      "path": "C:\\dev\\Tattoo_MVP\\package.json",
+      "checksum": "3d3c14426864354e77ab37ba3318b0d7c7a85f2507bea9bce89eb2a83a03e19c",
+      "lastModified": "2025-10-08T18:07:41.270Z"
+    },
+    "dockerCompose": {
+      "path": "C:\\dev\\Tattoo_MVP\\devtools\\docker\\docker-compose.local.yml",
+      "checksum": "ecd01c89234f4e5d3f0f7ce623fb1b28d893eb8f20019b5392bb7b789fefaa59",
+      "lastModified": "2025-10-08T17:40:09.684Z"
+    },
+    "envFile": {
+      "path": "C:\\dev\\Tattoo_MVP\\devtools\\.env.local",
+      "checksum": "1ec9d8a9e69a9c7afc474058393a2d910677f299fd70fb3aa3b18f5cfa7ca4a7",
+      "lastModified": "2025-10-08T17:41:44.030Z"
+    }
+  },
+  "directories": {
+    "images": {
+      "path": "C:\\dev\\Tattoo_MVP\\scripts\\test-data\\image_set\\tattoo_source",
+      "checksum": "b4492251475dd2ef412b460e0f1caa13964fb24dfddd8f57dd75f65f98292e30",
+      "fileCount": 808,
+      "lastModified": "2025-10-02T01:43:44.777Z"
+    },
+    "testData": {
+      "path": "C:\\dev\\Tattoo_MVP\\scripts\\test-data",
+      "checksum": "aacd780a895df296de32306f454408a965aaff87c84634691a533e9d11cf4583",
+      "fileCount": 134,
+      "lastModified": "2025-10-06T15:48:41.007Z"
+    },
+    "scripts": {
+      "path": "C:\\dev\\Tattoo_MVP\\scripts",
+      "checksum": "39ada0f0935aaf9fa06246e73f6a1e6cbe551f700b5b5a2bf73bc358e275f103",
+      "fileCount": 12304,
+      "lastModified": "2025-10-10T12:53:54.154Z"
+    }
+  }
+}

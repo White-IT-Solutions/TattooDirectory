@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 import { cva } from '../../../utils/cn';
 import { useStandardizedProps } from '../../StandardizedComponent';
-import { generateComponentClasses, applyVisualEffects } from '../../../utils/design-system-utils';
+import { generateComponentClasses, applyVisualEffects, filterDOMProps } from '../../../utils/design-system-utils';
 
 // Card variant configurations using our design system
 const cardVariants = cva(
@@ -86,6 +86,9 @@ const Card = forwardRef(({
   const designSystemClasses = generateComponentClasses(standardizedProps);
   const visualEffectsClasses = applyVisualEffects(standardizedProps);
 
+  // Filter out design system props to prevent React warnings
+  const domProps = filterDOMProps(standardizedProps);
+
   return (
     <div
       className={cardVariants({ 
@@ -95,7 +98,7 @@ const Card = forwardRef(({
         className: `${designSystemClasses} ${visualEffectsClasses} ${standardizedProps.className}` 
       })}
       ref={ref}
-      {...standardizedProps}
+      {...domProps}
     >
       {children}
     </div>

@@ -122,6 +122,11 @@ output "cloudfront_certificate_arn" {
   value       = var.context.domain_name != "" ? aws_acm_certificate.cloudfront[0].arn : null
 }
 
+output "certificate_domain_validation_options" {
+  description = "Domain validation options for ACM certificate"
+  value       = var.context.domain_name != "" ? aws_acm_certificate.cloudfront[0].domain_validation_options : []
+}
+
 # =============================================================================
 # VPC ENDPOINTS
 # =============================================================================

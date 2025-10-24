@@ -1,0 +1,16 @@
+{
+  "name": "Vintage Ink",
+  "location": "Birmingham",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_vintage_ink.png"
+    ],
+    "external": [
+      "external_01_vintage_ink.png"
+    ],
+    "working": [
+      "working_01_vintage_ink.png"
+    ]
+  }
+}

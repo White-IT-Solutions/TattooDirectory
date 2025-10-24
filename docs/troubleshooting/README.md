@@ -175,16 +175,16 @@ awslocal s3 ls s3://tattoo-images/studios/ --recursive --endpoint-url http://loc
 2. **Check studio image structure:**
    ```bash
    # Verify studio image directories
-   ls -la tests/Test_Data/StudioImages/
+   ls -la scripts/test-data/image_set/studio_source/
    
    # Check studio image manifest
-   cat tests/Test_Data/StudioImages/image-test-manifest.json
+   cat scripts/test-data/image_set/studio_source/image-test-manifest.json
    ```
 
 3. **Manual studio image upload:**
    ```bash
    # Test manual studio image upload
-   awslocal s3 cp tests/Test_Data/StudioImages/exterior-1.jpg \
+   awslocal s3 cp scripts/test-data/image_set/studio_source/exterior-1.jpg \
      s3://tattoo-images/studios/studio-001/exterior-1.webp \
      --endpoint-url http://localhost:4566
    
@@ -515,16 +515,16 @@ curl http://localhost:4566/tattoo-directory-images
 2. **Check image files:**
    ```bash
    # Verify source images exist
-   ls -la tests/Test_Data/ImageSet/
+   ls -la scripts/test-data/image_set/tattoo_source/
    
    # Check file permissions
-   find tests/Test_Data/ImageSet/ -type f -name "*.png" -o -name "*.jpg"
+   find scripts/test-data/image_set/tattoo_source/ -type f -name "*.png" -o -name "*.jpg"
    ```
 
 3. **Manual image upload test:**
    ```bash
    # Test single image upload
-   awslocal s3 cp tests/Test_Data/ImageSet/traditional/tattoo_1.png \
+   awslocal s3 cp scripts/test-data/image_set/tattoo_source/traditional/tattoo_1.png \
      s3://tattoo-directory-images/test-image.png \
      --endpoint-url http://localhost:4566
    ```
@@ -873,13 +873,13 @@ time npm run setup-data
 **Diagnosis:**
 ```bash
 # Check state tracking files
-ls -la .kiro/data-management-state/
+ls -la scripts/data-management-state/
 
 # View current state
-cat .kiro/data-management-state/last-state.json
+cat scripts/data-management-state/last-state.json
 
 # Check file checksums
-find tests/Test_Data/ImageSet/ -type f -exec md5sum {} \;
+find scripts/test-data/image_set/tattoo_source/ -type f -exec md5sum {} \;
 ```
 
 **Solutions:**
@@ -887,7 +887,7 @@ find tests/Test_Data/ImageSet/ -type f -exec md5sum {} \;
 1. **Reset state tracking:**
    ```bash
    # Clear state cache
-   rm -rf .kiro/data-management-state/
+   rm -rf scripts/data-management-state/
    
    # Force full processing
    npm run setup-data:force
@@ -911,7 +911,7 @@ find tests/Test_Data/ImageSet/ -type f -exec md5sum {} \;
 1. **Reset state completely:**
    ```bash
    # Remove all state files
-   rm -rf .kiro/data-management-state/
+   rm -rf scripts/data-management-state/
    
    # Reinitialize system
    npm run setup-data
@@ -922,7 +922,7 @@ find tests/Test_Data/ImageSet/ -type f -exec md5sum {} \;
    # Check state file validity
    node -e "
    try {
-     const state = require('./.kiro/data-management-state/last-state.json');
+     const state = require('./scripts/data-management-state/last-state.json');
      console.log('State valid:', Object.keys(state));
    } catch(e) {
      console.log('State invalid:', e.message);
@@ -1269,7 +1269,7 @@ If the system is completely broken:
 # Nuclear option - reset everything
 docker-compose down -v
 docker system prune -af
-rm -rf .kiro/data-management-state/
+rm -rf scripts/data-management-state/
 rm -rf node_modules/
 npm install
 docker-compose up -d localstack

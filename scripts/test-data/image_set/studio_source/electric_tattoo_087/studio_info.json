@@ -1,0 +1,16 @@
+{
+  "name": "Electric Tattoo",
+  "location": "Portsmouth",
+  "type": "vintage traditional",
+  "images": {
+    "internal": [
+      "internal_01_electric_tattoo.png"
+    ],
+    "external": [
+      "external_01_electric_tattoo.png"
+    ],
+    "working": [
+      "working_01_electric_tattoo.png"
+    ]
+  }
+}

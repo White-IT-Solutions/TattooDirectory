@@ -180,6 +180,20 @@ resource "aws_ssm_parameter" "lambda_artifacts_bucket_name" {
   })
 }
 
+resource "aws_ssm_parameter" "frontend_bucket_name" {
+  provider = aws.infra_primary
+
+  name        = "/${local.context.name_prefix}/frontend-bucket-name"
+  type        = "SecureString"
+  value       = module.app_storage.frontend_bucket_id
+  key_id      = module.foundation.kms_key_main_arn
+  description = "The name of the S3 bucket used to host the frontend application."
+
+  tags = merge(local.context.common_tags, {
+    Name = "${local.context.name_prefix}-frontend-bucket-name"
+  })
+}
+
 resource "aws_ssm_parameter" "cloudfront_distribution_id" {
   provider = aws.infra_primary
 
@@ -188,7 +202,7 @@ resource "aws_ssm_parameter" "cloudfront_distribution_id" {
   value = module.delivery.cloudfront_distribution_id
 
   key_id      = module.foundation.kms_key_main_arn
-  description = "The name of the cloudfront distribution for dev."
+  description = "The CloudFront distribution ID for the frontend."
 
   tags = merge(local.context.common_tags, {
     Name = "${local.context.name_prefix}-cloudfront-distribution-id"
@@ -287,14 +301,14 @@ module "compute" {
   scraper_image_tag     = var.scraper_image_tag
 
   # Lambda S3 artifact keys (can be overridden by environment variables from CI/CD)
-  lambda_api_handler_s3_key              = var.lambda_api_handler_s3_key
-  lambda_dynamodb_sync_s3_key            = var.lambda_dynamodb_sync_s3_key
-  lambda_discover_studios_s3_key         = var.lambda_discover_studios_s3_key
-  lambda_find_artists_s3_key             = var.lambda_find_artists_s3_key
-  lambda_queue_scraping_s3_key           = var.lambda_queue_scraping_s3_key
-  lambda_rotate_nat_gateway_eip_s3_key   = var.lambda_rotate_nat_gateway_eip_s3_key
-  lambda_secret_rotation_s3_key          = var.lambda_secret_rotation_s3_key
-  lambda_deployment_version              = var.lambda_deployment_version
+  lambda_api_handler_s3_key            = var.lambda_api_handler_s3_key
+  lambda_dynamodb_sync_s3_key          = var.lambda_dynamodb_sync_s3_key
+  lambda_discover_studios_s3_key       = var.lambda_discover_studios_s3_key
+  lambda_find_artists_s3_key           = var.lambda_find_artists_s3_key
+  lambda_queue_scraping_s3_key         = var.lambda_queue_scraping_s3_key
+  lambda_rotate_nat_gateway_eip_s3_key = var.lambda_rotate_nat_gateway_eip_s3_key
+  lambda_secret_rotation_s3_key        = var.lambda_secret_rotation_s3_key
+  lambda_deployment_version            = var.lambda_deployment_version
 
   providers = {
     aws = aws.infra_primary
@@ -335,6 +349,8 @@ module "security_monitoring" {
   guardduty_detector_id        = module.central_security.guardduty_detector_id
   enable_config_monitoring     = true
   enable_cloudtrail_monitoring = true
+  enable_waf_monitoring        = true
+  waf_web_acl_name             = "${local.context.name_prefix}-enhanced-frontend-waf"
   cloudtrail_log_group_name    = module.governance.cloudtrail_log_group_name
 
   # This module is deployed to the Audit Account
@@ -579,9 +595,9 @@ resource "aws_iam_policy" "github_actions_cicd" {
         }
       },
       {
-        Sid      = "AllowS3FrontendDeployment"
-        Effect   = "Allow"
-        Action   = [
+        Sid    = "AllowS3FrontendDeployment"
+        Effect = "Allow"
+        Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject",

@@ -51,6 +51,5 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV WATCHPACK_POLLING=true
 ENV CHOKIDAR_USEPOLLING=true
 
-# Start development server with optional debugging
-ENTRYPOINT ["./docker/docker-entrypoint-debug.sh"]
-CMD ["npm", "run", "dev", "--workspace=frontend"]
+# Start development server directly from the frontend directory
+CMD ["sh", "-c", "cd /app && npm run dev --workspace=frontend"]

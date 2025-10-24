@@ -42,6 +42,14 @@ const SearchFeedbackIntegration = ({
   enableErrorHandling = true,
   showPopularSearches = true,
   
+  // Test identifiers
+  'data-testid': testId,
+  inputTestId,
+  buttonTestId,
+  
+  // UI options
+  showSearchButton = false,
+  
   // Callbacks
   onSearch,
   onValidatedChange,
@@ -236,43 +244,67 @@ const SearchFeedbackIntegration = ({
   return (
     <div className={cn('space-y-4', className)} {...props}>
       {/* Enhanced Search Input */}
-      <div className="space-y-2">
-        {enableValidation ? (
-          <ValidatedSearchInput
-            type={searchType}
-            placeholder={placeholder}
-            onValidatedChange={handleSearchValidation}
-            showSuggestions={showSuggestions}
-            size={size}
-            className="w-full"
-          />
-        ) : (
-          <input
-            type="search"
-            placeholder={placeholder}
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              onValidatedChange?.({
-                value: e.target.value,
-                isValid: true,
-                validation: { isValid: true }
-              });
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleManualSearch();
-              }
-            }}
+      <div className={cn('space-y-2', showSearchButton && 'flex gap-2 items-start')}>
+        <div className={showSearchButton ? 'flex-1' : 'w-full'}>
+          {enableValidation ? (
+            <ValidatedSearchInput
+              type={searchType}
+              placeholder={placeholder}
+              onValidatedChange={handleSearchValidation}
+              showSuggestions={showSuggestions}
+              size={size}
+              className="w-full"
+              data-testid={inputTestId || testId}
+            />
+          ) : (
+            <input
+              type="search"
+              placeholder={placeholder}
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                onValidatedChange?.({
+                  value: e.target.value,
+                  isValid: true,
+                  validation: { isValid: true }
+                });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleManualSearch();
+                }
+              }}
+              className={cn(
+                'w-full px-3 py-2 border border-neutral-300 rounded-md',
+                'focus:outline-none focus:ring-2 focus:ring-primary-500',
+                'bg-white text-neutral-900 placeholder-neutral-500',
+                size === 'sm' && 'px-2 py-1 text-sm',
+                size === 'lg' && 'px-4 py-3 text-lg'
+              )}
+              data-testid={inputTestId || testId}
+            />
+          )}
+        </div>
+        
+        {/* Search Button */}
+        {showSearchButton && (
+          <button
+            type="button"
+            onClick={handleManualSearch}
+            disabled={isSearching || (enableValidation && !searchValidation.isValid)}
             className={cn(
-              'w-full px-3 py-2 border border-neutral-300 rounded-md',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500',
-              'bg-white text-neutral-900 placeholder-neutral-500',
-              size === 'sm' && 'px-2 py-1 text-sm',
-              size === 'lg' && 'px-4 py-3 text-lg'
+              'px-4 py-2 bg-primary-600 text-white rounded-md',
+              'hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              'transition-colors duration-200',
+              size === 'sm' && 'px-3 py-1 text-sm',
+              size === 'lg' && 'px-6 py-3 text-lg'
             )}
-          />
+            data-testid={buttonTestId || 'search-button'}
+          >
+            {isSearching ? 'Searching...' : 'Search'}
+          </button>
         )}
       </div>
 

@@ -1,0 +1,16 @@
+{
+  "name": "Modern Parlour",
+  "location": "Oxford",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_modern_parlour.png"
+    ],
+    "external": [
+      "external_01_modern_parlour.png"
+    ],
+    "working": [
+      "working_01_modern_parlour.png"
+    ]
+  }
+}

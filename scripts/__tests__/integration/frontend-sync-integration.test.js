@@ -7,15 +7,15 @@
  * Requirements: 14.1, 14.2, 14.3, 14.4, 14.5
  */
 
-const { UnifiedDataManager } = require('../../unified-data-manager');
-const { FrontendSyncProcessor } = require('../../frontend-sync-processor');
-const { STATE_MANAGER } = require('../../state-manager');
-const { HealthMonitor } = require('../../health-monitor');
+const { UnifiedDataManager } = require('../../data-management/unified-data-manager');
+const { FrontendSyncProcessor } = require('../../data-management/frontend-sync-processor');
+const { STATE_MANAGER } = require('../../utilities/state-manager');
+const { HealthMonitor } = require('../../utilities/health-monitor');
 const { DATA_CONFIG } = require('../../data-config');
 
 // Mock external dependencies
-jest.mock('../../image-processor');
-jest.mock('../../database-seeder');
+jest.mock('../../data-management/image-processor');
+jest.mock('../../data-management/database-seeder');
 
 describe('Enhanced Frontend Sync Processor Integration Tests', () => {
   let unifiedManager;

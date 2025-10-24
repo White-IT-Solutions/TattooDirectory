@@ -1,0 +1,16 @@
+{
+  "name": "Classic House",
+  "location": "Norwich",
+  "type": "clean medical",
+  "images": {
+    "internal": [
+      "internal_01_classic_house.png"
+    ],
+    "external": [
+      "external_01_classic_house.png"
+    ],
+    "working": [
+      "working_01_classic_house.png"
+    ]
+  }
+}

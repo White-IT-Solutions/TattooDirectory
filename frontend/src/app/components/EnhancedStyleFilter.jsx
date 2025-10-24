@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from "../data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 import { mockArtistData as mockArtists } from "../data/mockArtistData";
 import Badge from "../../design-system/components/ui/Badge/Badge";
 import Tag from "../../design-system/components/ui/Tag/Tag";
@@ -136,8 +136,19 @@ export default function EnhancedStyleFilter() {
 
   useEffect(() => {
     const styleParams = searchParams.get("styles");
-    if (styleParams) setSelected(styleParams.split(","));
-    else setSelected([]);
+    const newSelected = styleParams ? styleParams.split(",") : [];
+    
+    // Only update if the selection has actually changed to prevent infinite loops
+    setSelected(prevSelected => {
+      const prevSorted = [...prevSelected].sort();
+      const newSorted = [...newSelected].sort();
+      
+      if (prevSorted.length !== newSorted.length || 
+          !prevSorted.every((style, index) => style === newSorted[index])) {
+        return newSelected;
+      }
+      return prevSelected;
+    });
   }, [searchParams]);
 
   // Memoized filtered styles for performance
@@ -179,7 +190,6 @@ export default function EnhancedStyleFilter() {
       ? selected.filter((s) => s !== styleId)
       : [...selected, styleId];
     
-    setSelected(newSelected);
     updateSearchParams(newSelected);
     
     // Announce filter change to screen readers
@@ -189,7 +199,6 @@ export default function EnhancedStyleFilter() {
   }, [selected, updateSearchParams]);
 
   const clearAll = useCallback(() => {
-    setSelected([]);
     setSearchQuery("");
     setFocusedIndex(-1);
     updateSearchParams([]);
@@ -289,7 +298,7 @@ export default function EnhancedStyleFilter() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4" data-testid="enhanced-style-filter" ref={containerRef}>
+    <div className="w-full max-w-4xl mx-auto p-4" data-testid="style-filter" ref={containerRef}>
       {/* Header with search and clear */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-white">Filter by Tattoo Style</h3>

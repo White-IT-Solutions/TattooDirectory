@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Use standalone for local Docker, export for AWS deployment
+  output: process.env.NEXT_PUBLIC_ENVIRONMENT === 'local' ? 'standalone' : 'export',
+  
+  // Only add trailingSlash for static export (AWS)
+  ...(process.env.NEXT_PUBLIC_ENVIRONMENT !== 'local' && { trailingSlash: true }),
+  
   eslint: {
     // Disable ESLint during builds for production
     ignoreDuringBuilds: true,
@@ -54,7 +59,8 @@ const nextConfig = {
       },
     ],
     formats: ["image/webp", "image/avif"],
-    unoptimized: process.env.NODE_ENV === "development",
+    // Unoptimized for static export OR development
+    unoptimized: process.env.NEXT_PUBLIC_ENVIRONMENT !== 'local' || process.env.NODE_ENV === 'development',
   },
   env: {
     NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,

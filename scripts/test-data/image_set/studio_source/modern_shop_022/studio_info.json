@@ -1,0 +1,16 @@
+{
+  "name": "Modern Shop",
+  "location": "Bristol",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_modern_shop.png"
+    ],
+    "external": [
+      "external_01_modern_shop.png"
+    ],
+    "working": [
+      "working_01_modern_shop.png"
+    ]
+  }
+}

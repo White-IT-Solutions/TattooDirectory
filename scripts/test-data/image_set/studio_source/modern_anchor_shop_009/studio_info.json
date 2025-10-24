@@ -1,0 +1,16 @@
+{
+  "name": "Modern Anchor Shop",
+  "location": "Leeds",
+  "type": "modern minimalist",
+  "images": {
+    "internal": [
+      "internal_01_modern_anchor_shop.png"
+    ],
+    "external": [
+      "external_01_modern_anchor_shop.png"
+    ],
+    "working": [
+      "working_01_modern_anchor_shop.png"
+    ]
+  }
+}

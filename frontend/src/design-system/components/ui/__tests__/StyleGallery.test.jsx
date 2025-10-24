@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import StyleGallery from '../StyleGallery/StyleGallery';
 
 // Mock the data imports
-jest.mock('../../../../app/data/testData/enhancedTattooStyles', () => ({
+jest.mock('../../../../lib/data/tattooStyles.js', () => ({
   enhancedTattooStyles: {
     'traditional': {
       id: 'traditional',

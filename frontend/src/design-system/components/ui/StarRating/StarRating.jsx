@@ -4,7 +4,7 @@ import { cn } from '../../../utils/cn';
 import Card from '../Card/Card';
 import { FormattedNumber } from '../DataVisualization/DataFormatting';
 import { useStandardizedProps } from '../../StandardizedComponent';
-import { generateComponentClasses, applyVisualEffects } from '../../../utils/design-system-utils';
+import { generateComponentClasses, applyVisualEffects, filterDOMProps } from '../../../utils/design-system-utils';
 
 export default function StarRating({ 
   rating = 0, 

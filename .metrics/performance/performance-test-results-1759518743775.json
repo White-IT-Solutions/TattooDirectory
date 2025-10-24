@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-10-03T19:12:23.764Z",
+  "testSuite": "frontend-sync-processor-performance",
+  "results": {
+    "timestamp": "2025-10-03T19:12:23.771Z",
+    "testRun": "performance-test-1759518743771",
+    "baseline": null,
+    "current": {},
+    "comparisons": {},
+    "summary": {
+      "passed": 0,
+      "failed": 0,
+      "warnings": 0,
+      "totalTests": 0
+    }
+  },
+  "summary": {
+    "totalTests": 0,
+    "passed": 0,
+    "failed": 0,
+    "warnings": 0,
+    "duration": 2
+  }
+}

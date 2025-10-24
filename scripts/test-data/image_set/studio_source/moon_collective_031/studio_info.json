@@ -1,0 +1,16 @@
+{
+  "name": "Moon Collective",
+  "location": "Edinburgh",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_moon_collective.png"
+    ],
+    "external": [
+      "external_01_moon_collective.png"
+    ],
+    "working": [
+      "working_01_moon_collective.png"
+    ]
+  }
+}

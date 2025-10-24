@@ -1,0 +1,2946 @@
+{
+  "artists": [
+    {
+      "pk": "ARTIST#1",
+      "sk": "METADATA",
+      "artistId": "artist-001",
+      "artistName": "Connor Walsh",
+      "bio": "Traditional Japanese tattoo artist specializing in irezumi",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-34.jpg",
+      "instagramHandle": "inkconnorwalsh_ink",
+      "locationDisplay": "Liverpool, UK",
+      "tattooStudio": {
+        "studioId": "studio-001",
+        "studioName": "Classic Ink Parlour",
+        "address": {
+          "street": "23 Bold Street",
+          "city": "Liverpool",
+          "postcode": "L8 7NJ",
+          "latitude": 53.412258499652566,
+          "longitude": -2.9867012674590563
+        }
+      },
+      "styles": [
+        "japanese",
+        "dotwork"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_9.png",
+          "description": "Classic rose design",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_10.png",
+          "description": "Bold eagle tattoo",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_5.png",
+          "description": "Bold eagle tattoo",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_55.png",
+          "description": "Meditative dots",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_106.png",
+          "description": "Meditative dots",
+          "style": "dotwork"
+        }
+      ],
+      "geohash": "zcye7n",
+      "opted_out": false,
+      "rating": 4.7,
+      "reviewCount": 121,
+      "pricing": {
+        "hourlyRate": 113,
+        "minimumCharge": 109,
+        "currency": "GBP",
+        "description": "££"
+      },
+      "availability": {
+        "status": "Available",
+        "bookingOpen": true,
+        "nextAvailable": null,
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 4,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inkconnorwalsh_ink",
+        "email": "connor.walsh@classicinkparlour.com",
+        "phone": "+44 161 3978 016",
+        "website": "https://connorwalsh.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Texture work",
+        "Consultations",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "japanese",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "japanese"
+          ]
+        },
+        {
+          "styleName": "dotwork",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "dotwork"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#2",
+      "sk": "METADATA",
+      "artistId": "artist-002",
+      "artistName": "Zoe Anderson",
+      "bio": "Watercolor and realism specialist creating vibrant, lifelike tattoos",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+      "instagramHandle": "inkzoeanderson_studio",
+      "locationDisplay": "Glasgow, UK",
+      "tattooStudio": {
+        "studioId": "studio-002",
+        "studioName": "Electric Needle Studio",
+        "address": {
+          "street": "89 Southside",
+          "city": "Glasgow",
+          "postcode": "G2 3BZ",
+          "latitude": 55.8669198440329,
+          "longitude": -4.256421200185852
+        }
+      },
+      "styles": [
+        "watercolour",
+        "japanese",
+        "new_school"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_127.png",
+          "description": "Painterly floral",
+          "style": "watercolour"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_24.png",
+          "description": "Painterly floral",
+          "style": "watercolour"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_92.png",
+          "description": "Nautical anchor piece",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_27.png",
+          "description": "Traditional swallow pair",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_55.png",
+          "description": "Traditional swallow pair",
+          "style": "new_school"
+        }
+      ],
+      "geohash": "gjtxj9",
+      "opted_out": false,
+      "rating": 3.8,
+      "reviewCount": 189,
+      "pricing": {
+        "hourlyRate": 242,
+        "minimumCharge": 204,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 4,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inkzoeanderson_studio",
+        "email": "zoe.anderson@classicinkparlour.com",
+        "phone": "+44 131 5474 704",
+        "website": "https://zoeanderson.tattoo.com"
+      },
+      "specialties": [
+        "Color work",
+        "Abstract",
+        "Custom designs"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "watercolour",
+          "characteristics": [
+            "flowing-colors",
+            "soft-edges",
+            "painterly",
+            "artistic"
+          ],
+          "popularMotifs": [
+            "flowers",
+            "butterflies",
+            "abstract-shapes",
+            "landscapes"
+          ],
+          "colorPalette": [
+            "pastels",
+            "bright-colors",
+            "flowing-gradients"
+          ],
+          "difficulty": "advanced",
+          "timeOrigin": "2000s",
+          "aliases": [
+            "watercolor",
+            "paint-style"
+          ]
+        },
+        {
+          "styleName": "japanese",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "japanese"
+          ]
+        },
+        {
+          "styleName": "new_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "new_school"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#3",
+      "sk": "METADATA",
+      "artistId": "artist-003",
+      "artistName": "Emma Wilson",
+      "bio": "Classic American traditional style with bold lines and vibrant colors",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-12.jpg",
+      "instagramHandle": "needleemmawilson_tattoos",
+      "locationDisplay": "Glasgow, UK",
+      "tattooStudio": {
+        "studioId": "studio-002",
+        "studioName": "Electric Needle Studio",
+        "address": {
+          "street": "89 Southside",
+          "city": "Glasgow",
+          "postcode": "G2 3BZ",
+          "latitude": 55.8669198440329,
+          "longitude": -4.256421200185852
+        }
+      },
+      "styles": [
+        "minimalism",
+        "floral"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_41.png",
+          "description": "Simple line art",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_6.png",
+          "description": "Clean geometric",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_30.png",
+          "description": "Simple line art",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_58.png",
+          "description": "Realistic flower",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_108.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        }
+      ],
+      "geohash": "41nq5w",
+      "opted_out": false,
+      "rating": 4.3,
+      "reviewCount": 70,
+      "pricing": {
+        "hourlyRate": 162,
+        "minimumCharge": 144,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 14,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@needleemmawilson_tattoos",
+        "email": "emma.wilson@moderninkstudio.com",
+        "phone": "+44 161 6121 953",
+        "website": "https://emmawilson.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Consultations",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "minimalism",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "minimalism"
+          ]
+        },
+        {
+          "styleName": "floral",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "floral"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#4",
+      "sk": "METADATA",
+      "artistId": "artist-004",
+      "artistName": "Aria Kim",
+      "bio": "Traditional tattoo artist with 8+ years experience in bold, timeless designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-12.jpg",
+      "instagramHandle": "tattooariakim_art",
+      "locationDisplay": "Edinburgh, UK",
+      "tattooStudio": {
+        "studioId": "studio-003",
+        "studioName": "Artisan Tattoo Co.",
+        "address": {
+          "street": "90 Grassmarket",
+          "city": "Edinburgh",
+          "postcode": "EH2 2AD",
+          "latitude": 55.95364261380621,
+          "longitude": -3.1920999319378103
+        }
+      },
+      "styles": [
+        "tribal",
+        "watercolour",
+        "old_school"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_128.png",
+          "description": "Nautical anchor piece",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_122.png",
+          "description": "Bold eagle tattoo",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_124.png",
+          "description": "Abstract color splash",
+          "style": "watercolour"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/watercolour/tattoo_146.png",
+          "description": "Vibrant color blend",
+          "style": "watercolour"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_93.png",
+          "description": "Bold eagle tattoo",
+          "style": "old_school"
+        }
+      ],
+      "geohash": "mzs3g4",
+      "opted_out": false,
+      "rating": 4.9,
+      "reviewCount": 138,
+      "pricing": {
+        "hourlyRate": 198,
+        "minimumCharge": 146,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Booking 2-4 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-03-01",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 5,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@tattooariakim_art",
+        "email": "aria.kim@rebelinkstudio.com",
+        "phone": "+44 151 9533 963",
+        "website": "https://ariakim.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Color work",
+        "Abstract"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "tribal",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "tribal"
+          ]
+        },
+        {
+          "styleName": "watercolour",
+          "characteristics": [
+            "flowing-colors",
+            "soft-edges",
+            "painterly",
+            "artistic"
+          ],
+          "popularMotifs": [
+            "flowers",
+            "butterflies",
+            "abstract-shapes",
+            "landscapes"
+          ],
+          "colorPalette": [
+            "pastels",
+            "bright-colors",
+            "flowing-gradients"
+          ],
+          "difficulty": "advanced",
+          "timeOrigin": "2000s",
+          "aliases": [
+            "watercolor",
+            "paint-style"
+          ]
+        },
+        {
+          "styleName": "old_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "old_school"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#5",
+      "sk": "METADATA",
+      "artistId": "artist-005",
+      "artistName": "Charlotte Anderson",
+      "bio": "Mandala and dotwork specialist with meditative approach",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
+      "instagramHandle": "skincharlotteanderson_studio",
+      "locationDisplay": "Edinburgh, UK",
+      "tattooStudio": {
+        "studioId": "studio-003",
+        "studioName": "Artisan Tattoo Co.",
+        "address": {
+          "street": "90 Grassmarket",
+          "city": "Edinburgh",
+          "postcode": "EH2 2AD",
+          "latitude": 55.95364261380621,
+          "longitude": -3.1920999319378103
+        }
+      },
+      "styles": [
+        "dotwork"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_33.png",
+          "description": "Textured design",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_119.png",
+          "description": "Stippled pattern",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_106.png",
+          "description": "Intricate dotwork mandala",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_72.png",
+          "description": "Stippled pattern",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_29.png",
+          "description": "Meditative dots",
+          "style": "dotwork"
+        }
+      ],
+      "geohash": "gy6p7p",
+      "opted_out": false,
+      "rating": 4.7,
+      "reviewCount": 108,
+      "pricing": {
+        "hourlyRate": 93,
+        "minimumCharge": 67,
+        "currency": "GBP",
+        "description": "£"
+      },
+      "availability": {
+        "status": "Booking 1-2 months",
+        "bookingOpen": true,
+        "nextAvailable": "2024-04-01",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 12,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@skincharlotteanderson_studio",
+        "email": "charlotte.anderson@ink&steelstudio.com",
+        "phone": "+44 141 2439 337",
+        "website": "https://charlotteanderson.tattoo.com"
+      },
+      "specialties": [
+        "Meditative designs",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "dotwork",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "dotwork"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#6",
+      "sk": "METADATA",
+      "artistId": "artist-006",
+      "artistName": "Sage Williams",
+      "bio": "Sci-fi and biomech specialist with technical precision",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-67.jpg",
+      "instagramHandle": "inksagewilliams_studio",
+      "locationDisplay": "London, UK",
+      "tattooStudio": {
+        "studioId": "studio-004",
+        "studioName": "Botanical Tattoo Collective",
+        "address": {
+          "street": "45 Camden High Street",
+          "city": "London",
+          "postcode": "EC1A 1BB",
+          "latitude": 51.51174167529388,
+          "longitude": -0.12870280860077574
+        }
+      },
+      "styles": [
+        "biomechanical"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_56.png",
+          "description": "Nautical anchor piece",
+          "style": "biomechanical"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_94.png",
+          "description": "Nautical anchor piece",
+          "style": "biomechanical"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_60.png",
+          "description": "Nautical anchor piece",
+          "style": "biomechanical"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_117.png",
+          "description": "Bold eagle tattoo",
+          "style": "biomechanical"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/biomechanical/tattoo_46.png",
+          "description": "Bold eagle tattoo",
+          "style": "biomechanical"
+        }
+      ],
+      "geohash": "ksxfxw",
+      "opted_out": false,
+      "rating": 4.8,
+      "reviewCount": 95,
+      "pricing": {
+        "hourlyRate": 83,
+        "minimumCharge": 70,
+        "currency": "GBP",
+        "description": "£"
+      },
+      "availability": {
+        "status": "Books closed",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 9,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inksagewilliams_studio",
+        "email": "sage.williams@sacredarttattoos.com",
+        "phone": "+44 161 5414 653",
+        "website": "https://sagewilliams.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Large pieces",
+        "Consultations"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "biomechanical",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "biomechanical"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#7",
+      "sk": "METADATA",
+      "artistId": "artist-007",
+      "artistName": "Ethan Brooks",
+      "bio": "Japanese style expert with cultural respect and authenticity",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+      "instagramHandle": "inkethanbrooks_tattoo",
+      "locationDisplay": "Edinburgh, UK",
+      "tattooStudio": {
+        "studioId": "studio-003",
+        "studioName": "Artisan Tattoo Co.",
+        "address": {
+          "street": "90 Grassmarket",
+          "city": "Edinburgh",
+          "postcode": "EH2 2AD",
+          "latitude": 55.95364261380621,
+          "longitude": -3.1920999319378103
+        }
+      },
+      "styles": [
+        "japanese",
+        "traditional",
+        "blackwork"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_50.png",
+          "description": "Bold eagle tattoo",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_72.png",
+          "description": "Traditional swallow pair",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_15.png",
+          "description": "Traditional swallow pair",
+          "style": "traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/traditional/tattoo_140.png",
+          "description": "Nautical anchor piece",
+          "style": "traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_137.png",
+          "description": "Bold blackwork design",
+          "style": "blackwork"
+        }
+      ],
+      "geohash": "fuuf7d",
+      "opted_out": false,
+      "rating": 5,
+      "reviewCount": 61,
+      "pricing": {
+        "hourlyRate": 186,
+        "minimumCharge": 148,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 6,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inkethanbrooks_tattoo",
+        "email": "ethan.brooks@botanicaltattoocollective.com",
+        "phone": "+44 141 1145 831",
+        "website": "https://ethanbrooks.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Classic imagery",
+        "Bold designs"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "japanese",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "japanese"
+          ]
+        },
+        {
+          "styleName": "traditional",
+          "characteristics": [
+            "bold-lines",
+            "solid-colors",
+            "iconic-imagery",
+            "vintage"
+          ],
+          "popularMotifs": [
+            "roses",
+            "eagles",
+            "anchors",
+            "swallows",
+            "hearts"
+          ],
+          "colorPalette": [
+            "red",
+            "blue",
+            "yellow",
+            "green",
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "1900s",
+          "aliases": [
+            "old-school",
+            "american-traditional"
+          ]
+        },
+        {
+          "styleName": "blackwork",
+          "characteristics": [
+            "solid-black",
+            "bold-contrast",
+            "graphic",
+            "striking"
+          ],
+          "popularMotifs": [
+            "tribal-patterns",
+            "geometric-shapes",
+            "silhouettes",
+            "text"
+          ],
+          "colorPalette": [
+            "black",
+            "minimal-white"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "ancient",
+          "aliases": [
+            "solid-black",
+            "tribal"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#8",
+      "sk": "METADATA",
+      "artistId": "artist-008",
+      "artistName": "Ethan Brooks",
+      "bio": "Specializing in classic American traditional with modern twist and attention to detail",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-34.jpg",
+      "instagramHandle": "artethanbrooks_ink",
+      "locationDisplay": "Birmingham, UK",
+      "tattooStudio": {
+        "studioId": "studio-005",
+        "studioName": "Vibrant Ink Studio",
+        "address": {
+          "street": "56 Broad Street",
+          "city": "Birmingham",
+          "postcode": "B3 1JJ",
+          "latitude": 52.488951600552554,
+          "longitude": -1.8944440855868558
+        }
+      },
+      "styles": [
+        "new_school",
+        "lettering",
+        "old_school"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_11.png",
+          "description": "Nautical anchor piece",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_128.png",
+          "description": "Classic rose design",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_23.png",
+          "description": "Bold eagle tattoo",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_63.png",
+          "description": "Classic rose design",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_120.png",
+          "description": "Traditional swallow pair",
+          "style": "old_school"
+        }
+      ],
+      "geohash": "0fjks1",
+      "opted_out": false,
+      "rating": 4.4,
+      "reviewCount": 194,
+      "pricing": {
+        "hourlyRate": 170,
+        "minimumCharge": 156,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Booking 1-2 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-02-15",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 5,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@artethanbrooks_ink",
+        "email": "ethan.brooks@rebelinkstudio.com",
+        "phone": "+44 121 9954 651",
+        "website": "https://ethanbrooks.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "new_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "new_school"
+          ]
+        },
+        {
+          "styleName": "lettering",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "lettering"
+          ]
+        },
+        {
+          "styleName": "old_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "old_school"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#9",
+      "sk": "METADATA",
+      "artistId": "artist-009",
+      "artistName": "Oliver Brown",
+      "bio": "Specializing in classic American traditional with modern twist and attention to detail",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+      "instagramHandle": "needleoliverbrown_studio",
+      "locationDisplay": "Bristol, UK",
+      "tattooStudio": {
+        "studioId": "studio-006",
+        "studioName": "Classic Ink Parlour",
+        "address": {
+          "street": "56 Stokes Croft",
+          "city": "Bristol",
+          "postcode": "BS8 1TH",
+          "latitude": 51.45544657129461,
+          "longitude": -2.584786113265136
+        }
+      },
+      "styles": [
+        "floral"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_2.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_63.png",
+          "description": "Garden composition",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_56.png",
+          "description": "Botanical arrangement",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_125.png",
+          "description": "Realistic flower",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_75.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        }
+      ],
+      "geohash": "t5w4ez",
+      "opted_out": false,
+      "rating": 4.9,
+      "reviewCount": 145,
+      "pricing": {
+        "hourlyRate": 168,
+        "minimumCharge": 159,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Available",
+        "bookingOpen": true,
+        "nextAvailable": null,
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 4,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@needleoliverbrown_studio",
+        "email": "oliver.brown@moderninkstudio.com",
+        "phone": "+44 161 5219 198",
+        "website": "https://oliverbrown.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Consultations",
+        "Large pieces"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "floral",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "floral"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#10",
+      "sk": "METADATA",
+      "artistId": "artist-010",
+      "artistName": "Dylan Martinez",
+      "bio": "Modern twist on traditional tattoos with enhanced color palettes",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+      "instagramHandle": "skindylanmartinez_tattoo",
+      "locationDisplay": "Leeds, UK",
+      "tattooStudio": {
+        "studioId": "studio-007",
+        "studioName": "Sacred Art Tattoos",
+        "address": {
+          "street": "45 Headrow",
+          "city": "Leeds",
+          "postcode": "LS2 7UE",
+          "latitude": 53.804085380244025,
+          "longitude": -1.547599667730294
+        }
+      },
+      "styles": [
+        "neo_traditional"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_13.png",
+          "description": "Contemporary eagle",
+          "style": "neo_traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_74.png",
+          "description": "Updated traditional",
+          "style": "neo_traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_146.png",
+          "description": "Neo-traditional rose",
+          "style": "neo_traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_10.png",
+          "description": "Modern twist classic",
+          "style": "neo_traditional"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/neo_traditional/tattoo_59.png",
+          "description": "Neo-traditional rose",
+          "style": "neo_traditional"
+        }
+      ],
+      "geohash": "6ykc35",
+      "opted_out": false,
+      "rating": 4.2,
+      "reviewCount": 93,
+      "pricing": {
+        "hourlyRate": 101,
+        "minimumCharge": 102,
+        "currency": "GBP",
+        "description": "££"
+      },
+      "availability": {
+        "status": "Booking 1-2 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-02-15",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 4,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@skindylanmartinez_tattoo",
+        "email": "dylan.martinez@artisantattooco..com",
+        "phone": "+44 117 5043 221",
+        "website": "https://dylanmartinez.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Consultations"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "neo_traditional",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "neo_traditional"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#11",
+      "sk": "METADATA",
+      "artistId": "artist-011",
+      "artistName": "River Stone",
+      "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-25.jpg",
+      "instagramHandle": "needleriverstone_tattoos",
+      "locationDisplay": "London, UK",
+      "tattooStudio": {
+        "studioId": "studio-004",
+        "studioName": "Botanical Tattoo Collective",
+        "address": {
+          "street": "45 Camden High Street",
+          "city": "London",
+          "postcode": "EC1A 1BB",
+          "latitude": 51.51174167529388,
+          "longitude": -0.12870280860077574
+        }
+      },
+      "styles": [
+        "floral"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_103.png",
+          "description": "Realistic flower",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_41.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_8.png",
+          "description": "Realistic flower",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_83.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_108.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        }
+      ],
+      "geohash": "m27gm1",
+      "opted_out": false,
+      "rating": 4,
+      "reviewCount": 38,
+      "pricing": {
+        "hourlyRate": 71,
+        "minimumCharge": 57,
+        "currency": "GBP",
+        "description": "£"
+      },
+      "availability": {
+        "status": "Booking 1-2 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-02-15",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 12,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@needleriverstone_tattoos",
+        "email": "river.stone@moderninkstudio.com",
+        "phone": "+44 20 3270 351",
+        "website": "https://riverstone.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "floral",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "floral"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#12",
+      "sk": "METADATA",
+      "artistId": "artist-012",
+      "artistName": "Benjamin Wilson",
+      "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-12.jpg",
+      "instagramHandle": "needlebenjaminwilson_artist",
+      "locationDisplay": "Bristol, UK",
+      "tattooStudio": {
+        "studioId": "studio-006",
+        "studioName": "Classic Ink Parlour",
+        "address": {
+          "street": "56 Stokes Croft",
+          "city": "Bristol",
+          "postcode": "BS8 1TH",
+          "latitude": 51.45544657129461,
+          "longitude": -2.584786113265136
+        }
+      },
+      "styles": [
+        "tribal",
+        "japanese"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_108.png",
+          "description": "Nautical anchor piece",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_59.png",
+          "description": "Bold eagle tattoo",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_64.png",
+          "description": "Bold eagle tattoo",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_43.png",
+          "description": "Traditional swallow pair",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_32.png",
+          "description": "Bold eagle tattoo",
+          "style": "japanese"
+        }
+      ],
+      "geohash": "8jkm5m",
+      "opted_out": false,
+      "rating": 4.3,
+      "reviewCount": 159,
+      "pricing": {
+        "hourlyRate": 232,
+        "minimumCharge": 200,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Booking 1-2 months",
+        "bookingOpen": true,
+        "nextAvailable": "2024-04-01",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 6,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@needlebenjaminwilson_artist",
+        "email": "benjamin.wilson@artisantattooco..com",
+        "phone": "+44 151 7139 904",
+        "website": "https://benjaminwilson.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "tribal",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "tribal"
+          ]
+        },
+        {
+          "styleName": "japanese",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "japanese"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#13",
+      "sk": "METADATA",
+      "artistId": "artist-013",
+      "artistName": "Sarah Mitchell",
+      "bio": "Classic American traditional style with bold lines and vibrant colors",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+      "instagramHandle": "inksarahmitchell_studio",
+      "locationDisplay": "Liverpool, UK",
+      "tattooStudio": {
+        "studioId": "studio-001",
+        "studioName": "Classic Ink Parlour",
+        "address": {
+          "street": "23 Bold Street",
+          "city": "Liverpool",
+          "postcode": "L8 7NJ",
+          "latitude": 53.412258499652566,
+          "longitude": -2.9867012674590563
+        }
+      },
+      "styles": [
+        "minimalism"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_140.png",
+          "description": "Clean geometric",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_57.png",
+          "description": "Simple line art",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_84.png",
+          "description": "Subtle design",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_13.png",
+          "description": "Minimalist symbol",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_121.png",
+          "description": "Minimalist symbol",
+          "style": "minimalism"
+        }
+      ],
+      "geohash": "tf6y15",
+      "opted_out": false,
+      "rating": 4.1,
+      "reviewCount": 92,
+      "pricing": {
+        "hourlyRate": 100,
+        "minimumCharge": 51,
+        "currency": "GBP",
+        "description": "£"
+      },
+      "availability": {
+        "status": "Booking 1-2 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-02-15",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 17,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge",
+          "Master Artist"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inksarahmitchell_studio",
+        "email": "sarah.mitchell@vibrantinkstudio.com",
+        "phone": "+44 161 7530 665",
+        "website": "https://sarahmitchell.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "minimalism",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "minimalism"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#14",
+      "sk": "METADATA",
+      "artistId": "artist-014",
+      "artistName": "Nova Johnson",
+      "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-34.jpg",
+      "instagramHandle": "tattoonovajohnson_tattoos",
+      "locationDisplay": "Birmingham, UK",
+      "tattooStudio": {
+        "studioId": "studio-005",
+        "studioName": "Vibrant Ink Studio",
+        "address": {
+          "street": "56 Broad Street",
+          "city": "Birmingham",
+          "postcode": "B3 1JJ",
+          "latitude": 52.488951600552554,
+          "longitude": -1.8944440855868558
+        }
+      },
+      "styles": [
+        "new_school",
+        "dotwork"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_84.png",
+          "description": "Traditional swallow pair",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_42.png",
+          "description": "Classic rose design",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_120.png",
+          "description": "Nautical anchor piece",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_112.png",
+          "description": "Meditative dots",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_97.png",
+          "description": "Meditative dots",
+          "style": "dotwork"
+        }
+      ],
+      "geohash": "2h4bss",
+      "opted_out": false,
+      "rating": 4.7,
+      "reviewCount": 105,
+      "pricing": {
+        "hourlyRate": 255,
+        "minimumCharge": 205,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 4,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@tattoonovajohnson_tattoos",
+        "email": "nova.johnson@rebelinkstudio.com",
+        "phone": "+44 131 2023 334",
+        "website": "https://novajohnson.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Mandala",
+        "Stippling",
+        "Consultations",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "new_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "new_school"
+          ]
+        },
+        {
+          "styleName": "dotwork",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "dotwork"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#15",
+      "sk": "METADATA",
+      "artistId": "artist-015",
+      "artistName": "Aria Kim",
+      "bio": "Old school tattoo specialist with expertise in sailor jerry designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+      "instagramHandle": "inkariakim_ink",
+      "locationDisplay": "Glasgow, UK",
+      "tattooStudio": {
+        "studioId": "studio-002",
+        "studioName": "Electric Needle Studio",
+        "address": {
+          "street": "89 Southside",
+          "city": "Glasgow",
+          "postcode": "G2 3BZ",
+          "latitude": 55.8669198440329,
+          "longitude": -4.256421200185852
+        }
+      },
+      "styles": [
+        "lettering"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_95.png",
+          "description": "Bold eagle tattoo",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_140.png",
+          "description": "Bold eagle tattoo",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_120.png",
+          "description": "Nautical anchor piece",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_8.png",
+          "description": "Nautical anchor piece",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_30.png",
+          "description": "Bold eagle tattoo",
+          "style": "lettering"
+        }
+      ],
+      "geohash": "x3p2ee",
+      "opted_out": false,
+      "rating": 3.9,
+      "reviewCount": 48,
+      "pricing": {
+        "hourlyRate": 119,
+        "minimumCharge": 110,
+        "currency": "GBP",
+        "description": "££"
+      },
+      "availability": {
+        "status": "Booking 1-2 months",
+        "bookingOpen": true,
+        "nextAvailable": "2024-04-01",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 13,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@inkariakim_ink",
+        "email": "aria.kim@rebelinkstudio.com",
+        "phone": "+44 161 6539 257",
+        "website": "https://ariakim.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "lettering",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "lettering"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#16",
+      "sk": "METADATA",
+      "artistId": "artist-016",
+      "artistName": "Oliver Brown",
+      "bio": "Heavy blackwork specialist with gothic and dark art influence",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/96.jpg",
+      "instagramHandle": "artoliverbrown_tattoos",
+      "locationDisplay": "Leeds, UK",
+      "tattooStudio": {
+        "studioId": "studio-007",
+        "studioName": "Sacred Art Tattoos",
+        "address": {
+          "street": "45 Headrow",
+          "city": "Leeds",
+          "postcode": "LS2 7UE",
+          "latitude": 53.804085380244025,
+          "longitude": -1.547599667730294
+        }
+      },
+      "styles": [
+        "blackwork",
+        "dotwork",
+        "lettering"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_131.png",
+          "description": "Bold blackwork design",
+          "style": "blackwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_101.png",
+          "description": "Solid black pattern",
+          "style": "blackwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_81.png",
+          "description": "Textured design",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_135.png",
+          "description": "Intricate dotwork mandala",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_128.png",
+          "description": "Traditional swallow pair",
+          "style": "lettering"
+        }
+      ],
+      "geohash": "e35qzq",
+      "opted_out": false,
+      "rating": 4.8,
+      "reviewCount": 10,
+      "pricing": {
+        "hourlyRate": 179,
+        "minimumCharge": 151,
+        "currency": "GBP",
+        "description": "£££"
+      },
+      "availability": {
+        "status": "Available",
+        "bookingOpen": true,
+        "nextAvailable": null,
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 15,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge",
+          "Master Artist"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@artoliverbrown_tattoos",
+        "email": "oliver.brown@urbancanvasstudio.com",
+        "phone": "+44 121 9848 166",
+        "website": "https://oliverbrown.tattoo.com"
+      },
+      "specialties": [
+        "Tribal",
+        "Stippling",
+        "Custom designs",
+        "Consultations"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "blackwork",
+          "characteristics": [
+            "solid-black",
+            "bold-contrast",
+            "graphic",
+            "striking"
+          ],
+          "popularMotifs": [
+            "tribal-patterns",
+            "geometric-shapes",
+            "silhouettes",
+            "text"
+          ],
+          "colorPalette": [
+            "black",
+            "minimal-white"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "ancient",
+          "aliases": [
+            "solid-black",
+            "tribal"
+          ]
+        },
+        {
+          "styleName": "dotwork",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "dotwork"
+          ]
+        },
+        {
+          "styleName": "lettering",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "lettering"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#17",
+      "sk": "METADATA",
+      "artistId": "artist-017",
+      "artistName": "Connor Walsh",
+      "bio": "Mandala and dotwork specialist with meditative approach",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-25.jpg",
+      "instagramHandle": "artconnorwalsh_artist",
+      "locationDisplay": "Manchester, UK",
+      "tattooStudio": {
+        "studioId": "studio-008",
+        "studioName": "Botanical Tattoo Collective",
+        "address": {
+          "street": "23 Northern Quarter",
+          "city": "Manchester",
+          "postcode": "M1 1AA",
+          "latitude": 53.47898751387078,
+          "longitude": -2.243923396873715
+        }
+      },
+      "styles": [
+        "dotwork",
+        "old_school"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_51.png",
+          "description": "Intricate dotwork mandala",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_145.png",
+          "description": "Textured design",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/dotwork/tattoo_106.png",
+          "description": "Intricate dotwork mandala",
+          "style": "dotwork"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_39.png",
+          "description": "Bold eagle tattoo",
+          "style": "old_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/old_school/tattoo_59.png",
+          "description": "Nautical anchor piece",
+          "style": "old_school"
+        }
+      ],
+      "geohash": "scp2rt",
+      "opted_out": false,
+      "rating": 4.3,
+      "reviewCount": 98,
+      "pricing": {
+        "hourlyRate": 249,
+        "minimumCharge": 201,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 3,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@artconnorwalsh_artist",
+        "email": "connor.walsh@urbancanvasstudio.com",
+        "phone": "+44 131 8580 889",
+        "website": "https://connorwalsh.tattoo.com"
+      },
+      "specialties": [
+        "Stippling",
+        "Mandala",
+        "Custom designs",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "dotwork",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "dotwork"
+          ]
+        },
+        {
+          "styleName": "old_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "old_school"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#18",
+      "sk": "METADATA",
+      "artistId": "artist-018",
+      "artistName": "Zoe Anderson",
+      "bio": "Traditional and neo-traditional tattoo artist specializing in roses, eagles, and nautical themes",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-72.jpg",
+      "instagramHandle": "artzoeanderson_tattoo",
+      "locationDisplay": "Edinburgh, UK",
+      "tattooStudio": {
+        "studioId": "studio-009",
+        "studioName": "Vibrant Ink Studio",
+        "address": {
+          "street": "90 Grassmarket",
+          "city": "Edinburgh",
+          "postcode": "EH1 1AA",
+          "latitude": 55.956018287204046,
+          "longitude": -3.1849810105154477
+        }
+      },
+      "styles": [
+        "new_school"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_118.png",
+          "description": "Classic rose design",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_47.png",
+          "description": "Traditional swallow pair",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_99.png",
+          "description": "Nautical anchor piece",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_34.png",
+          "description": "Traditional swallow pair",
+          "style": "new_school"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/new_school/tattoo_119.png",
+          "description": "Nautical anchor piece",
+          "style": "new_school"
+        }
+      ],
+      "geohash": "79uqmx",
+      "opted_out": false,
+      "rating": 4.7,
+      "reviewCount": 156,
+      "pricing": {
+        "hourlyRate": 252,
+        "minimumCharge": 203,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Booking 1-2 weeks",
+        "bookingOpen": true,
+        "nextAvailable": "2024-02-15",
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 15,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge",
+          "Master Artist"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@artzoeanderson_tattoo",
+        "email": "zoe.anderson@moderninkstudio.com",
+        "phone": "+44 141 4157 782",
+        "website": "https://zoeanderson.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Walk-ins welcome",
+        "Large pieces"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "new_school",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "new_school"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#19",
+      "sk": "METADATA",
+      "artistId": "artist-019",
+      "artistName": "Amelia Jackson",
+      "bio": "Tebori and machine specialist in traditional Japanese designs",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-45.jpg",
+      "instagramHandle": "needleameliajackson_art",
+      "locationDisplay": "Edinburgh, UK",
+      "tattooStudio": {
+        "studioId": "studio-009",
+        "studioName": "Vibrant Ink Studio",
+        "address": {
+          "street": "90 Grassmarket",
+          "city": "Edinburgh",
+          "postcode": "EH1 1AA",
+          "latitude": 55.956018287204046,
+          "longitude": -3.1849810105154477
+        }
+      },
+      "styles": [
+        "japanese",
+        "lettering",
+        "blackwork"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_78.png",
+          "description": "Bold eagle tattoo",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/japanese/tattoo_32.png",
+          "description": "Traditional swallow pair",
+          "style": "japanese"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_94.png",
+          "description": "Traditional swallow pair",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/lettering/tattoo_31.png",
+          "description": "Classic rose design",
+          "style": "lettering"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/blackwork/tattoo_107.png",
+          "description": "Minimalist black",
+          "style": "blackwork"
+        }
+      ],
+      "geohash": "2fh50y",
+      "opted_out": false,
+      "rating": 4.7,
+      "reviewCount": 161,
+      "pricing": {
+        "hourlyRate": 74,
+        "minimumCharge": 70,
+        "currency": "GBP",
+        "description": "£"
+      },
+      "availability": {
+        "status": "Waitlist only",
+        "bookingOpen": false,
+        "nextAvailable": null,
+        "waitingList": true
+      },
+      "experience": {
+        "yearsActive": 17,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Color Theory",
+          "Guest Artist",
+          "Convention Judge",
+          "Master Artist"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@needleameliajackson_art",
+        "email": "amelia.jackson@urbancanvasstudio.com",
+        "phone": "+44 113 1564 340",
+        "website": "https://ameliajackson.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Tribal",
+        "Minimalist",
+        "Large pieces",
+        "Walk-ins welcome"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "japanese",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "japanese"
+          ]
+        },
+        {
+          "styleName": "lettering",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "lettering"
+          ]
+        },
+        {
+          "styleName": "blackwork",
+          "characteristics": [
+            "solid-black",
+            "bold-contrast",
+            "graphic",
+            "striking"
+          ],
+          "popularMotifs": [
+            "tribal-patterns",
+            "geometric-shapes",
+            "silhouettes",
+            "text"
+          ],
+          "colorPalette": [
+            "black",
+            "minimal-white"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "ancient",
+          "aliases": [
+            "solid-black",
+            "tribal"
+          ]
+        }
+      ]
+    },
+    {
+      "pk": "ARTIST#20",
+      "sk": "METADATA",
+      "artistId": "artist-020",
+      "artistName": "Marcus Chen",
+      "bio": "Traditional and neo-traditional tattoo artist specializing in roses, eagles, and nautical themes",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/portrait-89.jpg",
+      "instagramHandle": "skinmarcuschen_tattoo",
+      "locationDisplay": "Liverpool, UK",
+      "tattooStudio": {
+        "studioId": "studio-001",
+        "studioName": "Classic Ink Parlour",
+        "address": {
+          "street": "23 Bold Street",
+          "city": "Liverpool",
+          "postcode": "L8 7NJ",
+          "latitude": 53.412258499652566,
+          "longitude": -2.9867012674590563
+        }
+      },
+      "styles": [
+        "tribal",
+        "minimalism",
+        "floral"
+      ],
+      "portfolioImages": [
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_145.png",
+          "description": "Nautical anchor piece",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/tribal/tattoo_124.png",
+          "description": "Bold eagle tattoo",
+          "style": "tribal"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_113.png",
+          "description": "Subtle design",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/minimalism/tattoo_11.png",
+          "description": "Subtle design",
+          "style": "minimalism"
+        },
+        {
+          "url": "http://localhost:4566/tattoo-directory-images/styles/floral/tattoo_12.png",
+          "description": "Delicate petals",
+          "style": "floral"
+        }
+      ],
+      "geohash": "ydjjwr",
+      "opted_out": false,
+      "rating": 4.3,
+      "reviewCount": 52,
+      "pricing": {
+        "hourlyRate": 257,
+        "minimumCharge": 205,
+        "currency": "GBP",
+        "description": "££££"
+      },
+      "availability": {
+        "status": "Available",
+        "bookingOpen": true,
+        "nextAvailable": null,
+        "waitingList": false
+      },
+      "experience": {
+        "yearsActive": 5,
+        "apprenticeshipCompleted": true,
+        "certifications": [
+          "First Aid",
+          "Bloodborne Pathogens",
+          "Advanced Shading"
+        ]
+      },
+      "contactInfo": {
+        "instagram": "@skinmarcuschen_tattoo",
+        "email": "marcus.chen@electricneedlestudio.com",
+        "phone": "+44 121 6251 597",
+        "website": "https://marcuschen.tattoo.com"
+      },
+      "specialties": [
+        "Custom designs",
+        "Walk-ins welcome",
+        "Consultations"
+      ],
+      "styleMetadata": [
+        {
+          "styleName": "tribal",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "tribal"
+          ]
+        },
+        {
+          "styleName": "minimalism",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "minimalism"
+          ]
+        },
+        {
+          "styleName": "floral",
+          "characteristics": [
+            "custom-style"
+          ],
+          "popularMotifs": [
+            "various"
+          ],
+          "colorPalette": [
+            "black"
+          ],
+          "difficulty": "intermediate",
+          "timeOrigin": "modern",
+          "aliases": [
+            "floral"
+          ]
+        }
+      ]
+    }
+  ],
+  "studios": [
+    {
+      "studioId": "studio-001",
+      "studioName": "Classic Ink Parlour",
+      "address": {
+        "street": "23 Bold Street",
+        "city": "Liverpool",
+        "postcode": "L8 7NJ",
+        "latitude": 53.412258499652566,
+        "longitude": -2.9867012674590563
+      },
+      "locationDisplay": "Liverpool, UK",
+      "contactInfo": {
+        "phone": "+44 141 5551 926",
+        "email": "info@classicinkparlour.com",
+        "website": "https://classicinkparlour.com",
+        "instagram": "@classicinkparlourstudio"
+      },
+      "openingHours": {
+        "monday": "Closed",
+        "tuesday": "11:00-17:00",
+        "wednesday": "11:00-17:00",
+        "thursday": "11:00-19:00",
+        "friday": "11:00-19:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-17:00"
+      },
+      "artists": [
+        "artist-001",
+        "artist-013",
+        "artist-020"
+      ],
+      "rating": 4.9,
+      "reviewCount": 87,
+      "established": 2013,
+      "specialties": [
+        "traditional",
+        "tribal"
+      ],
+      "geohash": "h2b2wz"
+    },
+    {
+      "studioId": "studio-002",
+      "studioName": "Electric Needle Studio",
+      "address": {
+        "street": "89 Southside",
+        "city": "Glasgow",
+        "postcode": "G2 3BZ",
+        "latitude": 55.8669198440329,
+        "longitude": -4.256421200185852
+      },
+      "locationDisplay": "Glasgow, UK",
+      "contactInfo": {
+        "phone": "+44 151 9953 630",
+        "email": "info@electricneedlestudio.com",
+        "website": "https://electricneedlestudio.com",
+        "instagram": "@electricneedlestudiostudio"
+      },
+      "openingHours": {
+        "monday": "10:00-18:00",
+        "tuesday": "10:00-18:00",
+        "wednesday": "10:00-18:00",
+        "thursday": "10:00-20:00",
+        "friday": "10:00-20:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-16:00"
+      },
+      "artists": [
+        "artist-002",
+        "artist-003",
+        "artist-015"
+      ],
+      "rating": 4.5,
+      "reviewCount": 28,
+      "established": 2020,
+      "specialties": [
+        "biomechanical",
+        "geometric",
+        "lettering"
+      ],
+      "geohash": "e8fxx4"
+    },
+    {
+      "studioId": "studio-003",
+      "studioName": "Artisan Tattoo Co.",
+      "address": {
+        "street": "90 Grassmarket",
+        "city": "Edinburgh",
+        "postcode": "EH2 2AD",
+        "latitude": 55.95364261380621,
+        "longitude": -3.1920999319378103
+      },
+      "locationDisplay": "Edinburgh, UK",
+      "contactInfo": {
+        "phone": "+44 117 2918 331",
+        "email": "info@artisantattooco.com",
+        "website": "https://artisantattooco.com",
+        "instagram": "@artisantattoocostudio"
+      },
+      "openingHours": {
+        "monday": "10:00-18:00",
+        "tuesday": "10:00-18:00",
+        "wednesday": "10:00-18:00",
+        "thursday": "10:00-20:00",
+        "friday": "10:00-20:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-16:00"
+      },
+      "artists": [
+        "artist-004",
+        "artist-005",
+        "artist-007"
+      ],
+      "rating": 4.9,
+      "reviewCount": 61,
+      "established": 2019,
+      "specialties": [
+        "blackwork",
+        "japanese",
+        "tribal",
+        "lettering",
+        "watercolour"
+      ],
+      "geohash": "3wpqgh"
+    },
+    {
+      "studioId": "studio-004",
+      "studioName": "Botanical Tattoo Collective",
+      "address": {
+        "street": "45 Camden High Street",
+        "city": "London",
+        "postcode": "EC1A 1BB",
+        "latitude": 51.51174167529388,
+        "longitude": -0.12870280860077574
+      },
+      "locationDisplay": "London, UK",
+      "contactInfo": {
+        "phone": "+44 117 1019 857",
+        "email": "info@botanicaltattoocollective.com",
+        "website": "https://botanicaltattoocollective.com",
+        "instagram": "@botanicaltattoocollectivestudio"
+      },
+      "openingHours": {
+        "monday": "09:00-19:00",
+        "tuesday": "09:00-19:00",
+        "wednesday": "09:00-19:00",
+        "thursday": "09:00-21:00",
+        "friday": "09:00-21:00",
+        "saturday": "09:00-19:00",
+        "sunday": "Closed"
+      },
+      "artists": [
+        "artist-006",
+        "artist-011"
+      ],
+      "rating": 4.1,
+      "reviewCount": 114,
+      "established": 2017,
+      "specialties": [
+        "fineline",
+        "tribal"
+      ],
+      "geohash": "k7dh0p"
+    },
+    {
+      "studioId": "studio-005",
+      "studioName": "Vibrant Ink Studio",
+      "address": {
+        "street": "56 Broad Street",
+        "city": "Birmingham",
+        "postcode": "B3 1JJ",
+        "latitude": 52.488951600552554,
+        "longitude": -1.8944440855868558
+      },
+      "locationDisplay": "Birmingham, UK",
+      "contactInfo": {
+        "phone": "+44 151 3409 104",
+        "email": "info@vibrantinkstudio.com",
+        "website": "https://vibrantinkstudio.com",
+        "instagram": "@vibrantinkstudiostudio"
+      },
+      "openingHours": {
+        "monday": "10:00-18:00",
+        "tuesday": "10:00-18:00",
+        "wednesday": "10:00-18:00",
+        "thursday": "10:00-20:00",
+        "friday": "10:00-20:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-16:00"
+      },
+      "artists": [
+        "artist-008",
+        "artist-014"
+      ],
+      "rating": 4.6,
+      "reviewCount": 49,
+      "established": 2019,
+      "specialties": [
+        "realism",
+        "tribal"
+      ],
+      "geohash": "06wjk5"
+    },
+    {
+      "studioId": "studio-006",
+      "studioName": "Classic Ink Parlour",
+      "address": {
+        "street": "56 Stokes Croft",
+        "city": "Bristol",
+        "postcode": "BS8 1TH",
+        "latitude": 51.45544657129461,
+        "longitude": -2.584786113265136
+      },
+      "locationDisplay": "Bristol, UK",
+      "contactInfo": {
+        "phone": "+44 131 7221 907",
+        "email": "info@classicinkparlour.com",
+        "website": "https://classicinkparlour.com",
+        "instagram": "@classicinkparlourstudio"
+      },
+      "openingHours": {
+        "monday": "Closed",
+        "tuesday": "11:00-17:00",
+        "wednesday": "11:00-17:00",
+        "thursday": "11:00-19:00",
+        "friday": "11:00-19:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-17:00"
+      },
+      "artists": [
+        "artist-009",
+        "artist-012"
+      ],
+      "rating": 4,
+      "reviewCount": 64,
+      "established": 2014,
+      "specialties": [
+        "traditional",
+        "floral",
+        "blackwork",
+        "fineline"
+      ],
+      "geohash": "k47eyv"
+    },
+    {
+      "studioId": "studio-007",
+      "studioName": "Sacred Art Tattoos",
+      "address": {
+        "street": "45 Headrow",
+        "city": "Leeds",
+        "postcode": "LS2 7UE",
+        "latitude": 53.804085380244025,
+        "longitude": -1.547599667730294
+      },
+      "locationDisplay": "Leeds, UK",
+      "contactInfo": {
+        "phone": "+44 161 5862 923",
+        "email": "info@sacredarttattoos.com",
+        "website": "https://sacredarttattoos.com",
+        "instagram": "@sacredarttattoosstudio"
+      },
+      "openingHours": {
+        "monday": "Closed",
+        "tuesday": "11:00-17:00",
+        "wednesday": "11:00-17:00",
+        "thursday": "11:00-19:00",
+        "friday": "11:00-19:00",
+        "saturday": "10:00-18:00",
+        "sunday": "12:00-17:00"
+      },
+      "artists": [
+        "artist-010",
+        "artist-016"
+      ],
+      "rating": 4.1,
+      "reviewCount": 44,
+      "established": 2012,
+      "specialties": [
+        "watercolour",
+        "realism",
+        "floral",
+        "japanese",
+        "geometric"
+      ],
+      "geohash": "mc41e1"
+    },
+    {
+      "studioId": "studio-008",
+      "studioName": "Botanical Tattoo Collective",
+      "address": {
+        "street": "23 Northern Quarter",
+        "city": "Manchester",
+        "postcode": "M1 1AA",
+        "latitude": 53.47898751387078,
+        "longitude": -2.243923396873715
+      },
+      "locationDisplay": "Manchester, UK",
+      "contactInfo": {
+        "phone": "+44 121 3564 244",
+        "email": "info@botanicaltattoocollective.com",
+        "website": "https://botanicaltattoocollective.com",
+        "instagram": "@botanicaltattoocollectivestudio"
+      },
+      "openingHours": {
+        "monday": "09:00-19:00",
+        "tuesday": "09:00-19:00",
+        "wednesday": "09:00-19:00",
+        "thursday": "09:00-21:00",
+        "friday": "09:00-21:00",
+        "saturday": "09:00-19:00",
+        "sunday": "Closed"
+      },
+      "artists": [
+        "artist-017"
+      ],
+      "rating": 4.4,
+      "reviewCount": 97,
+      "established": 2005,
+      "specialties": [
+        "japanese",
+        "neo_traditional",
+        "biomechanical",
+        "realism",
+        "watercolour"
+      ],
+      "geohash": "t6xxms"
+    },
+    {
+      "studioId": "studio-009",
+      "studioName": "Vibrant Ink Studio",
+      "address": {
+        "street": "90 Grassmarket",
+        "city": "Edinburgh",
+        "postcode": "EH1 1AA",
+        "latitude": 55.956018287204046,
+        "longitude": -3.1849810105154477
+      },
+      "locationDisplay": "Edinburgh, UK",
+      "contactInfo": {
+        "phone": "+44 20 2192 979",
+        "email": "info@vibrantinkstudio.com",
+        "website": "https://vibrantinkstudio.com",
+        "instagram": "@vibrantinkstudiostudio"
+      },
+      "openingHours": {
+        "monday": "09:00-19:00",
+        "tuesday": "09:00-19:00",
+        "wednesday": "09:00-19:00",
+        "thursday": "09:00-21:00",
+        "friday": "09:00-21:00",
+        "saturday": "09:00-19:00",
+        "sunday": "Closed"
+      },
+      "artists": [
+        "artist-018",
+        "artist-019"
+      ],
+      "rating": 4.6,
+      "reviewCount": 50,
+      "established": 2017,
+      "specialties": [
+        "realism",
+        "tribal",
+        "floral",
+        "watercolour"
+      ],
+      "geohash": "2ums4y"
+    }
+  ],
+  "metadata": {
+    "generatedAt": "2025-10-03T19:29:45.990Z",
+    "scenario": null,
+    "artistCount": 20,
+    "studioCount": 9,
+    "version": "2.0.0",
+    "generator": "enhanced-frontend-sync-processor",
+    "validation": {
+      "errors": 0,
+      "consistencyIssues": 0,
+      "isValid": true
+    },
+    "sizeAnalysis": {
+      "totalSize": {
+        "bytes": 47424,
+        "kb": 46.31,
+        "mb": 0.05
+      },
+      "artistCount": 20,
+      "studioCount": 0,
+      "averageArtistSize": 2371,
+      "portfolioImageCount": 100,
+      "estimatedLoadTime": 0
+    },
+    "compatibility": {
+      "backwardCompatible": true,
+      "requiredFields": [
+        "artistId",
+        "artistName",
+        "bio",
+        "tattooStudio",
+        "styles"
+      ],
+      "optionalFields": [
+        "contactInfo",
+        "pricing",
+        "availability",
+        "experience"
+      ]
+    }
+  }
+}

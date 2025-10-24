@@ -1,0 +1,16 @@
+{
+  "name": "Urban Moon Works",
+  "location": "Brighton",
+  "type": "high-end luxury",
+  "images": {
+    "internal": [
+      "internal_01_urban_moon_works.png"
+    ],
+    "external": [
+      "external_01_urban_moon_works.png"
+    ],
+    "working": [
+      "working_01_urban_moon_works.png"
+    ]
+  }
+}

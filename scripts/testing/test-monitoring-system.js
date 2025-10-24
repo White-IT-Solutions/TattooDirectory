@@ -70,7 +70,7 @@ class MonitoringSystemTester {
         console.log('🔍 Testing Health Monitor...');
         
         await this.runTest('Health Monitor Import', async () => {
-            const HealthMonitor = require('./health-monitor');
+            const HealthMonitor = require('../utilities/health-monitor');
             const monitor = new HealthMonitor();
             
             if (!monitor || typeof monitor.runHealthCheck !== 'function') {
@@ -81,7 +81,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Health Monitor Configuration', async () => {
-            const HealthMonitor = require('./health-monitor');
+            const HealthMonitor = require('../utilities/health-monitor');
             const monitor = new HealthMonitor();
             
             if (!monitor.services || monitor.services.length === 0) {
@@ -106,7 +106,7 @@ class MonitoringSystemTester {
                 // Quick check if LocalStack is running
                 await axios.get('http://localhost:4566/_localstack/health', { timeout: 2000 });
                 
-                const HealthMonitor = require('./health-monitor');
+                const HealthMonitor = require('../utilities/health-monitor');
                 const monitor = new HealthMonitor();
                 const results = await monitor.runHealthCheck();
                 
@@ -133,7 +133,7 @@ class MonitoringSystemTester {
         console.log('✅ Testing Environment Validator...');
         
         await this.runTest('Environment Validator Import', async () => {
-            const EnvironmentHealthValidator = require('./environment-health-validator');
+            const EnvironmentHealthValidator = require('../validation/environment-health-validator');
             const validator = new EnvironmentHealthValidator();
             
             if (!validator || typeof validator.runComprehensiveValidation !== 'function') {
@@ -144,7 +144,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Validation Components', async () => {
-            const EnvironmentHealthValidator = require('./environment-health-validator');
+            const EnvironmentHealthValidator = require('../validation/environment-health-validator');
             const validator = new EnvironmentHealthValidator();
             
             // Check if required components are initialized
@@ -160,7 +160,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Basic Validation Methods', async () => {
-            const EnvironmentHealthValidator = require('./environment-health-validator');
+            const EnvironmentHealthValidator = require('../validation/environment-health-validator');
             const validator = new EnvironmentHealthValidator();
             
             // Test method existence
@@ -187,7 +187,7 @@ class MonitoringSystemTester {
         console.log('🚨 Testing Alert System...');
         
         await this.runTest('Alert System Import', async () => {
-            const AlertSystem = require('./alert-system');
+            const AlertSystem = require('../monitoring/alert-system');
             const alertSystem = new AlertSystem();
             
             if (!alertSystem || typeof alertSystem.processMonitoringData !== 'function') {
@@ -198,7 +198,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Default Alert Rules', async () => {
-            const AlertSystem = require('./alert-system');
+            const AlertSystem = require('../monitoring/alert-system');
             const alertSystem = new AlertSystem();
             
             if (!alertSystem.alertRules || alertSystem.alertRules.length === 0) {
@@ -218,7 +218,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Notification Channels', async () => {
-            const AlertSystem = require('./alert-system');
+            const AlertSystem = require('../monitoring/alert-system');
             const alertSystem = new AlertSystem();
             
             if (!alertSystem.notificationChannels || alertSystem.notificationChannels.length === 0) {
@@ -238,7 +238,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Alert Processing', async () => {
-            const AlertSystem = require('./alert-system');
+            const AlertSystem = require('../monitoring/alert-system');
             const alertSystem = new AlertSystem();
             
             // Test with mock data that should trigger alerts
@@ -403,7 +403,7 @@ class MonitoringSystemTester {
         console.log('⚙️  Testing Configuration...');
         
         await this.runTest('Configuration Loading', async () => {
-            const MonitoringOrchestrator = require('./start-monitoring');
+            const MonitoringOrchestrator = require('../monitoring/start-monitoring');
             const orchestrator = new MonitoringOrchestrator();
             
             // Test default configuration
@@ -415,7 +415,7 @@ class MonitoringSystemTester {
         });
 
         await this.runTest('Configuration Persistence', async () => {
-            const MonitoringOrchestrator = require('./start-monitoring');
+            const MonitoringOrchestrator = require('../monitoring/start-monitoring');
             const orchestrator = new MonitoringOrchestrator();
             
             // Test saving configuration

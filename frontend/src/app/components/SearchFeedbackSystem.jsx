@@ -6,7 +6,7 @@ import {
   CardContent,
   Button 
 } from "../../design-system/components/ui";
-import { enhancedTattooStyles, searchStylesByAlias } from '../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 import { cn } from '../../design-system/utils/cn';
 
 /**

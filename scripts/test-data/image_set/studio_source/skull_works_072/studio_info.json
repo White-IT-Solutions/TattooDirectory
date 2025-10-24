@@ -1,0 +1,16 @@
+{
+  "name": "Skull Works",
+  "location": "Newcastle",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_skull_works.png"
+    ],
+    "external": [
+      "external_01_skull_works.png"
+    ],
+    "working": [
+      "working_01_skull_works.png"
+    ]
+  }
+}

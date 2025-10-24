@@ -18,7 +18,7 @@
 const { DATA_CONFIG } = require('../data-config');
 const { StudioDataValidator } = require('./studio-data-validator');
 const { StudioImageProcessor } = require('./studio-image-processor');
-const { FrontendSyncProcessor } = require('../frontend-sync-processor');
+const { FrontendSyncProcessor } = require('./frontend-sync-processor');
 
 /**
  * Studio processing error types

@@ -9,9 +9,9 @@
 const { DataCLI, COMMANDS } = require('../data-cli');
 
 // Mock external dependencies
-jest.mock('../unified-data-manager');
-jest.mock('../health-monitor');
-jest.mock('../state-manager');
+jest.mock('../data-management/unified-data-manager');
+jest.mock('../utilities/health-monitor');
+jest.mock('../utilities/state-manager');
 
 describe('Data CLI Studio Commands', () => {
   let cli;

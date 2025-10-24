@@ -1,0 +1,16 @@
+{
+  "name": "Dragon House",
+  "location": "Sheffield",
+  "type": "modern minimalist",
+  "images": {
+    "internal": [
+      "internal_01_dragon_house.png"
+    ],
+    "external": [
+      "external_01_dragon_house.png"
+    ],
+    "working": [
+      "working_01_dragon_house.png"
+    ]
+  }
+}

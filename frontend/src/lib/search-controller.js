@@ -7,7 +7,7 @@
  */
 
 import { api } from './api.js';
-import { enhancedTattooStyles, searchStylesByAlias } from '../app/data/testData/enhancedTattooStyles.js';
+import { enhancedTattooStyles, searchStylesByAlias } from './data/tattooStyles.js';
 import { 
   debounce, 
   performanceMonitor, 
@@ -302,14 +302,14 @@ export class DebouncedSearch {
    */
   async search(query, ...args) {
     const operationName = `debounced_search_${query.getCacheKey ? query.getCacheKey() : 'unknown'}`;
-    performanceMonitor.startTiming(operationName);
+    performanceMonitor.startMeasurement(operationName);
     
     try {
       const result = await this.debouncedFn(query, ...args);
-      performanceMonitor.endTiming(operationName);
+      performanceMonitor.endMeasurement(operationName);
       return result;
     } catch (error) {
-      performanceMonitor.endTiming(operationName);
+      performanceMonitor.endMeasurement(operationName);
       throw error;
     }
   }
@@ -440,14 +440,14 @@ export class EnhancedSearchController {
    */
   async _executeSearchInternal(query) {
     const operationName = `search_execution_${query.getCacheKey()}`;
-    performanceMonitor.startTiming(operationName);
+    performanceMonitor.startMeasurement(operationName);
     
     const cacheKey = query.getCacheKey();
 
     // Check cache first
     const cached = searchCache.get(cacheKey);
     if (cached) {
-      const executionTime = performanceMonitor.endTiming(operationName);
+      const executionTime = performanceMonitor.endMeasurement(operationName);
       
       this.updateSearchState({
         ...cached,
@@ -492,7 +492,7 @@ export class EnhancedSearchController {
       searchCache.set(cacheKey, processedResults);
 
       // Update state with results
-      const executionTime = performanceMonitor.endTiming(operationName);
+      const executionTime = performanceMonitor.endMeasurement(operationName);
       this.updateSearchState({
         results: processedResults.items,
         totalCount: processedResults.totalCount,
@@ -508,7 +508,7 @@ export class EnhancedSearchController {
 
       return processedResults;
     } catch (error) {
-      const executionTime = performanceMonitor.endTiming(operationName);
+      const executionTime = performanceMonitor.endMeasurement(operationName);
       this.updateSearchState({
         loading: false,
         error,

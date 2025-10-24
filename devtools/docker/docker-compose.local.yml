@@ -10,12 +10,13 @@ services:
     ports:
       - "${LOCALSTACK_PORT:-4566}:4566"
       - "${LOCALSTACK_EXTERNAL_PORT_START:-4510}-${LOCALSTACK_EXTERNAL_PORT_END:-4559}:4510-4559"
-    env_file:
-      - ../.env.local
+    depends_on:
+      opensearch:
+        condition: service_healthy
     environment:
       # Phase 1 Core Services: DynamoDB, OpenSearch, S3, API Gateway, Lambda, CloudWatch Logs, SNS
-      - SERVICES=${LOCALSTACK_PHASE1_SERVICES:-dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager,logs,sns}
-      - DEBUG=${LOCALSTACK_DEBUG:-1}
+      - SERVICES=dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager,logs,sns
+      - DEBUG=1
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_HOST=localstack
       - PERSISTENCE=${LOCALSTACK_PERSISTENCE:-1}
@@ -33,7 +34,7 @@ services:
       - DYNAMODB_HEAP_SIZE=256m
       
       # Enhanced OpenSearch Configuration
-      - OPENSEARCH_CUSTOM_BACKEND=http://localhost:4571
+      - OPENSEARCH_CUSTOM_BACKEND=http://tattoo-directory-opensearch:9200
       - OPENSEARCH_ENDPOINT_STRATEGY=domain
       - OPENSEARCH_MULTI_CLUSTER=0
       
@@ -46,7 +47,7 @@ services:
       - LAMBDA_FORWARD_URL=http://localstack:4566
       
       # Enhanced CloudWatch Logs Configuration
-      - CLOUDWATCH_LOGS_RETENTION_DAYS=${CLOUDWATCH_LOGS_RETENTION_DAYS:-7}
+      - CLOUDWATCH_LOGS_RETENTION_DAYS=7
       - LOGS_DELAY_TIME=500
       
       # Enhanced SNS Configuration
@@ -75,7 +76,6 @@ services:
       # Persistent data volumes
       - "localstack-data:/var/lib/localstack"
       - "localstack-logs:/var/log/localstack"
-      - "localstack-tmp:/tmp/localstack"
       
       # Configuration and initialization scripts
       - "../../localstack-init:/etc/localstack/init/ready.d"
@@ -111,18 +111,16 @@ services:
     ports:
       - "${BACKEND_PORT:-9000}:8080"
       - "${BACKEND_DEBUG_PORT:-9229}:9229"
-    env_file:
-      - ../.env.local
     environment:
       # Enhanced AWS Service Configuration
-      - AWS_ENDPOINT_URL=${LOCALSTACK_INTERNAL_ENDPOINT:-http://localstack:4566}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=eu-west-2
       
       # Enhanced Service Endpoints (internal container communication)
       - DYNAMODB_ENDPOINT=${DYNAMODB_INTERNAL_ENDPOINT:-http://localstack:4566}
-      - OPENSEARCH_ENDPOINT=${OPENSEARCH_INTERNAL_ENDPOINT:-http://localstack:4566}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_INTERNAL_ENDPOINT:-http://tattoo-directory-opensearch:9200}
       - S3_ENDPOINT=${S3_INTERNAL_ENDPOINT:-http://localstack:4566}
       - LAMBDA_ENDPOINT=${LAMBDA_INTERNAL_ENDPOINT:-http://localstack:4566}
       - LOGS_ENDPOINT=${LOGS_INTERNAL_ENDPOINT:-http://localstack:4566}
@@ -133,10 +131,10 @@ services:
       - APIGATEWAY_ENDPOINT=${APIGATEWAY_INTERNAL_ENDPOINT:-http://localstack:4566}
       
       # Application Configuration
-      - DYNAMODB_TABLE_NAME=${DYNAMODB_TABLE_NAME}
+      - DYNAMODB_TABLE_NAME=tattoo-directory-local
       - NODE_ENV=development
       - LAMBDA_TASK_ROOT=/var/task
-      - ENABLE_DEBUG=${ENABLE_BACKEND_DEBUG:-false}
+      - ENABLE_DEBUG=false
     depends_on:
       localstack:
         condition: service_healthy
@@ -170,13 +168,15 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
       - "${FRONTEND_DEBUG_PORT:-9230}:9230"
     env_file:
-      - ../.env.local
+      - ../../.env.local
     environment:
       - NEXT_PUBLIC_ENVIRONMENT=local
-      - NEXT_PUBLIC_API_URL=http://backend:8080/2015-03-31/functions/function/invocations
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:9001}
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
       - ENABLE_DEBUG=${ENABLE_FRONTEND_DEBUG:-false}
+      # Debug environment variables
+      - DEBUG_CONFIG=true
     depends_on:
       backend:
         condition: service_started
@@ -211,6 +211,49 @@ services:
           cpus: "0.25"
     networks:
       - tattoo-directory-local
+
+  # Real OpenSearch instance for LocalStack custom backend
+  opensearch:
+    image: opensearchproject/opensearch:2.3.0
+    container_name: tattoo-directory-opensearch
+    ports:
+      - "4571:9200"
+      - "4572:9600"
+    environment:
+      - cluster.name=tattoo-directory-cluster
+      - node.name=tattoo-directory-node
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "DISABLE_INSTALL_DEMO_CONFIG=true"
+      - "DISABLE_SECURITY_PLUGIN=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+        reservations:
+          memory: 512M
+          cpus: "0.25"
+    networks:
+      - tattoo-directory-local
+    profiles:
+      - phase1
 
   swagger-ui:
     image: nginx:alpine
@@ -251,7 +294,7 @@ services:
       - "${LOCALSTACK_PORT:-4566}:4566"
       - "${LOCALSTACK_EXTERNAL_PORT_START:-4510}-${LOCALSTACK_EXTERNAL_PORT_END:-4559}:4510-4559"
     env_file:
-      - ../.env.local
+      - ../../.env.local
     environment:
       # Phase 2 Services: All Phase 1 + SQS, EventBridge, CloudWatch Metrics
       - SERVICES=${LOCALSTACK_PHASE2_SERVICES:-dynamodb,opensearch,s3,apigateway,lambda,iam,secretsmanager,logs,sns,sqs,events,cloudwatch}
@@ -273,7 +316,7 @@ services:
       - DYNAMODB_HEAP_SIZE=256m
       
       # Enhanced OpenSearch Configuration
-      - OPENSEARCH_CUSTOM_BACKEND=http://localhost:4571
+      - OPENSEARCH_CUSTOM_BACKEND=http://tattoo-directory-opensearch:9200
       - OPENSEARCH_ENDPOINT_STRATEGY=domain
       - OPENSEARCH_MULTI_CLUSTER=0
       
@@ -327,7 +370,6 @@ services:
       # Persistent data volumes
       - "localstack-data:/var/lib/localstack"
       - "localstack-logs:/var/log/localstack"
-      - "localstack-tmp:/tmp/localstack"
       
       # Configuration and initialization scripts
       - "../../localstack-init:/etc/localstack/init/ready.d"
@@ -361,7 +403,7 @@ services:
       dockerfile: data-seeder/Dockerfile.seeder
     container_name: tattoo-directory-seeder
     env_file:
-      - ../.env.local
+      - ../../.env.local
     environment:
       - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
@@ -408,10 +450,8 @@ volumes:
       o: bind
       device: ${PWD}/devtools/localstack-logs
   
-  # Temporary LocalStack files (Lambda execution, etc.)
-  localstack-tmp:
+  # Temporary LocalStack files (Lambda execution, etc.) - use Docker volume instead of bind mount
+  
+  # OpenSearch data volume for persistent search data
+  opensearch-data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/devtools/localstack-tmp

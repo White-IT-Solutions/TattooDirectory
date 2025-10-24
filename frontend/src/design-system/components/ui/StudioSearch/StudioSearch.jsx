@@ -10,7 +10,7 @@ import {
   Tag
 } from '../index';
 import { cn } from '../../../utils/cn';
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../../../app/data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../../../lib/data/tattooStyles.js';
 
 /**
  * Popularity indicator component for styles

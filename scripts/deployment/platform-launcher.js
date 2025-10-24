@@ -171,7 +171,10 @@ function buildDockerComposeCommand(action, additionalArgs = []) {
   const files = getDockerComposeFiles();
   const fileArgs = files.flatMap((file) => ["-f", file]);
 
-  return ["docker-compose", ...fileArgs, action, ...additionalArgs];
+  // Add profile for phase1 services (includes localstack)
+  const profileArgs = ["--profile", "phase1"];
+
+  return ["docker-compose", ...fileArgs, ...profileArgs, action, ...additionalArgs];
 }
 
 function executeCommand(command, args = [], options = {}) {
@@ -262,7 +265,7 @@ async function startEnvironment() {
 
   // Health check
   logInfo("Checking service health...");
-  executeCommand("node", ["scripts/health-check.js"]);
+  executeCommand("npm", ["run", "health-check"]);
 
   // Success message
   log("", "reset");
@@ -272,7 +275,6 @@ async function startEnvironment() {
   log("📚 API Docs:     http://localhost:8080", "cyan");
   log("🔧 Backend API:  http://localhost:9000", "cyan");
   log("☁️  LocalStack:   http://localhost:4566", "cyan");
-  log("📊 LocalStack UI: http://localhost:4566/_localstack/cockpit", "cyan");
   log("", "reset");
   log("📝 Useful commands:", "bright");
   log("   npm run local:logs    - View all service logs");

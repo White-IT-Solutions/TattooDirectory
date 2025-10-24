@@ -1,0 +1,330 @@
+[
+  {
+    "studioId": "studio-001",
+    "studioName": "Sacred Art Tattoos",
+    "address": {
+      "street": "34 Jewellery Quarter",
+      "city": "Birmingham",
+      "postcode": "B3 1JJ",
+      "latitude": 52.48665423995378,
+      "longitude": -1.8919041421737934
+    },
+    "locationDisplay": "Birmingham, UK",
+    "contactInfo": {
+      "phone": "+44 20 2662 160",
+      "email": "info@sacredarttattoos.com",
+      "website": "https://sacredarttattoos.com",
+      "instagram": "@sacredarttattoosstudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-001",
+      "artist-004",
+      "artist-011",
+      "artist-018"
+    ],
+    "rating": 4.7,
+    "reviewCount": 136,
+    "established": 2006,
+    "specialties": [
+      "traditional",
+      "tribal",
+      "dotwork",
+      "japanese"
+    ],
+    "geohash": "9kfxmv"
+  },
+  {
+    "studioId": "studio-002",
+    "studioName": "Sacred Art Tattoos",
+    "address": {
+      "street": "45 Camden High Street",
+      "city": "London",
+      "postcode": "SW1A 1AA",
+      "latitude": 51.50241635703449,
+      "longitude": -0.12511722156675792
+    },
+    "locationDisplay": "London, UK",
+    "contactInfo": {
+      "phone": "+44 117 2107 032",
+      "email": "info@sacredarttattoos.com",
+      "website": "https://sacredarttattoos.com",
+      "instagram": "@sacredarttattoosstudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-002",
+      "artist-013",
+      "artist-014",
+      "artist-020"
+    ],
+    "rating": 4.8,
+    "reviewCount": 96,
+    "established": 2020,
+    "specialties": [
+      "watercolour",
+      "traditional",
+      "dotwork",
+      "biomechanical"
+    ],
+    "geohash": "2huck6"
+  },
+  {
+    "studioId": "studio-003",
+    "studioName": "Modern Ink Studio",
+    "address": {
+      "street": "90 Briggate",
+      "city": "Leeds",
+      "postcode": "LS6 2AS",
+      "latitude": 53.803503353500844,
+      "longitude": -1.5478414949786574
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 20 7015 936",
+      "email": "info@moderninkstudio.com",
+      "website": "https://moderninkstudio.com",
+      "instagram": "@moderninkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-003",
+      "artist-010",
+      "artist-012"
+    ],
+    "rating": 4.7,
+    "reviewCount": 97,
+    "established": 2007,
+    "specialties": [
+      "lettering",
+      "tribal",
+      "floral"
+    ],
+    "geohash": "74xp7b"
+  },
+  {
+    "studioId": "studio-004",
+    "studioName": "Rebel Ink Studio",
+    "address": {
+      "street": "89 Oxford Road",
+      "city": "Manchester",
+      "postcode": "M3 4CC",
+      "latitude": 53.481452707767495,
+      "longitude": -2.2453672405401734
+    },
+    "locationDisplay": "Manchester, UK",
+    "contactInfo": {
+      "phone": "+44 141 8539 246",
+      "email": "info@rebelinkstudio.com",
+      "website": "https://rebelinkstudio.com",
+      "instagram": "@rebelinkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-005",
+      "artist-006",
+      "artist-009"
+    ],
+    "rating": 4.5,
+    "reviewCount": 91,
+    "established": 2017,
+    "specialties": [
+      "traditional",
+      "biomechanical",
+      "realism",
+      "japanese",
+      "minimalism"
+    ],
+    "geohash": "jq22hy"
+  },
+  {
+    "studioId": "studio-005",
+    "studioName": "Classic Ink Parlour",
+    "address": {
+      "street": "89 Southside",
+      "city": "Glasgow",
+      "postcode": "G12 8QQ",
+      "latitude": 55.86425224082106,
+      "longitude": -4.252993539731682
+    },
+    "locationDisplay": "Glasgow, UK",
+    "contactInfo": {
+      "phone": "+44 113 2024 914",
+      "email": "info@classicinkparlour.com",
+      "website": "https://classicinkparlour.com",
+      "instagram": "@classicinkparlourstudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-007"
+    ],
+    "rating": 4.8,
+    "reviewCount": 67,
+    "established": 2020,
+    "specialties": [
+      "watercolour",
+      "geometric"
+    ],
+    "geohash": "e160b7"
+  },
+  {
+    "studioId": "studio-006",
+    "studioName": "Sacred Art Tattoos",
+    "address": {
+      "street": "67 Mathew Street",
+      "city": "Liverpool",
+      "postcode": "L2 2DX",
+      "latitude": 53.412603086992135,
+      "longitude": -2.991108719571273
+    },
+    "locationDisplay": "Liverpool, UK",
+    "contactInfo": {
+      "phone": "+44 161 3571 325",
+      "email": "info@sacredarttattoos.com",
+      "website": "https://sacredarttattoos.com",
+      "instagram": "@sacredarttattoosstudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-008"
+    ],
+    "rating": 4.1,
+    "reviewCount": 62,
+    "established": 2010,
+    "specialties": [
+      "tribal",
+      "floral"
+    ],
+    "geohash": "hf2s6u"
+  },
+  {
+    "studioId": "studio-007",
+    "studioName": "Modern Ink Studio",
+    "address": {
+      "street": "78 Royal Mile",
+      "city": "Edinburgh",
+      "postcode": "EH1 1AA",
+      "latitude": 55.95110412957952,
+      "longitude": -3.188859034346106
+    },
+    "locationDisplay": "Edinburgh, UK",
+    "contactInfo": {
+      "phone": "+44 117 8668 225",
+      "email": "info@moderninkstudio.com",
+      "website": "https://moderninkstudio.com",
+      "instagram": "@moderninkstudiostudio"
+    },
+    "openingHours": {
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-19:00",
+      "sunday": "Closed"
+    },
+    "artists": [
+      "artist-015",
+      "artist-019"
+    ],
+    "rating": 5,
+    "reviewCount": 79,
+    "established": 2014,
+    "specialties": [
+      "dotwork",
+      "floral",
+      "traditional",
+      "fineline"
+    ],
+    "geohash": "cjbync"
+  },
+  {
+    "studioId": "studio-008",
+    "studioName": "Botanical Tattoo Collective",
+    "address": {
+      "street": "90 Briggate",
+      "city": "Leeds",
+      "postcode": "LS2 7UE",
+      "latitude": 53.804888360008675,
+      "longitude": -1.5531410823820864
+    },
+    "locationDisplay": "Leeds, UK",
+    "contactInfo": {
+      "phone": "+44 161 4615 428",
+      "email": "info@botanicaltattoocollective.com",
+      "website": "https://botanicaltattoocollective.com",
+      "instagram": "@botanicaltattoocollectivestudio"
+    },
+    "openingHours": {
+      "monday": "Closed",
+      "tuesday": "11:00-17:00",
+      "wednesday": "11:00-17:00",
+      "thursday": "11:00-19:00",
+      "friday": "11:00-19:00",
+      "saturday": "10:00-18:00",
+      "sunday": "12:00-17:00"
+    },
+    "artists": [
+      "artist-016",
+      "artist-017"
+    ],
+    "rating": 4.6,
+    "reviewCount": 107,
+    "established": 2008,
+    "specialties": [
+      "geometric",
+      "blackwork",
+      "lettering",
+      "neo_traditional"
+    ],
+    "geohash": "hbbydj"
+  }
+]

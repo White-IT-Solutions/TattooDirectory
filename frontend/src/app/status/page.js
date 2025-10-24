@@ -5,7 +5,7 @@ import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "../..
 import Button from "../../design-system/components/ui/Button/Button";
 import { Skeleton } from "../../design-system/components/ui/Skeleton/Skeleton";
 
-export const dynamic = "force-dynamic";
+
 
 // Mock data for status page
 const mockServices = [

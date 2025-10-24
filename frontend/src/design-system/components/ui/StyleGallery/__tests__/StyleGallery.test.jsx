@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import StyleGallery from '../StyleGallery';
-import { enhancedTattooStyles } from '../../../../../app/data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles } from '../../../../../lib/data/tattooStyles.js';
 import { mockArtistData } from '../../../../../app/data/mockArtistData';
 
 // Mock the data modules
-jest.mock('../../../../../app/data/testData/enhancedTattooStyles', () => ({
+jest.mock('../../../../../lib/data/tattooStyles.js', () => ({
   enhancedTattooStyles: {
     japanese: {
       id: 'japanese',

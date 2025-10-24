@@ -6,11 +6,11 @@
  * Tests for studio health monitoring functionality
  */
 
-const { HealthMonitor } = require('../health-monitor');
+const { HealthMonitor } = require('../utilities/health-monitor');
 
 // Mock external dependencies
-jest.mock('../database-seeder');
-jest.mock('../state-manager');
+jest.mock('../data-management/database-seeder');
+jest.mock('../utilities/state-manager');
 
 describe('Studio Health Monitor', () => {
   let monitor;

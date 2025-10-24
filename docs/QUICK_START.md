@@ -134,6 +134,12 @@ You should see:
 npm run test:integration
 ```
 
+### API Proxy (Manual)
+```bash
+npm run local:proxy:start    # Start proxy
+npm run local:proxy:stop     # Stop proxy
+npm run local:proxy:restart  # Restart proxy
+
 ## Step 6: Access the Application
 
 - **Frontend**: http://localhost:3000
@@ -141,6 +147,7 @@ npm run test:integration
 - **LocalStack**: http://localhost:4566/
 - **API**: http://localhost:3000/api
 - **Swagger UI**: http://localhost:8080
+- **API Proxy (REST API)** : http://localhost:9001**
 
 # What You Get
 
@@ -473,3 +480,9 @@ This project is licensed under the MIT License.
 
 **Last Updated**: 2025-09-28
 **Version**: 1.0.0
+
+## Next Steps
+
+- [Local Development Setup](../development/local-setup.md)
+- [Architecture Overview](../architecture/system-overview.md)
+- [API Reference](../reference/api-documentation.md)

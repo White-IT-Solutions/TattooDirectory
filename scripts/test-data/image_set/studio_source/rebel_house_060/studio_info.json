@@ -1,0 +1,16 @@
+{
+  "name": "Rebel House",
+  "location": "Newcastle",
+  "type": "vintage traditional",
+  "images": {
+    "internal": [
+      "internal_01_rebel_house.png"
+    ],
+    "external": [
+      "external_01_rebel_house.png"
+    ],
+    "working": [
+      "working_01_rebel_house.png"
+    ]
+  }
+}

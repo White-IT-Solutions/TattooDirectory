@@ -1,0 +1,16 @@
+{
+  "name": "Skull Studio",
+  "location": "Manchester",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_skull_studio.png"
+    ],
+    "external": [
+      "external_01_skull_studio.png"
+    ],
+    "working": [
+      "working_01_skull_studio.png"
+    ]
+  }
+}

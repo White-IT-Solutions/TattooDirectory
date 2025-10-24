@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export const dynamic = 'force-dynamic';
+
 
 // Dynamic imports to avoid SSR issues
 const SearchResultsContainer = React.lazy(() => import("../components/SearchResultsContainer"));
@@ -81,8 +81,14 @@ function SearchPageContent() {
   useEffect(() => {
     setEnhancedTattooStyles({});
     setDifficultyLevels({});
-    setSearchQuery(searchParams.get("q") || "");
+    const initialQuery = searchParams.get("q") || "";
+    setSearchQuery(initialQuery);
     setIsLoading(false);
+    
+    // Auto-execute search if there's a query parameter
+    if (initialQuery.trim()) {
+      executeSearchWithProgress(initialQuery);
+    }
   }, [searchParams]);
 
   // Enhanced search execution with progress tracking
@@ -264,6 +270,7 @@ function SearchPageContent() {
                   onValidatedChange={handleSearchValidation}
                   showSuggestions={true}
                   className="w-full"
+                  data-testid="search-input"
                 />
               </div>
               
@@ -271,6 +278,7 @@ function SearchPageContent() {
                 <SimpleButton
                   onClick={() => executeSearchWithProgress(searchQuery)}
                   disabled={!searchValidation.isValid || !searchQuery.trim() || isSearching}
+                  data-testid="search-button"
                 >
                   {isSearching ? 'Searching...' : 'Search'}
                 </SimpleButton>
@@ -286,7 +294,7 @@ function SearchPageContent() {
 
             {/* Search Progress */}
             {isSearching && (
-              <div className="mt-4">
+              <div className="mt-4" data-testid="loading-spinner">
                 <SearchProgressIndicator
                   isLoading={isSearching}
                   progress={searchProgress}
@@ -300,7 +308,7 @@ function SearchPageContent() {
 
             {/* Search Error */}
             {searchError && (
-              <div className="mt-4">
+              <div className="mt-4" data-testid="error-message">
                 <SearchErrorMessage
                   errorType={searchError.type}
                   query={searchQuery}
@@ -374,7 +382,7 @@ function SearchPageContent() {
       </div>
 
       {/* Enhanced Search Results Container */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 py-6" data-testid="search-page-results">
         <Suspense fallback={
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-gray-200 rounded w-1/4"></div>

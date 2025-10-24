@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '../../../__tests__/test-utils';
 import userEvent from '@testing-library/user-event';
 import StudiosPage from '../page';
 import { mockStudios } from '../../data/mockStudioData';
@@ -27,16 +27,17 @@ describe('StudiosPage', () => {
       render(<StudiosPage />);
       
       await waitFor(() => {
-        expect(screen.getByText('Tattoo Studios')).toBeInTheDocument();
-        expect(screen.getByText('Discover professional tattoo studios across the UK')).toBeInTheDocument();
+        expect(screen.getByText('Find Your Perfect Tattoo Studio')).toBeInTheDocument();
+        expect(screen.getByText('Discover professional tattoo studios across the UK. Search by specialty, location, services, and more to find the perfect studio for your next tattoo.')).toBeInTheDocument();
       });
     });
 
-    test('displays all studios after loading', async () => {
+    test('displays onboarding when no search performed', async () => {
       render(<StudiosPage />);
       
       await waitFor(() => {
-        expect(screen.getByText(mockStudios[0].studioName)).toBeInTheDocument();
+        expect(screen.getByText('Welcome to your tattoo journey!')).toBeInTheDocument();
+        expect(screen.getByText('Start Exploring Artists')).toBeInTheDocument();
       });
     });
   });
@@ -62,21 +63,21 @@ describe('StudiosPage', () => {
   });
 
   describe('Basic Functionality', () => {
-    test('renders sort dropdown and view toggle', async () => {
+    test('renders search controls and filters', async () => {
       render(<StudiosPage />);
       
       await waitFor(() => {
-        expect(screen.getByDisplayValue('Sort by Name')).toBeInTheDocument();
-        expect(screen.getByTestId('grid-view-button')).toBeInTheDocument();
-        expect(screen.getByTestId('list-view-button')).toBeInTheDocument();
+        expect(screen.getByText('Search Studios')).toBeInTheDocument();
+        expect(screen.getByText('Advanced Filters')).toBeInTheDocument();
+        expect(screen.getByText('Map View')).toBeInTheDocument();
       });
     });
 
-    test('displays results summary', async () => {
+    test('displays search interface', async () => {
       render(<StudiosPage />);
       
       await waitFor(() => {
-        expect(screen.getByText(`${mockStudios.length} studios found`)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Search studios, specialties, services, or locations...')).toBeInTheDocument();
       });
     });
   });

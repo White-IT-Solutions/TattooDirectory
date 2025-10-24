@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { enhancedTattooStyles, getAllMotifs, getAllCharacteristics } from "../../../../app/data/testData/enhancedTattooStyles";
+import { enhancedTattooStyles, getAllMotifs, getAllCharacteristics } from '../../../../lib/data/tattooStyles.js';
 import { mockArtistData } from "../../../../app/data/mockArtistData";
 import { cn } from '../../../utils/cn';
 import Card from "../Card/Card";

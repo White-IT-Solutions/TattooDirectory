@@ -75,10 +75,10 @@ CORS_CONFIG='{
     "CORSRules": [
         {
             "AllowedHeaders": ["*"],
-            "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
-            "AllowedOrigins": ["*"],
-            "ExposeHeaders": ["ETag"],
-            "MaxAgeSeconds": 3000
+            "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD", "OPTIONS"],
+            "AllowedOrigins": ["http://localhost:3000", "http://127.0.0.1:3000", "*"],
+            "ExposeHeaders": ["ETag", "Content-Length", "Content-Type"],
+            "MaxAgeSeconds": 86400
         }
     ]
 }'

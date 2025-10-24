@@ -1,0 +1,16 @@
+{
+  "name": "Dragon Tattoo",
+  "location": "Bath",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_dragon_tattoo.png"
+    ],
+    "external": [
+      "external_01_dragon_tattoo.png"
+    ],
+    "working": [
+      "working_01_dragon_tattoo.png"
+    ]
+  }
+}

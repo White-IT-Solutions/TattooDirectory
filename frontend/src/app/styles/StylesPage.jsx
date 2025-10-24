@@ -8,7 +8,7 @@ import Tag from '../../design-system/components/ui/Tag/Tag';
 import Button from '../../design-system/components/ui/Button/Button';
 import { Skeleton } from '../../design-system/components/ui/Skeleton/Skeleton';
 import { PageWrapper } from '../../design-system/components/layout';
-import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles, difficultyLevels, searchStylesByAlias } from '../../lib/data/tattooStyles.js';
 import { 
   NoFilterResults, 
   LoadingEmptyState,

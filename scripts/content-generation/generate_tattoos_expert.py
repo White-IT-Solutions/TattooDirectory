@@ -1,13 +1,16 @@
 import vertexai
 from vertexai.preview.vision_models import ImageGenerationModel
+import requests
+import base64
 import random
 import os
 import time
 import json
+import sys
+import argparse
 
 # --- CONFIGURATION ---
-PROJECT_ID = "your-gcp-project-id"  # <--- REPLACE with your Google Cloud Project ID
-LOCATION = "us-central1"           # <--- REPLACE with your desired region if needed
+LOCATION = "europe-west2"            # <--- Valid Vertex AI region (no zone suffix)
 OUTPUT_DIR = "generated_content"    # Main directory to save all images
 
 # Test run configuration (8 images total)
@@ -20,31 +23,30 @@ FULL_TATTOO_IMAGES = 660           # 22 styles x 30 images each = 660 tattoo ima
 FULL_NUM_STUDIOS = 100             # Number of studios to generate images for
 FULL_IMAGES_PER_STUDIO = 3         # 1 internal, 1 external, 1 working area (300 studio images)
 
-# Dynamic configuration based on mode
-if TEST_MODE:
-    NUM_TATTOO_IMAGES = TEST_TATTOO_STYLES  # 5 images
-    NUM_STUDIOS = 1                         # 1 studio
-    IMAGES_PER_STUDIO = TEST_STUDIO_IMAGES  # 3 images
-    IMAGES_PER_STYLE = 1                    # 1 image per style for test
-else:
-    NUM_TATTOO_IMAGES = FULL_TATTOO_IMAGES  # 660 images
-    NUM_STUDIOS = FULL_NUM_STUDIOS          # 100 studios
-    IMAGES_PER_STUDIO = FULL_IMAGES_PER_STUDIO  # 3 images per studio
-    IMAGES_PER_STYLE = 30                   # 30 images per style for full run
+def get_configuration(test_mode):
+    """Get configuration based on test mode."""
+    if test_mode:
+        return {
+            'NUM_TATTOO_IMAGES': TEST_TATTOO_STYLES,  # 5 images
+            'NUM_STUDIOS': 1,                         # 1 studio
+            'IMAGES_PER_STUDIO': TEST_STUDIO_IMAGES,  # 3 images
+            'IMAGES_PER_STYLE': 1                     # 1 image per style for test
+        }
+    else:
+        return {
+            'NUM_TATTOO_IMAGES': FULL_TATTOO_IMAGES,  # 660 images
+            'NUM_STUDIOS': FULL_NUM_STUDIOS,          # 100 studios
+            'IMAGES_PER_STUDIO': FULL_IMAGES_PER_STUDIO,  # 3 images per studio
+            'IMAGES_PER_STYLE': 30                    # 30 images per style for full run
+        }
 
-# Image generation settings for Imagen 4
+# Image generation settings for Imagen
 IMAGE_SETTINGS = {
     "tattoo_portfolio": {
         "aspect_ratio": "1:1",  # Square format for social media
-        "resolution": "1024x1024",
-        "safety_filter_level": "block_some",
-        "person_generation": "allow_adult"
     },
     "studio_images": {
         "aspect_ratio": "16:9",  # Landscape for studio shots
-        "resolution": "1024x576", 
-        "safety_filter_level": "block_some",
-        "person_generation": "allow_adult"
     }
 }
 
@@ -55,11 +57,11 @@ tattoo_styles = [
     "old_school", "traditional", "new_school", "neo_traditional", "tribal",
     "blackwork", "dotwork", "geometric", "japanese", "lettering",
     "biomechanical", "watercolour", "floral", "fineline", "realism",
-    "minimalist", "surrealism", "portrait", "sketch", "illustrative",
+    "minimalism", "surrealism", "portrait", "sketch", "illustrative",
     "ornamental", "trash_polka"
 ]
 
-# 600+ Tattoo Subjects for Maximum Variety (Greatly Expanded)
+# 600+ Tattoo Subjects for Maximum Variety
 tattoo_subjects = [
     # --- Animals & Creatures (Expanded) ---
     "a majestic lion's face", "a howling wolf silhouette", "a roaring grizzly bear", "a coiled rattlesnake", "an octopus wrapping a skull",
@@ -264,37 +266,39 @@ def generate_uk_location():
     ]
     return random.choice(uk_cities)
 
-def create_studio_prompt(category, description, studio_name, location, studio_type):
+
+def create_studio_prompt(category, description, studio_name, location, studio_type, aspect_ratio):
     """Create a detailed prompt for studio image generation."""
     base_prompts = {
         "internal": f"Professional interior photograph of '{studio_name}', a {studio_type} tattoo studio in {location}. {description}. Clean, well-lit space with professional tattoo equipment, comfortable seating, and hygienic surfaces. Modern lighting, organized supplies, and a welcoming atmosphere.",
-        
         "external": f"Professional exterior photograph of '{studio_name}', a {studio_type} tattoo studio located in {location}. {description}. Clear signage, inviting storefront, urban UK street setting with typical British architecture.",
-        
         "working": f"Professional documentary-style photograph inside '{studio_name}', a {studio_type} tattoo studio in {location}. {description}. Professional tattoo artist at work, proper safety protocols, clean environment, focused artistic process."
     }
     
-    technical_specs = "Shot with professional camera, excellent lighting, high detail, commercial photography quality, suitable for business portfolio and social media marketing."
+    technical_specs = f"Shot with professional camera, excellent lighting, high detail, commercial photography quality, suitable for business portfolio and social media marketing. Aspect ratio {aspect_ratio}."
     
     return f"{base_prompts[category]} {technical_specs}"
 
-def create_tattoo_prompt_with_imagen4(style, subject, placement, skin, framing, lighting, directives):
-    """Create an optimized prompt for Imagen 4 tattoo generation."""
+def create_tattoo_prompt_with_imagen(style, subject, placement, skin, framing, lighting, directives, aspect_ratio):
+    """Create an optimized prompt for Imagen generation."""
     return (
         f"Professional tattoo portfolio photograph: A '{style}' style tattoo of '{subject}', positioned {placement} {skin}. "
         f"Photography: {framing}, {lighting}. {directives} "
         f"High-resolution, sharp focus, professional tattoo photography, suitable for artist portfolio and social media. "
-        f"Clean execution, proper contrast, vibrant colors where appropriate."
+        f"Clean execution, proper contrast, vibrant colors where appropriate. Aspect ratio {aspect_ratio}."
     )
 
 # --- MAIN GENERATION FUNCTIONS ---
 
-def generate_studio_images():
+def generate_studio_images(config):
     """Generate internal, external, and working area images for tattoo studios."""
-    print(f"Generating images for {NUM_STUDIOS} tattoo studios...")
+    num_studios = config['NUM_STUDIOS']
+    print(f"Generating images for {num_studios} tattoo studios...")
     
+    # Initialize Vertex AI
     vertexai.init(project=PROJECT_ID, location=LOCATION)
-    model = ImageGenerationModel.from_pretrained("imagegeneration@006")
+    
+    model = ImageGenerationModel.from_pretrained("imagen-4.0-generate-001")
     
     studios_dir = os.path.join(OUTPUT_DIR, "studios")
     if not os.path.exists(studios_dir):
@@ -302,35 +306,32 @@ def generate_studio_images():
     
     studio_metadata = []
     
-    for studio_idx in range(NUM_STUDIOS):
+    for studio_idx in range(num_studios):
         try:
-            # Generate studio characteristics
             studio_name = generate_studio_name()
             location = generate_uk_location()
             studio_type = random.choice(studio_types)
             
-            # Create studio directory
             safe_studio_name = studio_name.replace(" ", "_").replace("'", "").lower()
             studio_dir = os.path.join(studios_dir, f"{safe_studio_name}_{studio_idx+1:03d}")
             if not os.path.exists(studio_dir):
                 os.makedirs(studio_dir)
             
             studio_info = {
-                "name": studio_name,
-                "location": location,
-                "type": studio_type,
+                "name": studio_name, "location": location, "type": studio_type,
                 "images": {"internal": [], "external": [], "working": []}
             }
             
-            print(f"[Studio {studio_idx+1}/{NUM_STUDIOS}] Generating images for '{studio_name}' in {location}")
+            print(f"[Studio {studio_idx+1}/{num_studios}] Generating images for '{studio_name}' in {location}")
             
-            # Generate images based on mode (1 per category for test, 2 per category for full)
-            images_per_category = 1 if TEST_MODE else 2
+            images_per_category = 1 if config['IMAGES_PER_STUDIO'] == TEST_STUDIO_IMAGES else 2
             
             for category in ["internal", "external", "working"]:
                 for img_idx in range(images_per_category):
                     description = random.choice(studio_image_categories[category])
-                    prompt = create_studio_prompt(category, description, studio_name, location, studio_type)
+                    # UPDATED: Pass aspect ratio to the prompt function
+                    aspect_ratio = IMAGE_SETTINGS["studio_images"]["aspect_ratio"]
+                    prompt = create_studio_prompt(category, description, studio_name, location, studio_type, aspect_ratio)
                     
                     filename = f"{category}_{img_idx+1:02d}_{safe_studio_name}.png"
                     output_path = os.path.join(studio_dir, filename)
@@ -341,32 +342,27 @@ def generate_studio_images():
                     
                     print(f"  -> Generating {category} image {img_idx+1}/{images_per_category}...")
                     
-                    # Generate image with Imagen 4 settings
                     response = model.generate_images(
                         prompt=prompt,
                         number_of_images=1,
                         aspect_ratio=IMAGE_SETTINGS["studio_images"]["aspect_ratio"],
-                        safety_filter_level=IMAGE_SETTINGS["studio_images"]["safety_filter_level"],
-                        person_generation=IMAGE_SETTINGS["studio_images"]["person_generation"]
+                        safety_filter_level="block_some"
                     )
                     
                     response[0].save(location=output_path)
-                    studio_info["images"][category].append(filename)
                     
-                    time.sleep(1)  # Rate limiting
+                    studio_info["images"][category].append(filename)
+                    time.sleep(3.1)  # Rate limiting delay
             
             studio_metadata.append(studio_info)
-            
-            # Save studio metadata
             metadata_path = os.path.join(studio_dir, "studio_info.json")
             with open(metadata_path, 'w') as f:
                 json.dump(studio_info, f, indent=2)
                 
         except Exception as e:
             print(f"Error generating studio {studio_idx+1}: {e}")
-            time.sleep(5)
+            time.sleep(3.1)  # Rate limiting delay
     
-    # Save complete studio metadata
     metadata_path = os.path.join(studios_dir, "all_studios_metadata.json")
     with open(metadata_path, 'w') as f:
         json.dump(studio_metadata, f, indent=2)
@@ -374,30 +370,30 @@ def generate_studio_images():
     print(f"Studio image generation complete! Generated images for {len(studio_metadata)} studios.")
     return studio_metadata
 
-def generate_tattoo_images_final():
+def generate_tattoo_images_final(config):
     """Main function to generate and save tattoo portfolio images with equal distribution across styles."""
+    
+    # Initialize Vertex AI
     vertexai.init(project=PROJECT_ID, location=LOCATION)
-    model = ImageGenerationModel.from_pretrained("imagegeneration@006")
+    
+    model = ImageGenerationModel.from_pretrained("imagen-4.0-generate-001")
 
     tattoos_dir = os.path.join(OUTPUT_DIR, "tattoos")
     if not os.path.exists(tattoos_dir):
         os.makedirs(tattoos_dir)
         print(f"Created tattoos directory: {tattoos_dir}")
 
-    print(f"Starting tattoo portfolio generation of {NUM_TATTOO_IMAGES} images...")
+    num_tattoo_images = config['NUM_TATTOO_IMAGES']
+    images_per_style = config['IMAGES_PER_STYLE']
+    is_test_mode = (images_per_style == 1)
     
-    if TEST_MODE:
-        # Test mode: Generate 1 image for first 5 styles
-        styles_to_use = tattoo_styles[:TEST_TATTOO_STYLES]
-        print(f"TEST MODE: Generating 1 image each for {len(styles_to_use)} styles: {styles_to_use}")
-    else:
-        # Full mode: Generate equal distribution across all 22 styles
-        styles_to_use = tattoo_styles
-        print(f"FULL MODE: Generating {IMAGES_PER_STYLE} images each for {len(styles_to_use)} styles")
+    print(f"Starting tattoo portfolio generation of {num_tattoo_images} images...")
+    
+    styles_to_use = tattoo_styles[:TEST_TATTOO_STYLES] if is_test_mode else tattoo_styles
+    print(f"{'TEST MODE' if is_test_mode else 'FULL MODE'}: Generating images for {len(styles_to_use)} styles.")
 
     image_counter = 0
     
-    # Generate images with equal distribution across styles
     for style_idx, style in enumerate(styles_to_use):
         style_dir = os.path.join(tattoos_dir, style)
         if not os.path.exists(style_dir):
@@ -405,11 +401,10 @@ def generate_tattoo_images_final():
         
         print(f"\n--- STYLE {style_idx+1}/{len(styles_to_use)}: {style.upper()} ---")
         
-        for img_in_style in range(IMAGES_PER_STYLE):
+        for img_in_style in range(images_per_style):
             try:
                 image_counter += 1
                 
-                # --- DYNAMIC COMPONENT SELECTION ---
                 subject = random.choice(tattoo_subjects)
                 placement = random.choice(body_placements)
                 skin = random.choice(skin_tones)
@@ -417,126 +412,88 @@ def generate_tattoo_images_final():
                 lighting = random.choice(lighting_styles)
                 directives = " ".join(random.sample(artistic_directives, k=random.randint(1, 2)))
 
-                # --- OPTIMIZED PROMPT FOR IMAGEN 4 ---
-                prompt = create_tattoo_prompt_with_imagen4(style, subject, placement, skin, framing, lighting, directives)
+                aspect_ratio = IMAGE_SETTINGS["tattoo_portfolio"]["aspect_ratio"]
+                prompt = create_tattoo_prompt_with_imagen(style, subject, placement, skin, framing, lighting, directives, aspect_ratio)
                 
-                # --- FILE AND FOLDER MANAGEMENT ---
-                safe_subject = subject.replace(" ", "_").replace("'", "").split(",")[0].lower()[:30]  # Limit length
+                safe_subject = subject.replace(" ", "_").replace("'", "").split(",")[0].lower()[:30]
                 filename = f"{style}_{safe_subject}_{img_in_style+1:04d}.png"
                 output_path = os.path.join(style_dir, filename)
                 
                 if os.path.exists(output_path):
-                    print(f"[{image_counter}/{NUM_TATTOO_IMAGES}] Skipping existing file: {filename}")
+                    print(f"[{image_counter}/{num_tattoo_images}] Skipping existing file: {filename}")
                     continue
 
-                print(f"[{image_counter}/{NUM_TATTOO_IMAGES}] Style: {style} ({img_in_style+1}/{IMAGES_PER_STYLE}) | Generating: {subject[:50]}...")
+                print(f"[{image_counter}/{num_tattoo_images}] Style: {style} ({img_in_style+1}/{images_per_style}) | Generating: {subject[:50]}...")
 
-                # --- API CALL WITH IMAGEN 4 SETTINGS ---
                 response = model.generate_images(
                     prompt=prompt,
                     number_of_images=1,
                     aspect_ratio=IMAGE_SETTINGS["tattoo_portfolio"]["aspect_ratio"],
-                    safety_filter_level=IMAGE_SETTINGS["tattoo_portfolio"]["safety_filter_level"],
-                    person_generation=IMAGE_SETTINGS["tattoo_portfolio"]["person_generation"]
+                    safety_filter_level="block_some"
                 )
                 
                 response[0].save(location=output_path)
                 print(f"    -> Saved to {output_path}")
-                time.sleep(1.5)  # API rate-limiting delay
+                time.sleep(3.1)  # Rate limiting delay
 
             except Exception as e:
                 print(f"Error occurred for tattoo {image_counter}: {e}")
-                time.sleep(5)
+                time.sleep(3.1)  # Rate limiting delay
 
-    print(f"\nTattoo portfolio generation complete! Generated {image_counter} images across {len(styles_to_use)} styles.")
+    print(f"\nTattoo portfolio generation complete! Generated {image_counter} images.")
 
-def generate_all_content():
+def generate_all_content(config):
     """Main function to generate both tattoo portfolio and studio images."""
     print("=" * 60)
     print("TATTOO DIRECTORY CONTENT GENERATION")
     print("=" * 60)
     
-    mode_text = "TEST MODE" if TEST_MODE else "FULL PRODUCTION MODE"
-    print(f"🔧 {mode_text}")
-    print(f"Configuration:")
-    print(f"  - Project ID: {PROJECT_ID}")
-    print(f"  - Location: {LOCATION}")
-    print(f"  - Output Directory: {OUTPUT_DIR}")
-    print(f"  - Mode: {'Test' if TEST_MODE else 'Full Production'}")
-    
-    if TEST_MODE:
-        print(f"  - Tattoo Images: {NUM_TATTOO_IMAGES} (1 each for {TEST_TATTOO_STYLES} styles)")
-        print(f"  - Studios: {NUM_STUDIOS} (1 test studio)")
-        print(f"  - Studio Images: {IMAGES_PER_STUDIO} (1 internal, 1 external, 1 working)")
-        print(f"  - TOTAL IMAGES: {NUM_TATTOO_IMAGES + (NUM_STUDIOS * IMAGES_PER_STUDIO)} (5 tattoos + 3 studio = 8 images)")
-    else:
-        print(f"  - Tattoo Images: {NUM_TATTOO_IMAGES} ({IMAGES_PER_STYLE} each for {len(tattoo_styles)} styles)")
-        print(f"  - Studios: {NUM_STUDIOS}")
-        print(f"  - Studio Images per Studio: {IMAGES_PER_STUDIO}")
-        print(f"  - TOTAL IMAGES: {NUM_TATTOO_IMAGES + (NUM_STUDIOS * IMAGES_PER_STUDIO)} (660 tattoos + 300 studio = 960 images)")
-    
-    print("=" * 60)
-    
-    # Create main output directory
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
         print(f"Created main directory: {OUTPUT_DIR}")
     
     try:
-        # Generate studio images first (smaller dataset)
         print(f"\n🏢 PHASE 1: Generating Studio Images")
-        print("-" * 40)
-        studio_metadata = generate_studio_images()
+        studio_metadata = generate_studio_images(config)
         
-        # Generate tattoo portfolio images
         print(f"\n🎨 PHASE 2: Generating Tattoo Portfolio Images")
-        print("-" * 40)
-        generate_tattoo_images_final()
+        generate_tattoo_images_final(config)
         
-        # Generate summary report
         print(f"\n📊 GENERATION SUMMARY")
-        print("-" * 40)
-        print(f"✅ Mode: {'Test Run' if TEST_MODE else 'Full Production'}")
         print(f"✅ Studios generated: {len(studio_metadata) if 'studio_metadata' in locals() else 0}")
-        print(f"✅ Expected tattoo images: {NUM_TATTOO_IMAGES}")
-        print(f"✅ Total expected images: {NUM_STUDIOS * IMAGES_PER_STUDIO + NUM_TATTOO_IMAGES}")
+        print(f"✅ Expected tattoo images: {config['NUM_TATTOO_IMAGES']}")
         print(f"📁 Output directory: {OUTPUT_DIR}")
-        
-        if TEST_MODE:
-            print(f"🧪 Test completed with 8 images total (5 tattoos + 3 studio)")
-            print(f"💡 To run full production, set TEST_MODE = False in the script")
-        else:
-            print(f"🚀 Full production completed with 960 images total (660 tattoos + 300 studio)")
-        
-        # Save generation metadata
-        generation_info = {
-            "generation_date": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "mode": "test" if TEST_MODE else "production",
-            "configuration": {
-                "test_mode": TEST_MODE,
-                "tattoo_images": NUM_TATTOO_IMAGES,
-                "images_per_style": IMAGES_PER_STYLE,
-                "styles_used": len(tattoo_styles[:TEST_TATTOO_STYLES]) if TEST_MODE else len(tattoo_styles),
-                "studios": NUM_STUDIOS,
-                "images_per_studio": IMAGES_PER_STUDIO,
-                "total_expected": NUM_STUDIOS * IMAGES_PER_STUDIO + NUM_TATTOO_IMAGES
-            },
-            "image_settings": IMAGE_SETTINGS,
-            "studios_generated": len(studio_metadata) if 'studio_metadata' in locals() else 0
-        }
-        
-        metadata_path = os.path.join(OUTPUT_DIR, "generation_metadata.json")
-        with open(metadata_path, 'w') as f:
-            json.dump(generation_info, f, indent=2)
-        
-        print(f"📋 Generation metadata saved to: {metadata_path}")
-        print("\n🎉 ALL CONTENT GENERATION COMPLETE!")
         
     except Exception as e:
         print(f"\n❌ Error in main generation process: {e}")
         raise
 
+def parse_arguments():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(description="Generate images using Google Cloud Vertex AI")
+    parser.add_argument("--project-id", required=True, help="Google Cloud Project ID")
+    parser.add_argument("--location", default=LOCATION, help=f"Google Cloud region (default: {LOCATION})")
+    parser.add_argument("--output-dir", default=OUTPUT_DIR, help=f"Output directory (default: {OUTPUT_DIR})")
+    parser.add_argument("--test-mode", action="store_true", help="Run in test mode")
+    return parser.parse_args()
 
 if __name__ == "__main__":
-    # Run the complete content generation
-    generate_all_content()
+    args = parse_arguments()
+    
+    PROJECT_ID = args.project_id
+    LOCATION = args.location
+    OUTPUT_DIR = args.output_dir
+    
+    # Override TEST_MODE based on command line argument
+    TEST_MODE = args.test_mode
+    
+    # Get configuration based on test mode
+    config = get_configuration(TEST_MODE)
+    
+    print(f"🔧 Configuration:")
+    print(f"  - Project ID: {PROJECT_ID}")
+    print(f"  - Location: {LOCATION}")
+    print(f"  - Output Directory: {OUTPUT_DIR}")
+    print(f"  - Test Mode: {TEST_MODE}")
+    
+    generate_all_content(config)

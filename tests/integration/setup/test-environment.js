@@ -5,9 +5,10 @@ import path from 'path';
 const execPromise = util.promisify(exec);
  
 const DOCKER_COMPOSE_FILE = 'devtools/docker/docker-compose.local.yml';
-const DOCKER_START_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} up -d`;
-const DOCKER_STOP_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} down --volumes --remove-orphans`;
-const DOCKER_HEALTH_CHECK_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} ps --services --filter "status=running"`;
+const ENV_FILE = 'devtools/.env.local';
+const DOCKER_START_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} --env-file ${ENV_FILE} --profile phase1 up -d`;
+const DOCKER_STOP_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} --env-file ${ENV_FILE} --profile phase1 down --volumes --remove-orphans`;
+const DOCKER_HEALTH_CHECK_COMMAND = `docker-compose -f ${DOCKER_COMPOSE_FILE} --env-file ${ENV_FILE} --profile phase1 ps --services --filter "status=running"`;
 const NULL_DEVICE = process.platform === 'win32' ? 'NUL' : '/dev/null';
 // Check if LocalStack is ready and initialization scripts have completed
 const LOCALSTACK_HEALTH_CHECK_COMMAND = `curl --silent --fail --output ${NULL_DEVICE} "http://localhost:4566/_localstack/health"`;

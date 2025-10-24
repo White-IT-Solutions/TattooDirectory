@@ -1,0 +1,312 @@
+{
+  "timestamp": "2025-10-03T19:29:45.625Z",
+  "testRun": "performance-test-1759519785625",
+  "baseline": null,
+  "current": {
+    "startup-time": {
+      "testName": "startup-time",
+      "avgTime": 2.356733333333331,
+      "maxTime": 3.032899999999998,
+      "minTime": 1.4302999999999955,
+      "iterations": 3,
+      "passed": true,
+      "threshold": 2000,
+      "warnings": []
+    },
+    "memory-usage": {
+      "small": {
+        "scenario": "small",
+        "artistCount": 10,
+        "duration": 32.97259999999999,
+        "success": true,
+        "memoryStats": {
+          "samples": 1,
+          "heapUsed": {
+            "min": 5886304,
+            "max": 5886304,
+            "avg": 5886304,
+            "final": 5886304
+          },
+          "heapTotal": {
+            "min": 7663616,
+            "max": 7663616,
+            "avg": 7663616,
+            "final": 7663616
+          },
+          "rss": {
+            "min": 39358464,
+            "max": 39358464,
+            "avg": 39358464,
+            "final": 39358464
+          }
+        },
+        "passed": true,
+        "warnings": []
+      },
+      "medium": {
+        "scenario": "medium",
+        "artistCount": 50,
+        "duration": 29.278500000000008,
+        "success": true,
+        "memoryStats": {
+          "samples": 1,
+          "heapUsed": {
+            "min": 6348440,
+            "max": 6348440,
+            "avg": 6348440,
+            "final": 6348440
+          },
+          "heapTotal": {
+            "min": 10285056,
+            "max": 10285056,
+            "avg": 10285056,
+            "final": 10285056
+          },
+          "rss": {
+            "min": 39706624,
+            "max": 39706624,
+            "avg": 39706624,
+            "final": 39706624
+          }
+        },
+        "passed": true,
+        "warnings": []
+      },
+      "large": {
+        "scenario": "large",
+        "artistCount": 100,
+        "duration": 28.923199999999994,
+        "success": true,
+        "memoryStats": {
+          "samples": 2,
+          "heapUsed": {
+            "min": 5677888,
+            "max": 5683048,
+            "avg": 5680468,
+            "final": 5683048
+          },
+          "heapTotal": {
+            "min": 10285056,
+            "max": 10285056,
+            "avg": 10285056,
+            "final": 10285056
+          },
+          "rss": {
+            "min": 42147840,
+            "max": 42156032,
+            "avg": 42151936,
+            "final": 42156032
+          }
+        },
+        "passed": true,
+        "warnings": []
+      },
+      "xlarge": {
+        "scenario": "xlarge",
+        "artistCount": 500,
+        "duration": 44.6463,
+        "success": true,
+        "memoryStats": {
+          "samples": 2,
+          "heapUsed": {
+            "min": 8398840,
+            "max": 8399792,
+            "avg": 8399316,
+            "final": 8399792
+          },
+          "heapTotal": {
+            "min": 16052224,
+            "max": 16052224,
+            "avg": 16052224,
+            "final": 16052224
+          },
+          "rss": {
+            "min": 46063616,
+            "max": 46067712,
+            "avg": 46065664,
+            "final": 46067712
+          }
+        },
+        "passed": true,
+        "warnings": []
+      },
+      "stress": {
+        "scenario": "stress",
+        "artistCount": 1000,
+        "duration": 60.41979999999998,
+        "success": true,
+        "memoryStats": {
+          "samples": 2,
+          "heapUsed": {
+            "min": 8231736,
+            "max": 12488104,
+            "avg": 10359920,
+            "final": 8231736
+          },
+          "heapTotal": {
+            "min": 27586560,
+            "max": 29159424,
+            "avg": 28372992,
+            "final": 29159424
+          },
+          "rss": {
+            "min": 56430592,
+            "max": 56532992,
+            "avg": 56481792,
+            "final": 56532992
+          }
+        },
+        "passed": true,
+        "warnings": []
+      }
+    },
+    "performance-regression": {
+      "small": {
+        "scenario": "small",
+        "artistCount": 10,
+        "avgTime": 0.4453666666666625,
+        "maxTime": 0.5516999999999825,
+        "minTime": 0.241800000000012,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 500,
+        "warnings": []
+      },
+      "medium": {
+        "scenario": "medium",
+        "artistCount": 50,
+        "avgTime": 0.9308999999999893,
+        "maxTime": 0.9803999999999746,
+        "minTime": 0.8338999999999714,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 2000,
+        "warnings": []
+      },
+      "large": {
+        "scenario": "large",
+        "artistCount": 100,
+        "avgTime": 1.924600000000017,
+        "maxTime": 2.799500000000023,
+        "minTime": 1.3863000000000056,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 5000,
+        "warnings": []
+      },
+      "xlarge": {
+        "scenario": "xlarge",
+        "artistCount": 500,
+        "avgTime": 13.54753333333334,
+        "maxTime": 21.514200000000017,
+        "minTime": 9.2808,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 15000,
+        "warnings": []
+      },
+      "stress": {
+        "scenario": "stress",
+        "artistCount": 1000,
+        "avgTime": 15.201599999999985,
+        "maxTime": 20.033900000000017,
+        "minTime": 11.915899999999965,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 30000,
+        "warnings": []
+      }
+    },
+    "concurrent-operations": {
+      "unified-data-manager": {
+        "component": "unified-data-manager",
+        "duration": 4.226699999999994,
+        "baselineTime": 2000,
+        "overhead": -1995.7733,
+        "passed": true,
+        "success": true,
+        "warnings": []
+      },
+      "pipeline-engine": {
+        "component": "pipeline-engine",
+        "duration": 0.5878999999999905,
+        "baselineTime": 2000,
+        "overhead": -1999.4121,
+        "passed": true,
+        "success": true,
+        "warnings": []
+      },
+      "state-manager": {
+        "component": "state-manager",
+        "duration": 0.6779999999999973,
+        "baselineTime": 2000,
+        "overhead": -1999.3220000000001,
+        "passed": true,
+        "success": true,
+        "warnings": []
+      },
+      "health-monitor": {
+        "component": "health-monitor",
+        "duration": 0.38939999999996644,
+        "baselineTime": 2000,
+        "overhead": -1999.6106,
+        "passed": true,
+        "success": true,
+        "warnings": []
+      },
+      "image-processor": {
+        "component": "image-processor",
+        "duration": 0.4667999999999779,
+        "baselineTime": 2000,
+        "overhead": -1999.5332,
+        "passed": true,
+        "success": true,
+        "warnings": []
+      }
+    },
+    "enhanced-features": {
+      "business-data-generation": {
+        "feature": "business-data-generation",
+        "avgTime": 0.22919999999999163,
+        "iterations": 3,
+        "passed": true,
+        "warnings": []
+      },
+      "performance-data-generation": {
+        "feature": "performance-data-generation",
+        "avgTime": 0.22986666666664254,
+        "iterations": 3,
+        "passed": true,
+        "warnings": []
+      },
+      "data-validation": {
+        "feature": "data-validation",
+        "avgTime": 0.23563333333335854,
+        "iterations": 3,
+        "passed": true,
+        "warnings": []
+      },
+      "data-export": {
+        "feature": "data-export",
+        "avgTime": 4.407800000000009,
+        "iterations": 3,
+        "passed": true,
+        "warnings": []
+      },
+      "scenario-processing": {
+        "feature": "scenario-processing",
+        "avgTime": 0.528000000000001,
+        "iterations": 3,
+        "passed": true,
+        "warnings": []
+      }
+    }
+  },
+  "comparisons": {},
+  "summary": {
+    "passed": 21,
+    "failed": 0,
+    "warnings": 0,
+    "totalTests": 21
+  }
+}

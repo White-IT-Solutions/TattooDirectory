@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Rose Studio",
+  "location": "Oxford",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_sacred_rose_studio.png"
+    ],
+    "external": [
+      "external_01_sacred_rose_studio.png"
+    ],
+    "working": [
+      "working_01_sacred_rose_studio.png"
+    ]
+  }
+}

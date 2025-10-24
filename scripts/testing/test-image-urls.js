@@ -24,7 +24,7 @@ async function testAllImages() {
   console.log('🧪 Testing image URLs from artist data...\n');
   
   // Load artist data
-  const artistsPath = path.join(__dirname, 'test-data', 'artists.json');
+  const artistsPath = path.join(__dirname, '..', 'test-data', 'artists.json');
   const artists = JSON.parse(fs.readFileSync(artistsPath, 'utf8'));
   
   let totalTests = 0;

@@ -1,0 +1,16 @@
+{
+  "name": "Sacred Rose Ink",
+  "location": "Portsmouth",
+  "type": "gothic dark",
+  "images": {
+    "internal": [
+      "internal_01_sacred_rose_ink.png"
+    ],
+    "external": [
+      "external_01_sacred_rose_ink.png"
+    ],
+    "working": [
+      "working_01_sacred_rose_ink.png"
+    ]
+  }
+}

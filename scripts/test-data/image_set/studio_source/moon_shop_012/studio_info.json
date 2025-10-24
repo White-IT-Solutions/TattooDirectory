@@ -1,0 +1,16 @@
+{
+  "name": "Moon Shop",
+  "location": "Brighton",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_moon_shop.png"
+    ],
+    "external": [
+      "external_01_moon_shop.png"
+    ],
+    "working": [
+      "working_01_moon_shop.png"
+    ]
+  }
+}

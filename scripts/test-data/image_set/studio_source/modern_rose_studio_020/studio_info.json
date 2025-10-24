@@ -1,0 +1,16 @@
+{
+  "name": "Modern Rose Studio",
+  "location": "Leeds",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_modern_rose_studio.png"
+    ],
+    "external": [
+      "external_01_modern_rose_studio.png"
+    ],
+    "working": [
+      "working_01_modern_rose_studio.png"
+    ]
+  }
+}

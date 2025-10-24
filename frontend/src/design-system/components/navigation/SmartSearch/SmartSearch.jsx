@@ -7,7 +7,7 @@ import Input from '../../ui/Input/Input';
 import Button from '../../ui/Button/Button';
 import Badge from '../../ui/Badge/Badge';
 
-import { enhancedTattooStyles } from '../../../../app/data/testData/enhancedTattooStyles';
+import { enhancedTattooStyles } from '../../../../lib/data/tattooStyles.js';
 
 // Smart Search variant configurations
 const smartSearchVariants = cva(

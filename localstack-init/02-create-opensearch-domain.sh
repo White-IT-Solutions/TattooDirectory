@@ -81,6 +81,9 @@ curl -X PUT "http://localhost:4566/tattoo-directory-local/_mapping" \
                     },
                     "style": {
                         "type": "keyword"
+                    },
+                    "tags": {
+                        "type": "keyword"
                     }
                 }
             },

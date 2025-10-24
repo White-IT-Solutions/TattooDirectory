@@ -1,0 +1,16 @@
+{
+  "name": "Ink Moon Collective",
+  "location": "Brighton",
+  "type": "bright contemporary",
+  "images": {
+    "internal": [
+      "internal_01_ink_moon_collective.png"
+    ],
+    "external": [
+      "external_01_ink_moon_collective.png"
+    ],
+    "working": [
+      "working_01_ink_moon_collective.png"
+    ]
+  }
+}

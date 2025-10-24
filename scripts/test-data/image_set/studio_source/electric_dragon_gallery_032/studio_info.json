@@ -1,0 +1,16 @@
+{
+  "name": "Electric Dragon Gallery",
+  "location": "Edinburgh",
+  "type": "urban loft",
+  "images": {
+    "internal": [
+      "internal_01_electric_dragon_gallery.png"
+    ],
+    "external": [
+      "external_01_electric_dragon_gallery.png"
+    ],
+    "working": [
+      "working_01_electric_dragon_gallery.png"
+    ]
+  }
+}

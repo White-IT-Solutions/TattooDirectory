@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { DatabaseSeeder, TEST_SCENARIOS } = require('../database-seeder');
+const { DatabaseSeeder, TEST_SCENARIOS } = require('../data-management/database-seeder');
 const { DATA_CONFIG } = require('../data-config');
 
 // Mock AWS SDK
@@ -41,7 +41,7 @@ jest.mock('http');
 jest.mock('fs');
 
 // Mock state manager
-jest.mock('../state-manager', () => ({
+jest.mock('../utilities/state-manager', () => ({
   STATE_MANAGER: {
     detectChanges: jest.fn()
   }

@@ -1,0 +1,63 @@
+{
+  "scenarios": {
+    "example-minimal": {
+      "name": "example-minimal",
+      "description": "Minimal dataset for fast tests",
+      "command": "node scripts/data-cli.js seed-scenario example-minimal",
+      "estimatedTime": 15000,
+      "dependencies": ["localstack"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    },
+    "example-comprehensive": {
+      "name": "example-comprehensive",
+      "description": "Comprehensive dataset for full testing",
+      "command": "node scripts/data-cli.js seed-scenario example-comprehensive",
+      "estimatedTime": 60000,
+      "dependencies": ["localstack", "database"],
+      "cleanup": "node scripts/data-cli.js reset-data clean"
+    }
+  },
+  "_documentation": {
+    "description": "Data scenario configuration template for the Unified Test CLI",
+    "fields": {
+      "name": {
+        "type": "string",
+        "required": true,
+        "description": "Unique identifier for the data scenario (kebab-case recommended)"
+      },
+      "description": {
+        "type": "string",
+        "required": true,
+        "description": "Brief description of the data scenario"
+      },
+      "command": {
+        "type": "string",
+        "required": true,
+        "description": "Command to seed the data scenario"
+      },
+      "estimatedTime": {
+        "type": "number",
+        "required": false,
+        "default": 30000,
+        "description": "Estimated time to seed scenario in milliseconds"
+      },
+      "dependencies": {
+        "type": "array",
+        "required": false,
+        "default": [],
+        "description": "Services that must be running before seeding"
+      },
+      "cleanup": {
+        "type": "string",
+        "required": false,
+        "description": "Command to clean up scenario data after tests"
+      }
+    },
+    "commonScenarios": {
+      "minimal": "Basic dataset for unit and integration tests",
+      "frontend-ready": "UI-focused dataset for E2E tests",
+      "performance-test": "Large dataset for performance testing",
+      "search-basic": "Search-optimized dataset for search functionality"
+    }
+  }
+}

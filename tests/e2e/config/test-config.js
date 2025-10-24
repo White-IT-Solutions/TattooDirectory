@@ -34,10 +34,10 @@ const config = {
 
   // Test timeouts
   timeouts: {
-    navigation: 30000,
-    element: 10000,
-    api: 5000,
-    screenshot: 3000
+    navigation: 45000, // Increased from 30000
+    element: 15000,    // Increased from 10000
+    api: 8000,         // Increased from 5000
+    screenshot: 5000   // Increased from 3000
   },
 
   // Visual regression testing

@@ -1,0 +1,10 @@
+{
+  "name": "Ink and Dagger",
+  "location": "Aberdeen",
+  "type": "cozy boutique",
+  "images": {
+    "internal": ["internal_01_ink_and_dagger.png"],
+    "external": ["external_01_ink_and_dagger.png"],
+    "working": ["working_01_ink_and_dagger.png"]
+  }
+}

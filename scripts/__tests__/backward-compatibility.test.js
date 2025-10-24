@@ -5,11 +5,11 @@
  * continue to work with the new unified system.
  */
 
-const { BackwardCompatibilityLayer } = require('../backward-compatibility');
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { BackwardCompatibilityLayer } = require('../utilities/migration/backward-compatibility');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 
 // Mock the UnifiedDataManager
-jest.mock('../unified-data-manager');
+jest.mock('../data-management/unified-data-manager');
 
 describe('BackwardCompatibilityLayer', () => {
   let compatLayer;

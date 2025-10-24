@@ -33,7 +33,7 @@ import {
   difficultyLevels, 
   searchStylesByAlias,
   getStylesByPopularity 
-} from '../../app/data/testData/enhancedTattooStyles';
+} from '../../lib/data/tattooStyles.js';
 
 // Mock Next.js components
 jest.mock('next/image', () => {

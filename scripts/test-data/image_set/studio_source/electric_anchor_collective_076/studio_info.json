@@ -1,0 +1,16 @@
+{
+  "name": "Electric Anchor Collective",
+  "location": "Sheffield",
+  "type": "industrial chic",
+  "images": {
+    "internal": [
+      "internal_01_electric_anchor_collective.png"
+    ],
+    "external": [
+      "external_01_electric_anchor_collective.png"
+    ],
+    "working": [
+      "working_01_electric_anchor_collective.png"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Vintage Shop",
+  "location": "Canterbury",
+  "type": "artistic bohemian",
+  "images": {
+    "internal": [
+      "internal_01_vintage_shop.png"
+    ],
+    "external": [
+      "external_01_vintage_shop.png"
+    ],
+    "working": [
+      "working_01_vintage_shop.png"
+    ]
+  }
+}

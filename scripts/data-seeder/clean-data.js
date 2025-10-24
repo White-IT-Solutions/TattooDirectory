@@ -12,7 +12,7 @@ AWS.config.update({
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = process.env.DYNAMODB_TABLE_NAME || 'tattoo-directory-local';
-const OPENSEARCH_ENDPOINT = process.env.OPENSEARCH_ENDPOINT || 'http://localstack:4566';
+const OPENSEARCH_ENDPOINT = process.env.OPENSEARCH_ENDPOINT || 'http://localhost:4571';
 const OPENSEARCH_INDEX = 'tattoo-artists';
 
 class DataCleaner {

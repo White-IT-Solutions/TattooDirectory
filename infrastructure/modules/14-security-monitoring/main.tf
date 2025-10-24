@@ -143,6 +143,60 @@ resource "aws_cloudwatch_metric_alarm" "cloudtrail_security_alerts" {
 }
 
 # =============================================================================
+# CLOUDWATCH ALARMS - WAF SECURITY
+# =============================================================================
+
+resource "aws_cloudwatch_metric_alarm" "waf_blocked_requests" {
+  count = var.enable_waf_monitoring ? 1 : 0
+
+  alarm_name          = "${var.context.name_prefix}-waf-blocked-requests"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "BlockedRequests"
+  namespace           = "AWS/WAFV2"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "100"
+  alarm_description   = "This metric monitors WAF blocked requests indicating potential attacks"
+  alarm_actions       = [aws_sns_topic.security_alerts.arn]
+
+  dimensions = {
+    WebACL = var.waf_web_acl_name
+    Region = "CloudFront"
+    Rule   = "ALL"
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-waf-blocked-requests"
+  })
+}
+
+resource "aws_cloudwatch_metric_alarm" "waf_rate_limit_triggered" {
+  count = var.enable_waf_monitoring ? 1 : 0
+
+  alarm_name          = "${var.context.name_prefix}-waf-rate-limit"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BlockedRequests"
+  namespace           = "AWS/WAFV2"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "50"
+  alarm_description   = "This metric monitors WAF rate limiting triggers"
+  alarm_actions       = [aws_sns_topic.security_alerts.arn]
+
+  dimensions = {
+    WebACL = var.waf_web_acl_name
+    Region = "CloudFront"
+    Rule   = "GeneralRateLimitRule"
+  }
+
+  tags = merge(var.context.common_tags, {
+    Name = "${var.context.name_prefix}-waf-rate-limit"
+  })
+}
+
+# =============================================================================
 # CLOUDWATCH LOG INSIGHTS QUERIES FOR SECURITY
 # =============================================================================
 
@@ -183,6 +237,54 @@ resource "aws_cloudwatch_query_definition" "root_usage" {
   query_string = <<EOF
 fields @timestamp, @message, sourceIPAddress, userIdentity, eventName
 | filter userIdentity.type = "Root"
+| sort @timestamp desc
+| limit 100
+EOF
+}
+
+# =============================================================================
+# CLOUDWATCH LOG INSIGHTS QUERIES FOR WAF SECURITY
+# =============================================================================
+
+resource "aws_cloudwatch_query_definition" "waf_blocked_requests" {
+  count = var.enable_waf_monitoring ? 1 : 0
+  name  = "${var.context.name_prefix}-waf-blocked-requests"
+
+  log_group_names = ["/aws/wafv2/cloudfront/${var.context.name_prefix}"]
+
+  query_string = <<EOF
+fields @timestamp, httpRequest.clientIp, httpRequest.uri, action, terminatingRuleId
+| filter action = "BLOCK"
+| stats count() by httpRequest.clientIp, terminatingRuleId
+| sort count desc
+| limit 100
+EOF
+}
+
+resource "aws_cloudwatch_query_definition" "waf_rate_limited_ips" {
+  count = var.enable_waf_monitoring ? 1 : 0
+  name  = "${var.context.name_prefix}-waf-rate-limited-ips"
+
+  log_group_names = ["/aws/wafv2/cloudfront/${var.context.name_prefix}"]
+
+  query_string = <<EOF
+fields @timestamp, httpRequest.clientIp, httpRequest.uri, terminatingRuleId
+| filter terminatingRuleId like /RateLimit/
+| stats count() by httpRequest.clientIp
+| sort count desc
+| limit 50
+EOF
+}
+
+resource "aws_cloudwatch_query_definition" "waf_suspicious_patterns" {
+  count = var.enable_waf_monitoring ? 1 : 0
+  name  = "${var.context.name_prefix}-waf-suspicious-patterns"
+
+  log_group_names = ["/aws/wafv2/cloudfront/${var.context.name_prefix}"]
+
+  query_string = <<EOF
+fields @timestamp, httpRequest.clientIp, httpRequest.uri, httpRequest.args, terminatingRuleId
+| filter terminatingRuleId = "BlockSuspiciousPatterns"
 | sort @timestamp desc
 | limit 100
 EOF

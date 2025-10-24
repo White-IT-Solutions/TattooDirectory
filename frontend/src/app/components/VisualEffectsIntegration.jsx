@@ -489,6 +489,62 @@ export {
   combineEffects
 };
 
+// Main VisualEffectsIntegration component that properly handles props
+export const VisualEffectsIntegration = ({ 
+  children,
+  shadowLevel,
+  visualEffects,
+  animationLevel,
+  useDesignTokens,
+  respectReducedMotion,
+  optimizeImages,
+  loading,
+  lazy,
+  fill,
+  className = '',
+  ...domProps 
+}) => {
+  // Extract non-DOM props to prevent React warnings
+  const {
+    shadowLevel: _shadowLevel,
+    visualEffects: _visualEffects,
+    animationLevel: _animationLevel,
+    useDesignTokens: _useDesignTokens,
+    respectReducedMotion: _respectReducedMotion,
+    optimizeImages: _optimizeImages,
+    loading: _loading,
+    lazy: _lazy,
+    fill: _fill,
+    ...cleanDomProps
+  } = {
+    shadowLevel,
+    visualEffects,
+    animationLevel,
+    useDesignTokens,
+    respectReducedMotion,
+    optimizeImages,
+    loading,
+    lazy,
+    fill,
+    ...domProps
+  };
+
+  // Convert shadowLevel to elevation for EnhancedCard
+  const elevation = shadowLevel || 'surface';
+  
+  return (
+    <div 
+      data-testid="visual-effects-container"
+      className={`visual-effects-integration ${className}`}
+      {...cleanDomProps}
+    >
+      <EnhancedCard elevation={elevation}>
+        {children}
+      </EnhancedCard>
+    </div>
+  );
+};
+
 export default {
   EnhancedCard,
   EnhancedButton,
@@ -501,5 +557,6 @@ export default {
   EnhancedStudioCard,
   EnhancedSearchBar,
   EnhancedFilterPanel,
-  EnhancedLoadingState
+  EnhancedLoadingState,
+  VisualEffectsIntegration
 };

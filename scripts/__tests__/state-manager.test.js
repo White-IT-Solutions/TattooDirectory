@@ -8,8 +8,8 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { StateManager } = require('../state-manager');
-const { IncrementalProcessor } = require('../incremental-processor');
+const { StateManager } = require('../utilities/state-manager');
+const { IncrementalProcessor } = require('../data-management/incremental-processor');
 
 // Mock DATA_CONFIG for testing
 const mockConfig = {

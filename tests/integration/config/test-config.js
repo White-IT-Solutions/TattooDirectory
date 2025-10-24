@@ -4,6 +4,35 @@
  * Configuration for integration tests running against LocalStack backend
  */
 
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+// Load environment variables from .env.local file
+function loadEnvFile() {
+    try {
+        const envPath = resolve(process.cwd(), '../../devtools/.env.local');
+        const envContent = readFileSync(envPath, 'utf8');
+        
+        envContent.split('\n').forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine && !trimmedLine.startsWith('#')) {
+                const [key, ...valueParts] = trimmedLine.split('=');
+                if (key && valueParts.length > 0) {
+                    const value = valueParts.join('=');
+                    if (!process.env[key]) {
+                        process.env[key] = value;
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.warn('Could not load .env.local file:', error.message);
+    }
+}
+
+// Load environment variables
+loadEnvFile();
+
 export const testConfig = {
     // API Configuration
     api: {

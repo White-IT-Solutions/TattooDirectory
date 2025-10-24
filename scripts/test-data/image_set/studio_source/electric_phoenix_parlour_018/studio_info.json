@@ -1,0 +1,16 @@
+{
+  "name": "Electric Phoenix Parlour",
+  "location": "Bath",
+  "type": "urban loft",
+  "images": {
+    "internal": [
+      "internal_01_electric_phoenix_parlour.png"
+    ],
+    "external": [
+      "external_01_electric_phoenix_parlour.png"
+    ],
+    "working": [
+      "working_01_electric_phoenix_parlour.png"
+    ]
+  }
+}

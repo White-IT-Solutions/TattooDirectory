@@ -1,0 +1,16 @@
+{
+  "name": "Urban Dragon Works",
+  "location": "Birmingham",
+  "type": "clean medical",
+  "images": {
+    "internal": [
+      "internal_01_urban_dragon_works.png"
+    ],
+    "external": [
+      "external_01_urban_dragon_works.png"
+    ],
+    "working": [
+      "working_01_urban_dragon_works.png"
+    ]
+  }
+}

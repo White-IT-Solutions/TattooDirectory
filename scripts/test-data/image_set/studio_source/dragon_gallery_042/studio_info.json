@@ -1,0 +1,16 @@
+{
+  "name": "Dragon Gallery",
+  "location": "Edinburgh",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_dragon_gallery.png"
+    ],
+    "external": [
+      "external_01_dragon_gallery.png"
+    ],
+    "working": [
+      "working_01_dragon_gallery.png"
+    ]
+  }
+}

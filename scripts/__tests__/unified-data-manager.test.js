@@ -5,15 +5,15 @@
  * core operations, validation methods, and error handling scenarios.
  */
 
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 
 // Mock all dependencies
-jest.mock('../pipeline-engine');
-jest.mock('../state-manager');
-jest.mock('../health-monitor');
-jest.mock('../image-processor');
-jest.mock('../database-seeder');
-jest.mock('../frontend-sync-processor');
+jest.mock('../data-management/pipeline-engine');
+jest.mock('../utilities/state-manager');
+jest.mock('../utilities/health-monitor');
+jest.mock('../data-management/image-processor');
+jest.mock('../data-management/database-seeder');
+jest.mock('../data-management/frontend-sync-processor');
 
 describe('UnifiedDataManager', () => {
   let manager;

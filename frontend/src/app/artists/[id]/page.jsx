@@ -5,6 +5,16 @@ import Lightbox from "@/app/components/Lightbox";
 import AvatarImage from "@/app/components/AvatarImage";
 import { mockArtistData as mockArtists } from "../../data/mockArtistData";
 
+// Generate static params for all artists
+export async function generateStaticParams() {
+  // Import mock data for static generation
+  const { mockArtistData } = await import('../../data/mockArtistData');
+  
+  return mockArtistData.map((artist) => ({
+    id: artist.artistId || artist.PK || artist.id,
+  }));
+}
+
 // Lazy load StyleGallery component
 const StyleGallery = React.lazy(() => import("../../../design-system/components/ui/StyleGallery/StyleGallery"));
 
@@ -36,10 +46,8 @@ import {
 } from "../../../design-system/components/ui/DataVisualization";
 
 // Empty State Components
-import { 
-  EmptyPortfolio, 
-  ErrorEmptyState 
-} from "../../../design-system/components/feedback/EmptyState";
+import ClientEmptyPortfolio from "./components/ClientEmptyPortfolio";
+import ClientErrorState from "./components/ClientErrorState";
 
 export default async function ArtistPage({ params }) {
   const { id: artistId } = await params;
@@ -64,11 +72,9 @@ export default async function ArtistPage({ params }) {
   if (!artist) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background-secondary)]">
-        <ErrorEmptyState
+        <ClientErrorState
           title="Artist not found"
           description="The artist you're looking for doesn't exist or has been removed."
-          onGoHome={() => window.location.href = "/artists"}
-          onRetry={() => window.location.reload()}
         />
       </div>
     );
@@ -84,7 +90,7 @@ export default async function ArtistPage({ params }) {
   const portfolio = artist.portfolio || artist.portfolioImages || [];
 
   return (
-    <div className="min-h-screen bg-[var(--background-secondary)]">
+    <div className="min-h-screen bg-[var(--background-secondary)]" data-testid="artist-profile">
       <div className="flex flex-col lg:flex-row max-w-7xl mx-auto">
         {/* Enhanced Sidebar */}
         <aside className="w-full lg:w-96 lg:min-h-screen bg-[var(--background-primary)] lg:sticky lg:top-0">
@@ -214,7 +220,7 @@ export default async function ArtistPage({ params }) {
               <CardHeader>
                 <CardTitle className="text-lg">Contact</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4" data-testid="contact-info">
+              <CardContent className="space-y-4" data-testid="contact-info" id="contact-options">
                 {/* Contact Options */}
                 <ContactOptions 
                   contactInfo={artist.contactInfo}
@@ -295,6 +301,14 @@ export default async function ArtistPage({ params }) {
 
         {/* Enhanced Main Portfolio Section */}
         <main className="flex-1 p-6" data-testid="portfolio-images">
+          {/* Back to Search Button */}
+          <div className="mb-4">
+            <Link href="/artists">
+              <Button variant="secondary" size="sm" data-testid="back-to-search">
+                ← Back to Search
+              </Button>
+            </Link>
+          </div>
           <div className="max-w-6xl mx-auto">
             {/* Portfolio Header */}
             <div className="mb-6">
@@ -351,16 +365,9 @@ export default async function ArtistPage({ params }) {
                 </CardContent>
               </Card>
             ) : (
-              <EmptyPortfolio
+              <ClientEmptyPortfolio
                 isOwnProfile={false}
                 artistName={artistName}
-                onContactArtist={() => {
-                  // Scroll to contact section or open contact modal
-                  const contactSection = document.getElementById('contact-options');
-                  if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
               />
             )}
 

@@ -67,10 +67,14 @@ describe('AWS Configuration Module', () => {
 
     describe('Production Configuration', () => {
         beforeEach(() => {
-            process.env.NODE_ENV = 'production';
-            process.env.AWS_DEFAULT_REGION = 'eu-west-2';
+            // Clear all LocalStack-related environment variables
             delete process.env.AWS_ENDPOINT_URL;
             delete process.env.LOCALSTACK_HOSTNAME;
+            delete process.env.OPENSEARCH_ENDPOINT;
+            
+            // Set production environment
+            process.env.NODE_ENV = 'production';
+            process.env.AWS_DEFAULT_REGION = 'eu-west-2';
         });
 
         test('should detect production environment correctly', async () => {

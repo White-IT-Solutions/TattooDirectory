@@ -1,0 +1,323 @@
+{
+  "timestamp": "2025-10-03T19:14:12.463Z",
+  "testSuite": "frontend-sync-processor-performance",
+  "results": {
+    "timestamp": "2025-10-03T19:14:12.468Z",
+    "testRun": "performance-test-1759518852468",
+    "baseline": null,
+    "current": {
+      "startup-time": {
+        "testName": "startup-time",
+        "avgTime": 2.2236999999999987,
+        "maxTime": 2.9273999999999987,
+        "minTime": 1.5504999999999995,
+        "iterations": 3,
+        "passed": true,
+        "threshold": 2000,
+        "warnings": []
+      },
+      "memory-usage": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "duration": 26.0409,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 5860672,
+              "max": 5863104,
+              "avg": 5861888,
+              "final": 5863104
+            },
+            "heapTotal": {
+              "min": 7663616,
+              "max": 7663616,
+              "avg": 7663616,
+              "final": 7663616
+            },
+            "rss": {
+              "min": 39563264,
+              "max": 39567360,
+              "avg": 39565312,
+              "final": 39567360
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "duration": 29.079300000000003,
+          "success": true,
+          "memoryStats": {
+            "samples": 1,
+            "heapUsed": {
+              "min": 6302688,
+              "max": 6302688,
+              "avg": 6302688,
+              "final": 6302688
+            },
+            "heapTotal": {
+              "min": 10285056,
+              "max": 10285056,
+              "avg": 10285056,
+              "final": 10285056
+            },
+            "rss": {
+              "min": 39919616,
+              "max": 39919616,
+              "avg": 39919616,
+              "final": 39919616
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "duration": 28.499399999999994,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 5655024,
+              "max": 5655928,
+              "avg": 5655476,
+              "final": 5655928
+            },
+            "heapTotal": {
+              "min": 10285056,
+              "max": 10285056,
+              "avg": 10285056,
+              "final": 10285056
+            },
+            "rss": {
+              "min": 42000384,
+              "max": 42000384,
+              "avg": 42000384,
+              "final": 42000384
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "duration": 45.091499999999996,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 8271736,
+              "max": 8272608,
+              "avg": 8272172,
+              "final": 8272608
+            },
+            "heapTotal": {
+              "min": 16052224,
+              "max": 16052224,
+              "avg": 16052224,
+              "final": 16052224
+            },
+            "rss": {
+              "min": 46170112,
+              "max": 46170112,
+              "avg": 46170112,
+              "final": 46170112
+            }
+          },
+          "passed": true,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "duration": 60.6053,
+          "success": true,
+          "memoryStats": {
+            "samples": 2,
+            "heapUsed": {
+              "min": 8178720,
+              "max": 12435600,
+              "avg": 10307160,
+              "final": 8178720
+            },
+            "heapTotal": {
+              "min": 27848704,
+              "max": 29945856,
+              "avg": 28897280,
+              "final": 29945856
+            },
+            "rss": {
+              "min": 56471552,
+              "max": 56545280,
+              "avg": 56508416,
+              "final": 56545280
+            }
+          },
+          "passed": true,
+          "warnings": []
+        }
+      },
+      "performance-regression": {
+        "small": {
+          "scenario": "small",
+          "artistCount": 10,
+          "avgTime": 0.35983333333333195,
+          "maxTime": 0.4682999999999993,
+          "minTime": 0.3009999999999877,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 500,
+          "warnings": []
+        },
+        "medium": {
+          "scenario": "medium",
+          "artistCount": 50,
+          "avgTime": 1.273300000000006,
+          "maxTime": 1.375,
+          "minTime": 1.0717000000000212,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 2000,
+          "warnings": []
+        },
+        "large": {
+          "scenario": "large",
+          "artistCount": 100,
+          "avgTime": 2.1118000000000166,
+          "maxTime": 2.2346000000000004,
+          "minTime": 1.9612000000000194,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 5000,
+          "warnings": []
+        },
+        "xlarge": {
+          "scenario": "xlarge",
+          "artistCount": 500,
+          "avgTime": 14.899500000000009,
+          "maxTime": 18.975099999999998,
+          "minTime": 11.455399999999997,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 15000,
+          "warnings": []
+        },
+        "stress": {
+          "scenario": "stress",
+          "artistCount": 1000,
+          "avgTime": 17.643466666666654,
+          "maxTime": 20.989599999999996,
+          "minTime": 15.793999999999983,
+          "iterations": 3,
+          "passed": true,
+          "threshold": 30000,
+          "warnings": []
+        }
+      },
+      "concurrent-operations": {
+        "unified-data-manager": {
+          "component": "unified-data-manager",
+          "duration": 4.819500000000005,
+          "baselineTime": 2000,
+          "overhead": -1995.1805,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "pipeline-engine": {
+          "component": "pipeline-engine",
+          "duration": 0.5771000000000299,
+          "baselineTime": 2000,
+          "overhead": -1999.4229,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "state-manager": {
+          "component": "state-manager",
+          "duration": 0.5360000000000014,
+          "baselineTime": 2000,
+          "overhead": -1999.464,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "health-monitor": {
+          "component": "health-monitor",
+          "duration": 1.50709999999998,
+          "baselineTime": 2000,
+          "overhead": -1998.4929,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        },
+        "image-processor": {
+          "component": "image-processor",
+          "duration": 0.7635999999999967,
+          "baselineTime": 2000,
+          "overhead": -1999.2364,
+          "passed": true,
+          "success": true,
+          "warnings": []
+        }
+      },
+      "enhanced-features": {
+        "business-data-generation": {
+          "feature": "business-data-generation",
+          "avgTime": 0.6778666666666595,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "performance-data-generation": {
+          "feature": "performance-data-generation",
+          "avgTime": 0.6785333333333293,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-validation": {
+          "feature": "data-validation",
+          "avgTime": 0.7448666666666478,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "data-export": {
+          "feature": "data-export",
+          "avgTime": 5.937433333333331,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        },
+        "scenario-processing": {
+          "feature": "scenario-processing",
+          "avgTime": 0.56716666666667,
+          "iterations": 3,
+          "passed": true,
+          "warnings": []
+        }
+      }
+    },
+    "comparisons": {},
+    "summary": {
+      "passed": 1,
+      "failed": 4,
+      "warnings": 0,
+      "totalTests": 5
+    }
+  },
+  "summary": {
+    "totalTests": 5,
+    "passed": 1,
+    "failed": 4,
+    "warnings": 0,
+    "duration": 402
+  }
+}

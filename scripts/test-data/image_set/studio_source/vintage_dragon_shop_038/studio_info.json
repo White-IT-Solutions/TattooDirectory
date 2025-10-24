@@ -1,0 +1,16 @@
+{
+  "name": "Vintage Dragon Shop",
+  "location": "Plymouth",
+  "type": "retro americana",
+  "images": {
+    "internal": [
+      "internal_01_vintage_dragon_shop.png"
+    ],
+    "external": [
+      "external_01_vintage_dragon_shop.png"
+    ],
+    "working": [
+      "working_01_vintage_dragon_shop.png"
+    ]
+  }
+}

@@ -24,13 +24,13 @@ jobs:
     with:
       environment: dev
       tf_state_key: dev/terraform.tfstate
-      tf_var_file: environments/dev/main.tfvars
-      ssm_prefix: /tattoo-directory-dev
-      lambda_prefix: tattoo-directory-dev
-      kms_key_alias: alias/tattoo-directory-dev-main
+      tf_var_file: auto.tfvars
+      ssm_prefix: /tattoo-artist-directory-dev
+      lambda_prefix: tattoo-artist-directory-dev
+      kms_key_alias: alias/tattoo-artist-directory-dev-main
       apply_changes: false # This prevents the 'apply' step from running
     secrets:
-      AWS_ROLE_TO_ASSUME_DEV: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
 
   # This job runs if the PR is targeting the 'release-prod' branch
   validate-prod:
@@ -40,10 +40,10 @@ jobs:
     with:
       environment: prod
       tf_state_key: prod/terraform.tfstate
-      tf_var_file: environments/prod/main.tfvars
-      ssm_prefix: /tattoo-directory-prod
-      lambda_prefix: tattoo-directory-prod
-      kms_key_alias: alias/tattoo-directory-prod-main
+      tf_var_file: auto.tfvars
+      ssm_prefix: /tattoo-artist-directory-prod
+      lambda_prefix: tattoo-artist-directory-prod
+      kms_key_alias: alias/tattoo-artist-directory-prod-main
       apply_changes: false # This prevents the 'apply' step from running
     secrets:
-      AWS_ROLE_TO_ASSUME_PROD: ${{ secrets.AWS_ROLE_TO_ASSUME_PROD }}
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME_PROD}

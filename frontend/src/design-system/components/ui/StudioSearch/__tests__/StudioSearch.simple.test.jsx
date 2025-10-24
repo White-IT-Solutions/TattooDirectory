@@ -73,6 +73,7 @@ describe('StudioSearch Component - Basic Functionality', () => {
         searchTerm: '',
         locationFilter: '',
         specialtyFilters: [],
+        styleFilters: [],
         ratingFilter: 0,
         establishedYearRange: [2000, 2024],
         artistCountRange: [1, 20]

@@ -33,9 +33,16 @@ class VisualTesting {
     const baselinePath = path.join(this.baselineDir, `${testName}.png`);
     const diffPath = path.join(this.diffDir, `${testName}-diff.png`);
 
-    // Ensure screenshotPath is a string (file path), not a buffer
+    // Handle both string paths and buffer objects from page.screenshot()
+    let actualScreenshotPath = screenshotPath;
     if (typeof screenshotPath !== 'string') {
-      throw new Error(`Screenshot path must be a string, got ${typeof screenshotPath}`);
+      // If it's a buffer or object, save it to a temporary file
+      actualScreenshotPath = path.join(this.screenshotDir, `temp-${testName}.png`);
+      if (Buffer.isBuffer(screenshotPath)) {
+        await fs.writeFile(actualScreenshotPath, screenshotPath);
+      } else {
+        throw new Error(`Screenshot path must be a string or Buffer, got ${typeof screenshotPath}`);
+      }
     }
 
     // If no baseline exists, create it
@@ -46,7 +53,7 @@ class VisualTesting {
     }
 
     // Load images
-    const screenshot = PNG.sync.read(await fs.readFile(screenshotPath));
+    const screenshot = PNG.sync.read(await fs.readFile(actualScreenshotPath));
     const baseline = PNG.sync.read(await fs.readFile(baselinePath));
 
     // Check dimensions match

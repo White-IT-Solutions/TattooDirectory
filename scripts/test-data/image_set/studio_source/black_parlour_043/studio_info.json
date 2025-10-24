@@ -1,0 +1,16 @@
+{
+  "name": "Black Parlour",
+  "location": "Norwich",
+  "type": "cozy boutique",
+  "images": {
+    "internal": [
+      "internal_01_black_parlour.png"
+    ],
+    "external": [
+      "external_01_black_parlour.png"
+    ],
+    "working": [
+      "working_01_black_parlour.png"
+    ]
+  }
+}

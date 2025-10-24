@@ -5,13 +5,13 @@
  * functionality preservation between old and new systems.
  */
 
-const { ComparisonValidator } = require('../comparison-validator');
-const { UnifiedDataManager } = require('../unified-data-manager');
+const { ComparisonValidator } = require('../utilities/migration/comparison-validator');
+const { UnifiedDataManager } = require('../data-management/unified-data-manager');
 const { DATA_CONFIG } = require('../data-config');
 const fs = require('fs');
 
 // Mock dependencies
-jest.mock('../unified-data-manager');
+jest.mock('../data-management/unified-data-manager');
 jest.mock('../data-config');
 jest.mock('fs');
 
@@ -45,7 +45,7 @@ describe('ComparisonValidator', () => {
     };
     
     DATA_CONFIG.paths = {
-      imageSource: 'tests/Test_Data/ImageSet',
+      imageSource: 'scripts/test-data/image_set/tattoo_source',
       testData: 'scripts/test-data'
     };
     

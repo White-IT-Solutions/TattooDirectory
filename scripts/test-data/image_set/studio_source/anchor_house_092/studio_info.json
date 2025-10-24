@@ -1,0 +1,16 @@
+{
+  "name": "Anchor House",
+  "location": "Newcastle",
+  "type": "rustic vintage",
+  "images": {
+    "internal": [
+      "internal_01_anchor_house.png"
+    ],
+    "external": [
+      "external_01_anchor_house.png"
+    ],
+    "working": [
+      "working_01_anchor_house.png"
+    ]
+  }
+}

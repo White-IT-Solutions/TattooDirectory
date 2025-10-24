@@ -1,0 +1,16 @@
+{
+  "name": "Star Studio",
+  "location": "Bath",
+  "type": "high-end luxury",
+  "images": {
+    "internal": [
+      "internal_01_star_studio.png"
+    ],
+    "external": [
+      "external_01_star_studio.png"
+    ],
+    "working": [
+      "working_01_star_studio.png"
+    ]
+  }
+}
